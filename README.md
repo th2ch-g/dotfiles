@@ -8,7 +8,7 @@
 
 ## Install
 ~~~
-git clone https://github.com/th2ch-g/dotfiles.git && \
+git clone --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --link
 ~~~
