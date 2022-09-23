@@ -1,0 +1,12 @@
+[submodule ".zprezto"]
+	path = .zprezto
+	url = https://github.com/sorin-ionescu/prezto.git
+[submodule ".vim/plugged/fern.vim"]
+	path = .vim/plugged/fern.vim
+	url = https://github.com/lambdalisue/fern.vim.git
+[submodule ".vim/plugged/tcomment_vim"]
+	path = .vim/plugged/tcomment_vim
+	url = https://github.com/tomtom/tcomment_vim.git
+[submodule ".vim/plugged/lexima.vim"]
+	path = .vim/plugged/lexima.vim
+	url = https://github.com/cohama/lexima.vim.git

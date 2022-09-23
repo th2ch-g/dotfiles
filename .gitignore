@@ -1,0 +1,6 @@
+.DS_Store
+.ssh
+.zshenv_export
+.zshrc_alias
+.zshrc_conda
+.vim/.netrwhist

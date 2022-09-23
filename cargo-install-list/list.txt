@@ -1,0 +1,15 @@
+bat
+choose
+exa
+fd-find
+https://github.com/Fierthraix/2048-rs.git
+git-delta
+grex
+monolith
+r-matrix
+ripgrep
+https://github.com/th2ch-g/rust-top_message.git
+sd
+silicon
+tokei
+zoxide
