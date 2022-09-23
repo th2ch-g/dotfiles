@@ -95,9 +95,9 @@ if [ -e $HOME/.zshrc_alias ]; then
 fi
 
 
-# conda path setting
-if [ -e $HOME/.zshrc_conda ]; then
-    source $HOME/.zshrc_conda
+# additional source file
+if [ -e $HOME/.zshrc_source ]; then
+    source $HOME/.zshrc_source
 fi
 
 
@@ -133,13 +133,13 @@ bk() {
 }
 
 make_add_file() {
-    arr=( .zshrc_conda .zshrc_alias .zshenv_export )
+    arr=( .zshrc_source .zshrc_alias .zshenv_export )
     flag=1
     for i in ${arr[@]};
     do
         if [ ! -e $HOME/${i} ]; then
             touch $HOME/${i}
-            echo "[INFO] touch ${i}" >&1
+            echo "[INFO] touch ${HOME}/${i}" >&1
             flag=0
         fi
     done
