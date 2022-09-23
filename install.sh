@@ -83,15 +83,16 @@ fi
 echo "[INFO] detect $OS OS" >&1
 
 
+# cwd check
+if [ ! -e $PWD/dotfiles-id-file ]; then
+    echo "[ERROR] dotfiles-id-file is not detected" >&2
+    echo "[ERROR] exec ./install.sh in dotfiles directory" >&2
+    exit 1
+fi
+
+
 # link
 if [ $link_flag -eq 0 ]; then
-
-    # cwd check
-    if [ ! -e $PWD/dotfiles-id-file ]; then
-        echo "[ERROR] dotfiles-id-file is not detected" >&2
-        echo "[ERROR] exec ./install.sh in dotfiles directory" >&2
-        exit 1
-    fi
 
     echo "[INFO] Start link dotfiles" >&1
     for dotfile in .?*;

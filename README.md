@@ -28,7 +28,7 @@ git reset --hard origin/master
 
 ## Contents
 - vim (>= v8.2 tested)
-- zsh ( >= v5.8 tested )
+- zsh (>= v5.8 tested)
 - tmux
 - iterm2
 - mytools
