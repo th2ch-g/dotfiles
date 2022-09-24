@@ -14,7 +14,8 @@ cd vim* && \
     ./configure --prefix=${install_path}/vim --enable-perlinterp --enable-rubyinterp \
     --enable-multibyte --disable-netbeans --disable-gtktest --disable-acl \
     --disable-gpm --disable-xim --without-x --disable-gui && \
-    make -j $thread && make install
+    make -j $thread && make install && \
+    cd .. && rm -rf vim-*
 
 echo "[INFO] vim install done" >&1
 

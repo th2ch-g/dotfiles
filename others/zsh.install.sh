@@ -11,8 +11,10 @@ curl -L $zsh_link -o zsh.tar.gz && \
     rm -f zsh.tar.gz
 
 cd zsh* && \
+    ./Util/preconfig && \
     ./configure --prefix=${install_path}/zsh \
     --enable-multibyte --enable-locale && \
-    make -j $thread && make install
+    make -j $thread && make install && \
+    cd .. && rm -rf zsh-*
 
 echo "[INFO] zsh install done" >&1
