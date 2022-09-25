@@ -73,6 +73,10 @@ if [ $FILE = "-" ]; then
     echo "[INFO] file input is execute by stdin" >&1
     server_arr=(`cat - | xargs`)
 else
+    if [ ! -e $FILE ]; then
+        echo "[ERROR] $FILE is not exists" >&2
+        exit 1
+    fi
     server_arr=(`cat $FILE | xargs`)
 fi
 
@@ -88,7 +92,7 @@ done
 
 echo "[INFO] sort by load average:" >&1
 
-cat tmp_ssa | awk '{print $1, $11}' | sort -n -k 2 -r | \
+cat tmp_ssa.txt | awk '{print $1, $11}' | sort -n -k 2 -r | \
     while IFS= read -r line;
     do
         echo "\t$line" >&1
@@ -97,7 +101,7 @@ cat tmp_ssa | awk '{print $1, $11}' | sort -n -k 2 -r | \
 
 echo "[INFO] recommend server (load average < 1.0)" >&1
 
-cat tmp_ssa | awk '{print $1, $11}' | sort -n -k 2 -r | awk '{if($2 < 1){print $0}}' | \
+cat tmp_ssa.txt | awk '{print $1, $11}' | sort -n -k 2 -r | awk '{if($2 < 1){print $0}}' | \
     while IFS= read -r line;
     do
         echo "\t$line" >&1

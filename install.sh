@@ -25,6 +25,8 @@ OPTIONS:
     -m, --make-dir          make basic directories
     -b, --brew              brew install
     -c, --cargo             cargo install
+    -v, --vim-link          only vim dotfiles link
+    -z, --zsh-link          only zsh dotfiles link
 '
 
 
@@ -34,6 +36,9 @@ make_dir_flag=1
 brew_flag=1
 cargo_flag=1
 unlink_flag=1
+vim_link_flag=1
+zsh_link_flag=1
+
 
 # option parser
 while :;
@@ -46,6 +51,9 @@ do
         -l | --link)
             link_flag=0
             ;;
+        -u | --unlink)
+            unlink_flag=0
+            ;;
         -m | --make-dir)
             make_dir_flag=0
             ;;
@@ -55,10 +63,13 @@ do
         -c | --cargo)
             cargo_flag=0
             ;;
-        -u | --unlink)
-            unlink_flag=0
+        -v | --vim-link)
+            vim_link_flag=0
             ;;
-        --)
+        -z | --zsh-link)
+            zsh_link_flag=0
+            ;;
+       --)
             shift
             break
             ;;
@@ -105,8 +116,19 @@ if [ $unlink_flag -eq 0 ]; then
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
-        unlink ${HOME}/${dotfile}
-        echo "[INFO] $dorfile unlink done" >&1
+
+        if [ $dotfile = ".zsh" ]; then
+            for i in $(ls -a $PWD/.zsh);
+            do
+                [ $i = "." ] && continue
+                [ $i = ".." ] && continue
+                unlink ${HOME}/${i}
+            done
+        else
+            unlink ${HOME}/${dotfile}
+        fi
+
+        echo "[INFO] $dotfile unlink done" >&1
     done
     echo "[INFO] dotfiles unlink done" >&1
 
@@ -121,6 +143,32 @@ if [ $unlink_flag -eq 0 ]; then
 fi
 
 
+# vim link
+if [ $vim_link_flag -eq 0 ]; then
+    echo "[INFO] Start link vim dotfiles" >&1
+    for dotfile in .vim .vimrc;
+    do
+        ln -nsi $PWD/$dotfile $HOME
+        echo "[INFO] $dotfile link done" >&1
+    done
+    echo "[INFO] vim dotfiles link done" >&1
+fi
+
+
+# zsh link
+if [ $zsh_link_flag -eq 0 ]; then
+    echo "[INFO] Start link zsh dotfiles" >&1
+    for dotfile in $(ls -a $PWD/.zsh);
+    do
+        [ $i = "." ] && continue
+        [ $i = ".." ] && continue
+        ln -nsi $PWD/.zsh/$i $HOME
+        echo "[INFO] $dotfile link done" >&1
+    done
+    echo "[INFO] zsh dotfiles link done" >&1
+fi
+
+
 # link
 if [ $link_flag -eq 0 ]; then
 
@@ -131,7 +179,18 @@ if [ $link_flag -eq 0 ]; then
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
-        ln -nsi $PWD/$dotfile $HOME
+
+        if [ $dotfile = ".zsh" ]; then
+            for i in $(ls -a $PWD/.zsh);
+            do
+                [ $i = "." ] && continue
+                [ $i = ".." ] && continue
+                ln -nsi $PWD/.zsh/$i $HOME
+            done
+        else
+            ln -nsi $PWD/$dotfile $HOME
+        fi
+
         echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] dotfiles link done" >&1
