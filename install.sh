@@ -20,6 +20,7 @@ EXAMPLE:
 
 OPTIONS:
     -h, --help              Print help
+    -u, --unlink            dotfiles unlink
     -l, --link              dotfiles link
     -m, --make-dir          make basic directories
     -b, --brew              brew install
@@ -32,7 +33,7 @@ link_flag=1
 make_dir_flag=1
 brew_flag=1
 cargo_flag=1
-
+unlink_flag=1
 
 # option parser
 while :;
@@ -53,6 +54,9 @@ do
             ;;
         -c | --cargo)
             cargo_flag=0
+            ;;
+        -u | --unlink)
+            unlink_flag=0
             ;;
         --)
             shift
@@ -88,6 +92,32 @@ if [ ! -e $PWD/dotfiles-id-file ]; then
     echo "[ERROR] dotfiles-id-file is not detected" >&2
     echo "[ERROR] exec ./install.sh in dotfiles directory" >&2
     exit 1
+fi
+
+
+# unlink $HOME/[links]
+if [ $unlink_flag -eq 0 ]; then
+
+    echo "[INFO] Start unlink dotfiles" >&1
+    for dotfile in .?*;
+    do
+        [ $dotfile = ".." ] && continue
+        [ $dotfile = ".git" ] && continue
+        [ $dotfile = ".gitignore" ] && continue
+        [ $dotfile = ".gitmodules" ] && continue
+        unlink ${HOME}/${dotfile}
+        echo "[INFO] $dorfile unlink done" >&1
+    done
+    echo "[INFO] dotfiles unlink done" >&1
+
+    echo "[INFO] Start link others directories" >&1
+    for dir in mytools;
+    do
+        unlink ${HOME}/${dir}
+        echo "[INFO] $dir unlink done" >&1
+    done
+    echo "[INFO] others directories unlink done" >&1
+
 fi
 
 
@@ -150,5 +180,3 @@ if [ $cargo_flag -eq 0 ]; then
     fi
 fi
 
-
-echo "[INFO] ./install.sh install done" >&1

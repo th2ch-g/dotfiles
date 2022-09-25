@@ -1,0 +1,107 @@
+#!/bin/sh
+
+
+USAGE='
+ssa:
+    server_search_availavility
+
+USAGE:
+    ssa
+    cat [SERVER_NAME_FILE] | ssa -f -
+    ssa -f [SERVER_NAME_FILE]
+    ssa --dump > ~/.ssh/server_name.txt
+
+DESCRIPTION:
+    search server availavility by load average
+
+OPTIONS:
+    -h, --help          Print help
+    -d, --dump          prepare server name list file
+    -f, --file          specify server name list file. "-f -" means stdin.
+                        [default: ~/.ssh/server_name.txt]
+'
+
+
+# default setting
+FILE="$HOME/.ssh/server_name.txt"
+dump_flag=1
+
+
+# option parser
+while :;
+do
+    case $1 in
+        -h | --help)
+            echo "$USAGE" >&1
+            exit 0
+            ;;
+        -d | --dump)
+            dump_flag=0
+            break
+            ;;
+        -f | --file)
+            FILE=$2
+            if [ -z $FILE ]; then
+                echo "[ERROR] file path is necessary, if -f/--file is present" >&2
+                exit 1
+            fi
+            ;;
+        --)
+            shift
+            break
+            ;;
+        -?*)
+            echo "[ERROR] Unknown option : ${1}" >&2
+            exit 1
+            ;;
+        *)
+            break
+    esac
+    shift
+done
+
+
+# dump server name list file
+if [ $dump_flag -eq 0 ]; then
+    cat ~/.ssh/config | grep "Host" | grep -v "HostName" | grep -v "git" | grep -v "*" | awk '{print $2}'
+    exit 0
+fi
+
+
+# file input
+if [ $FILE = "-" ]; then
+    echo "[INFO] file input is execute by stdin" >&1
+    server_arr=(`cat - | xargs`)
+else
+    server_arr=(`cat $FILE | xargs`)
+fi
+
+
+
+for i in ${server_arr[@]};
+do
+    echo "[INFO] login to $i" >&1
+    ssh $i uptime | awk -v sn=$i '{print sn, $0}' >> tmp_ssa.txt
+
+done
+
+
+echo "[INFO] sort by load average:" >&1
+
+cat tmp_ssa | awk '{print $1, $11}' | sort -n -k 2 -r | \
+    while IFS= read -r line;
+    do
+        echo "\t$line" >&1
+    done
+
+
+echo "[INFO] recommend server (load average < 1.0)" >&1
+
+cat tmp_ssa | awk '{print $1, $11}' | sort -n -k 2 -r | awk '{if($2 < 1){print $0}}' | \
+    while IFS= read -r line;
+    do
+        echo "\t$line" >&1
+    done
+
+rm -f tmp_ssa.txt
+
