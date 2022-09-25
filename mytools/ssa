@@ -11,7 +11,7 @@ ssa:
 USAGE:
     ssa
     cat [SERVER_NAME_FILE] | ssa -f -
-    ssa -f [SERVER_NAME_FILE]
+    ssa -f [SERVER_NAME_FILE] -t 20
     ssa --dump > ~/.ssh/server_name.txt
 
 DESCRIPTION:
@@ -22,12 +22,15 @@ OPTIONS:
     -d, --dump          prepare server name list file
     -f, --file          specify server name list file. "-f -" means stdin.
                         [default: ~/.ssh/server_name.txt]
+    -t, --thread        number of thread when ssh. [default: 8]
+                        If number of thread exceeds number of logical cpu, bug may occur.
 '
 
 
 # default setting
 FILE="$HOME/.ssh/server_name.txt"
 dump_flag=1
+num_thread=8
 
 
 # option parser
@@ -48,6 +51,15 @@ do
                 echo "[ERROR] file path is necessary, if -f/--file is present" >&2
                 exit 1
             fi
+            shift
+            ;;
+        -t | --thread)
+            num_thread=$2
+            if [ -z $num_thread ]; then
+                echo "[ERROR] number of thread is necessary, if -t/--thread is present" >&2
+                exit 1
+            fi
+            shift
             ;;
         --)
             shift
@@ -72,43 +84,27 @@ fi
 
 
 # file input
+temp=$(mktemp)
+echo "[INFO] temp file is $temp" >&1
+echo "[INFO] number of thread is $num_thread" >&1
 if [ $FILE = "-" ]; then
     echo "[INFO] file input is execute by stdin" >&1
-    server_arr=(`cat - | xargs`)
+    cat - | xargs -I SERVER -P $num_thread ssh SERVER 'echo $(hostname) $(uptime)' \
+        | awk '{print $1, $11}' | sort -n -k 2 -r  > $temp
 else
+    echo "[INFO] file input is execute by path" >&1
     if [ ! -e $FILE ]; then
         echo "[ERROR] $FILE is not exists" >&2
         exit 1
     fi
-    server_arr=(`cat $FILE | xargs`)
+    cat $FILE | xargs -I SERVER -P $num_thread ssh SERVER 'echo $(hostname) $(uptime)' \
+        | awk '{print $1, $11}' | sort -n -k 2 -r  > $temp
 fi
 
-
-
-for i in ${server_arr[@]};
-do
-    echo "[INFO] login to $i" >&1
-    ssh $i uptime | awk -v sn=$i '{print sn, $0}' >> tmp_ssa.txt
-
-done
-
-
 echo "[INFO] sort by load average:" >&1
-
-cat tmp_ssa.txt | awk '{print $1, $11}' | sort -n -k 2 -r | \
-    while IFS= read -r line;
-    do
-        echo "  $line" >&1
-    done
-
+cat $temp | awk '{print "  "$0}'
 
 echo "[INFO] recommend server (load average < 1.0)" >&1
+cat $temp | awk '{if($2 < 1){print "  "$0}}'
 
-cat tmp_ssa.txt | awk '{print $1, $11}' | sort -n -k 2 -r | awk '{if($2 < 1){print $0}}' | \
-    while IFS= read -r line;
-    do
-        echo "  $line" >&1
-    done
-
-rm -f tmp_ssa.txt
-
+rm -f $temp

@@ -1,3 +1,10 @@
 [user]
-	name = th2ch-g
-	email = th2ch-g
+    name = th2ch-g
+    email = th2ch-g
+
+[init]
+    defaultBranch = master
+
+[core]
+    editor = vim
+
