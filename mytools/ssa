@@ -84,7 +84,8 @@ fi
 
 
 # file input
-temp=$(mktemp)
+#temp=$(mktemp)
+temp=tmp_ssa.txt
 echo "[INFO] temp file is $temp" >&1
 echo "[INFO] number of thread is $num_thread" >&1
 if [ $FILE = "-" ]; then
