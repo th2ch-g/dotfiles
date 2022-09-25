@@ -29,7 +29,7 @@ git reset --hard origin/master
 ## Contents
 - vim (>= v8.2 tested)
 - zsh (>= v5.8 tested)
-- tmux (>= 3.0a)
+- tmux (>= 3.0a tested)
 - iterm2
 - mytools
 - brew

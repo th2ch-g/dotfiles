@@ -1,9 +1,12 @@
 #!/bin/sh
 
+set -e
+
+# Requirement: config, server_name.txt, rsa_key
 
 USAGE='
 ssa:
-    server_search_availavility
+    server_search_availability
 
 USAGE:
     ssa

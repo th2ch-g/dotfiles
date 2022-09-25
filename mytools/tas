@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # Requirement: rsa_key, server_name.txt, config, tmux
 
 # Usage
