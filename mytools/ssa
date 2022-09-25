@@ -91,7 +91,7 @@ echo "[INFO] number of thread is $num_thread" >&1
 if [ $FILE = "-" ]; then
     echo "[INFO] file input is execute by stdin" >&1
     cat - | xargs -I SERVER -P $num_thread ssh SERVER 'echo $(hostname) $(uptime)' \
-        | awk '{print $1, $11}' | sort -n -k 2 -r  > $temp
+        | awk '{print $1, $7, $11}' | sort -n -k 3 -r  > $temp
 else
     echo "[INFO] file input is execute by path" >&1
     if [ ! -e $FILE ]; then
@@ -99,13 +99,15 @@ else
         exit 1
     fi
     cat $FILE | xargs -I SERVER -P $num_thread ssh SERVER 'echo $(hostname) $(uptime)' \
-        | awk '{print $1, $11}' | sort -n -k 2 -r  > $temp
+        | awk '{print $1, $7, $11}' | sort -n -k 3 -r  > $temp
 fi
 
 echo "[INFO] sort by load average:" >&1
-cat $temp | awk '{print "  "$0}'
+echo "  server: <users> <load_average>" >&1
+cat $temp | awk '{print "  "$1":", $2, $3}' >&1
 
 echo "[INFO] recommend server (load average < 1.0)" >&1
-cat $temp | awk '{if($2 < 1){print "  "$0}}'
+echo "  server: <users> <load_average>" >&1
+cat $temp | awk '{if($3 < 1){print "  "$1":", $2, $3}}' >&1
 
 rm -f $temp
