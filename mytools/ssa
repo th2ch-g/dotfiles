@@ -90,7 +90,7 @@ echo "[INFO] temp file is $temp" >&1
 echo "[INFO] number of thread is $num_thread" >&1
 if [ $FILE = "-" ]; then
     echo "[INFO] file input is execute by stdin" >&1
-    cat - | xargs -I SERVER -P $num_thread ssh SERVER 'echo $(hostname) $(uptime)' \
+    cat - | xargs -I SERVER -P $num_thread ssh SERVER 'echo "$(hostname) $(w)" | head -n 1' \
         | awk '{print $1, $7, $11}' | sort -n -k 3 -r  > $temp
 else
     echo "[INFO] file input is execute by path" >&1
@@ -98,7 +98,7 @@ else
         echo "[ERROR] $FILE is not exists" >&2
         exit 1
     fi
-    cat $FILE | xargs -I SERVER -P $num_thread ssh SERVER 'echo $(hostname) $(uptime)' \
+    cat $FILE | xargs -I SERVER -P $num_thread ssh SERVER 'echo "$(hostname) $(w)" | head -n 1' \
         | awk '{print $1, $7, $11}' | sort -n -k 3 -r  > $temp
 fi
 
