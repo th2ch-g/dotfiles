@@ -92,24 +92,24 @@ if [ $FILE = "-" ]; then
     echo "[INFO] file input is execute by stdin" >&1
     cat - | xargs -I SERVER -P $num_thread ssh SERVER 'echo "$(hostname) $(uptime)"' \
         | awk '{split($0, arr, " "); for(i in arr){if(arr[i] ~ /average/){la=arr[i+1]} if(arr[i] ~ /user/){user=arr[i-1]}} print $1, user, la}' \
-        | sort -n -k 3 -r  > $temp
+        | sort -n -k 1 | column -s " " -t > $temp
 else
-    echo "[INFO] file input is execute by path" >&1
+    echo "[INFO] file input is execute by path \"$FILE\"" >&1
     if [ ! -e $FILE ]; then
         echo "[ERROR] $FILE is not exists" >&2
         exit 1
     fi
     cat $FILE | xargs -I SERVER -P $num_thread ssh SERVER 'echo "$(hostname) $(uptime)"' \
         | awk '{split($0, arr, " "); for(i in arr){if(arr[i] ~ /average/){la=arr[i+1]} if(arr[i] ~ /user/){user=arr[i-1]}} print $1, user, la}' \
-        | sort -n -k 3 -r  > $temp
+        | sort -n -k 1 | column -s " " -t > $temp
 fi
 
 echo "[INFO] sort by load average:" >&1
 echo "  server: <users> <load_average>" >&1
-cat $temp | awk '{print "  "$1":", $2, $3}' >&1
+cat $temp | while IFS= read -r line; do echo "  $line"; done >&1
 
 echo "[INFO] recommend server (load average < 1.0)" >&1
 echo "  server: <users> <load_average>" >&1
-cat $temp | awk '{if($3 < 1){print "  "$1":", $2, $3}}' >&1
+cat $temp | awk '{if($3 < 1){print $0}}' | while IFS= read -r line; do echo "  $line"; done >&1
 
 rm -f $temp
