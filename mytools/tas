@@ -23,14 +23,14 @@ EXAMPLE:
 OPTIONS:
     -h, --help                  Print help
     -c, --command [COMMAND]     Message to be sent to the server [default: top]
-    -f, --file [FILE]           Server name file path [default: $HOME/.ssh/server_name.txt]
+    -f, --file [FILE]           Server name file path. For stdin, use "-f -"
+                                [default: ~/.ssh/server_name.txt]
 '
 
 
 # default setting
 COMMAND="top"
 FILE="$HOME/.ssh/server_name.txt"
-
 
 
 # option parser
@@ -70,14 +70,17 @@ echo "[INFO] start sending command \"$COMMAND\"" >&1
 
 
 # file check
-if [ ! -e $FILE ]; then
-
-    echo "[ERROR] $FILE not exists" >&2
-    exit 1
-
+if [ $FILE = "-" ]; then
+    echo "[INFO] execute file input by stdin" >&1
+    server_arr=(`cat - | xargs`)
+else
+    echo "[INFO] execute file input by file path" >&1
+    if [ ! -e $FILE ]; then
+        echo "[ERROR] $FILE not exists" >&2
+        exit 1
+    fi
+    server_arr=(`cat $FILE | xargs`)
 fi
-
-server_arr=(`cat $FILE | xargs`)
 
 
 tmux_window_name=tas_${COMMAND}
