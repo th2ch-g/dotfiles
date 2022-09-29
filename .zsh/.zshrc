@@ -10,6 +10,8 @@ promptinit
 prompt pure
 autoload -Uz colors
 colors
+zstyle :prompt:pure:user color green
+zstyle :prompt:pure:host color green
 
 
 # basic
