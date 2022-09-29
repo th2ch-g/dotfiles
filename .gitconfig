@@ -3,8 +3,7 @@
     email = th2ch-g
 
 [init]
-    defaultBranch = master
+    defaultBranch = main
 
 [core]
     editor = vim
-
