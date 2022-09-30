@@ -21,7 +21,8 @@ EXAMPLE:
 OPTIONS:
     -h, --help                      Print help
     -n, --name [TARGET_NAME]        Target name for Search
-    -f, --file [FILE]               Server name file [default: $HOME/.ssh/server_name.txt]
+    -f, --file [FILE]               Server name file, For stdin, use "-f -"
+                                    [default: ~/.ssh/server_name.txt]
 '
 
 
@@ -68,14 +69,17 @@ done
 
 
 # file check
-if [ ! -e $FILE ]; then
-    echo "[ERROR] $FILE not exists" >&2
-    exit 1
+if [ $FILE = "-" ]; then
+    echo "[INFO] execute file input by stdin" >&1
+    server_arr=(`cat - | xargs`)
+else
+    echo "[INFO] execute file input by file path \"$FILE\"" >&1
+    if [ ! -e $FILE ]; then
+        echo "[ERROR] $FILE not exists" >&2
+        exit 1
+    fi
+    server_arr=(`cat $FILE | xargs`)
 fi
-
-server_arr=(`cat $FILE | xargs`)
-
-
 
 if [ -z "$TARGET_NAME" ]; then
     echo "[ERROR] target name is necessary" >&2

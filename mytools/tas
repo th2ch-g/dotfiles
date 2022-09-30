@@ -74,7 +74,7 @@ if [ $FILE = "-" ]; then
     echo "[INFO] execute file input by stdin" >&1
     server_arr=(`cat - | xargs`)
 else
-    echo "[INFO] execute file input by file path" >&1
+    echo "[INFO] execute file input by file path \"$FILE\"" >&1
     if [ ! -e $FILE ]; then
         echo "[ERROR] $FILE not exists" >&2
         exit 1
