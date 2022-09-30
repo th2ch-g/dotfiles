@@ -16,13 +16,13 @@ cd ./dotfiles && \
 ## Update
 - Simple update
 ~~~
-git pull origin master
+git pull origin main
 ~~~
 
 - Force overwriting
 ~~~
-git fetch origin master && \
-git reset --hard origin/master
+git fetch origin main && \
+git reset --hard origin/main
 ~~~
 
 
