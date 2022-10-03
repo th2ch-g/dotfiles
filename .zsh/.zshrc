@@ -105,11 +105,15 @@ fi
 
 # my function
 hgrep() {
-    history 1 | grep -i $1
+    history 1 | grep -i $1 | less -S +G
 }
 
 calc() {
-    echo "" | awk "{print $1}"
+    echo "" | awk "{OFMT=\"%.6f\"} {print $1}"
+}
+
+calc-int(){
+    echo "" | awk "{OFMT=\"%.6f\"} {print int($1)}"
 }
 
 rusts() {

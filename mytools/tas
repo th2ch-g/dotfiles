@@ -25,12 +25,14 @@ OPTIONS:
     -c, --command [COMMAND]     Message to be sent to the server [default: top]
     -f, --file [FILE]           Server name file path. For stdin, use "-f -"
                                 [default: ~/.ssh/server_name.txt]
+    -n, --name [WINDOW_NAME]    window name [default: tas_{COMMAND}]
 '
 
 
 # default setting
 COMMAND="top"
 FILE="$HOME/.ssh/server_name.txt"
+NAME=""
 
 
 # option parser
@@ -48,7 +50,15 @@ do
         -f | --file) OPTARG=$2
             FILE=$OPTARG
             if [ -z $FILE ]; then
-                echo "[ERROR] file path is necesary, if -f/--flag options is present" >&2
+                echo "[ERROR] file path is necessary, if -f/--flag option is present" >&2
+                exit 1
+            fi
+            shift
+            ;;
+        -n | --name) OPTARG=$2
+            NAME=$OPTARG
+            if [ -z $NAME ]; then
+                echo "[ERROR] window name is necessary, if -n/--name option is present" >&2
                 exit 1
             fi
             shift
@@ -82,8 +92,14 @@ else
     server_arr=(`cat $FILE | xargs`)
 fi
 
+# window name
+if [ -z $NAME ]; then
+    tmux_window_name=tas_${COMMAND}
+else
+    tmux_window_name=$NAME
+fi
+echo "[INFO] make tmux window named \"$tmux_window_name\"" >&1
 
-tmux_window_name=tas_${COMMAND}
 
 
 # Make tmux window
