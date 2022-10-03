@@ -136,5 +136,4 @@ make_add_file() {
         echo "[INFO] nothing was created" >&1
     fi
 }
-
 #==================================================
