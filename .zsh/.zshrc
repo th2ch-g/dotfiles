@@ -27,6 +27,7 @@ setopt histignorealldups
 setopt auto_cd
 chpwd() { ls -a }
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+bindkey -e
 
 
 # history
@@ -82,24 +83,18 @@ alias ce="conda info -e"
 alias cl="conda list"
 alias rp="realpath -e"
 alias .="cd ."
+alias ...="cd ../../"
+alias ....="cd ../../../"
+alias .....="cd ../../../../"
 alias cdt="cd $HOME/tools"
 alias cdp="cd $HOME/prc"
 alias cdw="cd $HOME/works"
 alias cdb="cd $HOME/bin"
 
 
-# local specfic alias file
-if [ -e $HOME/.zshrc_alias ]; then
-    cat $HOME/.zshrc_alias | while IFS= read -r line;
-    do
-        alias "$( echo $line | cut -d "," -f 1 )"="$( echo $line | cut -d "," -f 2 )"
-    done
-fi
-
-
-# additional source file
-if [ -e $HOME/.zshrc_source ]; then
-    source $HOME/.zshrc_source
+# local specific file
+if [ -e $HOME/.zshrc_local ]; then
+    source $HOME/.zshrc_local
 fi
 
 
@@ -125,21 +120,8 @@ rusts3() {
         && ./rust_tmp_out && rm -f rust_tmp_out
 }
 
-bk() {
-    if [ -z $1 ] || [[ ! "$1" =~ ^[0-9]+$ ]]; then
-        cd ..
-    else
-        cd_str=""
-        for i in $(seq $1);
-        do
-            cd_str="${cd_str}../"
-        done
-        cd "${cd_str}"
-    fi
-}
-
 make_add_file() {
-    arr=( .zshrc_source .zshrc_alias .zshenv_export )
+    arr=( .zshrc_local .zshenv_local )
     flag=1
     for i in ${arr[@]};
     do
