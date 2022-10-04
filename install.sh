@@ -19,25 +19,25 @@ EXAMPLE:
     ./install.sh --link --brew --cargo      OS check & dotfiles link & brew install & cargo install
 
 OPTIONS:
-    -h, --help              Print help
+    -h, --help              print help
     -u, --unlink            dotfiles unlink
     -l, --link              dotfiles link
-    -m, --make-dir          make basic directories
     -b, --brew              brew install
     -c, --cargo             cargo install
     -v, --vim-link          only vim dotfiles link
     -z, --zsh-link          only zsh dotfiles link
+    -m, --mytools           add $PWD/mytools export to ~/.zshrc_local
 '
 
 
 # default setting
 link_flag=1
-make_dir_flag=1
 brew_flag=1
 cargo_flag=1
 unlink_flag=1
 vim_link_flag=1
 zsh_link_flag=1
+mytools_flag=1
 
 
 # option parser
@@ -54,9 +54,6 @@ do
         -u | --unlink)
             unlink_flag=0
             ;;
-        -m | --make-dir)
-            make_dir_flag=0
-            ;;
         -b | --brew)
             brew_flag=0
             ;;
@@ -68,6 +65,9 @@ do
             ;;
         -z | --zsh-link)
             zsh_link_flag=0
+            ;;
+        -m | --mytools)
+            mytools_flag=0
             ;;
        --)
             shift
@@ -92,7 +92,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
   OS='Cygwin'
 else
-  echo "[ERROR] Your platform ($(uname -a)) is not supported."
+  echo "[ERROR] Your platform ($(uname -a)) is not supported." >&2
   exit 1
 fi
 echo "[INFO] detect $OS OS" >&1
@@ -101,14 +101,13 @@ echo "[INFO] detect $OS OS" >&1
 # cwd check
 if [ ! -e $PWD/dotfiles-id-file ]; then
     echo "[ERROR] dotfiles-id-file is not detected" >&2
-    echo "[ERROR] exec ./install.sh in dotfiles directory" >&2
+    echo "[ERROR] execute ./install.sh in dotfiles directory" >&2
     exit 1
 fi
 
 
 # unlink $HOME/[links]
 if [ $unlink_flag -eq 0 ]; then
-
     echo "[INFO] Start unlink dotfiles" >&1
     for dotfile in .?*;
     do
@@ -116,7 +115,6 @@ if [ $unlink_flag -eq 0 ]; then
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
-
         if [ $dotfile = ".zsh" ]; then
             for i in $(ls -a $PWD/.zsh);
             do
@@ -127,19 +125,9 @@ if [ $unlink_flag -eq 0 ]; then
         else
             unlink ${HOME}/${dotfile}
         fi
-
         echo "[INFO] $dotfile unlink done" >&1
     done
     echo "[INFO] dotfiles unlink done" >&1
-
-    echo "[INFO] Start link others directories" >&1
-    for dir in mytools;
-    do
-        unlink ${HOME}/${dir}
-        echo "[INFO] $dir unlink done" >&1
-    done
-    echo "[INFO] others directories unlink done" >&1
-
 fi
 
 
@@ -171,7 +159,6 @@ fi
 
 # link
 if [ $link_flag -eq 0 ]; then
-
     echo "[INFO] Start link dotfiles" >&1
     for dotfile in .?*;
     do
@@ -179,7 +166,6 @@ if [ $link_flag -eq 0 ]; then
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
-
         if [ $dotfile = ".zsh" ]; then
             for i in $(ls -a $PWD/.zsh);
             do
@@ -190,35 +176,17 @@ if [ $link_flag -eq 0 ]; then
         else
             ln -nsi $PWD/$dotfile $HOME
         fi
-
         echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] dotfiles link done" >&1
-
-    echo "[INFO] Start link other directories" >&1
-    for dir in mytools;
-    do
-        ln -nsi $PWD/$dir $HOME
-        echo "[INFO] $dir link done" >&1
-    done
-    echo "[INFO] other directories link done" >&1
-
 fi
 
-
-# make basic directories
-if [ $make_dir_flag  -eq 0 ]; then
-    arr=( tools prc bin )
-    for i in ${arr[@]};
-    do
-        if [ ! -d $HOME/${i} ]; then
-            echo "[INFO] mkdir $HOME/${i}" >&1
-            mkdir $HOME/${i}
-        fi
-    done
-
+# mytools
+if [ $mytools_flag -eq 0 ]; then
+    echo "[INFO] Start adding mytools path to ~/.zshrc_local" >&1
+    echo "export PATH=\"$PWD/mytools:\$PATH\"" >> $HOME/.zshrc_local
+    echo "[INFO] add mytools path done" >&1
 fi
-
 
 # brew install
 if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
@@ -238,4 +206,3 @@ if [ $cargo_flag -eq 0 ]; then
         echo "[INFO] cargo install done" >&1
     fi
 fi
-

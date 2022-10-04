@@ -30,7 +30,6 @@ OPTIONS:
 tmux_window_name="home"
 window_type="1"
 
-
 # option parser
 while :;
 do
@@ -111,4 +110,3 @@ echo "[INFO] tmux ls Result" >&1
 tmux ls
 
 tmux a
-

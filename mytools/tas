@@ -28,7 +28,6 @@ OPTIONS:
     -n, --name [WINDOW_NAME]    window name [default: tas_{COMMAND}]
 '
 
-
 # default setting
 COMMAND="top"
 FILE="$HOME/.ssh/server_name.txt"
@@ -149,4 +148,3 @@ echo "[INFO] tmux ls Result" >&1
 tmux ls
 
 tmux a
-

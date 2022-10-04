@@ -26,12 +26,10 @@ OPTIONS:
                         If number of thread exceeds number of logical cpu, bug may occur.
 '
 
-
 # default setting
 FILE="$HOME/.ssh/server_name.txt"
 dump_flag=1
 num_thread=8
-
 
 # option parser
 while :;

@@ -86,10 +86,10 @@ alias .="cd ."
 alias ...="cd ../../"
 alias ....="cd ../../../"
 alias .....="cd ../../../../"
-alias cdt="cd $HOME/tools"
-alias cdp="cd $HOME/prc"
 alias cdw="cd $HOME/works"
-alias cdb="cd $HOME/bin"
+alias cdt="cd $HOME/works/tools"
+alias cdp="cd $HOME/works/prc"
+alias cdb="cd $HOME/works/bin"
 
 
 # local specific file
