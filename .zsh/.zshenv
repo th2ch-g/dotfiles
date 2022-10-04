@@ -4,7 +4,7 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
 fi
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/works/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/tools/lib:$LD_LIBRARY_PATH" # for tmux
+export LD_LIBRARY_PATH="$HOME/works/tools/lib:$LD_LIBRARY_PATH" # for tmux
 export TERMINFO=/usr/share/terminfo # for tmux
 
 # local specific file
