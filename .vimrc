@@ -162,12 +162,12 @@ Plug 'cohama/lexima.vim'
 Plug 'lambdalisue/fern.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
 
-
+" fern
 let mapleader = "\<Space>"
 let g:fern#default_hidden=1
 nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
-
 
 colorscheme codedark
