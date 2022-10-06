@@ -10,9 +10,6 @@ install.sh:
 USAGE:
     ./install.sh [FLAGS]
 
-DESCRIPTION:
-    dotfiles linker
-
 EXAMPLE:
     ./install.sh                            only OS check
     ./install.sh --link                     OS check & dotfiles link

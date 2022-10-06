@@ -161,6 +161,7 @@ call plug#begin()
 Plug 'cohama/lexima.vim'
 Plug 'lambdalisue/fern.vim'
 Plug 'tomtom/tcomment_vim'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 call plug#end()
 
 
