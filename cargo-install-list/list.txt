@@ -8,8 +8,11 @@ grex
 monolith
 r-matrix
 ripgrep
+ripgrep_all
 https://github.com/th2ch-g/rust-top_message.git
 sd
 silicon
+starship
 tokei
+zellij
 zoxide
