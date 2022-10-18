@@ -1,3 +1,6 @@
 [submodule ".zsh/.zprezto"]
 	path = .zsh/.zprezto
 	url = https://github.com/sorin-ionescu/prezto.git
+[submodule ".vim/autoload"]
+	path = .vim/autoload
+	url = https://github.com/junegunn/vim-plug.git

@@ -158,6 +158,7 @@ endif
 
 
 call plug#begin()
+Plug 'tomasiser/vim-code-dark'
 Plug 'cohama/lexima.vim'
 Plug 'lambdalisue/fern.vim'
 Plug 'tomtom/tcomment_vim'

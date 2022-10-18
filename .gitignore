@@ -4,5 +4,4 @@
 .zshenv_local
 .zshrc_local
 .zshrc_conda
-.vim/.netrwhist
-.vim/plugged/*
+.vim
