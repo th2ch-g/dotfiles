@@ -4,4 +4,4 @@
 .zshenv_local
 .zshrc_local
 .zshrc_conda
-.vim
+.vim/*

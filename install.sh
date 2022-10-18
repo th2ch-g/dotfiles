@@ -96,7 +96,7 @@ echo "[INFO] detect $OS OS" >&1
 
 
 # cwd check
-if [ ! -e $PWD/dotfiles-id-file ]; then
+if [ ! -e $PWD/README.md ]; then
     echo "[ERROR] dotfiles-id-file is not detected" >&2
     echo "[ERROR] execute ./install.sh in dotfiles directory" >&2
     exit 1
