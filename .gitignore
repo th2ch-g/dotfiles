@@ -5,3 +5,4 @@
 .zshrc_local
 .zshrc_conda
 .vim/*
+!.vim/.gitkeep

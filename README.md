@@ -1,4 +1,7 @@
 # dotfiles
+![last-commit](https://img.shields.io/github/last-commit/th2ch-g/dotfiles)
+![license](https://img.shields.io/github/license/th2ch-g/dotfiles)
+![repo-size](https://img.shields.io/github/repo-size/th2ch-g/dotfiles)
 
 - [dotfiles](#dotfiles)
   - [Install](#install)
