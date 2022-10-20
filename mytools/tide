@@ -24,11 +24,13 @@ OPTIONS:
     -h, --help              Print help
     -n, --name [NAME]       Name of tmux window [default: home]
     -t, --type {1,2}        Type of window. Choose {1, 2}. type1 means 2+3 window, type2 means 2x2 window [default: 1]
+    -x, --top-off           Do not put on top on the right edge
 '
 
 # default setting
 tmux_window_name="home"
 window_type="1"
+top_off=0
 
 # option parser
 while :;
@@ -63,6 +65,9 @@ do
             fi
             shift
             ;;
+        -x | --top-off)
+            top_off=1
+            ;;
         --)
             shift
             break
@@ -90,7 +95,7 @@ if [ $window_type == "1" ]; then
     tmux split-window -v
     tmux select-pane -t 2 && tmux resize-pane -D 35
     tmux select-pane -t 4 && tmux resize-pane -D 8
-    tmux send-keys -t 4 "top" C-m
+    [ $top_off -eq 0 ] && tmux send-keys -t 4 "top" C-m
     tmux select-pane -t 0
 fi
 
@@ -100,7 +105,7 @@ if [ $window_type == "2" ]; then
     tmux split-window -v
     tmux select-pane -t 0
     tmux split-window -v
-    tmux send-keys -t 3 "top" C-m
+    [ $top_off -eq 0 ] && tmux send-keys -t 3 "top" C-m
     tmux select-pane -t 0
 fi
 
