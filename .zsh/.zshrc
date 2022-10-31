@@ -81,11 +81,18 @@ alias cb="conda activate base && conda info -e"
 alias ca="conda activate"
 alias ce="conda info -e"
 alias cl="conda list"
-alias rp="realpath -e"
+#alias rp="realpath -e"
+alias memo="vim ~/.memo"
 alias .="cd ."
 alias ...="cd ../../"
 alias ....="cd ../../../"
 alias .....="cd ../../../../"
+alias ......="cd ../../../../../"
+alias .......="cd ../../../../../../"
+alias ........="cd ../../../../../../../"
+alias .........="cd ../../../../../../../../"
+alias ..........="cd ../../../../../../../../../"
+alias ...........="cd ../../../../../../../../../../"
 alias cdw="cd $HOME/works"
 alias cdt="cd $HOME/works/tools"
 alias cdp="cd $HOME/works/prc"
@@ -99,6 +106,14 @@ fi
 
 
 # my function
+rp() {
+    if [ "$(uname)" = "Darwin" ]; then
+        echo "$PWD/${1}"
+    elif [ "$(uname)" = "Linux" ]; then
+        realpath -e $1
+    fi
+}
+
 hgrep() {
     history 1 | grep -i $1 | less -S +G
 }
@@ -137,3 +152,19 @@ make_add_file() {
     fi
 }
 #==================================================
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/th_lab/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/th_lab/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/th_lab/opt/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/th_lab/opt/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
