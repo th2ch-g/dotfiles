@@ -108,6 +108,7 @@ if [ $unlink_flag -eq 0 ]; then
     echo "[INFO] Start unlink dotfiles" >&1
     for dotfile in .?*;
     do
+        set +e
         [ $dotfile = ".." ] && continue
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
@@ -125,6 +126,7 @@ if [ $unlink_flag -eq 0 ]; then
         echo "[INFO] $dotfile unlink done" >&1
     done
     echo "[INFO] dotfiles unlink done" >&1
+    set -e
 fi
 
 
@@ -145,9 +147,9 @@ if [ $zsh_link_flag -eq 0 ]; then
     echo "[INFO] Start link zsh dotfiles" >&1
     for dotfile in $(ls -a $PWD/.zsh);
     do
-        [ $i = "." ] && continue
-        [ $i = ".." ] && continue
-        ln -nsi $PWD/.zsh/$i $HOME
+        [ $dotfile = "." ] && continue
+        [ $dotfile = ".." ] && continue
+        ln -nsi $PWD/.zsh/$dotfile $HOME
         echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] zsh dotfiles link done" >&1
