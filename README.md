@@ -5,7 +5,10 @@
 
 - [dotfiles](#dotfiles)
   - [Install](#install)
+    - [Install as Guest](#install-as-guest)
   - [Update](#update)
+    - [Simple update](#simple-update)
+    - [Force overwriting](#force-overwriting)
   - [Contents](#contents)
 
 ## Install
@@ -15,13 +18,20 @@ cd ./dotfiles && \
 ./install.sh --link
 ~~~
 
+### Install as Guest
+~~~
+git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+cd ./dotfiles && \
+./install.sh --zsh --vim --tmux
+~~~
+
 ## Update
-- Simple update
+### Simple update
 ~~~
 git pull origin main
 ~~~
 
-- Force overwriting
+### Force overwriting
 ~~~
 git fetch origin main && \
 git reset --hard origin/main

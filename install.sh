@@ -21,19 +21,23 @@ OPTIONS:
     -l, --link              dotfiles link
     -b, --brew              brew install
     -c, --cargo             cargo install
-    -v, --vim-link          only vim dotfiles link
-    -z, --zsh-link          only zsh dotfiles link
+    -v, --vim               only vim dotfiles link
+    -z, --zsh               only zsh dotfiles link
+    -t, --tmux              only tmux dotfiles link
+    -g, --git               only git dotfiles link
     -m, --mytools           add $PWD/mytools export to ~/.zshrc_local
 '
 
 
 # default setting
 link_flag=1
+unlink_flag=1
 brew_flag=1
 cargo_flag=1
-unlink_flag=1
-vim_link_flag=1
-zsh_link_flag=1
+vim_flag=1
+zsh_flag=1
+tmux_flag=1
+git_flag=1
 mytools_flag=1
 
 
@@ -47,9 +51,11 @@ do
             ;;
         -l | --link)
             link_flag=0
+            break
             ;;
         -u | --unlink)
             unlink_flag=0
+            break
             ;;
         -b | --brew)
             brew_flag=0
@@ -57,11 +63,17 @@ do
         -c | --cargo)
             cargo_flag=0
             ;;
-        -v | --vim-link)
-            vim_link_flag=0
+        -v | --vim)
+            vim_flag=0
             ;;
-        -z | --zsh-link)
-            zsh_link_flag=0
+        -z | --zsh)
+            zsh_flag=0
+            ;;
+        -t | --tmux)
+            tmux_flag=0
+            ;;
+        -g | --git)
+            git_flag=0
             ;;
         -m | --mytools)
             mytools_flag=0
@@ -96,19 +108,21 @@ echo "[INFO] detect $OS OS" >&1
 
 
 # cwd check
-if [ ! -e $PWD/README.md ]; then
-    echo "[ERROR] dotfiles-id-file is not detected" >&2
+if [ ! -e $PWD/LICENSE ]; then
+    echo "[ERROR] LICENSE is not detected" >&2
     echo "[ERROR] execute ./install.sh in dotfiles directory" >&2
     exit 1
 fi
 
 
+
 # unlink $HOME/[links]
 if [ $unlink_flag -eq 0 ]; then
     echo "[INFO] Start unlink dotfiles" >&1
+    set +e
+    echo "[WARN] Ignore error" >&2
     for dotfile in .?*;
     do
-        set +e
         [ $dotfile = ".." ] && continue
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
@@ -131,7 +145,7 @@ fi
 
 
 # vim link
-if [ $vim_link_flag -eq 0 ]; then
+if [ $vim_flag -eq 0 ]; then
     echo "[INFO] Start link vim dotfiles" >&1
     for dotfile in .vim .vimrc;
     do
@@ -143,7 +157,7 @@ fi
 
 
 # zsh link
-if [ $zsh_link_flag -eq 0 ]; then
+if [ $zsh_flag -eq 0 ]; then
     echo "[INFO] Start link zsh dotfiles" >&1
     for dotfile in $(ls -a $PWD/.zsh);
     do
@@ -153,6 +167,31 @@ if [ $zsh_link_flag -eq 0 ]; then
         echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] zsh dotfiles link done" >&1
+fi
+
+# tmux link
+if [ $tmux_flag -eq 0 ]; then
+    echo "[INFO] Start link tmux dotfiles" >&1
+    for dotfile in .tmux.conf;
+    do
+        ln -nsi $PWD/$dotfile $HOME
+        echo "[INFO] $dotfile link done" >&1
+    done
+    echo "[INFO] tmux dotfiles link done" >&1
+fi
+
+# git link
+if [ $git_flag -eq 0 ]; then
+    echo "[INFO] Start link git dotfiles" >&1
+    for dotfile in .gitignore_global .gitconfig;
+    do
+        [ $dotfile = ".git" ] && continue
+        [ $dotfile = ".gitignore" ] && continue
+        [ $dotfile = ".gitmodules" ] && continue
+        ln -nsi $PWD/$dotfile $HOME
+        echo "[INFO] $dotfile link done" >&1
+    done
+    echo "[INFO] git dotfiles link done" >&1
 fi
 
 
