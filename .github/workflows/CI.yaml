@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install_pkgs
+        run: apt-get update && apt-get install -y git zsh
+      - name: Link_dotfiles
+        run: ./install.sh --link

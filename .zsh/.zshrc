@@ -73,12 +73,12 @@ alias du="du -h"
 alias e="exit"
 alias v="vim"
 alias p="top"
-alias les="less"
+alias les="less -S"
 alias ta="tmux a"
 alias tls="tmux ls"
-alias tks="tmux kill-server"
+alias tkas="tmux kill-server"
 alias cb="conda activate base && conda info -e"
-alias ca="conda activate"
+#alias ca="conda activate"
 alias ce="conda info -e"
 alias cl="conda list"
 #alias rp="realpath -e"
@@ -106,6 +106,10 @@ fi
 
 
 # my function
+ca() {
+    conda activate $1 && conda info -e
+}
+
 rp() {
     if [ "$(uname)" = "Darwin" ]; then
         echo "$PWD/${1}"

@@ -127,6 +127,7 @@ if [ $unlink_flag -eq 0 ]; then
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
+        [ $dotfile = ".github" ] && continue
         if [ $dotfile = ".zsh" ]; then
             for i in $(ls -a $PWD/.zsh);
             do
@@ -188,6 +189,7 @@ if [ $git_flag -eq 0 ]; then
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
+        [ $dotfile = ".github" ] && continue
         ln -nsi $PWD/$dotfile $HOME
         echo "[INFO] $dotfile link done" >&1
     done
@@ -204,6 +206,7 @@ if [ $link_flag -eq 0 ]; then
         [ $dotfile = ".git" ] && continue
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
+        [ $dotfile = ".github" ] && continue
         if [ $dotfile = ".zsh" ]; then
             for i in $(ls -a $PWD/.zsh);
             do
