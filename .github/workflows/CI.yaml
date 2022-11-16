@@ -10,7 +10,27 @@ jobs:
     container: ubuntu:latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install_pkgs
+      - name: Install pkgs
         run: apt-get update && apt-get install -y git bash zsh
-      - name: Link_dotfiles
+      - name: Show help message
+        run: ./install.sh --help
+      - name: Link all
         run: ./install.sh --link
+      - name: Unlink dotfiles1
+        run: ./install.sh --unlink
+      - name: Link zsh
+        run: ./install.sh --zsh
+      - name: Unlink dotfiles2
+        run: ./install.sh --unlink
+      - name: Link vim
+        run: ./install.sh --vim
+      - name: Unlink dotfiles3
+        run: ./install.sh --unlink
+      - name: Link tmux
+        run: ./install.sh --tmux
+      - name: Unlink dotfiles4
+        run: ./install.sh --unlink
+      - name: Link git
+        run: ./install.sh --git
+      - name: Unlink dotfiles5
+        run: ./install.sh --unlink
