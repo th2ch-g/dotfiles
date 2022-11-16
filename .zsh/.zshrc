@@ -106,20 +106,24 @@ fi
 
 
 # my function
+cn() {
+    conda create -n "$1" -y && conda info -e && conda activate "$1"
+}
+
 ca() {
-    conda activate $1 && conda info -e
+    conda activate "$1" && conda info -e
 }
 
 rp() {
     if [ "$(uname)" = "Darwin" ]; then
         echo "$PWD/${1}"
     elif [ "$(uname)" = "Linux" ]; then
-        realpath -e $1
+        realpath -e "$1"
     fi
 }
 
 hgrep() {
-    history 1 | grep -i $1 | less -S +G
+    history 1 | grep -i "$1" | less -S +G
 }
 
 calc() {
@@ -131,11 +135,11 @@ calc-int(){
 }
 
 rusts() {
-    rustc $1 -o rust_tmp_out && ./rust_tmp_out && rm -f rust_tmp_out
+    rustc "$1" -o rust_tmp_out && ./rust_tmp_out && rm -f rust_tmp_out
 }
 
 rusts3() {
-    rustc $1 -C opt-level=3 -C debug_assertions=no -o rust_tmp_out \
+    rustc "$1" -C opt-level=3 -C debug_assertions=no -o rust_tmp_out \
         && ./rust_tmp_out && rm -f rust_tmp_out
 }
 

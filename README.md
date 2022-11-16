@@ -2,6 +2,7 @@
 ![last-commit](https://img.shields.io/github/last-commit/th2ch-g/dotfiles)
 ![license](https://img.shields.io/github/license/th2ch-g/dotfiles)
 ![repo-size](https://img.shields.io/github/repo-size/th2ch-g/dotfiles)
+![CI](https://github.com/lh3/minimap2/actions/workflows/ci.yaml/badge.svg)
 
 ![example](others/example.png)
 
