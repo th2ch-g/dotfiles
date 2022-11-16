@@ -11,6 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install_pkgs
-        run: apt-get update && apt-get install -y git zsh
+        run: apt-get update && apt-get install -y git bash zsh
       - name: Link_dotfiles
         run: ./install.sh --link
