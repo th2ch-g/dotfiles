@@ -8,33 +8,46 @@
 
 - [dotfiles](#dotfiles)
   - [Install](#install)
-    - [Install as Guest](#install-as-guest)
+    - [For me](#for-me)
+    - [For Guest](#for-guest)
+    - [From Dockerfile](#from-dockerfile)
+    - [From Dockerhub](#from-dockerhub)
   - [Update](#update)
-    - [Simple update](#simple-update)
-    - [Force overwriting](#force-overwriting)
+    - [Simple](#simple)
+    - [Overwrite](#overwrite)
   - [Contents](#contents)
 
 ## Install
+### For me
 ~~~
 git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --link
 ~~~
 
-### Install as Guest
+### For Guest
 ~~~
 git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --zsh --vim --tmux
 ~~~
 
+### From Dockerfile
+If you want to use as guest, change Dockerfile
+~~~
+git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+docker image build -t myenv:latest dotfiles/docker && \
+docker run -it -d --name myenv $(docker images | grep myenv | awk '{print $1}') && \
+docker exec -it $(docker ps | grep myenv | awk '{print $1}') zsh
+~~~
+
 ## Update
-### Simple update
+### Simple
 ~~~
 git pull origin main
 ~~~
 
-### Force overwriting
+### Overwrite
 ~~~
 git fetch origin main && \
 git reset --hard origin/main
@@ -48,4 +61,5 @@ git reset --hard origin/main
 - mytools
 - brew
 - cargo
+- docker
 - others
