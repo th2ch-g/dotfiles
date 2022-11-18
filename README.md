@@ -11,7 +11,6 @@
     - [For me](#for-me)
     - [For Guest](#for-guest)
     - [From Dockerfile](#from-dockerfile)
-    - [From Dockerhub](#from-dockerhub)
   - [Update](#update)
     - [Simple](#simple)
     - [Overwrite](#overwrite)
