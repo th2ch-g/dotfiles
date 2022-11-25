@@ -6,13 +6,14 @@ https://github.com/Fierthraix/2048-rs.git
 git-delta
 grex
 monolith
+pastel
 r-matrix
 ripgrep
 ripgrep_all
+rnr
 https://github.com/th2ch-g/rust-top_message.git
 sd
 silicon
-starship
+https://github.com/sioodmy/todo.git
 tokei
-zellij
 zoxide

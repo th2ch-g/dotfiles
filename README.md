@@ -14,6 +14,7 @@
   - [Update](#update)
     - [Simple](#simple)
     - [Overwrite](#overwrite)
+    - [Submodule update](#submodule-update)
   - [Contents](#contents)
 
 ## Install
@@ -50,6 +51,11 @@ git pull origin main
 ~~~
 git fetch origin main && \
 git reset --hard origin/main
+~~~
+
+### Submodule update
+~~~
+git submodule update --remote <submodule_path>
 ~~~
 
 ## Contents
