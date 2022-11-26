@@ -1,10 +1,14 @@
 bat
+broot
 choose
+https://github.com/bootandy/dust.git
 exa
 fd-find
 https://github.com/Fierthraix/2048-rs.git
 git-delta
 grex
+hyperfine
+https://github.com/Miserlou/Loop.git
 monolith
 pastel
 r-matrix
