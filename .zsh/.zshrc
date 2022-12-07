@@ -99,6 +99,11 @@ alias cdt="cd $HOME/works/tools"
 alias cdp="cd $HOME/works/prc"
 alias cdb="cd $HOME/works/bin"
 
+# zoxide
+if [ -x $(which zoxide) ]; then
+    eval "$(zoxide init zsh)"
+fi
+
 
 # local specific file
 if [ -e $HOME/.zshrc_local ]; then
@@ -107,8 +112,12 @@ fi
 
 
 # my function
+script_highlight() {
+    chmod a+x *.sh *.py *.bash
+}
+
 cn() {
-    conda create -n "$1" -y && conda info -e && conda activate "$1"
+    conda create -n "$1" -y && conda activate "$1" && conda info -e
 }
 
 ca() {

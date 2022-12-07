@@ -164,6 +164,7 @@ Plug 'lambdalisue/fern.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'th2ch-g/my-vim-sonictemplate'
 call plug#end()
 
 " fern

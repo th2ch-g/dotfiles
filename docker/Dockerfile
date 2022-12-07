@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 RUN apt-get update \
-        && apt-get install -y autoconf curl git zsh bash make gcc ncurses-dev vim tmux \
+        && apt-get install -y autoconf curl git zsh bash make gcc ncurses-dev vim tmux pkg-config \
         && apt install -y locales-all
 
 RUN mkdir -p ~/works \
