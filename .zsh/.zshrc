@@ -1,4 +1,4 @@
-#==================================================
+#=================================================
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
@@ -116,16 +116,19 @@ script_highlight() {
     sh_number=$(find . -name "*.sh" -type f -maxdepth 1 | wc -l)
     if [ $sh_number -ne 0 ]; then
         chmod a+x *.sh
+        echo "[INFO] highlighted : $(echo *.sh)"
     fi
 
     py_number=$(find . -name "*.py" -type f -maxdepth 1 | wc -l)
     if [ $py_number -ne 0 ]; then
         chmod a+x *.py
+        echo "[INFO] highlighted : $(echo *.py)"
     fi
 
     bash_number=$(find . -name "*.bash" -type f -maxdepth 1 | wc -l)
     if [ $bash_number -ne 0 ]; then
         chmod a+x *.bash
+        echo "[INFO] highlighted : $(echo *.bash)"
     fi
 }
 
@@ -133,17 +136,34 @@ script_unhighlight() {
     sh_number=$(find . -name "*.sh" -type f -maxdepth 1 | wc -l)
     if [ $sh_number -ne 0 ]; then
         chmod a-x *.sh
+        echo "[INFO] unhighlighted : $(echo *.sh)"
     fi
 
     py_number=$(find . -name "*.py" -type f -maxdepth 1 | wc -l)
     if [ $py_number -ne 0 ]; then
         chmod a-x *.py
+        echo "[INFO] unhighlighted : $(echo *.py)"
     fi
 
     bash_number=$(find . -name "*.bash" -type f -maxdepth 1 | wc -l)
     if [ $bash_number -ne 0 ]; then
         chmod a-x *.bash
+        echo "[INFO] unhighlighted : $(echo *.bash)"
     fi
+}
+
+wasabi() {
+
+# figlet -w 1000 -f starwars wasabi
+wasabi='
+____    __    ____  ___           _______.     ___      .______    __
+\   \  /  \  /   / /   \         /       |    /   \     |   _  \  |  |
+ \   \/    \/   / /  ^  \       |   (----`   /  ^  \    |  |_)  | |  |
+  \            / /  /_\  \       \   \      /  /_\  \   |   _  <  |  |
+   \    /\    / /  _____  \  .----)   |    /  _____  \  |  |_)  | |  |
+    \__/  \__/ /__/     \__\ |_______/    /__/     \__\ |______/  |__|
+'
+    echo "$wasabi"
 }
 
 cn() {

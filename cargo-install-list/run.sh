@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 cat list.txt | while IFS= read -r line;
 do
     if [[ $line =~ "https" ]]; then
