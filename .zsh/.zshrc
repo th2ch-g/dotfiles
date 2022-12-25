@@ -98,9 +98,10 @@ alias cdw="cd $HOME/works"
 alias cdt="cd $HOME/works/tools"
 alias cdp="cd $HOME/works/prc"
 alias cdb="cd $HOME/works/bin"
+alias batp="bat -p"
 
 # zoxide
-if [ -x $(which zoxide) ]; then
+if [ -x "$(which zoxide)" ]; then
     eval "$(zoxide init zsh)"
 fi
 
