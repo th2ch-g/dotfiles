@@ -24,13 +24,15 @@ OPTIONS:
     -h, --help              Print help
     -n, --name [NAME]       Name of tmux window [default: home]
     -t, --type {1,2}        Type of window. Choose {1, 2}. type1 means 2+3 window, type2 means 2x2 window [default: 1]
-    -x, --top-off           Do not put on top on the right edge
+    -x, --top-off           Do not put on top on the right edge [default: not set]
+    -p, --path [PATH]       Start from specifieed path [default: default set path]
 '
 
 # default setting
 tmux_window_name="home"
 window_type="1"
 top_off=0
+start_path=""
 
 # option parser
 while :;
@@ -68,6 +70,14 @@ do
         -x | --top-off)
             top_off=1
             ;;
+        -p | --path)
+            if [ -z "$2" ]; then
+                echo "[ERROR] path is necessary, if -p/--path option is present" >&2
+                exit 1
+            fi
+            start_path="$2"
+            shift
+            ;;
         --)
             shift
             break
@@ -97,6 +107,16 @@ if [ $window_type == "1" ]; then
     tmux select-pane -t 4 && tmux resize-pane -D 8
     [ $top_off -eq 0 ] && tmux send-keys -t 4 "top" C-m
     tmux select-pane -t 0
+
+    if [ -n "$start_path" ]; then
+        for i in {0..4};
+        do
+            if [ $i -eq 4 ] && [ $top_off -eq 0 ]; then
+                break
+            fi
+            tmux send-keys -t $i "cd $start_path" C-m
+        done
+    fi
 fi
 
 
@@ -107,7 +127,19 @@ if [ $window_type == "2" ]; then
     tmux split-window -v
     [ $top_off -eq 0 ] && tmux send-keys -t 3 "top" C-m
     tmux select-pane -t 0
+
+    if [ -n "$start_path" ]; then
+        for i in {0..3};
+        do
+            if [ $i -eq 3 ] && [ $top_off -eq 0 ]; then
+                break
+            fi
+            tmux send-keys -t $i "cd $start_path" C-m
+        done
+    fi
 fi
+
+
 
 
 echo "[INFO] Make tmux named \"$tmux_window_name\""
