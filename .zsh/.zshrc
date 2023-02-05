@@ -101,7 +101,7 @@ alias cdb="cd $HOME/works/bin"
 alias batp="bat -p"
 
 # zoxide
-if [ -x "$(which zoxide)" ]; then
+if [[ -x "$(which zoxide)" ]]; then
     eval "$(zoxide init zsh)"
 fi
 
@@ -113,6 +113,24 @@ fi
 
 
 # my function
+rustdbg() {
+    USAGE="[ERROR] usage: rustdbg full, rustdbg on, rustdbg off"
+    if [ -z "$1" ]; then
+        echo "$USAGE" >&2
+    elif [ "$1" = "full" ]; then
+        export RUST_BACKTRACE="full"
+        echo "[INFO] rust-dbg full" >&1
+    elif [ "$1" = "on" ]; then
+        export RUST_BACKTRACE=1
+        echo "[INFO] rust-dbg on" >&1
+    elif [ "$1" = "off" ]; then
+        export RUST_BACKTRACE=0
+        echo "[INFO] rust-dbg off" >&1
+    else
+        echo "$USAGE" >&2
+    fi
+}
+
 script_highlight() {
     sh_number=$(find . -name "*.sh" -type f -maxdepth 1 | wc -l)
     if [ $sh_number -ne 0 ]; then
@@ -184,15 +202,15 @@ rp() {
 }
 
 hgrep() {
-    history 1 | grep -i "$1" | less -S +G
+    if [ -n "$1" ]; then
+        history 1 | grep -i "$1" | less -S +G
+    else
+        history 1 | less -S +G
+    fi
 }
 
 calc() {
     echo "" | awk "{OFMT=\"%.6f\"} {print $1}"
-}
-
-calc-int(){
-    echo "" | awk "{OFMT=\"%.6f\"} {print int($1)}"
 }
 
 rusts() {
