@@ -82,10 +82,9 @@ fi
 
 
 # file input
-#temp=$(mktemp)
-temp=tmp_ssa.txt
+temp=$(mktemp)
 echo "<server> <users> <load_average>" > $temp
-echo "[INFO] temp file is $temp" >&1
+echo "[INFO] temp file : $temp" >&1
 echo "[INFO] number of thread is $num_thread" >&1
 if [ $FILE = "-" ]; then
     echo "[INFO] file input is execute by stdin" >&1
@@ -109,4 +108,5 @@ cat $temp | column -s " " -t | while IFS= read -r line; do echo "  $line"; done 
 echo "[INFO] recommend server (load average < 1.0)" >&1
 cat $temp | column -s " " -t | awk '{if($3 < 1){print $0}}' | while IFS= read -r line; do echo "  $line"; done >&1
 
+echo "[INFO] clean temp file : ${temp}"
 rm -f $temp
