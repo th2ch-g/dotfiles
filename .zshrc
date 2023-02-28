@@ -6,8 +6,7 @@ source ${HOME}/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # prompt
 autoload -Uz colors && colors
-autoload -Uz promptinit; promptinit
-prompt pure
+autoload -Uz promptinit; promptinit && prompt pure
 zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
 
