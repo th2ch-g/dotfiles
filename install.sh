@@ -1,7 +1,5 @@
 #!/bin/bash
-
 set -e
-
 
 USAGE='
 install.sh:
@@ -28,7 +26,6 @@ OPTIONS:
     -m, --mytools           add $PWD/mytools export to ~/.zshrc_local
 '
 
-
 # default setting
 link_flag=1
 unlink_flag=1
@@ -39,7 +36,6 @@ zsh_flag=1
 tmux_flag=1
 git_flag=1
 mytools_flag=1
-
 
 # option parser
 while :;
@@ -92,7 +88,6 @@ do
     shift
 done
 
-
 # OS judgment
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
@@ -106,15 +101,12 @@ else
 fi
 echo "[INFO] detect $OS OS" >&1
 
-
 # cwd check
 if [ ! -e $PWD/LICENSE ]; then
     echo "[ERROR] LICENSE is not detected" >&2
     echo "[ERROR] execute ./install.sh in dotfiles directory" >&2
     exit 1
 fi
-
-
 
 # unlink $HOME/[links]
 if [ $unlink_flag -eq 0 ]; then
@@ -128,21 +120,11 @@ if [ $unlink_flag -eq 0 ]; then
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
         [ $dotfile = ".github" ] && continue
-        if [ $dotfile = ".zsh" ]; then
-            for i in $(ls -a $PWD/.zsh);
-            do
-                [ $i = "." ] && continue
-                [ $i = ".." ] && continue
-                unlink ${HOME}/${i}
-            done
-        else
-            unlink ${HOME}/${dotfile}
-        fi && echo "[INFO] $dotfile unlink done" >&1
+        unlink ${HOME}/${dotfile} && echo "[INFO] $dotfile unlink done" >&1
     done
     echo "[INFO] dotfiles unlink done" >&1
     set -e
 fi
-
 
 # vim link
 if [ $vim_flag -eq 0 ]; then
@@ -158,13 +140,10 @@ fi
 # zsh link
 if [ $zsh_flag -eq 0 ]; then
     echo "[INFO] Start link zsh dotfiles" >&1
-    for dotfile in $(ls -a $PWD/.zsh);
+    for dotfile in .zsh .zshrc;
     do
-        [ $dotfile = "." ] && continue
-        [ $dotfile = ".." ] && continue
-        ln -nsi $PWD/.zsh/$dotfile $HOME && echo "[INFO] $dotfile link done" >&1
+        ln -nsi ${PWD}/${dotfile} $HOME && echo "[INFO] $dotfile link done" >&1
     done
-    echo "[INFO] zsh dotfiles link done" >&1
 fi
 
 # tmux link
@@ -191,7 +170,6 @@ if [ $git_flag -eq 0 ]; then
     echo "[INFO] git dotfiles link done" >&1
 fi
 
-
 # link
 if [ $link_flag -eq 0 ]; then
     echo "[INFO] Start link dotfiles" >&1
@@ -202,16 +180,7 @@ if [ $link_flag -eq 0 ]; then
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
         [ $dotfile = ".github" ] && continue
-        if [ $dotfile = ".zsh" ]; then
-            for i in $(ls -a $PWD/.zsh);
-            do
-                [ $i = "." ] && continue
-                [ $i = ".." ] && continue
-                ln -nsi $PWD/.zsh/$i $HOME
-            done
-        else
-            ln -nsi $PWD/$dotfile $HOME
-        fi && echo "[INFO] $dotfile link done" >&1
+        ln -nsi ${PWD}/${dotfile} $HOME && echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] dotfiles link done" >&1
 fi
@@ -230,7 +199,6 @@ if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     cd ./brew-install-list && ./run.sh && cd ..
     echo "[INFO] brew install done" >&1
 fi
-
 
 # cargo install
 if [ $cargo_flag -eq 0 ]; then

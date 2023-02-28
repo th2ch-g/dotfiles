@@ -1,18 +1,17 @@
 #=================================================
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
-
+# if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+#     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# fi
+fpath+=("~/.zsh/zsh-completions/src")
+fpath+=("~/.zsh/pure")
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # prompt
-autoload -Uz promptinit
-promptinit
-prompt pure
-autoload -Uz colors
-colors
+autoload -Uz colors && colors
+autoload -Uz promptinit; promptinit && prompt pure
 zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
-
 
 # basic
 setopt no_beep
@@ -28,7 +27,6 @@ setopt auto_cd
 chpwd() { ls -a }
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 bindkey -e
-
 
 # history
 HISTFILE=~/.zsh_history
@@ -47,21 +45,17 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
-
 # compinit
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
 setopt auto_param_keys
 setopt auto_param_slash
 setopt complete_in_word
 zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-
 # export
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
-
 
 # alias
 alias ll="ls -lh"
@@ -105,12 +99,10 @@ if [[ -x "$(which zoxide)" ]]; then
     eval "$(zoxide init zsh)"
 fi
 
-
 # local specific file
 if [ -e $HOME/.zshrc_local ]; then
     source $HOME/.zshrc_local
 fi
-
 
 # my function
 rustdbg() {
@@ -238,4 +230,18 @@ make_add_file() {
         echo "[INFO] nothing was created" >&1
     fi
 }
+#==================================================
+#==================================================
+# if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+#     source "${ZDOTDIR:-$HOME}/.zprofile"
+# fi
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/works/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/works/tools/lib:$LD_LIBRARY_PATH" # for tmux
+export TERMINFO=/usr/share/terminfo # for tmux
+
+# local specific file
+if [ -e $HOME/.zshenv_local ]; then
+    source $HOME/.zshenv_local
+fi
 #==================================================

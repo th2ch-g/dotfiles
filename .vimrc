@@ -65,7 +65,6 @@ if exists('&ambiwidth')
         set ambiwidth=double
 endif
 
-
 set tw=0
 set number
 set title
@@ -155,7 +154,6 @@ if has('autocmd')
   endfunction
   autocmd BufReadPost * call AU_ReCheck_FENC()
 endif
-
 
 call plug#begin()
 Plug 'tomasiser/vim-code-dark'
