@@ -1,7 +1,5 @@
 #!/bin/bash
-
 set -e
-
 
 USAGE='
 install.sh:
@@ -28,7 +26,6 @@ OPTIONS:
     -m, --mytools           add $PWD/mytools export to ~/.zshrc_local
 '
 
-
 # default setting
 link_flag=1
 unlink_flag=1
@@ -39,7 +36,6 @@ zsh_flag=1
 tmux_flag=1
 git_flag=1
 mytools_flag=1
-
 
 # option parser
 while :;
@@ -92,7 +88,6 @@ do
     shift
 done
 
-
 # OS judgment
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
@@ -106,15 +101,12 @@ else
 fi
 echo "[INFO] detect $OS OS" >&1
 
-
 # cwd check
 if [ ! -e $PWD/LICENSE ]; then
     echo "[ERROR] LICENSE is not detected" >&2
     echo "[ERROR] execute ./install.sh in dotfiles directory" >&2
     exit 1
 fi
-
-
 
 # unlink $HOME/[links]
 if [ $unlink_flag -eq 0 ]; then
@@ -143,7 +135,6 @@ if [ $unlink_flag -eq 0 ]; then
     set -e
 fi
 
-
 # vim link
 if [ $vim_flag -eq 0 ]; then
     echo "[INFO] Start link vim dotfiles" >&1
@@ -153,7 +144,6 @@ if [ $vim_flag -eq 0 ]; then
     done
     echo "[INFO] vim dotfiles link done" >&1
 fi
-
 
 # zsh link
 if [ $zsh_flag -eq 0 ]; then
@@ -190,7 +180,6 @@ if [ $git_flag -eq 0 ]; then
     done
     echo "[INFO] git dotfiles link done" >&1
 fi
-
 
 # link
 if [ $link_flag -eq 0 ]; then
@@ -230,7 +219,6 @@ if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     cd ./brew-install-list && ./run.sh && cd ..
     echo "[INFO] brew install done" >&1
 fi
-
 
 # cargo install
 if [ $cargo_flag -eq 0 ]; then

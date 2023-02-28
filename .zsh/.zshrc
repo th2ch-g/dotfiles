@@ -3,7 +3,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-
 # prompt
 autoload -Uz promptinit
 promptinit
@@ -12,7 +11,6 @@ autoload -Uz colors
 colors
 zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
-
 
 # basic
 setopt no_beep
@@ -28,7 +26,6 @@ setopt auto_cd
 chpwd() { ls -a }
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 bindkey -e
-
 
 # history
 HISTFILE=~/.zsh_history
@@ -47,7 +44,6 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
-
 # compinit
 autoload -Uz compinit
 compinit
@@ -57,11 +53,9 @@ setopt complete_in_word
 zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-
 # export
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
-
 
 # alias
 alias ll="ls -lh"
@@ -105,12 +99,10 @@ if [[ -x "$(which zoxide)" ]]; then
     eval "$(zoxide init zsh)"
 fi
 
-
 # local specific file
 if [ -e $HOME/.zshrc_local ]; then
     source $HOME/.zshrc_local
 fi
-
 
 # my function
 rustdbg() {
