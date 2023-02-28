@@ -4,11 +4,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # prompt
-autoload -Uz promptinit
-promptinit
-prompt pure
-autoload -Uz colors
-colors
+autoload -Uz promptinit; promptinit && prompt pure
+autoload -Uz colors && colors
 zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
 
@@ -45,8 +42,7 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
 # compinit
-autoload -Uz compinit
-compinit
+autoload -Uz compinit && compinit
 setopt auto_param_keys
 setopt auto_param_slash
 setopt complete_in_word
