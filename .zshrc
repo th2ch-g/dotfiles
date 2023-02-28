@@ -1,15 +1,13 @@
 #=================================================
-# if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-#     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-# fi
-fpath+=("~/.zsh/zsh-completions/src")
-fpath+=("~/.zsh/pure")
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+fpath+=("$HOME/.zsh/zsh-completions/src")
+fpath+=("$HOME/.zsh/pure")
+source ${HOME}/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ${HOME}/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # prompt
 autoload -Uz colors && colors
-autoload -Uz promptinit; promptinit && prompt pure
+autoload -Uz promptinit; promptinit
+prompt pure
 zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
 
@@ -56,6 +54,10 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # export
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/works/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/works/tools/lib:$LD_LIBRARY_PATH" # for tmux
+export TERMINFO="/usr/share/terminfo:$TERMINFO" # for tmux
 
 # alias
 alias ll="ls -lh"
@@ -102,6 +104,11 @@ fi
 # local specific file
 if [ -e $HOME/.zshrc_local ]; then
     source $HOME/.zshrc_local
+fi
+
+# local specific file
+if [ -e $HOME/.zshenv_local ]; then
+    source $HOME/.zshenv_local
 fi
 
 # my function
@@ -230,18 +237,4 @@ make_add_file() {
         echo "[INFO] nothing was created" >&1
     fi
 }
-#==================================================
-#==================================================
-# if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-#     source "${ZDOTDIR:-$HOME}/.zprofile"
-# fi
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/works/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/works/tools/lib:$LD_LIBRARY_PATH" # for tmux
-export TERMINFO=/usr/share/terminfo # for tmux
-
-# local specific file
-if [ -e $HOME/.zshenv_local ]; then
-    source $HOME/.zshenv_local
-fi
 #==================================================

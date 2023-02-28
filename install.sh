@@ -136,7 +136,6 @@ if [ $vim_flag -eq 0 ]; then
     echo "[INFO] vim dotfiles link done" >&1
 fi
 
-
 # zsh link
 if [ $zsh_flag -eq 0 ]; then
     echo "[INFO] Start link zsh dotfiles" >&1
@@ -188,7 +187,7 @@ fi
 # mytools
 if [ $mytools_flag -eq 0 ]; then
     echo "[INFO] Start adding mytools path to ~/.zshrc_local" >&1
-    echo "export PATH=\"$PWD/mytools:\$PATH\"" >> $HOME/.zshrc_local
+    echo "# mytools export\nexport PATH=\"$PWD/mytools:\$PATH\"" >> $HOME/.zshrc_local
     echo "[INFO] add mytools path done" >&1
 fi
 
