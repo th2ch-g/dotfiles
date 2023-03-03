@@ -15,6 +15,6 @@ cd zsh* && \
     ./configure --prefix=${install_path}/zsh \
     --enable-multibyte --enable-locale && \
     make -j $thread && make install && \
-    cd .. && rm -rf zsh-*
+    cd ..
 
 echo "[INFO] zsh install done" >&1
