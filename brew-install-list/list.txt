@@ -1,3 +1,10 @@
 tmux
 figlet
 fzf
+raycast
+xquartz
+visual-studio-code
+slack
+google-chrome
+iterm2
+licecap
