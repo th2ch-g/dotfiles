@@ -166,6 +166,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'th2ch-g/my-vim-sonictemplate'
 Plug 'machakann/vim-sandwich'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " fern

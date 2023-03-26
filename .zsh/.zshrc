@@ -86,6 +86,7 @@ alias cdt="cd $HOME/works/tools"
 alias cdp="cd $HOME/works/prc"
 alias cdb="cd $HOME/works/bin"
 alias batp="bat -p"
+alias sshxy="ssh -XY"
 
 # zoxide
 if [[ -x "$(which zoxide)" ]]; then
@@ -157,7 +158,10 @@ script_unhighlight() {
 }
 
 wasabi() {
-
+USAGE="[ERROR] usage: wasabi figlet, wasabi aa"
+if [ -z "$1" ]; then
+    echo "$USAGE" >&2
+elif [ "$1" = "figlet" ]; then
 # figlet -w 1000 -f starwars wasabi
 wasabi='
 ____    __    ____  ___           _______.     ___      .______    __
@@ -167,7 +171,49 @@ ____    __    ____  ___           _______.     ___      .______    __
    \    /\    / /  _____  \  .----)   |    /  _____  \  |  |_)  | |  |
     \__/  \__/ /__/     \__\ |_______/    /__/     \__\ |______/  |__|
 '
+elif [ "$1" = "aa" ]; then
+# aa of wasabi
+wasabi='
+>>>>>>>>?>>>>>;;;;;;+Wkc::<<<:::::::::::::::::::::
+>>>>>?>>???>>>>;;;+Z1OXWzzrOv+z1<::::::~:::::::~::
+>>>>???????dUwto+>zI?zdK<zOz<;<:~~~:~:~:~~~:~~:~~~
+>??????==?=wrrrtO?wOzOwD+uwz;:~:::~~:~~(::~~~~~~~~
+>???==?===lzvtttlOWHHHk0OCv<::_~::::~::<~~::~~~::~
+??===l===lllwwyrrOXHHHHR<<::_:~_~J_~:~~:~~~~~~:~~~
+??==l=lllOkWOXWyXXHHfWXI~~::~~(>J?zC>:~~~~~~~~~~~~
+?====llllOWkXwXqkHHHWy0v_~~:__jC<<(;<~:~~~:~~~~~~~
+??===llllllUkWWWHWZWHWkI<_~:+J=(<::<~~~~~~~~~~~_~~
+??===lllllltdMHHWWkAvWSZz<<+<__:::<~~~~~~~~~~~~~~~
+??==lllllllltZMkpWWHwz?OQgA+-_~~(<~~~~~~~~~~~~~~~~
+>?===lllllllltZNkXgMMHHWVUwO?1-~~~~~~~~~~~~~~~~~~~
+>>?==lllllllttrwWMHmMUUXwAko+1<<~~~~~~~~~~~~~.~~.~
+>??==lllllllttrdWZWMWwwwO+lzzOO/~~~~~~~~~~.~~.~~~.
+;;>?==llltttttOKXXWWWWkwkI;<+>1-~~~~~~_~~~~.~~~.~~
+;;>??=llllllttwHWXXXkXX0I+++>><<~~~~~~_~~~~~.~~..~
+z;>??==llllllttdXwQyvVOzCzwV>+z:~~~~~~~~.~.~..~..
+k<;>?==lltlttttXkzXHmAwzwzzz+1v<~~~~~~.~~~.~~..
+fy>>?==llltlttdWHWNHWWUCz=OwOwv>~~~~.~~.~.~._   `
+pWz;>?=lllltttZHHdHHXUXZ6ZCIzvz>~~~~~.~....  ` .-.
+ppR<>?=llltttrrMHHSXwwrvtzzvU6?~~~~~.~~.._ ` .-.~~
+bpby?1=lltttrrrdHHqWH9vvzzz?=dX-~~~~~~.. `` -..~~~
+bbbWz>?=llttrrwHHWHWWXXwwdkIzzz~~~~.~._ `` ...~~~~
+bbkbR>?==llttrvvHH0Wy0Olw0C++tz_~~~.._ `` .....~~~
+kkkkko>>=llttrrrdNkwHWOzzzOzz>+_~~~._  ` ..~....~~
+kkkkkHz>?=lltttrX@HWkWHUC?v9+zV<~~.. ```....~...~~
+kkbbbkR<>??=llttdMMMHkAojOz<zAZ~~~._` `......~...~
+bbkbbbb2;;??==llOHWMMWHHkwUOXHk~~~. ```....~..~..~
+bbkbbkkHz;;>>?zlldMNKWHMkWwzwXm~~~. ```.....~.~...
+kkkkkkHHR<;;;>??=lWMMNHMHHkzyM3~~~.  `.......~.~..
+kkkqHNMMM2::::;><<??WHMMMMMSYIc~~~. ```......~.~~.
+qNMMMMMMMN<:::::<;;;;;<WbHSZHZ~~~~_-```......~..~.
+HMMMMMMMMMR<~~~~:::::::(HXggK>~~~~~_```......~.~.~
+MMMMMMMMMMM2_~~~~~~~:~~:(?dWC~~~~~~. ``.....~.~~.~
+'
+else
+    echo "$USAGE" >&2
+fi
     echo "$wasabi"
+    wasabi=""
 }
 
 cn() {

@@ -1,7 +1,8 @@
 tmux
 figlet
 fzf
-raycast
+peco
+#raycast
 xquartz
 visual-studio-code
 slack
