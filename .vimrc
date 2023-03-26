@@ -1,3 +1,4 @@
+" Run, vim -c "PlugInstall"
 set autoread
 set hidden
 set noswapfile

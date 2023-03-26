@@ -85,7 +85,7 @@ alias cdw="cd $HOME/works"
 alias cdt="cd $HOME/works/tools"
 alias cdp="cd $HOME/works/prc"
 alias cdb="cd $HOME/works/bin"
-alias batp="bat -p"
+alias batp="bat -p --paging=always"
 alias sshxy="ssh -XY"
 
 # zoxide
