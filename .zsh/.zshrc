@@ -54,8 +54,8 @@ export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
 
 # alias
-alias ll="ls -lh"
-alias la="ls -lhA"
+alias ll="ls -stlh"
+alias la="ls -stlhA"
 alias sl="ls"
 alias l="ls -1"
 alias df="df -h"
@@ -99,6 +99,17 @@ if [ -e $HOME/.zshrc_local ]; then
 fi
 
 # my function
+mydu() {
+    USAGE="[ERROR] usage: mydu <target_top_dir>"
+    if [ -z "$1" ]; then
+        echo "$USAGE" >&2
+    else
+        today=$(date "+%Y%m%d")
+        du -d 1 $1 > ${today}.du
+        echo "[INFO] mydu done, output file is ${today}.du" >&1
+    fi
+}
+
 rustdbg() {
     USAGE="[ERROR] usage: rustdbg full, rustdbg on, rustdbg off"
     if [ -z "$1" ]; then

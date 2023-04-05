@@ -21,3 +21,4 @@ silicon
 https://github.com/sioodmy/todo.git
 tokei
 zoxide
+https://github.com/th2ch-g/parrot-rs.git
