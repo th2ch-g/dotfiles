@@ -9,3 +9,4 @@ slack
 google-chrome
 iterm2
 licecap
+imagemagick
