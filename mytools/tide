@@ -23,7 +23,8 @@ EXAMPLE:
 OPTIONS:
     -h, --help              Print help
     -n, --name [NAME]       Name of tmux window [default: home]
-    -t, --type {1,2}        Type of window. Choose {1, 2}. type1 means 2+3 window, type2 means 2x2 window [default: 1]
+    -t, --type {1,2,3}      Type of window. Choose {1,2,3}.
+                            type1 means 2+3 window, type2 means 2x2 window, type3 means 1+1 window [default: 1]
     -x, --top-off           Do not put on top on the right edge [default: not set]
     -p, --path [PATH]       Start from specifieed path [default: default set path]
 '
@@ -33,6 +34,12 @@ tmux_window_name="home"
 window_type="1"
 top_off=0
 start_path=""
+
+# tmux check
+if [ ! -x $(which tmux) ]; then
+    echo "[ERROR] tmux is not found" >&2
+    exit 1
+fi
 
 # option parser
 while :;
@@ -61,6 +68,9 @@ do
             elif [ $OPTARG == "2" ]; then
                 echo "[INFO] window type is \"type2\"" >&1
                 window_type="2"
+            elif [ $OPTARG == "3" ]; then
+                echo "[INFO] window type is \"type3\"" >&1
+                window_type="3"
             else
                 echo "[ERROR] window_type is must be \"1\" or \"2\"" >&2
                 exit 1
@@ -139,8 +149,10 @@ if [ $window_type == "2" ]; then
     fi
 fi
 
-
-
+if [ $window_type == "3" ]; then
+    tmux split-window -h
+    tmux select-pane -t 0
+fi
 
 echo "[INFO] Make tmux named \"$tmux_window_name\""
 echo "[INFO] tmux ls Result" >&1
