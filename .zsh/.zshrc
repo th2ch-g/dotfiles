@@ -88,6 +88,8 @@ alias cdp="cd $HOME/works/prc"
 alias cdb="cd $HOME/works/bin"
 alias batp="bat -p --paging=always"
 alias sshxy="ssh -XY"
+alias tar-open="tar -xvzf"  # input tar.gz file
+alias tar-close="tar -cvzf" # input normal file
 
 # zoxide
 if [[ -x "$(which zoxide)" ]]; then
