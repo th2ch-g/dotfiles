@@ -88,8 +88,6 @@ alias cdp="cd $HOME/works/prc"
 alias cdb="cd $HOME/works/bin"
 alias batp="bat -p --paging=always"
 alias sshxy="ssh -XY"
-alias tar-open="tar -xvzf"  # input tar.gz file
-alias tar-close="tar -cvzf" # input normal file
 
 # zoxide
 if [[ -x "$(which zoxide)" ]]; then
@@ -102,6 +100,14 @@ if [ -e $HOME/.zshrc_local ]; then
 fi
 
 # my function
+tar-close() {
+    tar -cvzf ${1}.tar.gz $1
+}
+
+tar-open() {
+    tar -xvzf $1
+}
+
 mydu() {
     USAGE="[ERROR] usage: mydu <target_top_dir>"
     if [ -z "$1" ]; then
