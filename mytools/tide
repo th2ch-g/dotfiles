@@ -152,6 +152,12 @@ fi
 if [ $window_type == "3" ]; then
     tmux split-window -h
     tmux select-pane -t 0
+    if [ -n "$start_path" ]; then
+        for i in {0..1};
+        do
+            tmux send-keys -t $i "cd $start_path" C-m
+        done
+    fi
 fi
 
 echo "[INFO] Make tmux named \"$tmux_window_name\""
