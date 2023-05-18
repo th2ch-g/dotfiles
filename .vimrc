@@ -157,22 +157,18 @@ if has('autocmd')
   autocmd BufReadPost * call AU_ReCheck_FENC()
 endif
 
+" # tab on
+" :set expandtab
+" # tab off
+" :set noexpandtab
 
 call plug#begin()
 Plug 'tomasiser/vim-code-dark'
 Plug 'cohama/lexima.vim'
-Plug 'lambdalisue/fern.vim'
 Plug 'tomtom/tcomment_vim'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-Plug 'dhruvasagar/vim-table-mode'
 Plug 'th2ch-g/my-vim-sonictemplate'
 Plug 'machakann/vim-sandwich'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
-
-" fern
-let mapleader = "\<Space>"
-let g:fern#default_hidden=1
-nnoremap <C-n> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 
 colorscheme codedark
