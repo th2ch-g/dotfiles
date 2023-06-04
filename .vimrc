@@ -157,10 +157,12 @@ if has('autocmd')
   autocmd BufReadPost * call AU_ReCheck_FENC()
 endif
 
-" # tab on
+" # tab
 " :set expandtab
-" # tab off
 " :set noexpandtab
+" # paste
+" :set paste
+" :set nopaste
 
 call plug#begin()
 Plug 'tomasiser/vim-code-dark'
