@@ -140,7 +140,7 @@ if [ $vim_flag -eq 0 ]; then
     echo "[INFO] Start link vim dotfiles" >&1
     for dotfile in .vim .vimrc;
     do
-        ln -nsi $PWD/$dotfile $HOME && echo "[INFO] $dotfile link done" >&1
+        ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] vim dotfiles link done" >&1
 fi
@@ -152,7 +152,7 @@ if [ $zsh_flag -eq 0 ]; then
     do
         [ $dotfile = "." ] && continue
         [ $dotfile = ".." ] && continue
-        ln -nsi $PWD/.zsh/$dotfile $HOME && echo "[INFO] $dotfile link done" >&1
+        ln -nsi $PWD/.zsh/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] zsh dotfiles link done" >&1
 fi
@@ -162,7 +162,7 @@ if [ $tmux_flag -eq 0 ]; then
     echo "[INFO] Start link tmux dotfiles" >&1
     for dotfile in .tmux.conf;
     do
-        ln -nsi $PWD/$dotfile $HOME && echo "[INFO] $dotfile link done" >&1
+        ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] tmux dotfiles link done" >&1
 fi
@@ -176,7 +176,7 @@ if [ $git_flag -eq 0 ]; then
         [ $dotfile = ".gitignore" ] && continue
         [ $dotfile = ".gitmodules" ] && continue
         [ $dotfile = ".github" ] && continue
-        ln -nsi $PWD/$dotfile $HOME && echo "[INFO] $dotfile link done" >&1
+        ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] git dotfiles link done" >&1
 fi
@@ -199,7 +199,7 @@ if [ $link_flag -eq 0 ]; then
                 ln -nsi $PWD/.zsh/$i $HOME
             done
         else
-            ln -nsi $PWD/$dotfile $HOME
+            ln -nsi $PWD/$dotfile $HOME/$dotfile
         fi && echo "[INFO] $dotfile link done" >&1
     done
     echo "[INFO] dotfiles link done" >&1
