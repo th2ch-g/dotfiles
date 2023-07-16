@@ -196,7 +196,7 @@ if [ $link_flag -eq 0 ]; then
             do
                 [ $i = "." ] && continue
                 [ $i = ".." ] && continue
-                ln -nsi $PWD/.zsh/$i $HOME
+                ln -nsi $PWD/.zsh/$i $HOME/$dotfile
             done
         else
             ln -nsi $PWD/$dotfile $HOME/$dotfile
