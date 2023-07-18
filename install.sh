@@ -102,8 +102,8 @@ fi
 echo "[INFO] detect $OS OS" >&1
 
 # cwd check
-if [ ! -e $PWD/LICENSE ]; then
-    echo "[ERROR] LICENSE is not detected" >&2
+if [ ! -e $PWD/install.sh ]; then
+    echo "[ERROR] install.sh is not detected" >&2
     echo "[ERROR] execute ./install.sh in dotfiles directory" >&2
     exit 1
 fi
