@@ -36,10 +36,8 @@ cd ./dotfiles && \
 If you want to use as guest, change Dockerfile
 ~~~
 git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
-cd ./dotfiles && \
-docker image build -t myenv:latest docker && \
-docker run -it -d --name myenv $(docker images | grep myenv | awk '{print $1}') && \
-docker exec -it $(docker ps | grep myenv | awk '{print $1}') zsh
+docker image build -t myenv dotfiles/docker && \
+docker run --rm -it myenv zsh
 ~~~
 
 ## Update
