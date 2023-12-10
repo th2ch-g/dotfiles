@@ -23,3 +23,6 @@ tokei
 zoxide
 https://github.com/th2ch-g/parrot-rs.git
 cfonts
+evcxr
+evcxr_jupyter
+mdbook
