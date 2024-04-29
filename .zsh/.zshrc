@@ -90,6 +90,7 @@ alias cdp="cd $HOME/works/prc"
 alias cdb="cd $HOME/works/bin"
 alias batp="bat -p --paging=always"
 alias sshxy="ssh -XY"
+alias rusts="rust-script"
 
 # zoxide
 if [[ -x "$(which zoxide)" ]]; then
@@ -121,23 +122,6 @@ mydu() {
     fi
 }
 
-rustdbg() {
-    USAGE="[ERROR] usage: rustdbg full, rustdbg on, rustdbg off"
-    if [ -z "$1" ]; then
-        echo "$USAGE" >&2
-    elif [ "$1" = "full" ]; then
-        export RUST_BACKTRACE="full"
-        echo "[INFO] rust-dbg full" >&1
-    elif [ "$1" = "on" ]; then
-        export RUST_BACKTRACE=1
-        echo "[INFO] rust-dbg on" >&1
-    elif [ "$1" = "off" ]; then
-        export RUST_BACKTRACE=0
-        echo "[INFO] rust-dbg off" >&1
-    else
-        echo "$USAGE" >&2
-    fi
-}
 
 script_highlight() {
     sh_number=$(find . -name "*.sh" -type f -maxdepth 1 | wc -l)
@@ -205,15 +189,6 @@ hgrep() {
 
 calc() {
     echo "" | awk "{OFMT=\"%.6f\"} {print $1}"
-}
-
-rusts() {
-    rustc "$1" -o rust_tmp_out && ./rust_tmp_out && rm -f rust_tmp_out
-}
-
-rusts3() {
-    rustc "$1" -C opt-level=3 -C debug_assertions=no -o rust_tmp_out \
-        && ./rust_tmp_out && rm -f rust_tmp_out
 }
 
 make_add_file() {
