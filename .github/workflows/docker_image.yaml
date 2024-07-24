@@ -18,9 +18,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: build
         run: |
-          docker build docker --tag ghcr.io/$GITHUB_ACTOR/dotfiles:latest \
-          --tag ghcr.io/$GITHUB_ACTOR/dotfiles:$(echo $GITHUB_SHA | head -c7) \
-          .
+          docker build --tag ghcr.io/$GITHUB_ACTOR/dotfiles:latest \
+          --tag ghcr.io/$GITHUB_ACTOR/dotfiles:$(echo $GITHUB_SHA | head -c7) docker
       - name: push
         run: |
           docker push ghcr.io/$GITHUB_ACTOR/dotfiles:latest
