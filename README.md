@@ -11,6 +11,8 @@
     - [For me](#for-me)
     - [For Guest](#for-guest)
     - [From Dockerfile](#from-dockerfile)
+      - [Case1: Pull from ghcr](#case1-pull-from-ghcr)
+      - [Case2: Build locally](#case2-build-locally)
   - [Update](#update)
     - [Simple](#simple)
     - [Overwrite](#overwrite)
@@ -19,22 +21,29 @@
 
 ## Install
 ### For me
-~~~
+~~~shell
 git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --link
 ~~~
 
 ### For Guest
-~~~
+~~~shell
 git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --zsh --vim --tmux
 ~~~
 
 ### From Dockerfile
-If you want to use as guest, change Dockerfile
+#### Case1: Pull from ghcr
+~~~shell
+docker pull ghcr.io/th2ch-g/dotfiles:latest
+docker run --rm -it ghcr.io/th2ch-g/dotfiles zsh
 ~~~
+
+#### Case2: Build locally
+- If you want to use as guest, change Dockerfile
+~~~shell
 git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 docker image build -t myenv dotfiles/docker && \
 docker run --rm -it myenv zsh
