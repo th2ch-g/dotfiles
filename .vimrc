@@ -171,6 +171,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'th2ch-g/my-vim-sonictemplate'
 Plug 'machakann/vim-sandwich'
 Plug 'airblade/vim-gitgutter'
+" Plug 'github/copilot.vim'
 call plug#end()
 
 colorscheme codedark
