@@ -86,8 +86,10 @@ alias ..........="cd ../../../../../../../../../"
 alias ...........="cd ../../../../../../../../../../"
 alias cdw="cd $HOME/works"
 alias cdt="cd $HOME/works/tools"
-alias cdp="cd $HOME/works/prc"
+alias cdm="cd $HOME/works/misc"
 alias cdb="cd $HOME/works/bin"
+alias cdo="cd $HOME/works/others"
+alias cds="cd $HOME/works/share"
 alias batp="bat -p --paging=always"
 alias sshxy="ssh -XY"
 alias rusts="rust-script"
@@ -163,6 +165,10 @@ script_unhighlight() {
     fi
 }
 
+cr() {
+    conda remove -n "$1" --all -y && conda info -e
+}
+
 cn() {
     conda create -n "$1" -y && conda activate "$1" && conda info -e
 }
@@ -191,7 +197,7 @@ calc() {
     echo "" | awk "{OFMT=\"%.6f\"} {print $1}"
 }
 
-make_add_file() {
+make_local_file() {
     arr=( .zshrc_local .zshenv_local )
     flag=1
     for i in ${arr[@]};
@@ -206,5 +212,27 @@ make_add_file() {
     if [ $flag -eq 1 ]; then
         echo "[INFO] nothing was created" >&1
     fi
+}
+
+update_dotfiles() {
+    CWD=$PWD
+    cd ~/works/dotfiles
+    git pull
+    cd $CWD
+    echo "[INFO] dotfiles is updated" >&1
+}
+
+prepare_base_dir() {
+    arr=( ~/works/misc/ ~/works/tools/ ~/works/others/ ~/works/bin/ ~/works/share )
+    for i in ${arr[@]};
+    do
+        if [ ! -d $i ]; then
+            mkdir -p $i
+            echo "[INFO] $i was created" >&1
+        else
+            echo "[WARN] $i is already created" >&1
+        fi
+    done
+    echo "[INFO] base directories were prepared" >&1
 }
 #==================================================
