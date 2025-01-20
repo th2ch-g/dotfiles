@@ -172,6 +172,18 @@ Plug 'th2ch-g/my-vim-sonictemplate'
 Plug 'machakann/vim-sandwich'
 Plug 'airblade/vim-gitgutter'
 " Plug 'github/copilot.vim'
+Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
 call plug#end()
+
+" see https://github.com/Exafunction/codeium.vim
+let g:codeium_disable_bindings = 1
+imap <script><silent><nowait><expr> <C-f> codeium#Accept()
+imap <script><silent><nowait><expr> <C-k> codeium#AcceptNextWord()
+imap <script><silent><nowait><expr> <C-l> codeium#AcceptNextLine()
+imap <C-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <C-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <C-x>   <Cmd>call codeium#Clear()<CR>
+
+set statusline+=%3{codeium#GetStatusString()}
 
 colorscheme codedark
