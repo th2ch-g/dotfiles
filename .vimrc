@@ -182,7 +182,7 @@ imap <script><silent><nowait><expr> <C-k> codeium#AcceptNextWord()
 imap <script><silent><nowait><expr> <C-l> codeium#AcceptNextLine()
 imap <C-]>   <Cmd>call codeium#CycleCompletions(1)<CR>
 imap <C-[>   <Cmd>call codeium#CycleCompletions(-1)<CR>
-imap <C-x>   <Cmd>call codeium#Clear()<CR>
+imap <C-d>   <Cmd>call codeium#Clear()<CR>
 
 set statusline+=%3{codeium#GetStatusString()}
 
