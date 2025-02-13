@@ -1,0 +1,33 @@
+# sort by "awk '{print $0}' | sort"
+# https://github.com/sioodmy/todo.git
+# https://github.com/th2ch-g/parrot-rs.git
+# monolith
+# rnr
+# zellij
+bat
+broot
+cargo-make
+cfonts
+choose
+evcxr
+evcxr_jupyter
+exa
+fd-find
+git-delta
+grex
+https://github.com/Fierthraix/2048-rs.git
+https://github.com/Miserlou/Loop.git
+https://github.com/bootandy/dust.git
+https://github.com/th2ch-g/rust-top_message.git
+hyperfine
+mdbook
+pastel
+r-matrix
+ripgrep
+ripgrep_all
+rust-script
+sd
+silicon
+tokei
+uv
+zoxide

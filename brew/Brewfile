@@ -1,0 +1,7 @@
+tap "homebrew/bundle"
+brew "tmux"
+brew "typst"
+cask "alacritty"
+cask "docker"
+cask "google-chrome"
+cask "slack"

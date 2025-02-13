@@ -216,7 +216,7 @@ fi
 if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     echo "[INFO] Start install brew" >&1
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    cd ./brew-install-list && ./run.sh && cd ..
+    cd ./brew/ && brew bundle && cd ..
     echo "[INFO] brew install done" >&1
 fi
 
@@ -225,7 +225,7 @@ if [ $cargo_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
         echo "[INFO] Start install cargo" >&1
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-        cd ./cargo-install-list && ./run.sh && cd ..
+        cd ./cargo/ && ./run.sh && cd ..
         echo "[INFO] cargo install done" >&1
     fi
 fi
