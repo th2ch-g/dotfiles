@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install pkgs
-        run: apt-get update && apt-get install -y git bash zsh
+        run: apt-get update && apt-get install -y git bash zsh vim
       - name: Show help message
         run: ./install.sh --help
       - name: Link all
