@@ -142,6 +142,7 @@ if [ $vim_flag -eq 0 ]; then
     do
         ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
     done
+    vim -c "PlugInstall" -c "qa"
     echo "[INFO] vim dotfiles link done" >&1
 fi
 
