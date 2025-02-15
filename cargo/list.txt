@@ -5,21 +5,24 @@
 # rnr
 # zellij
 bat
+bottom
 broot
 cargo-make
 cfonts
 choose
+du-dust
 evcxr
 evcxr_jupyter
 exa
+fcp
 fd-find
+flamegraph
 git-delta
 grex
 https://github.com/Fierthraix/2048-rs.git
-https://github.com/Miserlou/Loop.git
-https://github.com/bootandy/dust.git
 https://github.com/th2ch-g/rust-top_message.git
 hyperfine
+loop-rs
 mdbook
 pastel
 r-matrix
@@ -29,5 +32,6 @@ rust-script
 sd
 silicon
 tokei
+trunk
 uv
 zoxide
