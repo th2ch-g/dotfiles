@@ -36,7 +36,7 @@ jobs:
       # skip vim
       # - name: Link vim
       #   run: ./install.sh --vim
-        working-directory: dotfiles
+      # working-directory: dotfiles
       - name: Unlink dotfiles3
         run: ./install.sh --unlink
         working-directory: dotfiles
