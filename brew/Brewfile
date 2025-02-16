@@ -1,6 +1,8 @@
 tap "homebrew/bundle"
 brew "tmux"
 brew "typst"
+brew "pass"
+brew "fzf"
 cask "alacritty"
 cask "docker"
 cask "google-chrome"
