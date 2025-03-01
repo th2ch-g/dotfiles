@@ -1,4 +1,4 @@
-# sort by "awk '{print $0}' | sort"
+# sort by "awk '{print $0}' | sort -k 1"
 # https://github.com/sioodmy/todo.git
 # https://github.com/th2ch-g/parrot-rs.git
 # monolith
@@ -7,6 +7,7 @@
 bat                                                 # A cat(1) clone with wings.
 bottom                                              # Yet another cross-platform graphical process/system monitor.
 broot                                               # A new way to see and navigate directory trees
+cargo-license                                       # Cargo subcommand to see license of dependencies
 cargo-make                                          # Rust task runner and build tool.
 cfonts                                              # Sexy fonts for the console
 choose                                              # A human-friendly and fast alternative to cut and (sometimes) awk

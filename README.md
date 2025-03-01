@@ -67,12 +67,19 @@ git submodule update --remote <submodule_path>
 ~~~
 
 ## Contents
-- vim (>= v8.2 tested)
-- zsh (>= v5.8 tested)
-- tmux (>= 3.0a tested)
-- iterm2
+- [vim](https://github.com/vim/vim) (>= v8.2 tested)
+  - [vim-plug](https://github.com/junegunn/vim-plug)
+- [zsh](https://github.com/zsh-users/zsh) (>= v5.8 tested)
+  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+  - [zsh-completions](https://github.com/zsh-users/zsh-completions)
+  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
+  - [prezto](https://github.com/sorin-ionescu/prezto)
+  - [pure](https://github.com/sindresorhus/pure)
+- [tmux](https://github.com/tmux/tmux) (>= 3.0a tested)
+- [iTerm2](https://github.com/gnachman/iTerm2)
+  - [Iceberg-iTerm2](https://github.com/Arc0re/Iceberg-iTerm2) 
 - mytools
-- brew
+- [brew](https://github.com/Homebrew/brew)
 - cargo
 - docker
 - others
