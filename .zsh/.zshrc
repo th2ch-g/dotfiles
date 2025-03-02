@@ -235,4 +235,16 @@ prepare_base_dir() {
     done
     echo "[INFO] base directories were prepared" >&1
 }
+
+vim_codeium_off() {
+    sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink ~/.vimrc)
+    a=$(dirname $(readlink ~/.vimrc))
+    rm -f ${a}/.vimrc-e
+}
+
+vim_codeium_on() {
+    sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink ~/.vimrc)
+    a=$(dirname $(readlink ~/.vimrc))
+    rm -f ${a}/.vimrc-e
+}
 #==================================================
