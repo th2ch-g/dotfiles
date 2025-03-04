@@ -1,4 +1,4 @@
-# sort by "awk '{print $0}' | sort -k 1"
+# sort by "sort -k 1"
 # https://github.com/sioodmy/todo.git
 # https://github.com/th2ch-g/parrot-rs.git
 # monolith
