@@ -184,6 +184,7 @@ call plug#end()
 
 " see https://github.com/Exafunction/codeium.vim
 if g:codeium_enabled
+    let g:codeium_disable_bindings = 1
     imap <script><silent><nowait><expr> <C-f> codeium#Accept()
     imap <script><silent><nowait><expr> <C-k> codeium#AcceptNextWord()
     imap <script><silent><nowait><expr> <C-l> codeium#AcceptNextLine()
