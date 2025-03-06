@@ -36,6 +36,8 @@ sd                                                  # Intuitive find & replace C
 silicon                                             # Create beautiful image of your source code.
 taplo                                               # A TOML toolkit written in Rust
 tokei                                               # Count your code, quickly.
+tomlq                                               # A tool for getting data from TOML files on the command line
 trunk                                               # Build, bundle & ship your Rust WASM application to the web.
 typos-cli                                           # Source code spell checker
+xq                                                  # Pure rust implementation of jq
 zoxide                                              # A smarter cd command. Supports all major shells.
