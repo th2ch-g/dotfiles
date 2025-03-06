@@ -7,6 +7,7 @@
 bat                                                 # A cat(1) clone with wings.
 bottom                                              # Yet another cross-platform graphical process/system monitor.
 broot                                               # A new way to see and navigate directory trees
+cargo-deny                                          # Cargo plugin for linting your dependencies
 cargo-license                                       # Cargo subcommand to see license of dependencies
 cargo-make                                          # Rust task runner and build tool.
 cfonts                                              # Sexy fonts for the console
@@ -33,6 +34,8 @@ ripgrep_all                                         # rga: ripgrep, but also sea
 rust-script                                         # Run Rust files and expressions as scripts without any setup or compilation step
 sd                                                  # Intuitive find & replace CLI (sed alternative)
 silicon                                             # Create beautiful image of your source code.
+taplo                                               # A TOML toolkit written in Rust
 tokei                                               # Count your code, quickly.
 trunk                                               # Build, bundle & ship your Rust WASM application to the web.
+typos-cli                                           # Source code spell checker
 zoxide                                              # A smarter cd command. Supports all major shells.
