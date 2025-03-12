@@ -1,9 +1,10 @@
 # sort by "sort -k 1"
-# https://github.com/sioodmy/todo.git todo
-# https://github.com/th2ch-g/parrot-rs.git parrot
-# monolith
-# rnr
-# zellij
+# https://github.com/sioodmy/todo.git todo            # Simple todo cli program written in rust
+# https://github.com/th2ch-g/parrot-rs.git parrot     # Party Parrot implemented by Rust
+# monolith                                            # CLI tool and library for saving complete web pages as a single HTML file
+# rnr                                                 # A command-line tool to batch rename files and directories
+# rustpython                                          # A Python Interpreter written in Rust
+# zellij                                              # A terminal workspace with batteries included
 bat                                                 # A cat(1) clone with wings.
 bottom                                              # Yet another cross-platform graphical process/system monitor.
 broot                                               # A new way to see and navigate directory trees
