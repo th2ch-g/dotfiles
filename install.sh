@@ -230,3 +230,5 @@ if [ $cargo_flag -eq 0 ]; then
         echo "[INFO] cargo install done" >&1
     fi
 fi
+
+echo "[INFO] done" >&1
