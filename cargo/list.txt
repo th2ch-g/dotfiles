@@ -33,6 +33,7 @@ r-matrix                                            # rust port of cmatrix
 ripgrep                                             # ripgrep recursively searches directories for a regex pattern while respecting your gitignore
 ripgrep_all                                         # rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.
 rust-script                                         # Run Rust files and expressions as scripts without any setup or compilation step
+sccache                                             # Sccache is a ccache-like tool. It is used as a compiler wrapper and avoids compilation when possible. Sccache has the capability to utilize caching in remote storage environments, including various cloud storage options, or alternatively, in local storage.
 sd                                                  # Intuitive find & replace CLI (sed alternative)
 silicon                                             # Create beautiful image of your source code.
 taplo                                               # A TOML toolkit written in Rust
