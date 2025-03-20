@@ -196,12 +196,16 @@ endif
 colorscheme codedark
 
 " TransParent settings
-hi Normal        ctermbg=none guibg=none
-hi SignColumn    ctermbg=none guibg=none
-hi EndOfBuffer   ctermbg=none guibg=none
-hi LineNr        ctermbg=none guibg=none
-hi CursorLineNr  ctermbg=none guibg=none
+hi Normal        ctermbg=NONE guibg=NONE
+hi SignColumn    ctermbg=NONE guibg=NONE
+hi EndOfBuffer   ctermbg=NONE guibg=NONE
+hi LineNr        ctermbg=NONE guibg=NONE
+hi CursorLineNr  ctermbg=NONE guibg=NONE
 hi NonText       ctermbg=NONE guibg=NONE
 hi SpecialKey    ctermbg=NONE guibg=NONE
-hi FoldColumn    ctermbg=none guibg=none
-hi ColorColumn   ctermbg=none guibg=none
+hi FoldColumn    ctermbg=NONE guibg=NONE
+hi ColorColumn   ctermbg=NONE guibg=NONE
+
+set novisualbell
+set noerrorbells
+set t_vb=
