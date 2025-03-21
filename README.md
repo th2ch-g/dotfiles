@@ -24,7 +24,7 @@
 ~~~shell
 git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh --link
+./install.sh -b -c -p -v -z -t -g -n
 ~~~
 
 ### For Guest
