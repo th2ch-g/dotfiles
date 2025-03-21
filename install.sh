@@ -151,7 +151,9 @@ if [ $vim_flag -eq 0 ]; then
     do
         create_link ${PWD}/$dotfile ${HOME}/$dotfile
     done
+    set +e
     vim -e -c "PlugInstall" -c "qa"
+    set -e
     print_info "vim install done"
 fi
 
