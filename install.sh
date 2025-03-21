@@ -154,7 +154,7 @@ if [ $vim_flag -eq 0 ]; then
     # vim does not support config dir
     for dotfile in .vim .vimrc;
     do
-        create_link ${PWD}/$dotfile ${HOME}/$dotfile
+        create_link ${PWD}/vim/$dotfile ${HOME}/$dotfile
     done
     set +e
     vim -e -c "PlugInstall" -c "qa"
@@ -183,6 +183,20 @@ if [ $git_flag -eq 0 ]; then
     print_info "git install done"
 fi
 
+# alacritty link
+if [ $alacritty_flag -eq 0 ]; then
+    print_info "alacritty install start"
+    create_link $PWD/alacritty/ ${HOME}/.config/alacritty
+    print_info "alacritty install done"
+fi
+
+# neovim link
+if [ $neovim_flag -eq 0 ]; then
+    print_info "neovim install start"
+    create_link $PWD/nvim/ ${HOME}/.config/nvim
+    print_info "neovim install done"
+fi
+
 # brew install
 if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     print_info "brew install start"
@@ -207,20 +221,6 @@ if [ $cargo_flag -eq 0 ]; then
         cd ./cargo/ && ./run.sh && cd ..
         print_info "cargo install done"
     fi
-fi
-
-# alacritty link
-if [ $alacritty_flag -eq 0 ]; then
-    print_info "alacritty install start"
-    create_link $PWD/alacritty/ ${HOME}/.config/alacritty
-    print_info "alacritty install done"
-fi
-
-# neovim link
-if [ $neovim_flag -eq 0 ]; then
-    print_info "neovim install start"
-    create_link $PWD/nvim/ ${HOME}/.config/nvim
-    print_info "neovim install done"
 fi
 
 echo "[INFO] done" >&1
