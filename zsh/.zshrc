@@ -105,6 +105,10 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # my function
+precmd() {
+  echo -ne "\e[6 q"
+}
+
 tar-close() {
     tar -cvzf ${1}.tar.gz $1
 }
