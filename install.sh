@@ -197,7 +197,7 @@ if [ $cargo_flag -eq 0 ]; then
         if command -v cargo > /dev/null 2>&1; then
             print_info "cargo is already installed"
         else
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         fi
         cd ./cargo/ && ./run.sh && cd ..
         print_info "cargo install done"
