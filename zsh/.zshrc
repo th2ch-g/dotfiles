@@ -1,4 +1,8 @@
 #=================================================
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
 # prompt
 autoload -Uz promptinit; promptinit && prompt pure
 autoload -Uz colors && colors
@@ -98,10 +102,6 @@ fi
 # local specific file
 if [ -e $HOME/.config/.zshrc_local ]; then
     source $HOME/.config/.zshrc_local
-fi
-
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 # my function

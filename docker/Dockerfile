@@ -9,4 +9,6 @@ RUN mkdir -p ~/works \
         && cd ./dotfiles \
         && ./install.sh -c -v -z -t -g -n
 
+# vim: /usr/bin/vim.basic because of alternative system
+
 RUN chsh -s /bin/zsh

@@ -166,6 +166,7 @@ fi
 if [ $zsh_flag -eq 0 ]; then
     print_info "zsh install start"
     create_link ${PWD}/zsh ${HOME}/.config/zsh
+    create_link ${PWD}/zsh/.zshenv ${HOME}/.zshenv
     print_info "zsh install done"
 fi
 
