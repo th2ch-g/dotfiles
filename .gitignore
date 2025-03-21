@@ -3,9 +3,8 @@
 .aws
 zsh/.zshenv_local
 zsh/.zshrc_local
-zsh/.zshrc_conda
-!zsh/.zsh_history
-!zsh/.zcompdump
+zsh/.zsh_history
+zsh/.zcompdump
 vim/.vim/*
 !vim/.vim/.gitkeep
 !vim/.vim/autoload
