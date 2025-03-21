@@ -1,8 +1,4 @@
 #=================================================
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
-
 # prompt
 autoload -Uz promptinit; promptinit && prompt pure
 autoload -Uz colors && colors
@@ -52,9 +48,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
 export PIPENV_VENV_IN_PROJECT=1
-## by xdg-ninja
-export HISTFILE="$HOME/zsh/history"
-export ZDOTDIR="$HOME/.config/zsh"
 
 # alias
 alias ll="ls -stlh"
@@ -103,8 +96,12 @@ if command -v zoxide > /dev/null 2>&1; then
 fi
 
 # local specific file
-if [ -e $HOME/.zshrc_local ]; then
-    source $HOME/.zshrc_local
+if [ -e $HOME/.config/.zshrc_local ]; then
+    source $HOME/.config/.zshrc_local
+fi
+
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
 # my function
@@ -205,9 +202,9 @@ make_local_file() {
     flag=1
     for i in ${arr[@]};
     do
-        if [ ! -e $HOME/${i} ]; then
-            touch $HOME/${i}
-            echo "[INFO] touch ${HOME}/${i}" >&1
+        if [ ! -e $HOME/.config/${i} ]; then
+            touch $HOME/.config/${i}
+            echo "[INFO] touch ${HOME}/.config/${i}" >&1
             flag=0
         fi
     done
@@ -240,14 +237,14 @@ prepare_base_dir() {
 }
 
 vim_ai_off() {
-    sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink ~/.vimrc)
-    a=$(dirname $(readlink ~/.vimrc))
+    sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink $HOME/.config/.vimrc)
+    a=$(dirname $(readlink $HOME/.config/.vimrc))
     rm -f ${a}/.vimrc-e
 }
 
 vim_ai_on() {
-    sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink ~/.vimrc)
-    a=$(dirname $(readlink ~/.vimrc))
+    sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink $HOME/.config/.vimrc)
+    a=$(dirname $(readlink $HOME/.config/.vimrc))
     rm -f ${a}/.vimrc-e
 }
 
