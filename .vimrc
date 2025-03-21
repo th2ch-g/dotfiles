@@ -30,7 +30,6 @@ set listchars=tab:>\
 set notitle
 set scrolloff=5
 set display=uhex
-colorscheme elflord
 
 function! ZenkakuSpace()
     highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
@@ -193,6 +192,7 @@ if g:codeium_enabled
     set statusline+=%3{codeium#GetStatusString()}
 endif
 
+" colorscheme elflord
 colorscheme codedark
 
 " TransParent settings
