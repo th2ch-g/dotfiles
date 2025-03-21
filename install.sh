@@ -143,6 +143,7 @@ if [ $unlink_flag -eq 0 ]; then
     do
         remove_link ${HOME}/.config/$target
     done
+    remove_link ${HOME}/.zshenv
 
     print_info "dotfiles unlink done"
     set -e
@@ -156,9 +157,11 @@ if [ $vim_flag -eq 0 ]; then
     do
         create_link ${PWD}/vim/$dotfile ${HOME}/$dotfile
     done
-    set +e
-    vim -e -c "PlugInstall" -c "qa"
-    set -e
+    if command -v vim >/dev/null 2>&1; then
+        set +e
+        vim -e -c "PlugInstall" -c "qa"
+        set -e
+    fi
     print_info "vim install done"
 fi
 
@@ -195,6 +198,11 @@ fi
 if [ $neovim_flag -eq 0 ]; then
     print_info "neovim install start"
     create_link $PWD/nvim/ ${HOME}/.config/nvim
+    if command -v nvim >/dev/null 2>&1; then
+        set +e
+        nvim -e -c "PlugInstall" -c "qa"
+        set -e
+    fi
     print_info "neovim install done"
 fi
 
