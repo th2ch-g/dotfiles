@@ -7,5 +7,4 @@ do
     $line
 done
 
-
 echo done

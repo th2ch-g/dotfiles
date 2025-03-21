@@ -1,4 +1,4 @@
-" Run, vim -c "PlugInstall" -c "qa"
+" Run: vim -e -c "PlugInstall" -c "qa"
 set autoread
 set hidden
 set noswapfile
