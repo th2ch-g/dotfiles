@@ -23,6 +23,7 @@ OPTIONS:
     -t, --tmux              only tmux dotfiles link
     -g, --git               only git dotfiles link
     -a, --alacritty         only alacritty dotfiles link
+    -n, --neovim            only neovim dotfiles link
 '
 
 # default setting
@@ -34,6 +35,7 @@ zsh_flag=1
 tmux_flag=1
 git_flag=1
 alacritty_flag=1
+neovim_flag=1
 
 print_info() { echo "[INFO] $1" >&1;  }
 print_warn() { echo "[WARN] $1" >&2;  }
@@ -82,6 +84,9 @@ do
             ;;
         -a | --alacritty)
             alacritty_flag=0
+            ;;
+        -n | --neovim)
+            neovim_flag=0
             ;;
        --)
             shift
@@ -209,6 +214,13 @@ if [ $alacritty_flag -eq 0 ]; then
     print_info "alacritty install start"
     create_link $PWD/alacritty/ ${HOME}/.config/alacritty
     print_info "alacritty install done"
+fi
+
+# neovim link
+if [ $neovim_flag -eq 0 ]; then
+    print_info "neovim install start"
+    create_link $PWD/nvim/ ${HOME}/.config/nvim
+    print_info "neovim install done"
 fi
 
 echo "[INFO] done" >&1
