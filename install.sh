@@ -11,7 +11,8 @@ USAGE:
 EXAMPLE:
     ./install.sh                            only OS check
     ./install.sh --vim --zsh --tmux --git   OS check & dotfiles link
-    ./install.sh -b -c -p -v -z -t -g -m    recommended options
+    ./install.sh --unlink                   all dotfiles unlink
+    ./install.sh -b -c -p -v -z -t -g -n    recommended options
 
 OPTIONS:
     -h, --help              print help
