@@ -209,3 +209,8 @@ hi ColorColumn   ctermbg=NONE guibg=NONE
 set novisualbell
 set noerrorbells
 set t_vb=
+
+augroup RestoreCursorShapeOnExit
+    autocmd!
+    autocmd VimLeave * set guicursor=a:ver20
+augroup END
