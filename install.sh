@@ -72,7 +72,7 @@ do
         -c | --cargo)
             cargo_flag=0
             ;;
-        --p | --python)
+        -p | --python)
             python_flag=0
             ;;
         -v | --vim)
