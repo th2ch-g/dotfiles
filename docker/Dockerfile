@@ -13,3 +13,6 @@ RUN mkdir -p ~/works \
         && ./install.sh -c -v -z -t -g -n
 
 RUN chsh -s /bin/zsh
+
+# install cargo subcommands
+RUN cd ~/works/dotfiles && ./install.sh -c

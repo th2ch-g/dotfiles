@@ -211,11 +211,11 @@ if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     print_info "brew install start"
     if command -v brew > /dev/null 2>&1; then
         print_info "brew is already installed"
+        print_info "brew bundle start"
+        cd ./brew/ && brew bundle && cd ..
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
-    print_info "brew bundle start"
-    cd ./brew/ && brew bundle && cd ..
     print_info "brew install done"
 fi
 
@@ -225,11 +225,11 @@ if [ $cargo_flag -eq 0 ]; then
         print_info "cargo install start"
         if command -v cargo > /dev/null 2>&1; then
             print_info "cargo is already installed"
+            print_info "cargo subcommands start"
+            cd ./cargo/ && ./run.sh && cd ..
         else
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
         fi
-        print_info "cargo subcommands start"
-        cd ./cargo/ && ./run.sh && cd ..
         print_info "cargo install done"
     fi
 fi
