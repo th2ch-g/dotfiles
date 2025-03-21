@@ -4,3 +4,6 @@
 [submodule "zsh/.zprezto"]
 	path = zsh/.zprezto
 	url = https://github.com/sorin-ionescu/prezto.git
+[submodule "nvim/autoload"]
+	path = nvim/autoload
+	url = https://github.com/junegunn/vim-plug.git
