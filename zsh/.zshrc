@@ -25,7 +25,6 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 bindkey -e
 
 # history
-HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000000
 setopt share_history
@@ -53,6 +52,10 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
 export PIPENV_VENV_IN_PROJECT=1
+## by xdg-ninja
+export HISTFILE="$HOME/zsh/history"
+export ZDOTDIR="$HOME/.config/zsh"
+export XAUTHORITY="$HOME/.config/Xauthority"
 
 # alias
 alias ll="ls -stlh"
@@ -93,6 +96,7 @@ alias cds="cd $HOME/works/share"
 alias batp="bat -p --paging=always"
 alias sshxy="ssh -XY"
 alias rusts="rust-script"
+alias wget="wget --hsts-file=$HOME/.config/wget-hsts"
 
 # zoxide
 if command -v zoxide > /dev/null 2>&1; then
