@@ -22,10 +22,10 @@ OPTIONS:
     -z, --zsh               only zsh dotfiles link
     -t, --tmux              only tmux dotfiles link
     -g, --git               only git dotfiles link
+    -a, --alacritty         only alacritty dotfiles link
 '
 
 # default setting
-link_flag=1
 unlink_flag=1
 brew_flag=1
 cargo_flag=1
@@ -33,6 +33,7 @@ vim_flag=1
 zsh_flag=1
 tmux_flag=1
 git_flag=1
+alacritty_flag=1
 
 # option parser
 while :;
@@ -63,6 +64,9 @@ do
             ;;
         -g | --git)
             git_flag=0
+            ;;
+        -a | --alacritty)
+            alacritty_flag=0
             ;;
        --)
             shift
@@ -98,29 +102,45 @@ if [ ! -e $PWD/install.sh ]; then
     exit 1
 fi
 
+# config dir
+if [ -d ${HOME}/.config ]; then
+    mkdir -p ${HOME}/.config
+fi
+
 # unlink $HOME/[links]
 if [ $unlink_flag -eq 0 ]; then
     echo "[INFO] Start unlink dotfiles" >&1
     set +e
     echo "[WARN] Ignore error" >&2
-    for dotfile in .?*;
+
+    # vim
+    for dotfile in .vim .vimrc;
     do
-        [ $dotfile = ".." ] && continue
-        [ $dotfile = ".git" ] && continue
-        [ $dotfile = ".gitignore" ] && continue
-        [ $dotfile = ".gitmodules" ] && continue
-        [ $dotfile = ".github" ] && continue
-        if [ $dotfile = ".zsh" ]; then
-            for i in $(ls -a $PWD/.zsh);
-            do
-                [ $i = "." ] && continue
-                [ $i = ".." ] && continue
-                unlink ${HOME}/${i}
-            done
-        else
-            unlink ${HOME}/${dotfile}
-        fi && echo "[INFO] $dotfile unlink done" >&1
+        if [ -L $HOME/$dotfile ]; then
+            unlink $HOME/$dotfile && echo "[INFO] $dotfile unlink done" >&1
+        fi
     done
+
+    # git
+    if [ -L ${HOME}/.config/git ]; then
+        unlink ${HOME}/.config/git && echo "[INFO] git unlink done" >&1
+    fi
+
+    # zsh
+    if [ -L ${HOME}/.config/zsh ]; then
+        unlink ${HOME}/.config/zsh && echo "[INFO] zsh unlink done" >&1
+    fi
+
+    # tmux
+    if [ -L ${HOME}/.config/tmux ]; then
+        unlink ${HOME}/.config/tmux && echo "[INFO] tmux unlink done" >&1
+    fi
+
+    # alacritty
+    if [ -L ${HOME}/.config/alacritty ]; then
+        unlink ${HOME}/.config/alacritty && echo "[INFO] alacritty unlink done" >&1
+    fi
+
     echo "[INFO] dotfiles unlink done" >&1
     set -e
 fi
@@ -128,6 +148,7 @@ fi
 # vim link
 if [ $vim_flag -eq 0 ]; then
     echo "[INFO] Start link vim dotfiles" >&1
+    # vim does not support config dir
     for dotfile in .vim .vimrc;
     do
         ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
@@ -139,36 +160,21 @@ fi
 # zsh link
 if [ $zsh_flag -eq 0 ]; then
     echo "[INFO] Start link zsh dotfiles" >&1
-    for dotfile in $(ls -a $PWD/.zsh);
-    do
-        [ $dotfile = "." ] && continue
-        [ $dotfile = ".." ] && continue
-        ln -nsi $PWD/.zsh/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
-    done
+    ln -nsi $PWD/zsh ${HOME}/.config/zsh
     echo "[INFO] zsh dotfiles link done" >&1
 fi
 
 # tmux link
 if [ $tmux_flag -eq 0 ]; then
     echo "[INFO] Start link tmux dotfiles" >&1
-    for dotfile in .tmux.conf;
-    do
-        ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
-    done
+    ln -nsi $PWD/tmux ${HOME}/.config/tmux
     echo "[INFO] tmux dotfiles link done" >&1
 fi
 
 # git link
 if [ $git_flag -eq 0 ]; then
     echo "[INFO] Start link git dotfiles" >&1
-    for dotfile in .gitignore_global .gitconfig;
-    do
-        [ $dotfile = ".git" ] && continue
-        [ $dotfile = ".gitignore" ] && continue
-        [ $dotfile = ".gitmodules" ] && continue
-        [ $dotfile = ".github" ] && continue
-        ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
-    done
+    ln -nsi $PWD/git ${HOME}/.config/git
     echo "[INFO] git dotfiles link done" >&1
 fi
 
@@ -196,6 +202,13 @@ if [ $cargo_flag -eq 0 ]; then
         cd ./cargo/ && ./run.sh && cd ..
         echo "[INFO] cargo install done" >&1
     fi
+fi
+
+# alacritty link
+if [ $alacritty_flag -eq 0 ]; then
+    echo "[INFO] Start link alacritty dotfiles" >&1
+    ln -nsi $PWD/alacritty ${HOME}/.config/alacritty
+    echo "[INFO] alacritty dotfiles link done" >&1
 fi
 
 echo "[INFO] done" >&1
