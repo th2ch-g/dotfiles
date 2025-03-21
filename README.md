@@ -22,14 +22,14 @@
 ## Install
 ### For me
 ~~~shell
-git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --link
 ~~~
 
 ### For Guest
 ~~~shell
-git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --zsh --vim --tmux
 ~~~
@@ -77,7 +77,7 @@ git submodule update --remote <submodule_path>
   - [pure](https://github.com/sindresorhus/pure)
 - [tmux](https://github.com/tmux/tmux) (>= 3.0a tested)
 - [iTerm2](https://github.com/gnachman/iTerm2)
-  - [Iceberg-iTerm2](https://github.com/Arc0re/Iceberg-iTerm2) 
+  - [Iceberg-iTerm2](https://github.com/Arc0re/Iceberg-iTerm2)
 - mytools
 - [brew](https://github.com/Homebrew/brew)
 - cargo

@@ -10,13 +10,12 @@ USAGE:
 
 EXAMPLE:
     ./install.sh                            only OS check
-    ./install.sh --link                     OS check & dotfiles link
-    ./install.sh --link --brew --cargo      OS check & dotfiles link & brew install & cargo install
+    ./install.sh --vim --zsh --tmux --git   OS check & dotfiles link
+    ./install.sh -b -c -v -z -t -g -m       recommended options
 
 OPTIONS:
     -h, --help              print help
-    -u, --unlink            dotfiles unlink
-    -l, --link              dotfiles link
+    -u, --unlink            all dotfiles unlink
     -b, --brew              brew install
     -c, --cargo             cargo install
     -v, --vim               only vim dotfiles link
