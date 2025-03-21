@@ -100,8 +100,8 @@ if command -v zoxide > /dev/null 2>&1; then
 fi
 
 # local specific file
-if [ -e $HOME/.config/.zshrc_local ]; then
-    source $HOME/.config/.zshrc_local
+if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
+    source ${ZDOTDIR:-$HOME}/.zshrc_local
 fi
 
 # my function

@@ -16,7 +16,7 @@ if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; t
 fi
 
 # local specific file
-if [ -e $HOME/.config/.zshenv_local ]; then
-    source $HOME/.config/.zshenv_local
+if [ -e ${ZDOTDIR:-$HOME}.zshenv_local ]; then
+    source ${ZDOTDIR:-$HOME}/.config/.zshenv_local
 fi
 #==================================================

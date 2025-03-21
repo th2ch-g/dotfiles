@@ -1,10 +1,11 @@
 .DS_Store
 .ssh
 .aws
-zsh/.zshenv_local
-zsh/.zshrc_local
-zsh/.zsh_history
-zsh/.zcompdump
+zsh/*
+!zsh/.zpreztorc
+!zsh/.zprofile
+!zsh/.zshenv
+!zsh/.zshrc
 vim/.vim/*
 !vim/.vim/.gitkeep
 !vim/.vim/autoload
