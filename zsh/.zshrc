@@ -106,7 +106,8 @@ fi
 
 # my function
 precmd() {
-  echo -ne "\e[6 q"
+    # reset cursor
+    echo -ne "\e[6 q"
 }
 
 tar-close() {
@@ -241,15 +242,33 @@ prepare_base_dir() {
 }
 
 vim_ai_off() {
-    sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink $HOME/.config/.vimrc)
-    a=$(dirname $(readlink $HOME/.config/.vimrc))
-    rm -f ${a}/.vimrc-e
+    # vim
+    if [ -L $HOME/.vimrc ]; then
+        sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink $HOME/.vimrc)
+        a=$(dirname $(readlink $HOME/.config/.vimrc))
+        rm -f ${a}/.vimrc-e
+    fi
+    # nvim
+    if [ -L $HOME/.config/nvim/init.vim ]; then
+        sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink $HOME/.config/nvim/init.vim)
+        a=$(dirname $(readlink $HOME/.config/init.vim))
+        rm -f ${a}/init.vim-e
+    fi
 }
 
 vim_ai_on() {
-    sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink $HOME/.config/.vimrc)
-    a=$(dirname $(readlink $HOME/.config/.vimrc))
-    rm -f ${a}/.vimrc-e
+    # vim
+    if [ -L $HOME/.vimrc ]; then
+        sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink $HOME/.vimrc)
+        a=$(dirname $(readlink $HOME/.config/.vimrc))
+        rm -f ${a}/.vimrc-e
+    fi
+    # nvim
+    if [ -L $HOME/.config/nvim/init.vim ]; then
+        sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink $HOME/.config/nvim/init.vim)
+        a=$(dirname $(readlink $HOME/.config/init.vim))
+        rm -f ${a}/init.vim-e
+    fi
 }
 
 function tide() {
