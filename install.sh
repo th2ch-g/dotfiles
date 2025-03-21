@@ -35,6 +35,21 @@ tmux_flag=1
 git_flag=1
 alacritty_flag=1
 
+print_info() { echo "[INFO] $1" >&1;  }
+print_warn() { echo "[WARN] $1" >&2;  }
+print_error() { echo "[ERROR] $1" >&2;  }
+create_link() {
+    local src=$1
+    local dest=$2
+    ln -nsi "$src" "$dest" && print_info "Linked $(basename "$dest")"
+}
+remove_link() {
+    local target=$1
+    if [ -L "$target" ]; then
+        unlink "$target" && print_info "Unlinked $(basename "$target")"
+    fi
+}
+
 # option parser
 while :;
 do
@@ -73,7 +88,7 @@ do
             break
             ;;
         -?*)
-            echo "[ERROR] Unknown option : ${1}" >&2
+            print_error "Unknown option: $1"
             exit 1
             ;;
         *)
@@ -90,28 +105,26 @@ elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
 elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
   OS='Cygwin'
 else
-  echo "[ERROR] Your platform ($(uname -a)) is not supported." >&2
+  print_error "Your platform ($(uname -a)) is not supported."
   exit 1
 fi
-echo "[INFO] detect $OS OS" >&1
+print_info "detect $OS OS"
 
 # cwd check
 if [ ! -e $PWD/install.sh ]; then
-    echo "[ERROR] install.sh is not detected" >&2
-    echo "[ERROR] execute ./install.sh in dotfiles directory" >&2
+    print_error "install.sh is not detected"
+    print_error "execute ./install.sh in dotfiles directory"
     exit 1
 fi
 
-# config dir
 if [ -d ${HOME}/.config ]; then
     mkdir -p ${HOME}/.config
 fi
 
-# unlink $HOME/[links]
 if [ $unlink_flag -eq 0 ]; then
-    echo "[INFO] Start unlink dotfiles" >&1
+    print_info "Start unlink dotfiles"
     set +e
-    echo "[WARN] Ignore error" >&2
+    print_warn "Ignore error"
 
     # vim
     for dotfile in .vim .vimrc;
@@ -121,94 +134,79 @@ if [ $unlink_flag -eq 0 ]; then
         fi
     done
 
-    # git
-    if [ -L ${HOME}/.config/git ]; then
-        unlink ${HOME}/.config/git && echo "[INFO] git unlink done" >&1
-    fi
+    for target in git zsh tmux alacritty;
+    do
+        remove_link ${HOME}/.config/$target
+    done
 
-    # zsh
-    if [ -L ${HOME}/.config/zsh ]; then
-        unlink ${HOME}/.config/zsh && echo "[INFO] zsh unlink done" >&1
-    fi
-
-    # tmux
-    if [ -L ${HOME}/.config/tmux ]; then
-        unlink ${HOME}/.config/tmux && echo "[INFO] tmux unlink done" >&1
-    fi
-
-    # alacritty
-    if [ -L ${HOME}/.config/alacritty ]; then
-        unlink ${HOME}/.config/alacritty && echo "[INFO] alacritty unlink done" >&1
-    fi
-
-    echo "[INFO] dotfiles unlink done" >&1
+    print_info "dotfiles unlink done"
     set -e
 fi
 
 # vim link
 if [ $vim_flag -eq 0 ]; then
-    echo "[INFO] Start link vim dotfiles" >&1
+    print_info "vim install start"
     # vim does not support config dir
     for dotfile in .vim .vimrc;
     do
-        ln -nsi $PWD/$dotfile $HOME/$dotfile && echo "[INFO] $dotfile link done" >&1
+        create_link ${PWD}/$dotfile ${HOME}/$dotfile
     done
     vim -c "PlugInstall" -c "qa"
-    echo "[INFO] vim dotfiles link done" >&1
+    print_info "vim install done"
 fi
 
 # zsh link
 if [ $zsh_flag -eq 0 ]; then
-    echo "[INFO] Start link zsh dotfiles" >&1
-    ln -nsi $PWD/zsh ${HOME}/.config/zsh
-    echo "[INFO] zsh dotfiles link done" >&1
+    print_info "zsh install start"
+    create_link ${PWD}/zsh ${HOME}/.config/zsh
+    print_info "zsh install done"
 fi
 
 # tmux link
 if [ $tmux_flag -eq 0 ]; then
-    echo "[INFO] Start link tmux dotfiles" >&1
-    ln -nsi $PWD/tmux ${HOME}/.config/tmux
-    echo "[INFO] tmux dotfiles link done" >&1
+    print_info "tmux install start"
+    create_link ${PWD}/tmux ${HOME}/.config/tmux
+    print_info "tmux install done"
 fi
 
 # git link
 if [ $git_flag -eq 0 ]; then
-    echo "[INFO] Start link git dotfiles" >&1
-    ln -nsi $PWD/git ${HOME}/.config/git
-    echo "[INFO] git dotfiles link done" >&1
+    print_info "git install start"
+    create_link ${PWD}/git ${HOME}/.config/git
+    print_info "git install done"
 fi
 
 # brew install
 if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
-    echo "[INFO] Start install brew" >&1
+    print_info "brew install start"
     if command -v brew > /dev/null 2>&1; then
-        echo "[INFO] brew is already installed" >&1
+        print_info "brew is already installed"
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     cd ./brew/ && brew bundle && cd ..
-    echo "[INFO] brew install done" >&1
+    print_info "brew install done"
 fi
 
 # cargo install
 if [ $cargo_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
-        echo "[INFO] Start install cargo" >&1
+        print_info "cargo install start"
         if command -v cargo > /dev/null 2>&1; then
-            echo "[INFO] cargo is already installed" >&1
+            print_info "cargo is already installed"
         else
             curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
         fi
         cd ./cargo/ && ./run.sh && cd ..
-        echo "[INFO] cargo install done" >&1
+        print_info "cargo install done"
     fi
 fi
 
 # alacritty link
 if [ $alacritty_flag -eq 0 ]; then
-    echo "[INFO] Start link alacritty dotfiles" >&1
-    ln -nsi $PWD/alacritty ${HOME}/.config/alacritty
-    echo "[INFO] alacritty dotfiles link done" >&1
+    print_info "alacritty install start"
+    create_link $PWD/alacritty/ ${HOME}/.config/alacritty
+    print_info "alacritty install done"
 fi
 
 echo "[INFO] done" >&1
