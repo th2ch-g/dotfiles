@@ -55,7 +55,6 @@ export PIPENV_VENV_IN_PROJECT=1
 ## by xdg-ninja
 export HISTFILE="$HOME/zsh/history"
 export ZDOTDIR="$HOME/.config/zsh"
-export XAUTHORITY="$HOME/.config/Xauthority"
 
 # alias
 alias ll="ls -stlh"
