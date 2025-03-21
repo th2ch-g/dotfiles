@@ -22,7 +22,6 @@ OPTIONS:
     -z, --zsh               only zsh dotfiles link
     -t, --tmux              only tmux dotfiles link
     -g, --git               only git dotfiles link
-    -m, --mytools           add $PWD/mytools export to ~/.zshrc_local
 '
 
 # default setting
@@ -34,7 +33,6 @@ vim_flag=1
 zsh_flag=1
 tmux_flag=1
 git_flag=1
-mytools_flag=1
 
 # option parser
 while :;
@@ -43,10 +41,6 @@ do
         -h | --help)
             echo "$USAGE" >&1
             exit 0
-            ;;
-        -l | --link)
-            link_flag=0
-            break
             ;;
         -u | --unlink)
             unlink_flag=0
@@ -69,9 +63,6 @@ do
             ;;
         -g | --git)
             git_flag=0
-            ;;
-        -m | --mytools)
-            mytools_flag=0
             ;;
        --)
             shift
@@ -181,41 +172,14 @@ if [ $git_flag -eq 0 ]; then
     echo "[INFO] git dotfiles link done" >&1
 fi
 
-# link
-if [ $link_flag -eq 0 ]; then
-    echo "[INFO] Start link dotfiles" >&1
-    for dotfile in .?*;
-    do
-        [ $dotfile = ".." ] && continue
-        [ $dotfile = ".git" ] && continue
-        [ $dotfile = ".gitignore" ] && continue
-        [ $dotfile = ".gitmodules" ] && continue
-        [ $dotfile = ".github" ] && continue
-        if [ $dotfile = ".zsh" ]; then
-            for i in $(ls -a $PWD/.zsh);
-            do
-                [ $i = "." ] && continue
-                [ $i = ".." ] && continue
-                ln -nsi $PWD/.zsh/$i $HOME/$i
-            done
-        else
-            ln -nsi $PWD/$dotfile $HOME/$dotfile
-        fi && echo "[INFO] $dotfile link done" >&1
-    done
-    echo "[INFO] dotfiles link done" >&1
-fi
-
-# mytools
-if [ $mytools_flag -eq 0 ]; then
-    echo "[INFO] Start adding mytools path to ~/.zshrc_local" >&1
-    echo "export PATH=\"$PWD/mytools:\$PATH\"" >> $HOME/.zshrc_local
-    echo "[INFO] add mytools path done" >&1
-fi
-
 # brew install
 if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     echo "[INFO] Start install brew" >&1
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if command -v brew > /dev/null 2>&1; then
+        echo "[INFO] brew is already installed" >&1
+    else
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
     cd ./brew/ && brew bundle && cd ..
     echo "[INFO] brew install done" >&1
 fi
@@ -224,7 +188,11 @@ fi
 if [ $cargo_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
         echo "[INFO] Start install cargo" >&1
-        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        if command -v cargo > /dev/null 2>&1; then
+            echo "[INFO] cargo is already installed" >&1
+        else
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        fi
         cd ./cargo/ && ./run.sh && cd ..
         echo "[INFO] cargo install done" >&1
     fi

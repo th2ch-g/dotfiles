@@ -7,6 +7,6 @@ RUN mkdir -p ~/works \
         && cd ~/works \
         && git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git \
         && cd ./dotfiles \
-        && ./install.sh -b -c -v -z -t -g
+        && ./install.sh -c -v -z -t -g
 
 RUN chsh -s /bin/zsh
