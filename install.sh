@@ -18,6 +18,7 @@ OPTIONS:
     -u, --unlink            all dotfiles unlink
     -b, --brew              brew install
     -c, --cargo             cargo install
+    -p, --python            python install
     -v, --vim               only vim dotfiles link
     -z, --zsh               only zsh dotfiles link
     -t, --tmux              only tmux dotfiles link
@@ -30,6 +31,7 @@ OPTIONS:
 unlink_flag=1
 brew_flag=1
 cargo_flag=1
+python_flag=1
 vim_flag=1
 zsh_flag=1
 tmux_flag=1
@@ -70,6 +72,9 @@ do
         -c | --cargo)
             cargo_flag=0
             ;;
+        --p | --python)
+            python_flag=0
+            ;;
         -v | --vim)
             vim_flag=0
             ;;
@@ -102,7 +107,7 @@ do
     shift
 done
 
-# OS judgment
+# OS check
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
 elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
@@ -114,6 +119,10 @@ else
   exit 1
 fi
 print_info "detect $OS OS"
+
+# CPU check
+arch=$(uname -m)
+print_info "detect $arch CPU"
 
 # cwd check
 if [ ! -e $PWD/install.sh ]; then
@@ -211,7 +220,7 @@ if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     print_info "brew install start"
     if command -v brew > /dev/null 2>&1; then
         print_info "brew is already installed"
-        print_info "brew bundle start"
+        print_info "brew bundle install start"
         cd ./brew/ && brew bundle && cd ..
     else
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -225,12 +234,47 @@ if [ $cargo_flag -eq 0 ]; then
         print_info "cargo install start"
         if command -v cargo > /dev/null 2>&1; then
             print_info "cargo is already installed"
-            print_info "cargo subcommands start"
+            print_info "cargo subcommands install start"
             cd ./cargo/ && ./run.sh && cd ..
         else
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
         fi
         print_info "cargo install done"
+    fi
+fi
+
+# python install
+if [ $python_flag -eq 0 ]; then
+    if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
+        print_info "python install start"
+        if command -v conda > /dev/null 2>&1; then
+            print_info "conda is already installed"
+            print_info "python commands install  start"
+            cd python && ./run.sh && cd ..
+        else
+            if [ $OS == "Mac" ]; then
+                if [[ $arch == "x86_64" || $arch == "amd64" ]]; then
+                    curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+                elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
+                    curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+                else
+                    print_error "Unknown architecture"
+                    exit 1
+                fi
+            fi
+            if [ $OS == "Linux" ]; then
+                if [[ $arch == "x86_64" || $arch == "amd64" ]]; then
+                    curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+                elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
+                    curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+                else
+                    print_error "Unknown architecture"
+                    exit 1
+                fi
+            fi
+            bash Miniconda3-latest-*-*.sh -p ${HOME}/works/tools/miniconda3 -b
+        fi
+        print_info "python install done"
     fi
 fi
 

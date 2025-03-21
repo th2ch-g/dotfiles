@@ -10,9 +10,6 @@ RUN mkdir -p ~/works \
         && cd ~/works \
         && git clone --depth 1 --branch dev/nvim --recursive -j 8 https://github.com/th2ch-g/dotfiles.git \
         && cd ./dotfiles \
-        && ./install.sh -c -v -z -t -g -n
+        && ./install.sh -c -v -z -t -g -n -p
 
 RUN chsh -s /bin/zsh
-
-# install cargo subcommands
-RUN cd ~/works/dotfiles && ./install.sh -c
