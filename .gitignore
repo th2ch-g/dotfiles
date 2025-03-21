@@ -1,8 +1,9 @@
 .DS_Store
 .ssh
 .aws
-.zshenv_local
-.zshrc_local
-.zshrc_conda
-.vim/*
-!.vim/.gitkeep
+zsh/.zshenv_local
+zsh/.zshrc_local
+zsh/.zshrc_conda
+vim/.vim/*
+!vim/.vim/.gitkeep
+!vim/.vim/autoload
