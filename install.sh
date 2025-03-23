@@ -208,11 +208,6 @@ fi
 if [ $neovim_flag -eq 0 ]; then
     print_info "neovim install start"
     create_link $PWD/nvim/ ${HOME}/.config/nvim
-    if command -v nvim >/dev/null 2>&1; then
-        set +e
-        nvim -e -c "PlugInstall" -c "qa"
-        set -e
-    fi
     print_info "neovim install done"
 fi
 
