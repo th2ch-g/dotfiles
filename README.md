@@ -2,7 +2,6 @@
 ![last-commit](https://img.shields.io/github/last-commit/th2ch-g/dotfiles)
 ![license](https://img.shields.io/github/license/th2ch-g/dotfiles)
 ![repo-size](https://img.shields.io/github/repo-size/th2ch-g/dotfiles)
-![CI](https://github.com/th2ch-g/dotfiles/actions/workflows/CI.yaml/badge.svg)
 
 ![example](others/example.png)
 
@@ -20,6 +19,8 @@
   - [Contents](#contents)
 
 ## Install
+- for each case needs to run `./install.sh -b -c -p` again
+
 ### For me
 ~~~shell
 git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
@@ -44,7 +45,7 @@ docker run --rm -it ghcr.io/th2ch-g/dotfiles zsh
 #### Case2: Build locally
 - If you want to use as guest, change Dockerfile
 ~~~shell
-git clone --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
 docker image build -t myenv dotfiles/docker && \
 docker run --rm -it myenv zsh
 ~~~
@@ -69,6 +70,8 @@ git submodule update --remote <submodule_path>
 ## Contents
 - [vim](https://github.com/vim/vim) (>= v8.2 tested)
   - [vim-plug](https://github.com/junegunn/vim-plug)
+- [neovim](https://github.com/neovim/neovim) (>= v0.10.4 tested)
+  - [lazy.nvim](https://github.com/folke/lazy.nvim)
 - [zsh](https://github.com/zsh-users/zsh) (>= v5.8 tested)
   - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
   - [zsh-completions](https://github.com/zsh-users/zsh-completions)
