@@ -19,6 +19,8 @@
   - [Contents](#contents)
 
 ## Install
+- for each case needs to run `./install.sh -b -c -p` again
+
 ### For me
 ~~~shell
 git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
