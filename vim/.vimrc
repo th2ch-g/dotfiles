@@ -163,11 +163,6 @@ endif
 " :set paste
 " :set nopaste
 
-" codeium on/off
-" 0 => disable
-" 1 => enable
-let g:codeium_enabled = 1
-
 call plug#begin()
 Plug 'tomasiser/vim-code-dark'
 Plug 'cohama/lexima.vim'
@@ -175,13 +170,13 @@ Plug 'tomtom/tcomment_vim'
 Plug 'th2ch-g/my-vim-sonictemplate'
 Plug 'machakann/vim-sandwich'
 Plug 'airblade/vim-gitgutter'
-if g:codeium_enabled
+if exists("$VIM_AI") && $VIM_AI == "1"
     Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
 endif
 call plug#end()
 
 " see https://github.com/Exafunction/codeium.vim
-if g:codeium_enabled
+if exists("$VIM_AI") && $VIM_AI == "1"
     let g:codeium_disable_bindings = 1
     imap <script><silent><nowait><expr> <C-f> codeium#Accept()
     imap <script><silent><nowait><expr> <C-k> codeium#AcceptNextWord()

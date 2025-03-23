@@ -87,15 +87,20 @@ vim.cmd("set encoding=utf-8")
 vim.cmd("set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp")
 vim.cmd("set ffs=unix,dos,mac")
 
-
-require("lazy").setup({
+local plugins = {
     { 'tomasiser/vim-code-dark' },
     { 'cohama/lexima.vim' },
     { 'tomtom/tcomment_vim' },
     { 'th2ch-g/my-vim-sonictemplate' },
     { 'machakann/vim-sandwich' },
     { 'airblade/vim-gitgutter' },
-    { 'Exafunction/codeium.vim',
+}
+
+local use_ai = vim.fn.getenv("VIM_AI") == "1"
+
+if use_ai then
+    table.insert(plugins, {
+        'Exafunction/codeium.vim',
         event = 'BufEnter',
         config = function()
             vim.g.codeium_disable_bindings = 1
@@ -107,8 +112,8 @@ require("lazy").setup({
             vim.keymap.set('i', '<C-d>', '<Cmd>call codeium#Clear()<CR>', { silent = true, nowait = true })
             vim.opt.statusline = vim.opt.statusline:get() .. " %3{codeium#GetStatusString()}"
         end
-    },
-    {
+    })
+    table.insert(plugins, {
       "yetone/avante.nvim",
       event = "VeryLazy",
       version = false, -- Never set this value to "*"! Never!
@@ -126,6 +131,7 @@ require("lazy").setup({
         },
         gemini = {
             model = "gemini-2.0-flash",
+            -- model = "gemini-2.0-pro-exp-02-05",
             temperature = 0,
             max_tokens = 4096,
         }
@@ -171,8 +177,10 @@ require("lazy").setup({
           ft = { "markdown", "Avante" },
         },
       },
-    }
-})
+    })
+end
+
+require("lazy").setup(plugins)
 
 vim.cmd("colorscheme codedark")
 

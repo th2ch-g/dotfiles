@@ -20,7 +20,6 @@ export LANG=ja_JP.UTF-8
 setopt share_history
 setopt histignorealldups
 setopt auto_cd
-chpwd() { ls -a }
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 bindkey -e
 
@@ -110,6 +109,8 @@ precmd() {
     # reset cursor
     echo -ne "\e[6 q"
 }
+
+chpwd() { ls -a }
 
 tar-close() {
     tar -cvzf ${1}.tar.gz $1
@@ -243,33 +244,11 @@ prepare_base_dir() {
 }
 
 vim_ai_off() {
-    # vim
-    if [ -L $HOME/.vimrc ]; then
-        sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink $HOME/.vimrc)
-        a=$(dirname $(readlink $HOME/.config/.vimrc))
-        rm -f ${a}/.vimrc-e
-    fi
-    # nvim
-    if [ -L $HOME/.config/nvim/init.vim ]; then
-        sed -i -e "s/let g:codeium_enabled = 1/let g:codeium_enabled = 0/g" $(readlink $HOME/.config/nvim/init.vim)
-        a=$(dirname $(readlink $HOME/.config/init.vim))
-        rm -f ${a}/init.vim-e
-    fi
+    export VIM_AI=0
 }
 
 vim_ai_on() {
-    # vim
-    if [ -L $HOME/.vimrc ]; then
-        sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink $HOME/.vimrc)
-        a=$(dirname $(readlink $HOME/.config/.vimrc))
-        rm -f ${a}/.vimrc-e
-    fi
-    # nvim
-    if [ -L $HOME/.config/nvim/init.vim ]; then
-        sed -i -e "s/let g:codeium_enabled = 0/let g:codeium_enabled = 1/g" $(readlink $HOME/.config/nvim/init.vim)
-        a=$(dirname $(readlink $HOME/.config/init.vim))
-        rm -f ${a}/init.vim-e
-    fi
+    export VIM_AI=1
 }
 
 function tide() {
