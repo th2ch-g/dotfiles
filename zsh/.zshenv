@@ -10,6 +10,7 @@ export TERMINFO=/usr/share/terminfo # for tmux
 ## by xdg-ninja
 export HISTFILE="$HOME/.config/zsh/history"
 export ZDOTDIR="$HOME/.config/zsh"
+export VIM_AI=1
 
 if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprofile"
