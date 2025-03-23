@@ -10,5 +10,4 @@ vim/.vim/*
 !vim/.vim/.gitkeep
 !vim/.vim/autoload
 nvim/*
-!nvim/init.vim
-!nvim/autoload
+!nvim/init.lua
