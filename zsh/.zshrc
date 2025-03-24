@@ -93,6 +93,7 @@ alias batp="bat -p --paging=always"
 alias sshxy="ssh -XY"
 alias rusts="rust-script"
 alias wget="wget --hsts-file=$HOME/.config/wget-hsts"
+alias pass="vim_ai_off; pass"
 
 # zoxide
 if command -v zoxide > /dev/null 2>&1; then

@@ -12,7 +12,7 @@ EXAMPLE:
     ./install.sh                            only OS check
     ./install.sh --vim --zsh --tmux --git   OS check & dotfiles link
     ./install.sh --unlink                   all dotfiles unlink
-    ./install.sh -b -c -p -v -z -t -g -n    recommended options
+    ./install.sh -b -c -p -v -z -t -g -n -m my options
 
 OPTIONS:
     -h, --help              print help
@@ -20,6 +20,7 @@ OPTIONS:
     -b, --brew              brew install
     -c, --cargo             cargo install
     -p, --python            python install
+    -m, --macos             macos settings
     -v, --vim               only vim dotfiles link
     -z, --zsh               only zsh dotfiles link
     -t, --tmux              only tmux dotfiles link
@@ -33,6 +34,7 @@ unlink_flag=1
 brew_flag=1
 cargo_flag=1
 python_flag=1
+macos_flag=1
 vim_flag=1
 zsh_flag=1
 tmux_flag=1
@@ -75,6 +77,9 @@ do
             ;;
         -p | --python)
             python_flag=0
+            ;;
+        -m | --macos)
+            macos_flag=0
             ;;
         -v | --vim)
             vim_flag=0
@@ -273,6 +278,15 @@ if [ $python_flag -eq 0 ]; then
             print_info "please run: conda init zsh"
         fi
         print_info "python install done"
+    fi
+fi
+
+# macos settings
+if [ $macos_flag -eq 0 ]; then
+    if [ $OS != "Mac" ]; then
+        print_error "this script is only for macOS; skipping macos settings"
+    else
+        cd macos && ./run.sh && cd ..
     fi
 fi
 

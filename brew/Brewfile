@@ -11,7 +11,10 @@ brew "tmux"
 brew "pre-commit"
 brew "pass"
 brew "htop"
+brew "gnupg"
+brew "gh"
 brew "fzf"
 # | sort -k 1 -r
+# run: brew bundle dump
 # cask "keycastr"
 # cask "alacritty"
