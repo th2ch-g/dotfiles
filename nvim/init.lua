@@ -94,6 +94,18 @@ local plugins = {
     { 'th2ch-g/my-vim-sonictemplate' },
     { 'machakann/vim-sandwich' },
     { 'airblade/vim-gitgutter' },
+    {
+      "folke/tokyonight.nvim",
+      lazy = false,
+      priority = 1000,
+      opts = {
+        transparent = true,
+        styles = {
+          sidebars = "transparent",
+          floats = "transparent",
+        },
+      },
+    },
 }
 
 local use_ai = vim.fn.getenv("VIM_AI") == "1"
@@ -130,7 +142,9 @@ if use_ai then
           --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
         },
         gemini = {
-            model = "gemini-2.0-flash",
+            -- model = "gemini-2.0-flash-thinking-exp-01-21",
+            model = "gemini-2.5-pro-exp-03-25",
+            -- model = "gemini-2.0-flash",
             -- model = "gemini-2.0-pro-exp-02-05",
             temperature = 0,
             max_tokens = 4096,
@@ -230,7 +244,8 @@ end
 
 require("lazy").setup(plugins)
 
-vim.cmd("colorscheme codedark")
+-- vim.cmd("colorscheme codedark")
+vim.cmd("colorscheme tokyonight")
 
 vim.cmd("hi Normal        ctermbg=NONE guibg=NONE")
 vim.cmd("hi SignColumn    ctermbg=NONE guibg=NONE")

@@ -23,14 +23,14 @@
 
 ### For me
 ~~~shell
-git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh -b -c -p -v -z -t -g -n -m
 ~~~
 
 ### For Guest
 ~~~shell
-git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --zsh --vim --tmux
 ~~~
@@ -45,7 +45,7 @@ docker run --rm -it ghcr.io/th2ch-g/dotfiles zsh
 #### Case2: Build locally
 - If you want to use as guest, change Dockerfile
 ~~~shell
-git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git && \
+git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 docker image build -t myenv dotfiles/docker && \
 docker run --rm -it myenv zsh
 ~~~

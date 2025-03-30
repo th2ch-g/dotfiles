@@ -8,8 +8,10 @@ RUN ln -sf /usr/bin/vim.basic /usr/bin/vim
 
 RUN mkdir -p ~/works \
         && cd ~/works \
-        && git clone --depth 1 --branch main --recursive -j 8 https://github.com/th2ch-g/dotfiles.git \
+        && git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git \
         && cd ./dotfiles \
         && ./install.sh -c -v -z -t -g -n -p
+
+# `git clone --depth 1 -j 8 --filter=blob:none` will be slower and bigger
 
 RUN chsh -s /bin/zsh

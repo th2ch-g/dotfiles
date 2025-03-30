@@ -12,4 +12,10 @@ fi
 # defaults write com.apple.dock magnification -bool true
 # defaults write com.apple.dock position -string "left"
 
+# Cursor
+
+
+# Trackpad
+
+
 echo "done" >&1
