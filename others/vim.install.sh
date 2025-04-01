@@ -3,7 +3,7 @@
 set -e
 
 thread=15
-vim_link=https://github.com/vim/vim/archive/refs/tags/v9.0.0539.tar.gz
+vim_link=https://github.com/vim/vim/archive/refs/tags/v9.1.1265.tar.gz
 install_path=$PWD
 
 curl -L $vim_link -o vim.tar.gz && \
