@@ -210,9 +210,9 @@ make_local_file() {
     flag=1
     for i in ${arr[@]};
     do
-        if [ ! -e $HOME/.config/${i} ]; then
-            touch $HOME/.config/${i}
-            echo "[INFO] touch ${HOME}/.config/${i}" >&1
+        if [ ! -e $HOME/.config/zsh/${i} ]; then
+            touch $HOME/.config/zsh/${i}
+            echo "[INFO] touch ${HOME}/.config/zsh/${i}" >&1
             flag=0
         fi
     done
