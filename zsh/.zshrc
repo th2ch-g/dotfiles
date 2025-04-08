@@ -33,11 +33,11 @@ setopt extended_history
 setopt hist_save_no_dups
 setopt hist_ignore_all_dups
 
-autoload -Uz history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
+# autoload -Uz history-search-end
+# zle -N history-beginning-search-backward-end history-search-end
+# zle -N history-beginning-search-forward-end history-search-end
+# bindkey "^P" history-beginning-search-backward-end
+# bindkey "^N" history-beginning-search-forward-end
 
 # compinit
 autoload -Uz compinit && compinit
@@ -50,7 +50,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # export
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
-export PIPENV_VENV_IN_PROJECT=1
 
 # alias
 alias ll="ls -stlh"

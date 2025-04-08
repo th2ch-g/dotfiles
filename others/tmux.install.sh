@@ -7,7 +7,7 @@ set -e
 # release link
 thread=15
 install_path=$PWD
-tmux_link=https://github.com/tmux/tmux/releases/download/3.3a/tmux-3.3a.tar.gz
+tmux_link=https://github.com/tmux/tmux/releases/download/3.5a/tmux-3.5a.tar.gz
 libevent_link=https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz
 ncurses_link=http://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz
 
