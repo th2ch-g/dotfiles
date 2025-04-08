@@ -1,0 +1,22 @@
+ServerAliveInterval 60
+AddkeysToAgent yes
+UseKeychain yes
+ForwardAgent yes
+XAuthLocation /opt/X11/bin/xauth
+ForwardX11Trusted yes
+ForwardX11 yes
+
+# My github account
+Host github github.com
+    HostName github.com
+    IdentityFile ~/.ssh/id_rsa
+    User git
+
+# sample ssh through intermediary host
+# Host SAMPLE_HOST
+#     HostName aaa.bb.ccc.dd
+#     User name
+#     ProxyCommand ssh -W %h:%p intermediary_host
+#     IdentityFile /path/to/id_rsa
+
+
