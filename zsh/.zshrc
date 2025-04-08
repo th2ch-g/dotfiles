@@ -251,6 +251,14 @@ vim_ai_on() {
     export VIM_AI=1
 }
 
+
+prepare_all() {
+    prepare_base_dir
+    make_local_file
+
+}
+
+
 function tide() {
   local USAGE='
 tide:

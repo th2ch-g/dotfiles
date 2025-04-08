@@ -275,7 +275,7 @@ if [ $python_flag -eq 0 ]; then
             fi
             bash Miniconda3-latest-*-*.sh -p ${HOME}/works/tools/miniconda3 -b
             rm -f Miniconda3-latest-*-*.sh
-            print_info "please run: conda init zsh"
+            print_info "please run: ${HOME}/works/tools/miniconda3/bin/conda init zsh"
         fi
         print_info "python install done"
     fi

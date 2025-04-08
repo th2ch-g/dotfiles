@@ -1,4 +1,4 @@
-tap "homebrew/bundle"
+cask "xquartz"
 cask "visual-studio-code"
 cask "slack"
 cask "iterm2"
@@ -16,6 +16,7 @@ brew "gnupg"
 brew "gh"
 brew "fzf"
 # | sort -k 1 -r
+# tap "homebrew/bundle"
 # run: brew bundle dump
 # cask "keycastr"
 # cask "alacritty"
