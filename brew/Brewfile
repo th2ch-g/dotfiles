@@ -15,6 +15,7 @@ brew "htop"
 brew "gnupg"
 brew "gh"
 brew "fzf"
+brew "dockutil"
 # | sort -k 1 -r
 # tap "homebrew/bundle"
 # run: brew bundle dump
