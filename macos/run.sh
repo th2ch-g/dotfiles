@@ -14,7 +14,7 @@ defaults write com.apple.dock show-recents -bool false
 
 
 # Cursor
-defaults write com.apple.universalaccess mouseDriverCursorSize -float 1.5
+sudo defaults write com.apple.universalaccess mouseDriverCursorSize -float 1.5
 
 
 # Keyboard
@@ -43,21 +43,32 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 # Window
 defaults write com.apple.WindowManager GloballyEnabled -bool false
 
+
 # Menubar
 defaults write NSGlobalDomain _HIHideMenuBar -bool true
+
 
 # DS Store
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 
+# Xquartz
+defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+
+
 # dockutil
 if command -v dockutil >/dev/null 2>&1; then
     dockutil --remove all --no-restart
-    for app in '/System/Applications/System Settings.app' '/System/Applications/Launchpad.app' '/Applications/Google Chrome.app' '/Applications/Slack.app' '/Applications/iTerm.app' '/Applications/Docker.app';
-    do
-        dockutil --add "$app" --no-restart --position end
-    done
+    dockutil --add '/System/Applications/System Settings.app' --allhomes --no-restart
+    dockutil --add '/System/Applications/Launchpad.app' --allhomes --no-restart
+    dockutil --add '/Applications/Google Chrome.app' --allhomes --no-restart
+    dockutil --add '/Applications/Slack.app' --allhomes --no-restart
+    dockutil --add '/Applications/iTerm.app' --allhomes --no-restart
+    dockutil --add '/Applications/Docker.app' --allhomes --no-restart
+    dockutil --add '~/Desktop' --allhomes --no-restart
+    dockutil --add '~/Downloads' --allhomes --no-restart
+    killall Dock
 else
     echo "please install dockutil using brew" >&2
     exit 0
