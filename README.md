@@ -81,8 +81,9 @@ git submodule update --remote <submodule_path>
 - [tmux](https://github.com/tmux/tmux) (>= 3.0a tested)
 - [iTerm2](https://github.com/gnachman/iTerm2)
   - [Iceberg-iTerm2](https://github.com/Arc0re/Iceberg-iTerm2)
-- mytools
 - [brew](https://github.com/Homebrew/brew)
+- macos
+  - [dockutil](https://github.com/kcrawford/dockutil)
 - cargo
 - docker
 - others

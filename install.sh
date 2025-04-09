@@ -275,7 +275,29 @@ if [ $python_flag -eq 0 ]; then
             fi
             bash Miniconda3-latest-*-*.sh -p ${HOME}/works/tools/miniconda3 -b
             rm -f Miniconda3-latest-*-*.sh
-            print_info "please run: ${HOME}/works/tools/miniconda3/bin/conda init zsh"
+            CONDA_BASE_PATH=${HOME}/works/tools/miniconda3
+
+            echo """
+# <<< Conda initialization for Zsh >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup=\"\$('$CONDA_BASE_PATH/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)\"
+if [ \$? -eq 0 ]; then
+    eval \"\$__conda_setup\"
+else
+    if [ -f \"$CONDA_BASE_PATH/etc/profile.d/conda.sh\" ]; then
+        . \"$CONDA_BASE_PATH/etc/profile.d/conda.sh\"
+    else
+        export PATH=\"$CONDA_BASE_PATH/bin:\$PATH\"
+    fi
+fi
+unset __conda_setup
+# <<< Conda initialization for Zsh >>>
+
+""" >> ${HOME}/.config/zsh/.zshrc_local
+
+        print_info "conda init was written to ${HOME}/.config/zsh/.zshrc_local"
+        print_info "conda install done"
+
         fi
         print_info "python install done"
     fi
