@@ -22,10 +22,23 @@
 - for each case needs to run `./install.sh -b -c -p` again
 
 ### For me
+- 1st time(SSH)
 ~~~shell
 git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh -b -c -p -v -z -t -g -n -m
+./install.sh -b -c -p -v -z -t -g -n
+~~~
+
+- 1st time(HTTP)
+~~~shell
+git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
+cd ./dotfiles && \
+./install.sh -b -c -p -v -z -t -g -n
+~~~
+
+- 2nd time
+~~~shell
+./install.sh -b -c -p -m
 ~~~
 
 ### For Guest
@@ -48,6 +61,11 @@ docker run --rm -it ghcr.io/th2ch-g/dotfiles zsh
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 docker image build -t myenv dotfiles/docker && \
 docker run --rm -it myenv zsh
+~~~
+
+## Commit
+~~~shell
+git remote set-url origin git@github.com:th2ch-g/dotfiles.git
 ~~~
 
 ## Update

@@ -94,7 +94,8 @@ set hlsearch
 set incsearch
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 set mouse=a
-set ttymouse=xterm2
+" set ttymouse=xterm2
+set ttymouse=sgr
 set foldmethod=indent
 set foldlevel=10
 set foldcolumn=3

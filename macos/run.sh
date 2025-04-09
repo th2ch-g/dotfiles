@@ -14,7 +14,9 @@ defaults write com.apple.dock show-recents -bool false
 
 
 # Cursor
-sudo defaults write com.apple.universalaccess mouseDriverCursorSize -float 1.5
+# Error
+# defaults write com.apple.universalaccess mouseDriverCursorSize -float 5
+# defaults write com.apple.universalaccess accessibilityCursorSize -float 3.0
 
 
 # Keyboard
