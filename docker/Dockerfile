@@ -15,3 +15,9 @@ RUN mkdir -p ~/works \
 # `git clone --depth 1 -j 8 --filter=blob:none` will be slower and bigger
 
 RUN chsh -s /bin/zsh
+
+# skip this for saving time
+# it takes longer time and generates errors
+# RUN cd ~/works/dotfiles && ./install -c -p
+
+CMD ["/bin/zsh", "-c", "vim -c PlugInstall -c qa && echo 'Run: prepare_all && ./install.sh -c -p' && zsh"]

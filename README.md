@@ -60,7 +60,7 @@ docker run --rm -it ghcr.io/th2ch-g/dotfiles zsh
 ~~~shell
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 docker image build -t myenv dotfiles/docker && \
-docker run --rm -it myenv zsh
+docker run --rm -it myenv
 ~~~
 
 ## Commit
