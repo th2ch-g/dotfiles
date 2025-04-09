@@ -44,6 +44,7 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 
 # Window
 defaults write com.apple.WindowManager GloballyEnabled -bool false
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 
 
 # Menubar
@@ -68,6 +69,7 @@ if command -v dockutil >/dev/null 2>&1; then
     dockutil --add '/Applications/Slack.app' --allhomes --no-restart
     dockutil --add '/Applications/iTerm.app' --allhomes --no-restart
     dockutil --add '/Applications/Docker.app' --allhomes --no-restart
+    dockutil --add '/Applications/Utilities/XQuartz.app' --allhomes --no-restart
     dockutil --add '~/Desktop' --allhomes --no-restart
     dockutil --add '~/Downloads' --allhomes --no-restart
     killall Dock
