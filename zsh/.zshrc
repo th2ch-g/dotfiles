@@ -278,8 +278,8 @@ EXAMPLE:
 OPTIONS:
     -h, --help              Print help
     -n, --name [NAME]       Name of tmux window [default: home]
-    -t, --type {1,2,3}      Type of window. Choose {1,2,3}.
-                            type1 means 2+3 window, type2 means 2x2 window, type3 means 1+1 window [default: 1]
+    -t, --type {1,2,3,4}    Type of window. Choose {1,2,3}.
+    type1 means 2+3 window, type2 means 2x2 window, type3 means 1+1 window(horizontal), type4 means 1+1 window(vertical) [default: 1]
     -x, --top-off           Do not put on top on the right edge [default: not set]
     -c, --cmd [command]     Command to run after log into tmux
 '
@@ -323,6 +323,9 @@ OPTIONS:
         elif [[ "$2" == "3" ]]; then
           echo "[INFO] window type is \"type3\""
           window_type="3"
+        elif [[ "$2" == "4" ]]; then
+            echo "[INFO] window type is \"type4\""
+            window_type="4"
         else
           echo "[ERROR] window_type must be \"1\", \"2\" or \"3\"" >&2
           return 1
@@ -407,6 +410,16 @@ OPTIONS:
 
   if [[ "$window_type" == "3" ]]; then
     tmux split-window -h
+    tmux select-pane -t 0
+    if [[ -n "$cmd" ]]; then
+      for i in {0..1}; do
+        tmux send-keys -t "$i" "$cmd" C-m
+      done
+    fi
+  fi
+
+  if [[ "$window_type" == "4" ]]; then
+    tmux split-window -v
     tmux select-pane -t 0
     if [[ -n "$cmd" ]]; then
       for i in {0..1}; do
