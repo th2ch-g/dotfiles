@@ -308,7 +308,7 @@ if [ $macos_flag -eq 0 ]; then
     if [ $OS != "Mac" ]; then
         print_error "this script is only for macOS; skipping macos settings"
     else
-        cd macos && ./run.sh && cd ..
+        cd macos && ./run.sh --dockutil && cd ..
     fi
 fi
 
