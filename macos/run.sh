@@ -92,10 +92,16 @@ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 defaults write com.apple.screencapture location ~/Downloads/
 defaults write com.apple.screencapture type png
 defaults write com.apple.screencapture name "ss"
+defaults write com.apple.screencapture disable-sound -bool true
 
 
 # Xquartz
 defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+
+
+# Sound
+defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -bool false
+defaults write NSGlobalDomain com.apple.sound.beep.feedback -bool false
 
 
 # dockutil

@@ -106,6 +106,12 @@ local plugins = {
         },
       },
     },
+    {
+        "previm/previm",
+        config = function()
+            vim.g.previm_open_cmd = 'open -a "Google Chrome"'
+        end
+    },
 }
 
 local use_ai = vim.fn.getenv("VIM_AI") == "1"
@@ -234,7 +240,8 @@ if use_ai then
           -- Make sure to set this up properly if you have lazy=true
           'MeanderingProgrammer/render-markdown.nvim',
           opts = {
-            file_types = { "markdown", "Avante" },
+            -- file_types = { "markdown", "Avante" },
+            file_types = { "Avante" },
           },
           ft = { "markdown", "Avante" },
         },

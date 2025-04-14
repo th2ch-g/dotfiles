@@ -245,6 +245,7 @@ if [ $cargo_flag -eq 0 ]; then
 fi
 
 # python install
+# TODO: micromamba?
 if [ $python_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
         print_info "python install start"

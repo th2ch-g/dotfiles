@@ -204,4 +204,5 @@ hi ColorColumn   ctermbg=NONE guibg=NONE
 
 set novisualbell
 set noerrorbells
+set belloff=all
 set t_vb=
