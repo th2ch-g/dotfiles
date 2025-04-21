@@ -3,8 +3,6 @@
 ![license](https://img.shields.io/github/license/th2ch-g/dotfiles)
 ![repo-size](https://img.shields.io/github/repo-size/th2ch-g/dotfiles)
 
-![example](others/example.png)
-
 - [dotfiles](#dotfiles)
   - [Install](#install)
     - [For me](#for-me)
