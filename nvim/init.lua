@@ -11,74 +11,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-vim.cmd("set autoindent")
-vim.cmd("set autoread")
-vim.cmd("set backspace=indent,eol,start")
-vim.cmd("set cindent")
-vim.cmd("set clipboard=unnamed")
-vim.cmd("set cursorline")
-vim.cmd("set display=uhex")
-vim.cmd("set encoding=utf-8")
-vim.cmd("set expandtab")
-vim.cmd("set fenc=utf-8")
-vim.cmd("set ffs=unix,dos,mac")
-vim.cmd("set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp")
-vim.cmd("set foldcolumn=3")
-vim.cmd("set foldlevel=10")
-vim.cmd("set foldmethod=indent")
-vim.cmd("set formatoptions=lmoq")
-vim.cmd("set hidden")
-vim.cmd("set hlsearch")
-vim.cmd("set ignorecase")
-vim.cmd("set incsearch")
-vim.cmd("set laststatus=2")
-vim.cmd("set list")
-vim.cmd("set listchars=tab:>\\")
-vim.cmd("set matchpairs& matchpairs+=<:>")
-vim.cmd("set matchtime=1")
-vim.cmd("set mouse=a")
-vim.cmd("set nobackup")
-vim.cmd("set noexpandtab")
-vim.cmd("set noswapfile")
-vim.cmd("set notitle")
-vim.cmd("set nowrap")
-vim.cmd("set number")
-vim.cmd("set ruler")
-vim.cmd("set scrolloff=5")
-vim.cmd("set shiftwidth=4")
-vim.cmd("set shortmess-=S")
-vim.cmd("set showcmd")
-vim.cmd("set showmatch")
-vim.cmd("set showmode")
-vim.cmd("set smartcase")
-vim.cmd("set smartindent")
-vim.cmd("set softtabstop=4")
-vim.cmd("set statusline=%<%f\\ #%n%m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%y%=%l,%c%V%8P")
-vim.cmd("set tabstop=4 shiftwidth=4 softtabstop=0")
-vim.cmd("set title")
-vim.cmd("set tw=0")
-vim.cmd("set virtualedit=onemore")
-vim.cmd("set visualbell")
-vim.cmd("set whichwrap=b,s,h,s,<,>,[,]")
-vim.cmd("set wildmenu")
-vim.cmd("set wildmode=list:full")
-vim.cmd("set wrapscan")
--- vim.cmd("set termencoding=utf-8")
-
-vim.cmd("syntax enable")
-vim.cmd("syntax on")
-
-vim.cmd("let g:netrw_dirhistmax = 0")
-
-vim.cmd("nmap <Esc><Esc> :nohlsearch<CR><Esc>")
-
-vim.keymap.set("t", "<ESC>", [[<C-\><C-n>]], { silent = true })
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",
-    command = "%s/\\s\\+$//ge",
-})
-
 local plugins = {
     -- colorschemes
     -- {
@@ -198,54 +130,58 @@ if use_ai then
                 temperature = 0,
                 max_tokens = 4096,
             },
-        },
-        hints = { enabled = true },
-        windows = {
-            ---@type "right" | "left" | "top" | "bottom"
-            position = "right", -- the position of the sidebar
-            wrap = true, -- similar to vim.o.wrap
-            width = 30, -- default % based on available width
-            sidebar_header = {
-                enabled = true, -- true, false to enable/disable the header
-                align = "center", -- left, center, right for title
-                rounded = true,
+            cursor_applying_provider = "gemini",
+            behaviour = {
+                enable_cursor_planning_mode = true,
             },
-            input = {
-                prefix = "> ",
-                height = 8, -- Height of the input window in vertical layout
+            hints = { enabled = true },
+            windows = {
+                ---@type "right" | "left" | "top" | "bottom"
+                position = "right", -- the position of the sidebar
+                wrap = true, -- similar to vim.o.wrap
+                width = 30, -- default % based on available width
+                sidebar_header = {
+                    enabled = true, -- true, false to enable/disable the header
+                    align = "center", -- left, center, right for title
+                    rounded = true,
+                },
+                input = {
+                    prefix = "> ",
+                    height = 8, -- Height of the input window in vertical layout
+                },
+                edit = {
+                    border = "rounded",
+                    start_insert = true, -- Start insert mode when opening the edit window
+                },
+                ask = {
+                    floating = false, -- Open the 'AvanteAsk' prompt in a floating window
+                    start_insert = true, -- Start insert mode when opening the ask window
+                    border = "rounded",
+                    ---@type "ours" | "theirs"
+                    focus_on_apply = "ours", -- which diff to focus after applying
+                },
             },
-            edit = {
-                border = "rounded",
-                start_insert = true, -- Start insert mode when opening the edit window
+            highlights = {
+                ---@type AvanteConflictHighlights
+                diff = {
+                    current = "DiffText",
+                    incoming = "DiffAdd",
+                },
             },
-            ask = {
-                floating = false, -- Open the 'AvanteAsk' prompt in a floating window
-                start_insert = true, -- Start insert mode when opening the ask window
-                border = "rounded",
-                ---@type "ours" | "theirs"
-                focus_on_apply = "ours", -- which diff to focus after applying
-            },
-        },
-        highlights = {
-            ---@type AvanteConflictHighlights
+            --- @class AvanteConflictUserConfig
             diff = {
-                current = "DiffText",
-                incoming = "DiffAdd",
+                autojump = true,
+                ---@type string | fun(): any
+                list_opener = "copen",
+                --- Override the 'timeoutlen' setting while hovering over a diff (see :help timeoutlen).
+                --- Helps to avoid entering operator-pending mode with diff mappings starting with `c`.
+                --- Disable by setting to -1.
+                override_timeoutlen = 500,
             },
-        },
-        --- @class AvanteConflictUserConfig
-        diff = {
-            autojump = true,
-            ---@type string | fun(): any
-            list_opener = "copen",
-            --- Override the 'timeoutlen' setting while hovering over a diff (see :help timeoutlen).
-            --- Helps to avoid entering operator-pending mode with diff mappings starting with `c`.
-            --- Disable by setting to -1.
-            override_timeoutlen = 500,
-        },
-        suggestion = {
-            debounce = 600,
-            throttle = 600,
+            suggestion = {
+                debounce = 600,
+                throttle = 600,
+            },
         },
         -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
         build = "make",
@@ -293,6 +229,73 @@ if use_ai then
 end
 
 require("lazy").setup(plugins)
+
+vim.cmd("set autoindent")
+vim.cmd("set autoread")
+vim.cmd("set backspace=indent,eol,start")
+vim.cmd("set cindent")
+vim.cmd("set clipboard=unnamed")
+vim.cmd("set cursorline")
+vim.cmd("set display=uhex")
+vim.cmd("set encoding=utf-8")
+vim.cmd("set expandtab")
+vim.cmd("set fenc=utf-8")
+vim.cmd("set ffs=unix,dos,mac")
+vim.cmd("set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp")
+vim.cmd("set foldcolumn=3")
+vim.cmd("set foldlevel=10")
+vim.cmd("set foldmethod=indent")
+vim.cmd("set formatoptions=lmoq")
+vim.cmd("set hidden")
+vim.cmd("set hlsearch")
+vim.cmd("set ignorecase")
+vim.cmd("set incsearch")
+vim.cmd("set laststatus=2")
+vim.cmd("set list")
+vim.cmd("set listchars=tab:>\\")
+vim.cmd("set matchpairs& matchpairs+=<:>")
+vim.cmd("set matchtime=1")
+vim.cmd("set mouse=a")
+vim.cmd("set nobackup")
+vim.cmd("set noswapfile")
+vim.cmd("set notitle")
+vim.cmd("set nowrap")
+vim.cmd("set number")
+vim.cmd("set ruler")
+vim.cmd("set scrolloff=5")
+vim.cmd("set shiftwidth=4")
+vim.cmd("set shortmess-=S")
+vim.cmd("set showcmd")
+vim.cmd("set showmatch")
+vim.cmd("set showmode")
+vim.cmd("set smartcase")
+vim.cmd("set smartindent")
+vim.cmd("set softtabstop=4")
+vim.cmd("set statusline=%<%f\\ #%n%m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%y%=%l,%c%V%8P")
+vim.cmd("set tabstop=4")
+vim.cmd("set title")
+vim.cmd("set tw=0")
+vim.cmd("set virtualedit=onemore")
+vim.cmd("set visualbell")
+vim.cmd("set whichwrap=b,s,h,s,<,>,[,]")
+vim.cmd("set wildmenu")
+vim.cmd("set wildmode=list:full")
+vim.cmd("set wrapscan")
+-- vim.cmd("set termencoding=utf-8")
+
+vim.cmd("syntax enable")
+vim.cmd("syntax on")
+
+vim.cmd("let g:netrw_dirhistmax = 0")
+
+vim.cmd("nmap <Esc><Esc> :nohlsearch<CR><Esc>")
+
+vim.keymap.set("t", "<ESC>", [[<C-\><C-n>]], { silent = true })
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*",
+    command = "%s/\\s\\+$//ge",
+})
 
 vim.cmd("hi Normal        ctermbg=NONE guibg=NONE")
 vim.cmd("hi SignColumn    ctermbg=NONE guibg=NONE")

@@ -28,7 +28,6 @@ set matchtime=1
 set mouse=a
 set nobackup
 set noerrorbells
-set noexpandtab
 set noswapfile
 set notitle
 set novisualbell
@@ -46,7 +45,7 @@ set smartindent
 set softtabstop=4
 set statusline=%<%f\ #%n%m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%y%=%l,%c%V%8P
 set t_vb=
-set tabstop=4 shiftwidth=4 softtabstop=0
+set tabstop=4
 set termencoding=utf-8
 set title
 set ttymouse=sgr
