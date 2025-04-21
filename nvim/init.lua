@@ -86,6 +86,7 @@ vim.cmd("set statusline=%<%f\\ #%n%m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.
 vim.cmd("set encoding=utf-8")
 vim.cmd("set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp")
 vim.cmd("set ffs=unix,dos,mac")
+vim.keymap.set("t", "<ESC>", [[<C-\><C-n>]], { silent = true })
 
 local plugins = {
     -- colorschemes
@@ -111,10 +112,10 @@ local plugins = {
     --     end
     -- },
     {
-        'sainnhe/everforest',
+        "sainnhe/everforest",
         config = function()
-            vim.cmd('colorscheme everforest')
-        end
+            vim.cmd("colorscheme everforest")
+        end,
     },
 
     -- utils
