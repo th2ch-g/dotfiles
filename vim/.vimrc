@@ -180,6 +180,7 @@ endif
 
 " colorscheme codedark
 colorscheme everforest
+let g:everforest_transparent_background = 1
 
 " TransParent settings
 hi Normal        ctermbg=NONE guibg=NONE
@@ -191,4 +192,3 @@ hi NonText       ctermbg=NONE guibg=NONE
 hi SpecialKey    ctermbg=NONE guibg=NONE
 hi FoldColumn    ctermbg=NONE guibg=NONE
 hi ColorColumn   ctermbg=NONE guibg=NONE
-hi CursorLine    ctermbg=black guibg=black gui=underline
