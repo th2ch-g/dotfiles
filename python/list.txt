@@ -2,3 +2,4 @@
 pip install nvitop -U
 pip install git+https://github.com/th2ch-g/tmplot.git -U
 pip install terminaltexteffects -U
+pip install treon -U

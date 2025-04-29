@@ -19,5 +19,6 @@ brew "dockutil"
 # | sort -k 1 -r
 # tap "homebrew/bundle"
 # run: brew bundle dump
+# cask "ollama"
 # cask "keycastr"
 # cask "alacritty"

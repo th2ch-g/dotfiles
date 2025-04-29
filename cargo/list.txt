@@ -30,6 +30,7 @@ hyperfine                                                           # A command-
 loop-rs                                                             # UNIX's missing `loop` command
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
+pixi                                                                # Package management made easy
 r-matrix                                                            # rust port of cmatrix
 ripgrep                                                             # ripgrep recursively searches directories for a regex pattern while respecting your gitignore
 ripgrep_all                                                         # rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.
