@@ -47,12 +47,27 @@ local plugins = {
     { "th2ch-g/my-vim-sonictemplate" },
     { "machakann/vim-sandwich" },
     { "airblade/vim-gitgutter" },
+
+    -- markdown utils
+    -- {
+    --     "previm/previm",
+    --     config = function()
+    --         vim.g.previm_open_cmd = 'open -a "Google Chrome"'
+    --     end,
+    -- },
     {
-        "previm/previm",
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        -- build = function()
+        --     vim.fn["mkdp#util#install"]()
+        -- end,
         config = function()
-            vim.g.previm_open_cmd = 'open -a "Google Chrome"'
-        end,
-    },
+            vim.fn["mkdp#util#install"]()
+        end
+        -- or :call mkdp#util#install()
+    }
+
     -- {
     --     "akinsho/toggleterm.nvim",
     --     version = "*",
@@ -61,6 +76,7 @@ local plugins = {
     --     end,
     --     opts = {},
     -- },
+
     -- {
     --     "akinsho/bufferline.nvim",
     --     version = "*",
