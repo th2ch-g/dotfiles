@@ -174,6 +174,7 @@ if [ $vim_flag -eq 0 ]; then
     done
     if command -v vim >/dev/null 2>&1; then
         set +e
+        export VIM_AI=1
         vim -e -c "PlugInstall" -c "qa"
         set -e
     fi
@@ -212,6 +213,7 @@ fi
 # neovim link
 if [ $neovim_flag -eq 0 ]; then
     print_info "neovim install start"
+    export VIM_AI=1
     create_link $PWD/nvim/ ${HOME}/.config/nvim
     print_info "neovim install done"
 fi
@@ -245,7 +247,7 @@ if [ $cargo_flag -eq 0 ]; then
 fi
 
 # python install
-# TODO: micromamba?
+# TODO: micromamba? pixi?
 if [ $python_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
         print_info "python install start"
