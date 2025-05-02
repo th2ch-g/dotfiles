@@ -128,7 +128,8 @@ if use_ai then
             -- add any opts here
             -- for example
             -- provider = "gemini",
-            provider = "ollama",
+            -- provider = "ollama",
+            provider = vim.fn.getenv("OLLAMA_HOST") and "ollama" or "gemini",
             openai = {
                 endpoint = "https://api.openai.com/v1",
                 model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
