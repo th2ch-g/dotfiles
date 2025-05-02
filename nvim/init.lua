@@ -127,7 +127,8 @@ if use_ai then
         opts = {
             -- add any opts here
             -- for example
-            provider = "gemini",
+            -- provider = "gemini",
+            provider = "ollama",
             openai = {
                 endpoint = "https://api.openai.com/v1",
                 model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
@@ -137,14 +138,23 @@ if use_ai then
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
             },
             gemini = {
-                model = "gemini-2.5-flash-preview-04-17",
+                -- model = "gemini-2.5-flash-preview-04-17",
                 -- model = "gemini-2.5-pro-preview-03-25",
-                -- model = "gemini-2.5-pro-exp-03-25",
+                model = "gemini-2.5-pro-exp-03-25",
+
                 -- model = "gemini-2.0-flash-thinking-exp-01-21",
                 -- model = "gemini-2.0-flash",
                 -- model = "gemini-2.0-pro-exp-02-05",
                 temperature = 0,
                 max_tokens = 4096,
+            },
+            ollama = {
+                model = "gemma3:27b-it-qat",
+                endpoint = vim.fn.getenv("OLLAMA_HOST"),
+                options = {
+                    temperature = 0,
+                    -- num_ctx = 20480,
+                },
             },
             cursor_applying_provider = "gemini",
             behaviour = {
