@@ -50,6 +50,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # export
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
+# export LANG=en_US.UTF-8 # for preventing tab completion duplicate bug, default settings: ja_JP.UTF-8
 
 # alias
 alias ll="ls -stlh"
@@ -256,7 +257,6 @@ vim_ai_on() {
 prepare_all() {
     prepare_base_dir
     make_local_file
-
 }
 
 
