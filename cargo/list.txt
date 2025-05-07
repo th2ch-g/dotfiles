@@ -38,6 +38,7 @@ rust-script                                                         # Run Rust f
 sccache                                                             # Sccache is a ccache-like tool. It is used as a compiler wrapper and avoids compilation when possible. Sccache has the capability to utilize caching in remote storage environments, including various cloud storage options, or alternatively, in local storage.
 sd                                                                  # Intuitive find & replace CLI (sed alternative)
 silicon                                                             # Create beautiful image of your source code.
+ssubmit                                                             # Submit slurm sbatch jobs without a script
 stylua                                                              # A Lua code formatter
 taplo                                                               # A TOML toolkit written in Rust
 tokei                                                               # Count your code, quickly.
