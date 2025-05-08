@@ -141,8 +141,7 @@ if use_ai then
             gemini = {
                 -- model = "gemini-2.5-flash-preview-04-17",
                 -- model = "gemini-2.5-pro-preview-03-25",
-                -- model = "gemini-2.5-pro-exp-03-25",
-                model = "gemini-2.5-pro-preview-05-06",
+                model = "gemini-2.5-pro-exp-03-25",
 
                 -- model = "gemini-2.0-flash-thinking-exp-01-21",
                 -- model = "gemini-2.0-flash",
