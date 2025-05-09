@@ -64,9 +64,9 @@ local plugins = {
         -- end,
         config = function()
             vim.fn["mkdp#util#install"]()
-        end
+        end,
         -- or :call mkdp#util#install()
-    }
+    },
 
     -- {
     --     "akinsho/toggleterm.nvim",
@@ -130,6 +130,7 @@ if use_ai then
             -- provider = "gemini",
             -- provider = "ollama",
             provider = os.getenv("OLLAMA_HOST") and "ollama" or "gemini",
+            mode = "agentic",
             openai = {
                 endpoint = "https://api.openai.com/v1",
                 model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
@@ -158,9 +159,16 @@ if use_ai then
                     -- num_ctx = 20480,
                 },
             },
-            cursor_applying_provider = "gemini",
+            -- cursor_applying_provider = "gemini",
+            cursor_applying_provider = nil,
             behaviour = {
                 enable_cursor_planning_mode = true,
+                auto_set_highlight_group = true,
+                auto_set_keymaps = true,
+                auto_apply_diff_after_generation = false,
+                support_paste_from_clipboard = false,
+                minimize_diff = true,
+                enable_token_counting = true,
             },
             hints = { enabled = true },
             windows = {
@@ -247,8 +255,8 @@ if use_ai then
                 -- Make sure to set this up properly if you have lazy=true
                 "MeanderingProgrammer/render-markdown.nvim",
                 opts = {
-                    -- file_types = { "markdown", "Avante" },
-                    file_types = { "Avante" },
+                    file_types = { "markdown", "Avante" },
+                    -- file_types = { "Avante" },
                 },
                 ft = { "markdown", "Avante" },
             },

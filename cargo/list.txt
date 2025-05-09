@@ -2,7 +2,6 @@
 # https://github.com/sioodmy/todo.git todo                            # Simple todo cli program written in rust
 # https://github.com/th2ch-g/parrot-rs.git parrot                     # Party Parrot implemented by Rust
 # monolith                                                            # CLI tool and library for saving complete web pages as a single HTML file
-# rnr                                                                 # A command-line tool to batch rename files and directories
 # rustpython                                                          # A Python Interpreter written in Rust
 # zellij                                                              # A terminal workspace with batteries included
 bat                                                                 # A cat(1) clone with wings.
@@ -34,6 +33,7 @@ pixi                                                                # Package ma
 r-matrix                                                            # rust port of cmatrix
 ripgrep                                                             # ripgrep recursively searches directories for a regex pattern while respecting your gitignore
 ripgrep_all                                                         # rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.
+rnr                                                                 # A command-line tool to batch rename files and directories
 rust-script                                                         # Run Rust files and expressions as scripts without any setup or compilation step
 sccache                                                             # Sccache is a ccache-like tool. It is used as a compiler wrapper and avoids compilation when possible. Sccache has the capability to utilize caching in remote storage environments, including various cloud storage options, or alternatively, in local storage.
 sd                                                                  # Intuitive find & replace CLI (sed alternative)
