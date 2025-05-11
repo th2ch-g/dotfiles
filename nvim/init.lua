@@ -140,13 +140,7 @@ if use_ai then
                 --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
             },
             gemini = {
-                -- model = "gemini-2.5-flash-preview-04-17",
-                -- model = "gemini-2.5-pro-preview-03-25",
                 model = "gemini-2.5-pro-exp-03-25",
-
-                -- model = "gemini-2.0-flash-thinking-exp-01-21",
-                -- model = "gemini-2.0-flash",
-                -- model = "gemini-2.0-pro-exp-02-05",
                 temperature = 0,
                 max_tokens = 4096,
             },
@@ -258,7 +252,7 @@ if use_ai then
                     file_types = { "markdown", "Avante" },
                     -- file_types = { "Avante" },
                 },
-                ft = { "markdown", "Avante" },
+                ft = { "Avante" },
             },
         },
     })
