@@ -1,6 +1,7 @@
 name: release cd
 permissions:
   contents: write
+  packages: write
 on:
   push:
     tags:
