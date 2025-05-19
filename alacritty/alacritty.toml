@@ -14,7 +14,6 @@ multiplier = 3
 size = 15.0
 offset = { x = 0, y = 2 }
 
-
 [colors]
 [colors.primary]
 background = "#161821"
