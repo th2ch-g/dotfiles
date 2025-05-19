@@ -5,6 +5,7 @@ export XDG_STATE_HOME=$HOME/.local/state/
 export XDG_CACHE_HOME=$HOME/.cache/
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/works/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/works/tools/lib:$LD_LIBRARY_PATH" # for tmux
 export TERMINFO=/usr/share/terminfo # for tmux
 ## by xdg-ninja
