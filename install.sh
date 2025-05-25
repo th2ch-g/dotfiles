@@ -154,7 +154,7 @@ if [ $unlink_flag -eq 0 ]; then
         fi
     done
 
-    for target in git zsh tmux alacritty;
+    for target in git zsh tmux alacritty neovim;
     do
         remove_link ${HOME}/.config/$target
     done

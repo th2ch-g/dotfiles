@@ -20,15 +20,17 @@
 - for each case needs to run `./install.sh -b -c -p` again
 
 ### For me
-- 1st time(SSH)
+- 1st time(SSH) on local
 ~~~shell
+cd ~/works && \
 git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh -b -c -p -v -z -t -g -n
 ~~~
 
-- 1st time(HTTP)
+- 1st time(HTTP) on local
 ~~~shell
+cd ~/works && \
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh -b -c -p -v -z -t -g -n
