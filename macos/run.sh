@@ -78,7 +78,7 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 # Window
 defaults write com.apple.WindowManager GloballyEnabled -bool false
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
-
+defaults -currentHost write com.apple.screensaver idleTime -int 0
 
 # Menubar
 defaults write NSGlobalDomain _HIHideMenuBar -bool true
