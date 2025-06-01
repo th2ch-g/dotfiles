@@ -40,6 +40,12 @@ local plugins = {
             vim.cmd("colorscheme everforest")
         end,
     },
+    -- {
+    --     "cocopon/iceberg.vim",
+    --     config = function()
+    --         vim.cmd("colorscheme iceberg")
+    --     end,
+    -- },
 
     -- utils
     { "cohama/lexima.vim" },
@@ -270,7 +276,7 @@ vim.cmd("set cursorline")
 vim.cmd("set display=uhex")
 vim.cmd("set encoding=utf-8")
 vim.cmd("set expandtab")
-vim.cmd("set fenc=utf-8")
+-- vim.cmd("set fenc=utf-8")
 vim.cmd("set ffs=unix,dos,mac")
 vim.cmd("set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp")
 vim.cmd("set foldcolumn=3")
