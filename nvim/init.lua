@@ -137,27 +137,33 @@ if use_ai then
             -- provider = "ollama",
             provider = os.getenv("OLLAMA_HOST") and "ollama" or "gemini",
             mode = "agentic",
-            openai = {
-                endpoint = "https://api.openai.com/v1",
-                model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
-                timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
-                temperature = 0,
-                max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
-                --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
-            },
-            gemini = {
-                -- model = "gemini-2.5-pro-exp-03-25",
-                model = "gemini-2.5-flash-preview-04-17",
-                temperature = 0,
-                max_tokens = 4096,
-            },
-            ollama = {
-                model = "gemma3:27b-it-qat",
-                -- mode = "phi4-reasoning:plus"
-                endpoint = vim.fn.getenv("OLLAMA_HOST"),
-                options = {
+            providers = {
+                openai = {
+                    endpoint = "https://api.openai.com/v1",
+                    model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
+                    extra_request_body = {
+                        timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
+                        temperature = 0,
+                        max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+                        --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+                    },
+                },
+                gemini = {
+                    -- model = "gemini-2.5-pro-exp-03-25",
+                    model = "gemini-2.5-flash-preview-04-17",
                     temperature = 0,
-                    -- num_ctx = 20480,
+                    max_tokens = 4096,
+                },
+                ollama = {
+                    model = "gemma3:27b-it-qat",
+                    -- mode = "phi4-reasoning:plus"
+                    endpoint = vim.fn.getenv("OLLAMA_HOST"),
+                    extra_request_body = {
+                        options = {
+                            temperature = 0,
+                            -- num_ctx = 20480,
+                        },
+                    },
                 },
             },
             -- cursor_applying_provider = "gemini",
