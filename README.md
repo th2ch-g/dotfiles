@@ -34,7 +34,7 @@ mkdir -p ~/works && \
 cd ~/works && \
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh -v -z -t -g -n -b -c -p -m
+./install.sh --git --zsh --tmux --vim --neovim --alacrity --brew --cargo --python --macos
 ~~~
 
 ### For Guest
