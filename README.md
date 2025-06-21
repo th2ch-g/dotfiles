@@ -17,35 +17,31 @@
   - [Contents](#contents)
 
 ## Install
-- for each case needs to run `./install.sh -b -c -p` again
 
 ### For me
-- 1st time(SSH) on local
+- Install on local via SSH
 ~~~shell
+mkdir -p ~/works && \
 cd ~/works && \
 git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh -b -c -p -v -z -t -g -n
+./install.sh --git --zsh --tmux --vim --neovim --alacrity --brew --cargo --python --macos
 ~~~
 
-- 1st time(HTTP) on local
+- Install on local via HTTPS
 ~~~shell
+mkdir -p ~/works && \
 cd ~/works && \
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh -b -c -p -v -z -t -g -n
-~~~
-
-- 2nd time
-~~~shell
-./install.sh -b -c -p -m
+./install.sh -v -z -t -g -n -b -c -p -m
 ~~~
 
 ### For Guest
 ~~~shell
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh --zsh --vim --tmux
+./install.sh --zsh --vim --tmux --neovim --alacrity
 ~~~
 
 ### From Dockerfile
@@ -99,6 +95,7 @@ git submodule update --remote <submodule_path>
 - [tmux](https://github.com/tmux/tmux) (>= 3.0a tested)
 - [iTerm2](https://github.com/gnachman/iTerm2)
   - [Iceberg-iTerm2](https://github.com/Arc0re/Iceberg-iTerm2)
+- [Alacritty](https://github.com/alacritty/alacritty)
 - [brew](https://github.com/Homebrew/brew)
 - macos
   - [dockutil](https://github.com/kcrawford/dockutil)

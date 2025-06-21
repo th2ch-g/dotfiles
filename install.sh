@@ -221,12 +221,15 @@ fi
 # brew install
 if [ $OS == "Mac" ] && [ $brew_flag -eq 0 ]; then
     print_info "brew install start"
+    if ! command -v brew > /dev/null 2>&1; then
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        export PATH="/opt/homebrew/bin:$PATH"
+    fi
+
     if command -v brew > /dev/null 2>&1; then
         print_info "brew is already installed"
         print_info "brew bundle install start"
         cd ./brew/ && brew bundle && cd ..
-    else
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
     print_info "brew install done"
 fi
@@ -235,12 +238,15 @@ fi
 if [ $cargo_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
         print_info "cargo install start"
+        if ! command -v cargo > /dev/null 2>&1; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+            export PATH="${HOME}/.cargo/bin:$PATH"
+        fi
+
         if command -v cargo > /dev/null 2>&1; then
             print_info "cargo is already installed"
             print_info "cargo subcommands install start"
             cd ./cargo/ && ./run.sh && cd ..
-        else
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
         fi
         print_info "cargo install done"
     fi
@@ -251,11 +257,7 @@ fi
 if [ $python_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
         print_info "python install start"
-        if command -v conda > /dev/null 2>&1; then
-            print_info "conda is already installed"
-            print_info "python commands install  start"
-            cd python && ./run.sh && cd ..
-        else
+        if ! command -v conda > /dev/null 2>&1; then
             if [ $OS == "Mac" ]; then
                 if [[ $arch == "x86_64" || $arch == "amd64" ]]; then
                     curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
@@ -298,10 +300,20 @@ unset __conda_setup
 
 """ >> ${HOME}/.config/zsh/.zshrc_local
 
-        print_info "conda init was written to ${HOME}/.config/zsh/.zshrc_local"
-        print_info "conda install done"
-
+            print_info "conda init was written to ${HOME}/.config/zsh/.zshrc_local"
+            print_info "conda install done"
+            source ${HOME}/works/tools/miniconda3/etc/profile.d/conda.sh
+            conda activate base
         fi
+
+        if command -v conda > /dev/null 2>&1; then
+            print_info "conda is already installed"
+            print_info "python commands install  start"
+            source ${HOME}/works/tools/miniconda3/etc/profile.d/conda.sh
+            conda activate base
+            cd python && ./run.sh && cd ..
+        fi
+
         print_info "python install done"
     fi
 fi
@@ -311,6 +323,7 @@ if [ $macos_flag -eq 0 ]; then
     if [ $OS != "Mac" ]; then
         print_error "this script is only for macOS; skipping macos settings"
     else
+        export PATH="/opt/homebrew/bin:$PATH"
         cd macos && ./run.sh --dockutil && cd ..
     fi
 fi
