@@ -21,8 +21,8 @@
 ### For me
 - Install on local via SSH
 ~~~shell
-mkdir -p ~/works && \
-cd ~/works && \
+mkdir -p ${HOME}/works && \
+cd ${HOME}/works && \
 git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --git --zsh --tmux --vim --neovim --alacrity --brew --cargo --python --macos
@@ -30,8 +30,8 @@ cd ./dotfiles && \
 
 - Install on local via HTTPS
 ~~~shell
-mkdir -p ~/works && \
-cd ~/works && \
+mkdir -p ${HOME}/works && \
+cd ${HOME}/works && \
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./install.sh --git --zsh --tmux --vim --neovim --alacrity --brew --cargo --python --macos
