@@ -29,6 +29,7 @@ jobs:
       - name: build
         run: |
           docker build --tag ghcr.io/$GITHUB_ACTOR/dotfiles:latest --tag ghcr.io/$GITHUB_ACTOR/dotfiles:$(echo $GITHUB_SHA | head -c7) docker
+          # or use `docker buildx`
       - name: push
         run: |
           docker push ghcr.io/$GITHUB_ACTOR/dotfiles:latest

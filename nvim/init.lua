@@ -152,7 +152,8 @@ if use_ai then
                     -- https://ai.google.dev/gemini-api/docs/models?hl=ja#preview
                     -- model = "gemini-2.5-pro-preview-06-05",
                     -- model = "gemini-2.5-flash-preview-04-17",
-                    model = "gemini-2.5-flash-preview-05-20",
+                    -- model = "gemini-2.5-flash-preview-05-20",
+                    model = "gemini-2.5-flash-lite-preview-06-17",
                     temperature = 0,
                     max_tokens = 4096,
                 },
