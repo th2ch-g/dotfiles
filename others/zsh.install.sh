@@ -3,16 +3,17 @@
 set -e
 
 thread=15
-zsh_link=https://github.com/zsh-users/zsh/archive/refs/tags/zsh-5.9.tar.gz
-install_path=$PWD
+VERSION="5.9"
+PREFIX="${PWD}/zsh-${VERSION}/build"
 
-curl -L $zsh_link -o zsh.tar.gz && \
+URL=https://github.com/zsh-users/zsh/archive/refs/tags/zsh-${VERSION}.tar.gz
+curl -L $URL -o zsh.tar.gz && \
     tar -zxvf zsh.tar.gz && \
     rm -f zsh.tar.gz
 
-cd zsh* && \
+cd zsh-${VERSION} && \
     ./Util/preconfig && \
-    ./configure --prefix=${install_path}/zsh \
+    ./configure --prefix=${PREFIX} \
     --enable-multibyte --enable-locale && \
     make -j $thread && make install && \
     cd ..

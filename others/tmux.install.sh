@@ -1,19 +1,25 @@
 #!/bin/bash
 
 # Tested at CentOS
-
 set -e
 
 # release link
 thread=15
-install_path=$PWD
-tmux_link=https://github.com/tmux/tmux/releases/download/3.5a/tmux-3.5a.tar.gz
-libevent_link=https://github.com/libevent/libevent/releases/download/release-2.1.11-stable/libevent-2.1.11-stable.tar.gz
-ncurses_link=http://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz
+TMUX_VERSION="3.5a"
+LIBEVENT_VERSION="2.1.11-stable"
+NCURSES_VERSION="6.2"
+TMUX_PREFIX="${PWD}/tmux-${TMUX_VERSION}/build"
+NCURSES_PREFIX="${PWD}/ncurses-${NCURSES_VERSION}/build"
+LIBEVENT_PREFIX="${PWD}/libevent-${LIBEVENT_VERSION}/build"
 
-curl -L $tmux_link -o tmux.tar.gz &
-curl -L $libevent_link -o libevent.tar.gz &
-curl -L $ncurses_link -o ncurses.tar.gz &
+
+TMUX_URL=https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
+LIBEVENT_URL=https://github.com/libevent/libevent/releases/download/release-${LIBEVENT_VERSION}/libevent-${LIBEVENT_VERSION}.tar.gz
+NCURSES_URL=http://ftp.gnu.org/pub/gnu/ncurses/ncurses-${NCURSES_VERSION}.tar.gz
+
+curl -L $TMUX_URL -o tmux.tar.gz &
+curl -L $LIBEVENT_URL -o libevent.tar.gz &
+curl -L $NCURSES_URL -o ncurses.tar.gz &
 wait
 
 tar -xvzf tmux.tar.gz &
@@ -21,35 +27,30 @@ tar -xvzf libevent.tar.gz &
 tar -xvzf ncurses.tar.gz &
 wait
 
-rm -f *.tar.gz
+rm -f tmux.tar.gz libevent.tar.gz ncurses.tar.gz
 
-cd ncurses*
-./configure --prefix=${install_path} --enable-pc-files \
-    --with-pkg-config-libdir=${install_path}/lib/pkgconfig --with-termlib \
+cd ncurses-${NCURSES_VERSION}
+./configure --prefix=${NCURSES_PREFIX} --enable-pc-files \
+    --with-pkg-config-libdir=${NCURSES_PREFIX}/lib/pkgconfig --with-termlib \
     && make -j $thread && make install
 cd ..
 echo "[INFO] ncurses install done" >&1
 
-cd libevent*
-./configure --prefix=${install_path} \
+cd libevent-${LIBEVENT_VERSION}
+./configure --prefix=${LIBEVENT_PREFIX} \
     && make -j $thread && make install
 cd ..
 echo "[INFO] libevent install done" >&1
 
-cd tmux*
-PKG_CONFIG_PATH=${install_path}/lib/pkgconfig
-./configure --prefix=$PWD \
-    LDFLAGS="-L${install_path}/lib" CFLAGS="-I${install_path}/include" \
-    && make -j $thread
+cd tmux-${TMUX_VERSION}
+# export PKG_CONFIG_PATH=${NCURSES_PREFIX}/lib/pkgconfig
+./configure --prefix=${TMUX_PREFIX} \
+    LDFLAGS="-L${NCURSES_PREFIX}/lib -L${LIBEVENT_PREFIX}/lib" \
+    CFLAGS="-I${NCURSES_PREFIX}/include -I${LIBEVENT_PREFIX}/include" \
+    && make -j $thread \
+    && make install
 cd ..
 
+# export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${NCURSES_PREFIX}/lib:${LIBEVENT_PREFIX}/lib"
 
 echo "[INFO] tmux install done" >&1
-mv ./tmux*/tmux ./hoge
-echo "[INFO] delete unnecessary file" >&1
-rm -rf libevent* ncurses* include share bin tmux*
-mv hoge tmux
-echo "[INFO] tmux version is" >&1
-export LD_LIBRARY_PATH=${install_path}/lib:$LD_LIBRARY_PATH # necessary path
-./tmux -V
-

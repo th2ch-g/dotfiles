@@ -1,17 +1,18 @@
 #!/bin/bash
-
 set -e
-URL="https://github.com/git/git/archive/refs/tags/v2.40.0-rc1.tar.gz"
+
+VERSION="v2.40.0-rc1"
 thread=15
-install_path=$PWD
+PREFIX="${PWD}/git-${VERSION}/build"
 
-curl -L $URL -o git.tar.gz && \
-    tar -zxvf git.tar.gz && \
-    rm -rf git.tar.gz
+URL="https://github.com/git/git/archive/refs/tags/${VERSION}.tar.gz"
+curl -L $URL -o git-${VERSION}.tar.gz && \
+    tar -zxvf git-${VERSION}.tar.gz && \
+    rm -rf git-${VERSION}.tar.gz
 
-cd git* && \
+cd git-${VERSION} && \
     make configure && \
-    ./configure --prefix=${install_path}/git && \
+    ./configure --prefix=${PREFIX} && \
     make all -j $thread && cd .. && \
     echo "[INFO] git install done" >&1
 

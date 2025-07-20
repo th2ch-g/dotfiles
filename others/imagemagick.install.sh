@@ -2,17 +2,20 @@
 set -e
 
 thread=15
+VERSION="7.1.1-47"
+PREFIX="${PWD}/ImageMagick-${VERSION}/build"
 
-wget https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-47.tar.gz
-tar -xvzf 7.1.1-47.tar.gz
-rm -f 7.1.1-47.tar.gz
-cd ImageMagick-7.1.1-47
+URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${VERSION}.tar.gz"
+wget $URL
+tar -xvzf ${VERSION}.tar.gz
+rm -f ${VERSION}.tar.gz
+cd ImageMagick-${VERSION}
 
-./configure --prefix=$PWD/build
+./configure --prefix=${PREFIX}
 
 make -j $thread && make install
 
-export PATH=$PWD/build/bin:$PATH
+export PATH=${PREFIX}/bin:$PATH
 
 convert -version
 

@@ -1,14 +1,16 @@
 #!/bin/bash
 set -e
 
-install_path=$PWD
+VERSION="v0.10.4"
+PREFIX="${PWD}/nvim-${VERSION}/build"
 thread=15
 
-wget https://github.com/neovim/neovim/archive/refs/tags/v0.10.4.tar.gz
-tar -xvzf v0.10.4.tar.gz
-cd neovim-0.10.4
-make -j $thread CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=${install_path}/nvim
+URL="https://github.com/neovim/neovim/archive/refs/tags/${VERSION}.tar.gz"
+wget $URL
+tar -xvzf ${VERSION}.tar.gz
+rm -rf ${VERSION}.tar.gz
+cd neovim-${VERSION}
+make -j $thread CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=${PREFIX}
 make -j $thread install
-rm -rf neovim-0.10.4 v0.10.4.tar.gz
 
 echo done >&1
