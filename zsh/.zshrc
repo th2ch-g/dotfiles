@@ -16,7 +16,6 @@ setopt correct
 setopt auto_pushd
 setopt pushd_ignore_dups
 setopt no_beep
-export LANG=ja_JP.UTF-8
 setopt share_history
 setopt histignorealldups
 setopt auto_cd
@@ -51,6 +50,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
 export TERM="xterm-256color"
+export LANG=ja_JP.UTF-8
 # export LANG=en_US.UTF-8 # for preventing tab completion duplicate bug, default settings: ja_JP.UTF-8
 
 # alias
@@ -212,9 +212,9 @@ make_local_file() {
     flag=1
     for i in ${arr[@]};
     do
-        if [ ! -e $HOME/.config/zsh/${i} ]; then
-            touch $HOME/.config/zsh/${i}
-            echo "[INFO] touch ${HOME}/.config/zsh/${i}" >&1
+        if [ ! -e ${ZDOTDIR:-$HOME}/${i} ]; then
+            touch ${ZDOTDIR:-$HOME}/${i}
+            echo "[INFO] touch ${ZDOTDIR:-$HOME}/${i}" >&1
             flag=0
         fi
     done
