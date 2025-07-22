@@ -1,13 +1,9 @@
 #!/bin/bash
-set -e
+set -eux
 
-echo "+ rustup self update" >&1
 rustup self update
-
-echo "+ rustup update" >&1
 rustup update
 
-echo "+ cargo-binstall" >&1
 # cargo install --locked --force cargo-quickinstall
 cargo install --locked --force cargo-binstall
 

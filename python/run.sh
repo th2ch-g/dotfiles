@@ -1,9 +1,8 @@
 #!/bin/bash
-set -e
+set -eux
 
 cat list.txt | grep -v "^#" | while IFS= read -r line;
 do
-    echo "Run: ${line}"
     $line
 done
 

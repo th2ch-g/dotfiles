@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eux
 
 VERSION="v0.10.4"
 PREFIX="${PWD}/nvim-${VERSION}/build"

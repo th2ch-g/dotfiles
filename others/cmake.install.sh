@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eux
 
 VERSION="3.31.6"
 INSTALL_PREFIX="${PWD}/cmake-${VERSION}/build"

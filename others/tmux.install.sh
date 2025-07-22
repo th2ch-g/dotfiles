@@ -1,9 +1,6 @@
 #!/bin/bash
+set -eux
 
-# Tested at CentOS
-set -e
-
-# release link
 thread=15
 TMUX_VERSION="3.5a"
 LIBEVENT_VERSION="2.1.11-stable"
@@ -13,6 +10,7 @@ NCURSES_PREFIX="${PWD}/ncurses-${NCURSES_VERSION}/build"
 LIBEVENT_PREFIX="${PWD}/libevent-${LIBEVENT_VERSION}/build"
 
 
+# release link
 TMUX_URL=https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
 LIBEVENT_URL=https://github.com/libevent/libevent/releases/download/release-${LIBEVENT_VERSION}/libevent-${LIBEVENT_VERSION}.tar.gz
 NCURSES_URL=http://ftp.gnu.org/pub/gnu/ncurses/ncurses-${NCURSES_VERSION}.tar.gz

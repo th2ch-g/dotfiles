@@ -1,6 +1,5 @@
 #!/bin/bash
-
-set -e
+set -eux
 
 thread=15
 VERSION="5.9"
