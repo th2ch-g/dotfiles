@@ -28,7 +28,7 @@ OPTIONS:
     -a, --alacritty         only alacritty dotfiles link
     -n, --neovim            only neovim dotfiles link
     -s, --ssh               only ssh config file copy
-        --bash              only bash profile file copy
+        --bash              only bash profile link
 '
 
 # default setting
@@ -157,7 +157,7 @@ if [ $unlink_flag -eq 0 ]; then
     print_warn "Ignore error"
 
     # vim
-    for dotfile in .vim .vimrc;
+    for dotfile in .vim .vimrc .bash_profile;
     do
         if [ -L $HOME/$dotfile ]; then
             unlink $HOME/$dotfile && echo "[INFO] $dotfile unlink done" >&1
@@ -243,15 +243,11 @@ if [ $ssh_flag -eq 0 ]; then
     fi
 fi
 
-# bash profile file copy
+# bash link
 if [ $bash_flag -eq 0 ]; then
-    print_info "bash profile file copy start"
-    if [ ! -e ${HOME}/.bash_profile ]; then
-        cp ${PWD}/bash/.bash_profile ${HOME}/.bash_profile
-        print_info "bash profile file copy done"
-    else
-        print_warn "${HOME}/.bash_profile is already exist"
-    fi
+    print_info "bash file link start"
+    create_link ${PWD}/bash/.bash_profile ${HOME}/.bash_profile
+    print_info "bash file link done"
 fi
 
 # brew install
