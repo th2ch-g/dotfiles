@@ -3,7 +3,7 @@ set -eux
 
 USAGE='
 install.sh:
-    dotfiles linker
+    dotfiles linker / installer / copier / unlinker
 
 USAGE:
     ./install.sh [FLAGS]
@@ -27,6 +27,8 @@ OPTIONS:
     -g, --git               only git dotfiles link
     -a, --alacritty         only alacritty dotfiles link
     -n, --neovim            only neovim dotfiles link
+    -s, --ssh               only ssh config file copy
+        --bash              only bash profile file copy
 '
 
 # default setting
@@ -41,6 +43,8 @@ tmux_flag=1
 git_flag=1
 alacritty_flag=1
 neovim_flag=1
+ssh_flag=1
+bash_flag=1
 
 print_info() { echo "[INFO] $1" >&1;  }
 print_warn() { echo "[WARN] $1" >&2;  }
@@ -98,6 +102,12 @@ do
             ;;
         -n | --neovim)
             neovim_flag=0
+            ;;
+        -s | --ssh)
+            ssh_flag=0
+            ;;
+        --bash)
+            bash_flag=0
             ;;
        --)
             shift
@@ -216,6 +226,32 @@ if [ $neovim_flag -eq 0 ]; then
     export VIM_AI=1
     create_link $PWD/nvim/ ${HOME}/.config/nvim
     print_info "neovim install done"
+fi
+
+# ssh config file copy
+if [ $ssh_flag -eq 0 ]; then
+    print_info "ssh config file copy start"
+    if [ ! -d ${HOME}/.ssh ]; then
+        mkdir -p ${HOME}/.ssh
+        print_info "${HOME}/.ssh/ is created"
+    fi
+    if [ ! -e ${HOME}/.ssh/config ]; then
+        cp ${PWD}/ssh/config ${HOME}/.ssh/config
+        print_info "ssh config file copy done"
+    else
+        print_warn "${HOME}/.ssh/config is already exist"
+    fi
+fi
+
+# bash profile file copy
+if [ $bash_flag -eq 0 ]; then
+    print_info "bash profile file copy start"
+    if [ ! -e ${HOME}/.bash_profile ]; then
+        cp ${PWD}/bash/.bash_profile ${HOME}/.bash_profile
+        print_info "bash profile file copy done"
+    else
+        print_warn "${HOME}/.bash_profile is already exist"
+    fi
 fi
 
 # brew install
