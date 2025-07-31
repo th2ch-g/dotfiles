@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -e
 
 USAGE='
 install.sh:
@@ -10,32 +10,33 @@ USAGE:
 
 EXAMPLE:
     ./install.sh                            only OS check
-    ./install.sh --vim --zsh --tmux --git   OS check & dotfiles link
+    ./install.sh --vim --zsh --tmux --git   dotfiles link
     ./install.sh --unlink                   all dotfiles unlink
-    ./install.sh -b -c -p -v -z -t -g -n -m my options
 
 OPTIONS:
     -h, --help              print help
     -u, --unlink            all dotfiles unlink
-    -b, --brew              brew install
-    -c, --cargo             cargo install
-    -p, --python            python install
-    -m, --macos             macos settings
-    -v, --vim               only vim dotfiles link
-    -z, --zsh               only zsh dotfiles link
-    -t, --tmux              only tmux dotfiles link
-    -g, --git               only git dotfiles link
-    -a, --alacritty         only alacritty dotfiles link
-    -n, --neovim            only neovim dotfiles link
-    -s, --ssh               only ssh config file copy
-        --bash              only bash profile link
+    -v, --vim               vim dotfiles link
+    -z, --zsh               zsh dotfiles link
+    -t, --tmux              tmux dotfiles link
+    -g, --git               git dotfiles link
+    -a, --alacritty         alacritty dotfiles link
+    -n, --neovim            neovim dotfiles link
+        --brew              brew install
+        --cargo             cargo install
+        --conda             conda install & python commands install
+        --pixi              python commands install using pixi
+        --macos             macos settings
+        --ssh               ssh config file copy
+        --bash              bash profile link
 '
 
 # default setting
 unlink_flag=1
 brew_flag=1
 cargo_flag=1
-python_flag=1
+conda_flag=1
+pixi_flag=1
 macos_flag=1
 vim_flag=1
 zsh_flag=1
@@ -73,16 +74,19 @@ do
             unlink_flag=0
             break
             ;;
-        -b | --brew)
+        --brew)
             brew_flag=0
             ;;
-        -c | --cargo)
+        --cargo)
             cargo_flag=0
             ;;
-        -p | --python)
-            python_flag=0
+        --conda)
+            conda_flag=0
             ;;
-        -m | --macos)
+        --pixi)
+            pixi_flag=0
+            ;;
+        --macos)
             macos_flag=0
             ;;
         -v | --vim)
@@ -103,7 +107,7 @@ do
         -n | --neovim)
             neovim_flag=0
             ;;
-        -s | --ssh)
+        --ssh)
             ssh_flag=0
             ;;
         --bash)
@@ -284,11 +288,10 @@ if [ $cargo_flag -eq 0 ]; then
     fi
 fi
 
-# python install
-# TODO: micromamba? pixi?
-if [ $python_flag -eq 0 ]; then
+# conda install
+if [ $conda_flag -eq 0 ]; then
     if [ $OS == "Mac" ] || [ $OS == "Linux" ]; then
-        print_info "python install start"
+        print_info "conda install start"
         if ! command -v conda > /dev/null 2>&1; then
             if [ $OS == "Mac" ]; then
                 if [[ $arch == "x86_64" || $arch == "amd64" ]]; then
@@ -340,15 +343,51 @@ unset __conda_setup
 
         if command -v conda > /dev/null 2>&1; then
             print_info "conda is already installed"
-            print_info "python commands install  start"
+            print_info "python commands install start"
             source ${HOME}/works/tools/miniconda3/etc/profile.d/conda.sh
             conda activate base
             cd python && ./run.sh && cd ..
         fi
 
-        print_info "python install done"
+        print_info "conda install done"
     fi
 fi
+
+# pixi install
+if [ $pixi_flag -eq 0 ]; then
+    if command -v pixi >/dev/null 2>&1; then
+        print_info "pixi is already installed"
+        # print_info "python commands install start"
+        # cd python && ./run.sh && cd ..
+    else
+        print_error "pixi is not installed"
+        print_error "run first: ./install.sh --cargo"
+        print_error "or run:"
+        if [ $OS == "Mac" ]; then
+            if [[ $arch == "x86_64" || $arch == "amd64" ]]; then
+                print_error "curl -O https://github.com/prefix-dev/pixi/releases/download/v0.50.2/pixi-x86_64-apple-darwin.tar.gz"
+            elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
+                print_error "curl -O https://github.com/prefix-dev/pixi/releases/download/v0.50.2/pixi-aarch64-apple-darwin.tar.gz"
+            else
+                print_error "Unknown architecture"
+                print_error "open https://github.com/prefix-dev/pixi/releases"
+                exit 1
+            fi
+        fi
+        if [ $OS == "Linux" ]; then
+            if [[ $arch == "x86_64" || $arch == "amd64" ]]; then
+                print_error "curl -O https://github.com/prefix-dev/pixi/releases/download/v0.50.2/pixi-x86_64-unknown-linux-musl.tar.gz"
+            elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
+                print_error "curl -O https://github.com/prefix-dev/pixi/releases/download/v0.50.2/pixi-aarch64-unknown-linux-musl.tar.gz"
+            else
+                print_error "Unknown architecture"
+                print_error "open https://github.com/prefix-dev/pixi/releases"
+                exit 1
+            fi
+        fi
+    fi
+fi
+
 
 # macos settings
 if [ $macos_flag -eq 0 ]; then
