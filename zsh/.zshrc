@@ -233,7 +233,7 @@ update_dotfiles() {
 }
 
 prepare_base_dir() {
-    arr=( ~/works/misc/ ~/works/tools/ ~/works/others/ ~/works/bin/ ~/works/share )
+    arr=( ${HOME}/works/misc/ ${HOME}/works/tools/ ${HOME}/works/others/ ${HOME}/works/bin/ ${HOME}/works/share/ )
     for i in ${arr[@]};
     do
         if [ ! -d $i ]; then
