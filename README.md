@@ -55,7 +55,7 @@ docker run --rm -it ghcr.io/th2ch-g/dotfiles
 - If you want to use as guest, change Dockerfile
 ~~~shell
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
-docker image build -t myenv dotfiles/docker && \
+docker image build -t myenv dotfiles && \
 docker run --rm -it myenv
 ~~~
 
