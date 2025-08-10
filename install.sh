@@ -24,11 +24,11 @@ OPTIONS:
     -n, --neovim            neovim dotfiles link
         --brew              brew install
         --cargo             cargo install
-        --conda             conda install & python commands install
+        --conda             conda install & python commands install (currently not recommend)
         --pixi              python commands install using pixi
         --macos             macos settings
         --ssh               ssh config file copy
-        --bash              bash profile link
+        --bash              bash profile link (not recommend)
 '
 
 # default setting
@@ -346,7 +346,7 @@ unset __conda_setup
             print_info "python commands install start"
             source ${HOME}/works/tools/miniconda3/etc/profile.d/conda.sh
             conda activate base
-            cd python && ./run.sh && cd ..
+            cd conda/ && ./run.sh && cd ..
         fi
 
         print_info "conda install done"
@@ -357,8 +357,6 @@ fi
 if [ $pixi_flag -eq 0 ]; then
     if command -v pixi >/dev/null 2>&1; then
         print_info "pixi is already installed"
-        # print_info "python commands install start"
-        # cd python && ./run.sh && cd ..
     else
         print_error "pixi is not installed"
         print_error "run first: ./install.sh --cargo"

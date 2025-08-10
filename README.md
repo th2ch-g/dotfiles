@@ -25,7 +25,7 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --brew --cargo --conda --pixi --macos
+./install.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --brew --cargo --pixi --macos
 ~~~
 
 - Install on local via HTTPS
@@ -34,7 +34,7 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --brew --cargo --conda --pixi --macos
+./install.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --brew --cargo --pixi --macos
 ~~~
 
 ### For Guest
