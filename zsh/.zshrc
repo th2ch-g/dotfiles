@@ -96,6 +96,8 @@ alias sshxy="ssh -XY"
 alias rusts="rust-script"
 alias wget="wget --hsts-file=$HOME/.config/wget-hsts"
 alias pass="vim_ai_off; pass"
+alias scancela="scancel -u $USER"
+alias squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
 
 # zoxide
 if command -v zoxide > /dev/null 2>&1; then
