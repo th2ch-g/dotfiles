@@ -104,6 +104,11 @@ if command -v zoxide > /dev/null 2>&1; then
     eval "$(zoxide init zsh)"
 fi
 
+# exa
+if command -v exa > /dev/null 2>&1; then
+    alias ls="exa"
+fi
+
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
     source ${ZDOTDIR:-$HOME}/.zshrc_local
