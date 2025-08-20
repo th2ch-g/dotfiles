@@ -1,9 +1,24 @@
 [user]
     name = th2ch-g
-    email = 76892059+th2ch-g@users.noreply.github.com
+    email = "76892059+th2ch-g@users.noreply.github.com"
+    signingkey = DC4A2AF668A618A3
 
 [init]
     defaultBranch = main
 
+[color]
+    ui = true
+
 [core]
     editor = vim
+
+[gpg]
+    program = gpg
+
+[alias]
+    aliases = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
+    commits = commit -S
+    l = log --graph --all --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+    ll = log --stat --abbrev-commit
+    lg = log --color --graph --pretty=format:'%C(bold white)%h%Creset -%C(bold green)%d%Creset %s %C(bold green)(%cr)%Creset %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    llg = log --color --graph --pretty=format:'%C(bold white)%H %d%Creset%n%s%n%+b%C(bold blue)%an <%ae>%Creset %C(bold green)%cr (%ci)' --abbrev-commit

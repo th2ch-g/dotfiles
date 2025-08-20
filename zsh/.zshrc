@@ -51,6 +51,7 @@ export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
 export TERM="xterm-256color"
 export LANG=ja_JP.UTF-8
+export GPG_TTY=$(tty)
 # export LANG=en_US.UTF-8 # for preventing tab completion duplicate bug, default settings: ja_JP.UTF-8
 
 # alias

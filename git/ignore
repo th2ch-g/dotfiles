@@ -1,1 +1,7 @@
 .DS_Store
+thumbs.db
+~$*
+**/.ssh/
+**/.aws/
+**/.gnupg/
+*.log
