@@ -10,7 +10,7 @@ RUN mkdir -p ~/works \
         && cd ~/works \
         && git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git \
         && cd ./dotfiles \
-        && ./install.sh --git --zsh --tmux --vim --neovim --alacrity --ssh
+        && ./install.sh --git --zsh --tmux --vim --neovim --ssh --alacritty
 
 # `git clone --depth 1 -j 8 --filter=blob:none` will be slower and bigger
 
