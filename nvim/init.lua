@@ -372,6 +372,16 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     command = "%s/\\s\\+$//ge",
 })
 
+vim.api.nvim_create_autocmd("BufReadPost", {
+  desc = "Auto jump to last position",
+  group = vim.api.nvim_create_augroup("auto-last-position", { clear = true }),
+  callback = function(args)
+    local position = vim.api.nvim_buf_get_mark(args.buf, [["]])
+    local winid = vim.fn.bufwinid(args.buf)
+    pcall(vim.api.nvim_win_set_cursor, winid, position)
+  end,
+})
+
 vim.cmd("hi Normal        ctermbg=NONE guibg=NONE")
 vim.cmd("hi SignColumn    ctermbg=NONE guibg=NONE")
 vim.cmd("hi EndOfBuffer   ctermbg=NONE guibg=NONE")
