@@ -1,4 +1,5 @@
 cask "xquartz"
+cask "thunderbird"
 cask "slack"
 cask "licecap"
 cask "iterm2"
