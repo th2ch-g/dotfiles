@@ -9,7 +9,7 @@ ForwardX11 yes
 # My github account
 Host github github.com
     HostName github.com
-    IdentityFile ~/.ssh/id_rsa
+    IdentityFile ~/.ssh/id_ed25519_github
     User git
 
 # sample ssh through intermediary host
@@ -18,5 +18,7 @@ Host github github.com
 #     User name
 #     ProxyCommand ssh -W %h:%p intermediary_host
 #     IdentityFile /path/to/id_rsa
+#     LocalForward 10993 mail.example.com:993
+#     LocalForward 10025 mail.example.com:25
 
 
