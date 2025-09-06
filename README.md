@@ -25,7 +25,7 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --brew --cargo --pixi --macos
+./link.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --macos
 ~~~
 
 - Install on local via HTTPS
@@ -34,14 +34,14 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --brew --cargo --pixi --macos
+./link.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --macos
 ~~~
 
 ### For Guest
 ~~~shell
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./install.sh --zsh --vim --tmux --neovim --alacrity
+./link.sh --zsh --vim --tmux --neovim --alacrity
 ~~~
 
 ### From Dockerfile
