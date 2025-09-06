@@ -25,6 +25,8 @@ OPTIONS:
         --macos             macos settings
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
+        --cp                use cp instaead of ln
+        --rm                use rm instaead of unlink
 '
 
 # default setting
@@ -38,21 +40,8 @@ alacritty_flag=1
 neovim_flag=1
 ssh_flag=1
 bash_flag=1
-
-print_info() { echo "[INFO] $1" >&1;  }
-print_warn() { echo "[WARN] $1" >&2;  }
-print_error() { echo "[ERROR] $1" >&2;  }
-create_link() {
-    local src=$1
-    local dest=$2
-    ln -nsi "$src" "$dest" && print_info "Linked $(basename "$dest")"
-}
-remove_link() {
-    local target=$1
-    if [ -L "$target" ]; then
-        unlink "$target" && print_info "Unlinked $(basename "$target")"
-    fi
-}
+cp_flag=1
+rm_flag=1
 
 # option parser
 while :;
@@ -93,6 +82,12 @@ do
         --bash)
             bash_flag=0
             ;;
+        --cp)
+            cp_flag=0
+            ;;
+        --rm)
+            rm_flag=0
+            ;;
        --)
             shift
             break
@@ -106,6 +101,30 @@ do
     esac
     shift
 done
+
+print_info() { echo "[INFO] $1" >&1;  }
+print_warn() { echo "[WARN] $1" >&2;  }
+print_error() { echo "[ERROR] $1" >&2;  }
+create_link() {
+    local src=$1
+    local dest=$2
+    if [ $cp_flag -eq 0 ]; then
+        cp -r "$src" "$dest" && print_info "Copied $(basename "$dest")"
+    else
+        ln -nsi "$src" "$dest" && print_info "Linked $(basename "$dest")"
+    fi
+}
+remove_link() {
+    local target=$1
+    if [ $rm_flag -eq 0 ]; then
+        rm -ir "$target" && print_info "Removed $(basename "$target")"
+    else
+        if [ -L "$target" ]; then
+            unlink "$target" && print_info "Unlinked $(basename "$target")"
+        fi
+    fi
+}
+
 
 # OS check
 if [ "$(uname)" == 'Darwin' ]; then
@@ -135,7 +154,7 @@ if [ ! -d ${HOME}/.config ]; then
     mkdir -p ${HOME}/.config
 fi
 
-if [ $unlink_flag -eq 0 ]; then
+if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
     print_info "Start unlink dotfiles"
     set +e
     print_warn "Ignore error"
@@ -143,12 +162,11 @@ if [ $unlink_flag -eq 0 ]; then
     # vim & bash
     for dotfile in .vim .vimrc .bash_profile;
     do
-        if [ -L $HOME/$dotfile ]; then
-            unlink $HOME/$dotfile && echo "[INFO] $dotfile unlink done" >&1
-        fi
+        remove_link $HOME/$dotfile
     done
 
-    for target in git zsh tmux alacritty neovim;
+    # git & zsh & tmux & alacritty & nvim
+    for target in git zsh tmux alacritty nvim;
     do
         remove_link ${HOME}/.config/$target
     done
