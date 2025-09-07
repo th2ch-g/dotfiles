@@ -24,12 +24,12 @@ grex                                                                # A command-
 https://github.com/Fierthraix/2048-rs.git game_2048                 # An implementation of 2048 using ncurses in Rust
 https://github.com/astral-sh/uv uv                                  # An extremely fast Python package and project manager, written in Rust.
 https://github.com/giacomo-b/rust-stakeholder.git rust-stakeholder  # Generate impressive-looking terminal output to look busy when stakeholders walk by
+https://github.com/prefix-dev/pixi.git pixi                         # Package management made easy
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
 hyperfine                                                           # A command-line benchmarking tool
 loop-rs                                                             # UNIX's missing `loop` command
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
-pixi                                                                # Package management made easy
 r-matrix                                                            # rust port of cmatrix
 ripgrep                                                             # ripgrep recursively searches directories for a regex pattern while respecting your gitignore
 ripgrep_all                                                         # rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.
