@@ -8,6 +8,4 @@ else
     echo "brew is already installed"
 fi
 
-# run: brew bundle in brew/
-
 echo done

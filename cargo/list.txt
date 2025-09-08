@@ -23,6 +23,7 @@ git-delta                                                           # A syntax-h
 grex                                                                # A command-line tool and Rust library with Python bindings for generating regular expressions from user-provided test cases
 https://github.com/Fierthraix/2048-rs.git game_2048                 # An implementation of 2048 using ncurses in Rust
 https://github.com/astral-sh/uv uv                                  # An extremely fast Python package and project manager, written in Rust.
+https://github.com/devmatteini/dra.git                              # A command line tool to download release assets from GitHub
 https://github.com/giacomo-b/rust-stakeholder.git rust-stakeholder  # Generate impressive-looking terminal output to look busy when stakeholders walk by
 https://github.com/prefix-dev/pixi.git pixi                         # Package management made easy
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
