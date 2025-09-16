@@ -15,6 +15,7 @@ brew "typst"
 brew "tmux"
 brew "pre-commit"
 brew "pass"
+brew "opentofu"
 brew "nvim"
 brew "imagemagick"
 brew "htop"
@@ -22,9 +23,9 @@ brew "gnupg"
 brew "gh"
 brew "fzf"
 brew "dockutil"
-# | sort -k 1 -r
 # tap "homebrew/bundle"
 # run: brew bundle dump
 # cask "visual-studio-code"
 # cask "ollama"
 # cask "keycastr"
+# | sort -k 1 -r
