@@ -22,7 +22,6 @@ OPTIONS:
     -g, --git               git dotfiles link
     -a, --alacritty         alacritty dotfiles link
     -n, --neovim            neovim dotfiles link
-        --macos             macos settings
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
         --cp                use cp instaead of ln
@@ -31,7 +30,6 @@ OPTIONS:
 
 # default setting
 unlink_flag=1
-macos_flag=1
 vim_flag=1
 zsh_flag=1
 tmux_flag=1
@@ -54,9 +52,6 @@ do
         -u | --unlink)
             unlink_flag=0
             break
-            ;;
-        --macos)
-            macos_flag=0
             ;;
         -v | --vim)
             vim_flag=0
@@ -250,17 +245,6 @@ if [ $bash_flag -eq 0 ]; then
     print_info "bash file link start"
     create_link ${PWD}/bash/.bash_profile ${HOME}/.bash_profile
     print_info "bash file link done"
-fi
-
-
-# macos settings
-if [ $macos_flag -eq 0 ]; then
-    if [ $OS != "Mac" ]; then
-        print_error "this script is only for macOS; skipping macos settings"
-    else
-        export PATH="/opt/homebrew/bin:$PATH"
-        cd macos && ./run.sh --dockutil && cd ..
-    fi
 fi
 
 echo "[INFO] done" >&1
