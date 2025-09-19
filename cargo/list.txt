@@ -8,6 +8,7 @@ bat                                                                 # A cat(1) c
 bottom                                                              # Yet another cross-platform graphical process/system monitor.
 broot                                                               # A new way to see and navigate directory trees
 cargo-deny                                                          # Cargo plugin for linting your dependencies
+cargo-fuzz                                                          # Command line helpers for fuzzing
 cargo-license                                                       # Cargo subcommand to see license of dependencies
 cargo-make                                                          # Rust task runner and build tool.
 cfonts                                                              # Sexy fonts for the console
