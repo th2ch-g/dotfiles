@@ -22,6 +22,8 @@ OPTIONS:
     -g, --git               git dotfiles link
     -a, --alacritty         alacritty dotfiles link
     -n, --neovim            neovim dotfiles link
+    -y, --yabai             yabai dotfiles link
+    -s, --skhd              skhd dotfiles link
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
         --cp                use cp instaead of ln
@@ -40,6 +42,8 @@ ssh_flag=1
 bash_flag=1
 cp_flag=1
 rm_flag=1
+yabai_flag=1
+skhd_flag=1
 
 # option parser
 while :;
@@ -82,6 +86,12 @@ do
             ;;
         --rm)
             rm_flag=0
+            ;;
+        -y | --yabai)
+            yabai_flag=0
+            ;;
+        -s | --skhd)
+            skhd_flag=0
             ;;
        --)
             shift
@@ -245,6 +255,26 @@ if [ $bash_flag -eq 0 ]; then
     print_info "bash file link start"
     create_link ${PWD}/bash/.bash_profile ${HOME}/.bash_profile
     print_info "bash file link done"
+fi
+
+# yabai
+if [[ $yabai_flag -eq 0 && $OS == "Mac" ]]; then
+    print_info "yabai link start"
+    create_link ${PWD}/yabai ${HOME}/.config/yabai
+    print_info "yabai link done"
+    if command -v yabai >/dev/null 2>&1; then
+        yabai --start-service
+    fi
+fi
+
+# skhd
+if [[ $skhd_flag -eq 0 && $OS == "Mac" ]]; then
+    print_info "skhd link start"
+    create_link ${PWD}/skhd ${HOME}/.config/skhd
+    print_info "skhd link done"
+    if command -v skhd >/dev/null 2>&1; then
+        skhd --start-service
+    fi
 fi
 
 echo "[INFO] done" >&1
