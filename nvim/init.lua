@@ -128,6 +128,9 @@ local plugins = {
           mappings = true,
         }
     },
+
+    -- terraform
+    { "hashivim/vim-terraform" },
 }
 
 
