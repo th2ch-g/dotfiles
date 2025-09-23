@@ -23,3 +23,7 @@ shift + ctrl + alt - right: yabai -m window --display prev; yabai -m display --f
 shift + ctrl + cmd - g: open /Applications/Google\ Chrome.app
 shift + ctrl + cmd - s: open /Applications/Slack.app
 shift + ctrl + cmd - f: open ~/
+
+# visualize all windows
+shift + ctrl + cmd - a: yabai -m space --layout bsp && yabai -m query --windows --space | jq '.[] | select(."is-floating" == true) | .id' | xargs -I {} yabai -m window {} --toggle float && yabai -m space --balance
+shift + ctrl + cmd - q: yabai -m space --layout float
