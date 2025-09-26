@@ -1,3 +1,4 @@
 nvitop
 git+https://github.com/th2ch-g/tmplot.git
 terminaltexteffects
+lizard
