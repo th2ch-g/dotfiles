@@ -140,18 +140,18 @@ local plugins = {
 local use_ai = vim.fn.getenv("VIM_AI") == "1"
 
 if use_ai then
-    table.insert(plugins, {
-        "ravitemer/mcphub.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-        build = "bundled_build.lua", -- Bundles `mcp-hub` binary along with the neovim plugin
-        config = function()
-            require("mcphub").setup({
-                use_bundled_binary = true, -- Use local `mcp-hub` binary
-            })
-        end,
-    })
+    -- table.insert(plugins, {
+    --     "ravitemer/mcphub.nvim",
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --     },
+    --     build = "bundled_build.lua", -- Bundles `mcp-hub` binary along with the neovim plugin
+    --     config = function()
+    --         require("mcphub").setup({
+    --             use_bundled_binary = true, -- Use local `mcp-hub` binary
+    --         })
+    --     end,
+    -- })
     table.insert(plugins, {
         "Exafunction/codeium.vim",
         event = "BufEnter",
