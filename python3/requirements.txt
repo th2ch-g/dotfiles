@@ -1,4 +1,7 @@
-nvitop
+# | sort -k 1
 git+https://github.com/th2ch-g/tmplot.git
-terminaltexteffects
 lizard
+nvitop
+openhands-ai
+pr-agent
+terminaltexteffects

@@ -12,6 +12,7 @@ cargo-deny                                                          # Cargo plug
 cargo-fuzz                                                          # Command line helpers for fuzzing
 cargo-license                                                       # Cargo subcommand to see license of dependencies
 cargo-make                                                          # Rust task runner and build tool.
+cargo-tarpaulin                                                     # A code coverage tool for Rust projects
 cfonts                                                              # Sexy fonts for the console
 choose                                                              # A human-friendly and fast alternative to cut and (sometimes) awk
 du-dust                                                             # A more intuitive version of du in rust
@@ -52,6 +53,7 @@ tre-command                                                         # Tree comma
 trunk                                                               # Build, bundle & ship your Rust WASM application to the web.
 typos-cli                                                           # Source code spell checker
 viu                                                                 # Terminal image viewer with native support for iTerm and Kitty
+wasmer-cli                                                          # Fast, secure, lightweight containers based on WebAssembly
 wild-linker                                                         # A very fast linker for Linux
 xq                                                                  # Pure rust implementation of jq
 zoxide                                                              # A smarter cd command. Supports all major shells.
