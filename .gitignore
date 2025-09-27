@@ -11,3 +11,6 @@ vim/.vim/*
 !vim/.vim/autoload
 nvim/*
 !nvim/init.lua
+/.serena
+/gemini/*
+!/gemini/settings.json

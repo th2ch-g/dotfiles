@@ -74,6 +74,7 @@ local plugins = {
         -- or :call mkdp#util#install()
     },
 
+    -- term utils
     -- {
     --     "akinsho/toggleterm.nvim",
     --     version = "*",
@@ -83,6 +84,7 @@ local plugins = {
     --     opts = {},
     -- },
 
+    -- bufferline
     -- {
     --     "akinsho/bufferline.nvim",
     --     version = "*",
@@ -102,41 +104,54 @@ local plugins = {
     --     end,
     -- },
 
-
     -- lean4
     {
-        'Julian/lean.nvim',
-        event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+        "Julian/lean.nvim",
+        event = { "BufReadPre *.lean", "BufNewFile *.lean" },
 
         dependencies = {
-          'neovim/nvim-lspconfig',
-          'nvim-lua/plenary.nvim',
+            "neovim/nvim-lspconfig",
+            "nvim-lua/plenary.nvim",
 
-          -- optional dependencies:
+            -- optional dependencies:
 
-          -- a completion engine
-          --    hrsh7th/nvim-cmp or Saghen/blink.cmp are popular choices
+            -- a completion engine
+            --    hrsh7th/nvim-cmp or Saghen/blink.cmp are popular choices
 
-          -- 'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
-          -- 'andymass/vim-matchup',          -- for enhanced % motion behavior
-          -- 'andrewradev/switch.vim',        -- for switch support
-          -- 'tomtom/tcomment_vim',           -- for commenting
+            -- 'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
+            -- 'andymass/vim-matchup',          -- for enhanced % motion behavior
+            -- 'andrewradev/switch.vim',        -- for switch support
+            -- 'tomtom/tcomment_vim',           -- for commenting
         },
 
         ---@type lean.Config
         opts = { -- see below for full configuration options
-          mappings = true,
-        }
+            mappings = true,
+        },
     },
 
     -- terraform
     { "hashivim/vim-terraform" },
-}
 
+    -- rust
+    { 'rust-lang/rust.vim' },
+}
 
 local use_ai = vim.fn.getenv("VIM_AI") == "1"
 
 if use_ai then
+    table.insert(plugins, {
+        "ravitemer/mcphub.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        build = "bundled_build.lua", -- Bundles `mcp-hub` binary along with the neovim plugin
+        config = function()
+            require("mcphub").setup({
+                use_bundled_binary = true, -- Use local `mcp-hub` binary
+            })
+        end,
+    })
     table.insert(plugins, {
         "Exafunction/codeium.vim",
         event = "BufEnter",
@@ -376,13 +391,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 vim.api.nvim_create_autocmd("BufReadPost", {
-  desc = "Auto jump to last position",
-  group = vim.api.nvim_create_augroup("auto-last-position", { clear = true }),
-  callback = function(args)
-    local position = vim.api.nvim_buf_get_mark(args.buf, [["]])
-    local winid = vim.fn.bufwinid(args.buf)
-    pcall(vim.api.nvim_win_set_cursor, winid, position)
-  end,
+    desc = "Auto jump to last position",
+    group = vim.api.nvim_create_augroup("auto-last-position", { clear = true }),
+    callback = function(args)
+        local position = vim.api.nvim_buf_get_mark(args.buf, [["]])
+        local winid = vim.fn.bufwinid(args.buf)
+        pcall(vim.api.nvim_win_set_cursor, winid, position)
+    end,
 })
 
 vim.cmd("hi Normal        ctermbg=NONE guibg=NONE")

@@ -24,6 +24,7 @@ OPTIONS:
     -n, --neovim            neovim dotfiles link
     -y, --yabai             yabai dotfiles link
     -s, --skhd              skhd dotfiles link
+        --gemini            gemini dotfiles link
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
         --cp                use cp instaead of ln
@@ -44,6 +45,7 @@ cp_flag=1
 rm_flag=1
 yabai_flag=1
 skhd_flag=1
+gemini_flag=1
 
 # option parser
 while :;
@@ -92,6 +94,9 @@ do
             ;;
         -s | --skhd)
             skhd_flag=0
+            ;;
+        --gemini)
+            gemini_flag=0
             ;;
        --)
             shift
@@ -164,14 +169,14 @@ if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
     set +e
     print_warn "Ignore error"
 
-    # vim & bash
-    for dotfile in .vim .vimrc .bash_profile;
+    # $HOME/dotfiles
+    for dotfile in .vim .vimrc .bash_profile gemini;
     do
         remove_link $HOME/$dotfile
     done
 
-    # git & zsh & tmux & alacritty & nvim
-    for target in git zsh tmux alacritty nvim;
+    # $HOME/.config/dotfiles
+    for target in git zsh tmux alacritty nvim yabai skhd;
     do
         remove_link ${HOME}/.config/$target
     done
@@ -275,6 +280,12 @@ if [[ $skhd_flag -eq 0 && $OS == "Mac" ]]; then
     if command -v skhd >/dev/null 2>&1; then
         skhd --start-service
     fi
+fi
+
+if [ $gemini_flag -eq 0 ]; then
+    print_info "gemini link start"
+    create_link ${PWD}/gemini ${HOME}/.gemini
+    print_info "gemini link done"
 fi
 
 echo "[INFO] done" >&1
