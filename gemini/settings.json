@@ -1,23 +1,33 @@
 {
-  "selectedAuthType": "gemini-api-key",
-  "vimMode": false,
   "mcpServers": {
     "serena": {
       "command": "uvx",
       "args": [
-        "--from", "git+https://github.com/oraios/serena",
+        "--from",
+        "git+https://github.com/oraios/serena",
         "serena-mcp-server",
-        "--context", "ide-assistant",
-        "--enable-web-dashboard", "false",
-        "--project", "${PWD}"
+        "--context",
+        "ide-assistant",
+        "--enable-web-dashboard",
+        "false",
+        "--project",
+        "${PWD}"
       ]
     },
     "github": {
-        "httpUrl": "https://api.githubcopilot.com/mcp/",
-        "trust": true,
-        "headers": {
-            "Authorization": "Bearer $GITHUB_PAT"
-        }
+      "httpUrl": "https://api.githubcopilot.com/mcp/",
+      "trust": true,
+      "headers": {
+        "Authorization": "Bearer $GITHUB_PAT"
+      }
     }
+  },
+  "security": {
+    "auth": {
+      "selectedType": "gemini-api-key"
+    }
+  },
+  "general": {
+    "vimMode": false
   }
 }
