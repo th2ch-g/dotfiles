@@ -49,6 +49,7 @@ tomlq                                                               # A tool for
 tre-command                                                         # Tree command, improved.
 trunk                                                               # Build, bundle & ship your Rust WASM application to the web.
 typos-cli                                                           # Source code spell checker
+viu                                                                 # Terminal image viewer with native support for iTerm and Kitty
 wild-linker                                                         # A very fast linker for Linux
 xq                                                                  # Pure rust implementation of jq
 zoxide                                                              # A smarter cd command. Supports all major shells.
