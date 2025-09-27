@@ -6,6 +6,7 @@ export XDG_CACHE_HOME=$HOME/.cache/
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/works/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
+export CARGO_HOME="$HOME/.cargo/"
 export TERMINFO=/usr/share/terminfo # for tmux
 ## by xdg-ninja
 export CONFIG="$XDG_CONFIG_HOME"

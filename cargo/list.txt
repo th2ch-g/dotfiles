@@ -7,6 +7,7 @@
 bat                                                                 # A cat(1) clone with wings.
 bottom                                                              # Yet another cross-platform graphical process/system monitor.
 broot                                                               # A new way to see and navigate directory trees
+cargo-binstall                                                      # Binary installation for rust projects
 cargo-deny                                                          # Cargo plugin for linting your dependencies
 cargo-fuzz                                                          # Command line helpers for fuzzing
 cargo-license                                                       # Cargo subcommand to see license of dependencies
@@ -33,6 +34,7 @@ hyperfine                                                           # A command-
 loop-rs                                                             # UNIX's missing `loop` command
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
+pueue                                                               # Manage your shell commands.
 r-matrix                                                            # rust port of cmatrix
 ripgrep                                                             # ripgrep recursively searches directories for a regex pattern while respecting your gitignore
 ripgrep_all                                                         # rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc.
