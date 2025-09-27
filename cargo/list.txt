@@ -1,4 +1,5 @@
 # sort by "sort -k 1"
+# cargo-chef                                                          # A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.
 # https://github.com/sioodmy/todo.git todo                            # Simple todo cli program written in rust
 # https://github.com/th2ch-g/parrot-rs.git parrot                     # Party Parrot implemented by Rust
 # monolith                                                            # CLI tool and library for saving complete web pages as a single HTML file
