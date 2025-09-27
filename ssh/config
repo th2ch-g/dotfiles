@@ -9,7 +9,7 @@ ForwardX11 yes
 # My github account
 Host github github.com
     HostName github.com
-    IdentityFile ~/.ssh/id_ed25519_github
+    IdentityFile ~/.ssh/hogehoge
     User git
 
 # sample ssh through intermediary host
