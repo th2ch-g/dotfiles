@@ -1,4 +1,5 @@
 # sort by "sort -k 1"
+# broot                                                               # A new way to see and navigate directory trees
 # cargo-chef                                                          # A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.
 # https://github.com/sioodmy/todo.git todo                            # Simple todo cli program written in rust
 # https://github.com/th2ch-g/parrot-rs.git parrot                     # Party Parrot implemented by Rust
@@ -7,7 +8,6 @@
 # zellij                                                              # A terminal workspace with batteries included
 bat                                                                 # A cat(1) clone with wings.
 bottom                                                              # Yet another cross-platform graphical process/system monitor.
-broot                                                               # A new way to see and navigate directory trees
 cargo-binstall                                                      # Binary installation for rust projects
 cargo-deny                                                          # Cargo plugin for linting your dependencies
 cargo-fuzz                                                          # Command line helpers for fuzzing
@@ -35,6 +35,7 @@ https://github.com/th2ch-g/kanban.git kanban                        # Super usel
 hyperfine                                                           # A command-line benchmarking tool
 loop-rs                                                             # UNIX's missing `loop` command
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
+nviwatch                                                            # NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
 pueue                                                               # Manage your shell commands.
 r-matrix                                                            # rust port of cmatrix

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+# set -eux
 
 rustup self update
 rustup update
