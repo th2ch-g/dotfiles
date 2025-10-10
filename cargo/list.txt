@@ -8,12 +8,14 @@
 # zellij                                                              # A terminal workspace with batteries included
 bat                                                                 # A cat(1) clone with wings.
 bottom                                                              # Yet another cross-platform graphical process/system monitor.
+cargo-bin                                                           # Build, cache, and run CLI tools scoped in Cargo.toml rather than installing globally. Stop the version drifts across your team, keep it all in sync within your project!
 cargo-binstall                                                      # Binary installation for rust projects
 cargo-deny                                                          # Cargo plugin for linting your dependencies
 cargo-fuzz                                                          # Command line helpers for fuzzing
 cargo-license                                                       # Cargo subcommand to see license of dependencies
 cargo-make                                                          # Rust task runner and build tool.
 cargo-tarpaulin                                                     # A code coverage tool for Rust projects
+cargo-update                                                        # A cargo subcommand for checking and applying updates to installed executables
 cfonts                                                              # Sexy fonts for the console
 choose                                                              # A human-friendly and fast alternative to cut and (sometimes) awk
 du-dust                                                             # A more intuitive version of du in rust
