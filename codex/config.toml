@@ -1,0 +1,28 @@
+model = "gpt-oss-120b"
+model_reasoning_effort = "high"
+hide_agent_reasoning = false
+network_access = true
+
+[tools]
+web_search = true
+
+[model_providers.ollama]
+name = "Ollama"
+# base_url = "http://127.0.0.1:11434/v1"
+base_url = "http://192.168.50.51:11434"
+
+[profiles.gpt-oss-120b]
+model = "gpt-oss-120b"
+model_provider = "ollama"
+
+[mcp_servers.serena]
+command = "uvx"
+args = ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server", "--context", "codex"]
+
+[mcp_servers.fetch]
+command = "uvx"
+args = ["mcp-server-fetch"]
+
+[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+bearer_token_env_var = "GITHUB_PAT"

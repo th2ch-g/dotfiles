@@ -20,6 +20,10 @@
       "headers": {
         "Authorization": "Bearer $GITHUB_PAT"
       }
+    },
+    "fetch": {
+        "command": "uvx",
+        "args": ["mcp-server-fetch"]
     }
   },
   "security": {
