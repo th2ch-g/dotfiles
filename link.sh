@@ -25,6 +25,7 @@ OPTIONS:
     -y, --yabai             yabai dotfiles link
     -s, --skhd              skhd dotfiles link
         --gemini            gemini dotfiles link
+        --codex             codex dotfiles link
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
         --cp                use cp instaead of ln
@@ -46,6 +47,7 @@ rm_flag=1
 yabai_flag=1
 skhd_flag=1
 gemini_flag=1
+codex_flag=1
 
 # option parser
 while :;
@@ -97,6 +99,9 @@ do
             ;;
         --gemini)
             gemini_flag=0
+            ;;
+        --codex)
+            codex_flag=0
             ;;
        --)
             shift
@@ -170,7 +175,7 @@ if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
     print_warn "Ignore error"
 
     # $HOME/dotfiles
-    for dotfile in .vim .vimrc .bash_profile gemini;
+    for dotfile in .vim .vimrc .bash_profile gemini codex;
     do
         remove_link $HOME/$dotfile
     done
@@ -286,6 +291,12 @@ if [ $gemini_flag -eq 0 ]; then
     print_info "gemini link start"
     create_link ${PWD}/gemini ${HOME}/.gemini
     print_info "gemini link done"
+fi
+
+if [ $codex_flag -eq 0 ]; then
+    print_info "codex link start"
+    create_link ${PWD}/codex ${HOME}/.codex
+    print_info "codex link done"
 fi
 
 echo "[INFO] done" >&1

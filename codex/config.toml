@@ -8,8 +8,7 @@ web_search = true
 
 [model_providers.ollama]
 name = "Ollama"
-# base_url = "http://127.0.0.1:11434/v1"
-base_url = "http://192.168.50.51:11434"
+base_url = "http://127.0.0.1:11434/v1" # or set CODEX_OSS_BASE_URL
 
 [profiles.gpt-oss-120b]
 model = "gpt-oss-120b"
