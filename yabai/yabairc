@@ -34,4 +34,5 @@ yabai -m config window_gap                   06
 # Rules
 yabai -m rule --add app="^System Preferences$" monage=off
 
+borders active_color=0xcc00ff80 inactive_color=0xff494d64 width=6.0 &
 echo "yabai configuration loaded.."
