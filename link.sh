@@ -273,6 +273,7 @@ if [[ $yabai_flag -eq 0 && $OS == "Mac" ]]; then
     create_link ${PWD}/yabai ${HOME}/.config/yabai
     print_info "yabai link done"
     if command -v yabai >/dev/null 2>&1; then
+        yabai --start-service
         yabai --restart-service
     fi
 fi
@@ -283,6 +284,7 @@ if [[ $skhd_flag -eq 0 && $OS == "Mac" ]]; then
     create_link ${PWD}/skhd ${HOME}/.config/skhd
     print_info "skhd link done"
     if command -v skhd >/dev/null 2>&1; then
+        skhd --start-service
         skhd --restart-service
     fi
 fi
