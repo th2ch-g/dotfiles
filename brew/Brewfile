@@ -35,4 +35,5 @@ brew "borders"
 # brew "podman"
 # brew "ollama"
 # brew "maccy"
+# brew "colima"
 # | sort -k 1 -r
