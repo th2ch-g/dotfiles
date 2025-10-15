@@ -135,6 +135,9 @@ local plugins = {
 
     -- rust
     { 'rust-lang/rust.vim' },
+
+    -- quick jump
+    { 'easymotion/vim-easymotion' }
 }
 
 local use_ai = vim.fn.getenv("VIM_AI") == "1"
