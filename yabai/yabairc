@@ -1,5 +1,7 @@
 #!/usr/bin/env shcode
 
+# run: skhd --restart-service
+
 # global settings
 yabai -m config mouse_follows_focus          off
 yabai -m config focus_follows_mouse          off
