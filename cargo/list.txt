@@ -5,6 +5,8 @@
 # https://github.com/th2ch-g/parrot-rs.git parrot                     # Party Parrot implemented by Rust
 # monolith                                                            # CLI tool and library for saving complete web pages as a single HTML file
 # rustpython                                                          # A Python Interpreter written in Rust
+# sheldon                                                             # Fast, configurable, shell plugin manager
+# starship                                                            # The minimal, blazing-fast, and infinitely customizable prompt for any shell!
 # zellij                                                              # A terminal workspace with batteries included
 bat                                                                 # A cat(1) clone with wings.
 bottom                                                              # Yet another cross-platform graphical process/system monitor.
