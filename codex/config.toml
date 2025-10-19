@@ -37,3 +37,9 @@ args = ["-y", "@modelcontextprotocol/server-filesystem"]
 [mcp_servers.time]
 command = "uvx"
 args = ["mcp-server-time"]
+
+[projects."/home/hori/works/work1/la-bench2025/tmp_codex"]
+trust_level = "trusted"
+
+[projects."/home/hori/works/work1/la-bench2025/la-bench2025_speckit"]
+trust_level = "trusted"
