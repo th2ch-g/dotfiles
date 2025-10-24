@@ -38,6 +38,7 @@ https://github.com/openai/codex.git codex-cli                       # Lightweigh
 https://github.com/prefix-dev/pixi.git pixi                         # Package management made easy
 https://github.com/sib-swiss/termal.git                             # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
+https://github.com/tsaitoh/concal.git                               # Contribution calendar for local repository
 hyperfine                                                           # A command-line benchmarking tool
 loop-rs                                                             # UNIX's missing `loop` command
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
