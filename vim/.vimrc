@@ -154,7 +154,7 @@ endif
 
 call plug#begin()
 Plug 'tomasiser/vim-code-dark'
-Plug 'sainnhe/everforest'
+" Plug 'sainnhe/everforest'
 Plug 'cohama/lexima.vim'
 Plug 'tomtom/tcomment_vim'
 Plug 'th2ch-g/my-vim-sonictemplate'
