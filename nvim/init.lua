@@ -48,11 +48,11 @@ local plugins = {
     -- },
 
     -- utils
-    { "cohama/lexima.vim" },
-    { "tomtom/tcomment_vim" },
-    { "th2ch-g/my-vim-sonictemplate" },
-    { "machakann/vim-sandwich" },
-    { "airblade/vim-gitgutter" },
+    { "cohama/lexima.vim", event = "InsertEnter" },
+    { "tomtom/tcomment_vim", event = "VeryLazy" },
+    { "th2ch-g/my-vim-sonictemplate", event = "InsertEnter" },
+    { "machakann/vim-sandwich", event = "VeryLazy" },
+    { "airblade/vim-gitgutter", event = "BufWinEnter" },
 
     -- markdown utils
     -- {
@@ -131,13 +131,19 @@ local plugins = {
     },
 
     -- terraform
-    { "hashivim/vim-terraform" },
+    {
+        "hashivim/vim-terraform",
+        event = { "BufReadPre *.tf", "BufNewFile *.tf" },
+    },
 
     -- rust
-    { 'rust-lang/rust.vim' },
+    {
+        'rust-lang/rust.vim',
+        event = { "BufReadPre *.rs", "BufNewFile *.rs" },
+    },
 
     -- quick jump
-    { 'easymotion/vim-easymotion' }
+    -- { 'easymotion/vim-easymotion' }
 }
 
 local use_ai = vim.fn.getenv("VIM_AI") == "1"

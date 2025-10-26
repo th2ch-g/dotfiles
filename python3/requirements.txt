@@ -3,6 +3,7 @@
 # pr-agent
 git+https://github.com/github/spec-kit.git
 git+https://github.com/th2ch-g/tmplot.git
+gitingest
 lizard
 nvitop
 terminaltexteffects
