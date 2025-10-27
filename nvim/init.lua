@@ -50,7 +50,7 @@ local plugins = {
     -- utils
     { "cohama/lexima.vim", event = "InsertEnter" },
     { "tomtom/tcomment_vim", event = "VeryLazy" },
-    { "th2ch-g/my-vim-sonictemplate", event = "InsertEnter" },
+    { "th2ch-g/my-vim-sonictemplate", event = "VeryLazy" },
     { "machakann/vim-sandwich", event = "VeryLazy" },
     { "airblade/vim-gitgutter", event = "BufWinEnter" },
 
