@@ -144,6 +144,15 @@ local plugins = {
 
     -- quick jump
     -- { 'easymotion/vim-easymotion' }
+
+    -- highlight
+    {
+        "levouh/tint.nvim",
+        event = "BufWinEnter",
+        config = function()
+            require("tint").setup()
+        end
+    },
 }
 
 local use_ai = vim.fn.getenv("VIM_AI") == "1"
