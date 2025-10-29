@@ -240,8 +240,13 @@ fi
 # neovim link
 if [ $neovim_flag -eq 0 ]; then
     print_info "neovim link start"
-    export VIM_AI=1
     create_link $PWD/nvim/ ${HOME}/.config/nvim
+    if command -v nvim >/dev/null 2>&1; then
+        export VIM_AI=1
+        set +e
+        nvim --headless "+Lazy! update" +qa
+        set -e
+    fi
     print_info "neovim link done"
 fi
 
