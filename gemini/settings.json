@@ -14,13 +14,6 @@
         "${PWD}"
       ]
     },
-    "github": {
-      "httpUrl": "https://api.githubcopilot.com/mcp/",
-      "trust": true,
-      "headers": {
-        "Authorization": "Bearer $GITHUB_PAT"
-      }
-    },
     "fetch": {
         "command": "uvx",
         "args": ["mcp-server-fetch"]

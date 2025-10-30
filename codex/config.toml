@@ -22,9 +22,9 @@ args = ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-s
 command = "uvx"
 args = ["mcp-server-fetch"]
 
-[mcp_servers.github]
-url = "https://api.githubcopilot.com/mcp/"
-bearer_token_env_var = "GITHUB_PAT"
+# [mcp_servers.github]
+# url = "https://api.githubcopilot.com/mcp/"
+# bearer_token_env_var = "GITHUB_PAT"
 
 [mcp_servers.sequential-thinking]
 command = "npx"
