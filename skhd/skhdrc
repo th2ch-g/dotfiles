@@ -23,7 +23,8 @@ shift + ctrl + alt - right: yabai -m window --display prev; yabai -m display --f
 # open app
 shift + ctrl + cmd - g: open /Applications/Google\ Chrome.app
 shift + ctrl + cmd - s: open /Applications/Slack.app
-shift + ctrl + cmd - t: open /Applications/Alacritty.app
+# shift + ctrl + cmd - t: open /Applications/Alacritty.app
+shift + ctrl + cmd - t: open /Applications/iTerm.app
 shift + ctrl + cmd - f: open ~/
 
 # visualize all windows
