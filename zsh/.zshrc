@@ -197,7 +197,7 @@ ca() {
 
 rp() {
     if [ "$(uname)" = "Darwin" ]; then
-        echo "$PWD/${1}"
+        readlink -f "$1"
     elif [ "$(uname)" = "Linux" ]; then
         realpath -e "$1"
     fi
