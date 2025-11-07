@@ -6,9 +6,8 @@ zsh/*
 !zsh/.zprofile
 !zsh/.zshenv
 !zsh/.zshrc
-vim/.vim/*
-!vim/.vim/.gitkeep
-!vim/.vim/autoload
+vim/*
+!vim/vimrc
 nvim/*
 !nvim/init.lua
 /.serena

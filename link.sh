@@ -32,6 +32,8 @@ OPTIONS:
         --rm                use rm instaead of unlink
 '
 
+XDG_CONFIG_HOME="${HOME}/.config"
+
 # default setting
 unlink_flag=1
 vim_flag=1
@@ -165,8 +167,8 @@ if [ ! -e $PWD/link.sh ]; then
     exit 1
 fi
 
-if [ ! -d ${HOME}/.config ]; then
-    mkdir -p ${HOME}/.config
+if [ ! -d ${XDG_CONFIG_HOME} ]; then
+    mkdir -p ${XDG_CONFIG_HOME}
 fi
 
 if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
@@ -175,15 +177,15 @@ if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
     print_warn "Ignore error"
 
     # $HOME/dotfiles
-    for dotfile in .vim .vimrc .bash_profile gemini codex;
+    for dotfile in .bash_profile .gemini .codex;
     do
         remove_link $HOME/$dotfile
     done
 
-    # $HOME/.config/dotfiles
-    for target in git zsh tmux alacritty nvim yabai skhd boarders;
+    # $XDG_CONFIG_HOME/dotfiles
+    for target in git zsh tmux alacritty vim nvim yabai skhd boarders;
     do
-        remove_link ${HOME}/.config/$target
+        remove_link ${XDG_CONFIG_HOME}/$target
     done
     remove_link ${HOME}/.zshenv
 
@@ -194,15 +196,11 @@ fi
 # vim link
 if [ $vim_flag -eq 0 ]; then
     print_info "vim link start"
-    # vim does not support config dir
-    for dotfile in .vim .vimrc;
-    do
-        create_link ${PWD}/vim/$dotfile ${HOME}/$dotfile
-    done
+    create_link ${PWD}/vim ${XDG_CONFIG_HOME}/vim
     if command -v vim >/dev/null 2>&1; then
         set +e
         export VIM_AI=1
-        vim -e -c "PlugInstall" -c "qa"
+        vim -e -c "JetpackSync" -c "qa"
         set -e
     fi
     print_info "vim link done"
@@ -211,7 +209,7 @@ fi
 # zsh link
 if [ $zsh_flag -eq 0 ]; then
     print_info "zsh link start"
-    create_link ${PWD}/zsh ${HOME}/.config/zsh
+    create_link ${PWD}/zsh ${XDG_CONFIG_HOME}/zsh
     create_link ${PWD}/zsh/.zshenv ${HOME}/.zshenv
     print_info "zsh link done"
 fi
@@ -219,28 +217,28 @@ fi
 # tmux link
 if [ $tmux_flag -eq 0 ]; then
     print_info "tmux link start"
-    create_link ${PWD}/tmux ${HOME}/.config/tmux
+    create_link ${PWD}/tmux ${XDG_CONFIG_HOME}/tmux
     print_info "tmux link done"
 fi
 
 # git link
 if [ $git_flag -eq 0 ]; then
     print_info "git link start"
-    create_link ${PWD}/git ${HOME}/.config/git
+    create_link ${PWD}/git ${XDG_CONFIG_HOME}/git
     print_info "git link done"
 fi
 
 # alacritty link
 if [ $alacritty_flag -eq 0 ]; then
     print_info "alacritty link start"
-    create_link $PWD/alacritty/ ${HOME}/.config/alacritty
+    create_link $PWD/alacritty/ ${XDG_CONFIG_HOME}/alacritty
     print_info "alacritty link done"
 fi
 
 # neovim link
 if [ $neovim_flag -eq 0 ]; then
     print_info "neovim link start"
-    create_link $PWD/nvim/ ${HOME}/.config/nvim
+    create_link $PWD/nvim/ ${XDG_CONFIG_HOME}/nvim
     if command -v nvim >/dev/null 2>&1; then
         export VIM_AI=1
         set +e
@@ -275,7 +273,7 @@ fi
 # yabai
 if [[ $yabai_flag -eq 0 && $OS == "Mac" ]]; then
     print_info "yabai link start"
-    create_link ${PWD}/yabai ${HOME}/.config/yabai
+    create_link ${PWD}/yabai ${XDG_CONFIG_HOME}/yabai
     print_info "yabai link done"
     if command -v yabai >/dev/null 2>&1; then
         yabai --start-service
@@ -286,7 +284,7 @@ fi
 # skhd
 if [[ $skhd_flag -eq 0 && $OS == "Mac" ]]; then
     print_info "skhd link start"
-    create_link ${PWD}/skhd ${HOME}/.config/skhd
+    create_link ${PWD}/skhd ${XDG_CONFIG_HOME}/skhd
     print_info "skhd link done"
     if command -v skhd >/dev/null 2>&1; then
         skhd --start-service
