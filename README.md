@@ -25,7 +25,7 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --yabai --skhd
+./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
 ~~~
 
 - Install on local via HTTPS
@@ -34,14 +34,14 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --alacrity --ssh --yabai --skhd
+./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
 ~~~
 
 ### For Guest
 ~~~shell
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --zsh --vim --tmux --neovim --alacrity
+./link.sh --zsh --vim --tmux --neovim
 ~~~
 
 ### From Dockerfile
@@ -52,46 +52,28 @@ docker run --rm -it ghcr.io/th2ch-g/dotfiles
 ~~~
 
 #### Case2: Build locally
-- If you want to use as guest, change Dockerfile
 ~~~shell
 git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
-docker image build -t myenv dotfiles && \
+cd ./dotfiles && \
+docker image build -t myenv . && \
 docker run --rm -it myenv
 ~~~
 
-## Commit
+## set-url for commit
 ~~~shell
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git
 ~~~
 
 ## Update
-### Simple
 ~~~
-git pull origin main
-~~~
-
-### Overwrite
-~~~
-git fetch origin main && \
-git reset --hard origin/main
-~~~
-
-### Submodule update
-~~~
-git submodule update --remote <submodule_path>
+git pull
 ~~~
 
 ## Contents
 - [vim](https://github.com/vim/vim) (>= v8.2 tested)
-  - [vim-plug](https://github.com/junegunn/vim-plug)
 - [neovim](https://github.com/neovim/neovim) (>= v0.10.4 tested)
   - [lazy.nvim](https://github.com/folke/lazy.nvim)
 - [zsh](https://github.com/zsh-users/zsh) (>= v5.8 tested)
-  - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
-  - [zsh-completions](https://github.com/zsh-users/zsh-completions)
-  - [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
-  - [prezto](https://github.com/sorin-ionescu/prezto)
-  - [pure](https://github.com/sindresorhus/pure)
 - [tmux](https://github.com/tmux/tmux) (>= 3.0a tested)
 - [iTerm2](https://github.com/gnachman/iTerm2)
   - [Iceberg-iTerm2](https://github.com/Arc0re/Iceberg-iTerm2)

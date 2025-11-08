@@ -154,20 +154,6 @@ endif
 " :set paste
 " :set nopaste
 
-" vim-plug
-" call plug#begin()
-" Plug 'tomasiser/vim-code-dark'
-" " Plug 'sainnhe/everforest'
-" Plug 'cohama/lexima.vim'
-" Plug 'tomtom/tcomment_vim'
-" Plug 'th2ch-g/my-vim-sonictemplate'
-" Plug 'machakann/vim-sandwich'
-" Plug 'airblade/vim-gitgutter'
-" " if exists("$VIM_AI") && $VIM_AI == "1"
-" "     Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
-" " endif
-" call plug#end()
-
 " see https://github.com/Exafunction/codeium.vim
 " if exists("$VIM_AI") && $VIM_AI == "1"
 "     let g:codeium_disable_bindings = 1

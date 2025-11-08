@@ -1,6 +1,12 @@
 #=================================================
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# sheldon
+if ! command -v sheldon &> /dev/null; then
+    curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
+        | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
+fi
+
+if command -v sheldon &> /dev/null; then
+  eval "$(sheldon source)"
 fi
 
 # prompt
@@ -38,14 +44,6 @@ setopt hist_ignore_all_dups
 # bindkey "^P" history-beginning-search-backward-end
 # bindkey "^N" history-beginning-search-forward-end
 
-# compinit
-autoload -Uz compinit && compinit
-setopt auto_param_keys
-setopt auto_param_slash
-setopt complete_in_word
-zstyle ':completion:*:default' menu select=2
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
 # export
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export CLICOLOR=1
@@ -53,6 +51,15 @@ export TERM="xterm-256color"
 export LANG=ja_JP.UTF-8
 export GPG_TTY=$(tty)
 # export LANG=en_US.UTF-8 # for preventing tab completion duplicate bug, default settings: ja_JP.UTF-8
+
+# compinit
+autoload -Uz compinit && compinit
+setopt auto_param_keys
+setopt auto_param_slash
+setopt complete_in_word
+zstyle ':completion:*:default' menu select=2
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # alias
 alias ll="ls -stlh"

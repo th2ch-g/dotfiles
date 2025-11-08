@@ -1,0 +1,23 @@
+shell = "zsh"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+
+[plugins.prezto-spectrum]
+remote = "https://raw.githubusercontent.com/sorin-ionescu/prezto/refs/heads/master/modules/spectrum/init.zsh"
+
+[plugins.pure]
+github = "sindresorhus/pure"
+apply = ["fpath"]
+
+# [plugins.zsh-abbr]
+# github = "olets/zsh-abbr"
+#
+# [plugins.zsh-defer]
+# github = "romkatv/zsh-defer"

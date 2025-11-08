@@ -51,6 +51,30 @@ skhd_flag=1
 gemini_flag=1
 codex_flag=1
 
+print_info() { echo "[INFO] $1" >&1;  }
+print_warn() { echo "[WARN] $1" >&2;  }
+print_error() { echo "[ERROR] $1" >&2;  }
+create_link() {
+    local src=$1
+    local dest=$2
+    if [ $cp_flag -eq 0 ]; then
+        cp -r "$src" "$dest" && print_info "Copied $(basename "$dest")"
+    else
+        ln -nsi "$src" "$dest" && print_info "Linked $(basename "$dest")"
+    fi
+}
+remove_link() {
+    local target=$1
+    if [ $rm_flag -eq 0 ]; then
+        rm -ir "$target" && print_info "Removed $(basename "$target")"
+    else
+        if [ -L "$target" ]; then
+            unlink "$target" && print_info "Unlinked $(basename "$target")"
+        fi
+    fi
+}
+
+
 # option parser
 while :;
 do
@@ -119,30 +143,6 @@ do
     shift
 done
 
-print_info() { echo "[INFO] $1" >&1;  }
-print_warn() { echo "[WARN] $1" >&2;  }
-print_error() { echo "[ERROR] $1" >&2;  }
-create_link() {
-    local src=$1
-    local dest=$2
-    if [ $cp_flag -eq 0 ]; then
-        cp -r "$src" "$dest" && print_info "Copied $(basename "$dest")"
-    else
-        ln -nsi "$src" "$dest" && print_info "Linked $(basename "$dest")"
-    fi
-}
-remove_link() {
-    local target=$1
-    if [ $rm_flag -eq 0 ]; then
-        rm -ir "$target" && print_info "Removed $(basename "$target")"
-    else
-        if [ -L "$target" ]; then
-            unlink "$target" && print_info "Unlinked $(basename "$target")"
-        fi
-    fi
-}
-
-
 # OS check
 if [ "$(uname)" == 'Darwin' ]; then
   OS='Mac'
@@ -183,7 +183,7 @@ if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
     done
 
     # $XDG_CONFIG_HOME/dotfiles
-    for target in git zsh tmux alacritty vim nvim yabai skhd boarders;
+    for target in git zsh sheldon tmux alacritty vim nvim yabai skhd;
     do
         remove_link ${XDG_CONFIG_HOME}/$target
     done
@@ -211,6 +211,7 @@ if [ $zsh_flag -eq 0 ]; then
     print_info "zsh link start"
     create_link ${PWD}/zsh ${XDG_CONFIG_HOME}/zsh
     create_link ${PWD}/zsh/.zshenv ${HOME}/.zshenv
+    create_link ${PWD}/sheldon ${XDG_CONFIG_HOME}/sheldon
     print_info "zsh link done"
 fi
 

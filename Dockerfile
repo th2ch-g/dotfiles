@@ -6,18 +6,17 @@ RUN apt-get update \
 # vim: /usr/bin/vim.basic because of alternative system
 RUN ln -sf /usr/bin/vim.basic /usr/bin/vim
 
-RUN mkdir -p ~/works \
-        && cd ~/works \
-        && git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git \
-        && cd ./dotfiles \
-        && ./link.sh --git --zsh --tmux --vim --neovim --ssh --alacritty
+RUN mkdir -p /root/works/dotfiles
+
+WORKDIR /root/works/dotfiles
 
 # `git clone --depth 1 -j 8 --filter=blob:none` will be slower and bigger
+COPY . .
+
+RUN ./link.sh --git --zsh --tmux --vim --neovim --ssh --alacritty
 
 RUN chsh -s /bin/zsh
 
-# skip this for saving time
-# it takes longer time and generates errors
-# RUN cd ~/works/dotfiles && ./install -c -p
+# skip cargo/python install for saving time
 
-CMD ["/bin/zsh", "-c", "echo 'Run: prepare_all' && zsh"]
+CMD ["/bin/zsh", "-c", "echo 'This example container. Some features are not available. Run: prepare_all' && zsh"]
