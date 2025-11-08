@@ -73,6 +73,16 @@ local plugins = {
         end,
         -- or :call mkdp#util#install()
     },
+    {
+        'mzlogin/vim-markdown-toc',
+        event = { "BufReadPre *.md", "BufNewFile *.md" },
+        config = function()
+            vim.g.vmt_auto_update_on_save = 1
+            -- vim.g.vmt_dont_insert_fence = 1
+            vim.g.vmt_fence_text = 'TOC'
+            vim.g.vmt_fence_closing_text = '/TOC'
+        end
+    },
 
     -- term utils
     -- {

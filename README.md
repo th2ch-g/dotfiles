@@ -3,18 +3,19 @@
 ![license](https://img.shields.io/github/license/th2ch-g/dotfiles)
 ![repo-size](https://img.shields.io/github/repo-size/th2ch-g/dotfiles)
 
-- [dotfiles](#dotfiles)
-  - [Install](#install)
-    - [For me](#for-me)
-    - [For Guest](#for-guest)
-    - [From Dockerfile](#from-dockerfile)
-      - [Case1: Pull from ghcr](#case1-pull-from-ghcr)
-      - [Case2: Build locally](#case2-build-locally)
-  - [Update](#update)
-    - [Simple](#simple)
-    - [Overwrite](#overwrite)
-    - [Submodule update](#submodule-update)
-  - [Contents](#contents)
+<!-- TOC GFM -->
+
+* [Install](#install)
+    * [For me](#for-me)
+    * [For Guest](#for-guest)
+    * [From Dockerfile](#from-dockerfile)
+        * [Case1: Pull from ghcr](#case1-pull-from-ghcr)
+        * [Case2: Build locally](#case2-build-locally)
+* [set-url for commit](#set-url-for-commit)
+* [Update](#update)
+* [Add release](#add-release)
+
+<!-- /TOC -->
 
 ## Install
 
@@ -23,7 +24,7 @@
 ~~~shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
-git clone --branch main --recursive git@github.com:th2ch-g/dotfiles.git && \
+git clone git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
 ~~~
@@ -32,14 +33,14 @@ cd ./dotfiles && \
 ~~~shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
-git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
+git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
 ~~~
 
 ### For Guest
 ~~~shell
-git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
+git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --zsh --vim --tmux --neovim
 ~~~
@@ -53,7 +54,7 @@ docker run --rm -it ghcr.io/th2ch-g/dotfiles
 
 #### Case2: Build locally
 ~~~shell
-git clone --branch main --recursive https://github.com/th2ch-g/dotfiles.git && \
+git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 docker image build -t myenv . && \
 docker run --rm -it myenv
@@ -69,24 +70,8 @@ git remote set-url origin git@github.com:th2ch-g/dotfiles.git
 git pull
 ~~~
 
-# Add release
+## Add release
 ```bash
 git tag -a vYYYY.MM.DD -m "message"
 git push origin vYYYY.MM.DD
 ```
-
-## Contents
-- [vim](https://github.com/vim/vim) (>= v8.2 tested)
-- [neovim](https://github.com/neovim/neovim) (>= v0.10.4 tested)
-  - [lazy.nvim](https://github.com/folke/lazy.nvim)
-- [zsh](https://github.com/zsh-users/zsh) (>= v5.8 tested)
-- [tmux](https://github.com/tmux/tmux) (>= 3.0a tested)
-- [iTerm2](https://github.com/gnachman/iTerm2)
-  - [Iceberg-iTerm2](https://github.com/Arc0re/Iceberg-iTerm2)
-- [Alacritty](https://github.com/alacritty/alacritty)
-- [brew](https://github.com/Homebrew/brew)
-- macos
-  - [dockutil](https://github.com/kcrawford/dockutil)
-- cargo
-- docker
-- others
