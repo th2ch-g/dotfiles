@@ -20,4 +20,4 @@ RUN chsh -s /bin/zsh
 # it takes longer time and generates errors
 # RUN cd ~/works/dotfiles && ./install -c -p
 
-CMD ["/bin/zsh", "-c", "vim -c PlugInstall -c qa && echo 'Run: prepare_all' && zsh"]
+CMD ["/bin/zsh", "-c", "echo 'Run: prepare_all' && zsh"]
