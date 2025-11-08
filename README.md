@@ -69,6 +69,12 @@ git remote set-url origin git@github.com:th2ch-g/dotfiles.git
 git pull
 ~~~
 
+# Add release
+```bash
+git tag -a vYYYY.MM.DD -m "message"
+git tag push origin vYYYY.MM.DD
+```
+
 ## Contents
 - [vim](https://github.com/vim/vim) (>= v8.2 tested)
 - [neovim](https://github.com/neovim/neovim) (>= v0.10.4 tested)
