@@ -72,7 +72,7 @@ git pull
 # Add release
 ```bash
 git tag -a vYYYY.MM.DD -m "message"
-git tag push origin vYYYY.MM.DD
+git push origin vYYYY.MM.DD
 ```
 
 ## Contents
