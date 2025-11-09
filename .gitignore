@@ -2,8 +2,6 @@
 .ssh
 .aws
 zsh/*
-!zsh/.zpreztorc
-!zsh/.zprofile
 !zsh/.zshenv
 !zsh/.zshrc
 vim/*
