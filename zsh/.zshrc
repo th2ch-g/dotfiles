@@ -1,15 +1,45 @@
 #=================================================
+if command -v zsh-defer &> /dev/null; then
+    DEFER="zsh-defer"
+else
+    DEFER=""
+fi
+
+function source {
+  ensure_zcompiled $1
+  builtin source $1
+}
+function ensure_zcompiled {
+  local compiled="$1.zwc"
+  if [[ ! -r "$compiled" || "$1" -nt "$compiled" ]]; then
+    echo "\033[1;36mCompiling\033[m $1"
+    zcompile $1
+  fi
+}
+ensure_zcompiled ${ZDOTDIR:-$HOME}/.zshrc
+
 # additional settings
 # sheldon
 if ! command -v sheldon &> /dev/null; then
     curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
-        | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
+        | bash -s -- --repo rossmacarthur/sheldon --to ${HOME}/.local/bin
 fi
-eval "$(sheldon source)"
+# eval "$(sheldon source)"
+SHELDON_CACHE="${ZDOTDIR:-$HOME}/sheldoni_cache.zsh"
+SHELDON_TOML="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
+if [[ ! -r "$SHELDON_CACHE" || "$SHELDON_TOML" -nt "$SHELDON_CACHE" ]]; then
+    sheldon source > $SHELDON_CACHE
+fi
+source $SHELDON_CACHE
 
 # zoxide
 if command -v zoxide > /dev/null 2>&1; then
-    eval "$(zoxide init zsh)"
+    # eval "$(zoxide init zsh)"
+    ZOXIDE_CACHE="${ZDOTDIR:-$HOME}/zoxide_cache.zsh"
+    if [[ ! -r "$ZOXIDE_CACHE" || "$SHELDON_TOML" -nt "$ZOXIDE_CACHE" ]]; then
+        zoxide init zsh > $ZOXIDE_CACHE
+    fi
+    $DEFER source $ZOXIDE_CACHE
 fi
 
 # exa
@@ -117,7 +147,7 @@ alias wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
 
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
-    source ${ZDOTDIR:-$HOME}/.zshrc_local
+    $DEFER source ${ZDOTDIR:-$HOME}/.zshrc_local
 fi
 
 # hook
@@ -786,4 +816,6 @@ OPTIONS:
 
   tmux attach
 }
+
+$DEFER unfunction source
 #==================================================

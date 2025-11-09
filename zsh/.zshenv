@@ -50,7 +50,7 @@ path=(
 )
 
 # local specific file
-if [ -e ${ZDOTDIR:-$HOME}.zshenv_local ]; then
-    source ${ZDOTDIR:-$HOME}/.config/.zshenv_local
+if [ -e ${ZDOTDIR:-$HOME}/.zshenv_local ]; then
+    source ${ZDOTDIR:-$HOME}/.zshenv_local
 fi
 #==================================================
