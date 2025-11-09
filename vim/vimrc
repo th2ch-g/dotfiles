@@ -177,7 +177,7 @@ endif
 packadd vim-jetpack
 call jetpack#begin(packpath)
 Jetpack 'tani/vim-jetpack', {'opt': 1}
-Jetpack 'tomasiser/vim-code-dark'
+" Jetpack 'tomasiser/vim-code-dark'
 " Jetpack 'sainnhe/everforest'
 Jetpack 'cohama/lexima.vim'
 Jetpack 'tomtom/tcomment_vim'
@@ -193,7 +193,8 @@ for name in jetpack#names()
   endif
 endfor
 
-colorscheme codedark
+colorscheme habamax
+" colorscheme codedark
 " colorscheme everforest
 " let g:everforest_transparent_background = 1
 
