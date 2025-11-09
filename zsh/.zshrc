@@ -100,11 +100,6 @@ alias cds="cd $SHARE"
 alias cdt="cd $TOOLS"
 alias cdw="cd $WORKS"
 
-# conda alias
-alias cb="conda activate base && conda info -e"
-alias ce="conda info -e"
-alias cl="conda list"
-
 # disk alias
 alias df="df -h"
 alias du="du -h"
@@ -167,67 +162,28 @@ tar-open() {
     tar -xvzf $1
 }
 
-mydu() {
-    USAGE="[ERROR] usage: mydu <target_top_dir>"
-    if [ -z "$1" ]; then
-        echo "$USAGE" >&2
-    else
-        today=$(date "+%Y%m%d")
-        du -d 1 $1 > ${today}.du
-        echo "[INFO] mydu done, output file is ${today}.du" >&1
-    fi
-}
-
 script_highlight() {
-    sh_number=$(find . -name "*.sh" -type f -maxdepth 1 | wc -l)
-    if [ $sh_number -ne 0 ]; then
-        chmod a+x *.sh
-        echo "[INFO] highlighted : $(echo *.sh)"
-    fi
+    for ft in sh py bash;
+    do
+        ft_number=$(find . -name "*.${ft}" -type f -maxdepth 1 | wc -l)
+        if [ $ft_number -ne 0 ]; then
+            chmod a+x *.${ft}
+            echo "[info] highlighted : $(echo *.${ft})"
+        fi
 
-    py_number=$(find . -name "*.py" -type f -maxdepth 1 | wc -l)
-    if [ $py_number -ne 0 ]; then
-        chmod a+x *.py
-        echo "[INFO] highlighted : $(echo *.py)"
-    fi
-
-    bash_number=$(find . -name "*.bash" -type f -maxdepth 1 | wc -l)
-    if [ $bash_number -ne 0 ]; then
-        chmod a+x *.bash
-        echo "[INFO] highlighted : $(echo *.bash)"
-    fi
+    done
 }
 
 script_unhighlight() {
-    sh_number=$(find . -name "*.sh" -type f -maxdepth 1 | wc -l)
-    if [ $sh_number -ne 0 ]; then
-        chmod a-x *.sh
-        echo "[INFO] unhighlighted : $(echo *.sh)"
-    fi
+    for ft in sh py bash;
+    do
+        ft_number=$(find . -name "*.${ft}" -type f -maxdepth 1 | wc -l)
+        if [ $ft_number -ne 0 ]; then
+            chmod a-x *.${ft}
+            echo "[info] unhighlighted : $(echo *.${ft})"
+        fi
 
-    py_number=$(find . -name "*.py" -type f -maxdepth 1 | wc -l)
-    if [ $py_number -ne 0 ]; then
-        chmod a-x *.py
-        echo "[INFO] unhighlighted : $(echo *.py)"
-    fi
-
-    bash_number=$(find . -name "*.bash" -type f -maxdepth 1 | wc -l)
-    if [ $bash_number -ne 0 ]; then
-        chmod a-x *.bash
-        echo "[INFO] unhighlighted : $(echo *.bash)"
-    fi
-}
-
-cr() {
-    conda remove -n "$1" --all -y && conda info -e
-}
-
-cn() {
-    conda create -n "$1" -y && conda activate "$1" && conda info -e
-}
-
-ca() {
-    conda activate "$1" && conda info -e
+    done
 }
 
 rp() {
@@ -250,6 +206,19 @@ calc() {
     echo "" | awk "{OFMT=\"%.6f\"} {print $1}"
 }
 
+update_dotfiles() {
+    CWD=$PWD
+    cd $WORKS/dotfiles
+    git pull
+    cd $CWD
+    echo "[INFO] dotfiles is updated" >&1
+}
+
+prepare_all() {
+    prepare_base_dir
+    make_local_file
+}
+
 make_local_file() {
     arr=( .zshrc_local .zshenv_local )
     flag=1
@@ -265,14 +234,6 @@ make_local_file() {
     if [ $flag -eq 1 ]; then
         echo "[INFO] nothing was created" >&1
     fi
-}
-
-update_dotfiles() {
-    CWD=$PWD
-    cd $WORKS/dotfiles
-    git pull
-    cd $CWD
-    echo "[INFO] dotfiles is updated" >&1
 }
 
 prepare_base_dir() {
@@ -297,12 +258,7 @@ vim_ai_on() {
     export VIM_AI=1
 }
 
-prepare_all() {
-    prepare_base_dir
-    make_local_file
-}
-
-function tide() {
+tide() {
   local USAGE='
 tide:
     My Integrated Development Environment using Tmux (tmux_ide)
@@ -370,7 +326,7 @@ OPTIONS:
             echo "[INFO] window type is \"type4\""
             window_type="4"
         else
-          echo "[ERROR] window_type must be \"1\", \"2\" or \"3\"" >&2
+          echo "[ERROR] window_type must be \"1\", \"2\" or \"3\" or \"4\", if -t/--type option is present" >&2
           return 1
         fi
         shift 2
@@ -473,345 +429,6 @@ OPTIONS:
 
   echo "[INFO] Make tmux named \"$tmux_window_name\""
   echo "[INFO] tmux ls Result"
-  tmux ls
-
-  tmux attach
-}
-
-function ssa() {
-  local USAGE='
-ssa:
-    search_server_availability
-
-USAGE:
-    ssa
-    cat [SERVER_NAME_FILE] | ssa -f -
-    ssa -f [SERVER_NAME_FILE] -t 20
-    ssa --dump > ~/.ssh/server_name.txt
-
-DESCRIPTION:
-    search server availability by load average
-
-OPTIONS:
-    -h, --help          Print help
-    -d, --dump          prepare server name list file
-    -f, --file          specify server name list file. "-f -" means stdin.
-                        [default: ~/.ssh/server_name.txt]
-    -t, --thread        number of thread when ssh. [default: 8]
-                        If number of thread exceeds number of logical cpu, bug may occur.
-'
-
-  local FILE="$HOME/.ssh/server_name.txt"
-  local dump_flag=1
-  local num_thread=8
-
-  while [[ $# -gt 0 ]]; do
-    case "$1" in
-      -h|--help)
-        echo "$USAGE"
-        return 0
-        ;;
-      -d|--dump)
-        dump_flag=0
-        break
-        ;;
-      -f|--file)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] file path is necessary, if -f/--file option is present" >&2
-          return 1
-        fi
-        FILE="$2"
-        shift 2
-        continue
-        ;;
-      -t|--thread)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] number of thread is necessary, if -t/--thread option is present" >&2
-          return 1
-        fi
-        num_thread="$2"
-        shift 2
-        continue
-        ;;
-      --)
-        shift
-        break
-        ;;
-      -*)
-        echo "[ERROR] Unknown option: $1" >&2
-        return 1
-        ;;
-      *)
-        break
-        ;;
-    esac
-    shift
-  done
-
-  # dump server name list file
-  if [[ $dump_flag -eq 0 ]]; then
-    grep "Host" "$HOME/.ssh/config" | grep -v "HostName" | grep -v "git" | grep -v "*" | awk '{print $2}'
-    return 0
-  fi
-
-  local temp
-  temp=$(mktemp)
-  echo "<server> <users> <load_average>" > "$temp"
-  echo "[INFO] temp file : $temp"
-  echo "[INFO] number of thread is $num_thread"
-
-  if [[ "$FILE" == "-" ]]; then
-    echo "[INFO] file input is execute by stdin"
-    cat - | xargs -I SERVER -P "$num_thread" ssh SERVER 'echo "$(hostname) $(uptime)"' \
-      | awk '{split($0, arr, " "); for(i in arr){if(arr[i] ~ /average/){la=arr[i+1]} if(arr[i] ~ /user/){user=arr[i-1]}} print $1, user, la}' \
-      | sort -n -k 1 >> "$temp"
-  else
-    echo "[INFO] file input is execute by path \"$FILE\""
-    if [[ ! -e "$FILE" ]]; then
-      echo "[ERROR] $FILE does not exist" >&2
-      return 1
-    fi
-    cat "$FILE" | xargs -I SERVER -P "$num_thread" ssh SERVER 'echo "$(hostname) $(uptime)"' \
-      | awk '{split($0, arr, " "); for(i in arr){if(arr[i] ~ /average/){la=arr[i+1]} if(arr[i] ~ /user/){user=arr[i-1]}} print $1, user, la}' \
-      | sort -n -k 1 >> "$temp"
-  fi
-
-  echo "[INFO] result:"
-  cat "$temp" | column -s " " -t | while IFS= read -r line; do
-    echo "  $line"
-  done
-
-  echo "[INFO] recommend server (load average < 1.0)"
-  cat "$temp" | column -s " " -t | awk '{if($3 < 1){print $0}}' | while IFS= read -r line; do
-    echo "  $line"
-  done
-
-  echo "[INFO] clean temp file : ${temp}"
-  rm -f "$temp"
-}
-
-
-function ssj() {
-  local USAGE='
-ssj:
-    server_search_jobs
-
-USAGE:
-    ssj -n [TARGET_NAME] -f [FILE]
-
-DESCRIPTION:
-    This is a script to check if a job remains on the server
-
-EXAMPLE:
-    ssj -n "cargo"                  Search jobs named "cargo"
-    ssj -n "$USER"                  Search jobs named "$USER"
-
-OPTIONS:
-    -h, --help                      Print help
-    -n, --name [TARGET_NAME]        Target name for Search
-    -f, --file [FILE]               Server name file, For stdin, use "-f -"
-                                    [default: ~/.ssh/server_name.txt]
-'
-
-  local FILE="$HOME/.ssh/server_name.txt"
-  local TARGET_NAME=""
-
-  while [[ $# -gt 0 ]]; do
-    case "$1" in
-      -h|--help)
-        echo "$USAGE"
-        return 0
-        ;;
-      -n|--name)
-        TARGET_NAME="$2"
-        if [[ -z "$TARGET_NAME" ]]; then
-          echo "[ERROR] target name is necessary" >&2
-          return 1
-        fi
-        shift 2
-        continue
-        ;;
-      -f|--file)
-        FILE="$2"
-        if [[ -z "$FILE" ]]; then
-          echo "[ERROR] file path is necessary, if -f/--file option is present" >&2
-          return 1
-        fi
-        shift 2
-        continue
-        ;;
-      --)
-        shift
-        break
-        ;;
-      -*)
-        echo "[ERROR] Unknown option: $1" >&2
-        return 1
-        ;;
-      *)
-        break
-        ;;
-    esac
-    shift
-  done
-
-  if [[ -z "$TARGET_NAME" ]]; then
-    echo "[ERROR] target name is necessary" >&2
-    return 1
-  fi
-
-  local server_arr
-  if [[ "$FILE" == "-" ]]; then
-    echo "[INFO] execute file input by stdin" >&1
-    server_arr=($(cat - | xargs))
-  else
-    echo "[INFO] execute file input by file path \"$FILE\"" >&1
-    if [[ ! -e "$FILE" ]]; then
-      echo "[ERROR] $FILE not exists" >&2
-      return 1
-    fi
-    server_arr=($(cat "$FILE" | xargs))
-  fi
-
-  for server in "${server_arr[@]}"; do
-    echo "[INFO] Search $server" >&1
-    ssh "$server" ps ax | grep -v "\[" | grep "$TARGET_NAME" && echo
-  done
-
-  wait && echo "[INFO] Search_Jobs_Result done" >&1
-}
-
-function tas() {
-  local USAGE='
-tas:
-    tmux_all_server
-
-USAGE:
-    tas -c [COMMAND] -f [FILE]
-
-DESCRIPTION:
-    Run tmux locally and split the screen into 4x4.
-    From there, login to the remote server and send the same command
-
-EXAMPLE:
-    tas                      Send top command
-    tas -c "echo hoge"       Send "echo hoge" command
-
-OPTIONS:
-    -h, --help                  Print help
-    -c, --command [COMMAND]     Message to be sent to the server [default: top]
-    -f, --file [FILE]           Server name file path. For stdin, use "-f -"
-                                [default: ~/.ssh/server_name.txt]
-    -n, --name [WINDOW_NAME]    window name [default: tas_{COMMAND}]
-'
-
-  local COMMAND="top"
-  local FILE="$HOME/.ssh/server_name.txt"
-  local NAME=""
-
-  while [[ $# -gt 0 ]]; do
-    case "$1" in
-      -h|--help)
-        echo "$USAGE"
-        return 0
-        ;;
-      -c|--command)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] command is necessary, if -c/--command option is present" >&2
-          return 1
-        fi
-        COMMAND="$2"
-        shift 2
-        continue
-        ;;
-      -f|--file)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] file path is necessary, if -f/--file option is present" >&2
-          return 1
-        fi
-        FILE="$2"
-        shift 2
-        continue
-        ;;
-      -n|--name)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] window name is necessary, if -n/--name option is present" >&2
-          return 1
-        fi
-        NAME="$2"
-        shift 2
-        continue
-        ;;
-      --)
-        shift
-        break
-        ;;
-      -*)
-        echo "[ERROR] Unknown option: $1" >&2
-        return 1
-        ;;
-      *)
-        break
-        ;;
-    esac
-  done
-
-  echo "[INFO] start sending command \"$COMMAND\"" >&1
-
-  local server_arr
-  if [[ "$FILE" == "-" ]]; then
-    echo "[INFO] execute file input by stdin" >&1
-    server_arr=($(cat - | xargs))
-  else
-    echo "[INFO] execute file input by file path \"$FILE\"" >&1
-    if [[ ! -e "$FILE" ]]; then
-      echo "[ERROR] $FILE not exists" >&2
-      return 1
-    fi
-    server_arr=($(cat "$FILE" | xargs))
-  fi
-
-  local tmux_window_name
-  if [[ -z "$NAME" ]]; then
-    tmux_window_name="tas_${COMMAND}"
-  else
-    tmux_window_name="$NAME"
-  fi
-  echo "[INFO] make tmux window named \"$tmux_window_name\"" >&1
-
-  tmux new -s "$tmux_window_name" -d
-
-  tmux split-window -h
-  tmux split-window -h
-  tmux select-pane -t 0
-  tmux split-window -h
-
-  for i in 0 4 8 12; do
-    tmux select-pane -t "$i"
-    tmux split-window -v
-    tmux select-pane -t "$i"
-    tmux split-window -v
-    tmux select-pane -t "$(( i + 2 ))"
-    tmux split-window -v
-  done
-
-  local count=0
-  for server in "${server_arr[@]}"; do
-    echo "[INFO] Login server to \"$server\"" >&1
-    tmux send-keys -t "$count" "ssh $server" C-m
-    count=$(( count + 1 ))
-  done
-
-  sleep 3
-
-  count=0
-  for server in "${server_arr[@]}"; do
-    tmux send-keys -t "$count" "$COMMAND" C-m
-    count=$(( count + 1 ))
-  done
-
-  echo "[INFO] Send command to Server done" >&1
-  echo "[INFO] tmux ls Result" >&1
   tmux ls
 
   tmux attach
