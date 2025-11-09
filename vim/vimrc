@@ -166,37 +166,41 @@ endif
 "     set statusline+=%3{codeium#GetStatusString()}
 " endif
 
-" vim-jetpack
-let s:jetpackfile = packpath .. '/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim'
-let s:jetpackurl = "https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim"
+let use_plugins = 1
 
-if !filereadable(s:jetpackfile)
-  call system(printf('curl -fsSLo %s --create-dirs %s', s:jetpackfile, s:jetpackurl))
+if use_plugins == 1
+    " vim-jetpack
+    let s:jetpackfile = packpath .. '/pack/jetpack/opt/vim-jetpack/plugin/jetpack.vim'
+    let s:jetpackurl = "https://raw.githubusercontent.com/tani/vim-jetpack/master/plugin/jetpack.vim"
+
+    if !filereadable(s:jetpackfile)
+      call system(printf('curl -fsSLo %s --create-dirs %s', s:jetpackfile, s:jetpackurl))
+    endif
+
+    packadd vim-jetpack
+    call jetpack#begin(packpath)
+    Jetpack 'tani/vim-jetpack', {'opt': 1}
+    " Jetpack 'tomasiser/vim-code-dark'
+    " Jetpack 'sainnhe/everforest'
+    Jetpack 'cohama/lexima.vim'
+    Jetpack 'tomtom/tcomment_vim'
+    Jetpack 'th2ch-g/my-vim-sonictemplate'
+    Jetpack 'machakann/vim-sandwich'
+    Jetpack 'airblade/vim-gitgutter'
+    call jetpack#end()
+
+    for name in jetpack#names()
+      if !jetpack#tap(name)
+        call jetpack#sync()
+        break
+      endif
+    endfor
+    " colorscheme codedark
+    " colorscheme everforest
+    " let g:everforest_transparent_background = 1
 endif
 
-packadd vim-jetpack
-call jetpack#begin(packpath)
-Jetpack 'tani/vim-jetpack', {'opt': 1}
-" Jetpack 'tomasiser/vim-code-dark'
-" Jetpack 'sainnhe/everforest'
-Jetpack 'cohama/lexima.vim'
-Jetpack 'tomtom/tcomment_vim'
-Jetpack 'th2ch-g/my-vim-sonictemplate'
-Jetpack 'machakann/vim-sandwich'
-Jetpack 'airblade/vim-gitgutter'
-call jetpack#end()
-
-for name in jetpack#names()
-  if !jetpack#tap(name)
-    call jetpack#sync()
-    break
-  endif
-endfor
-
 colorscheme habamax
-" colorscheme codedark
-" colorscheme everforest
-" let g:everforest_transparent_background = 1
 
 " TransParent settings
 hi Normal        ctermbg=NONE guibg=NONE

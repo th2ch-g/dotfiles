@@ -1,10 +1,4 @@
 #=================================================
-if command -v zsh-defer &> /dev/null; then
-    DEFER="zsh-defer"
-else
-    DEFER=""
-fi
-
 function source {
   ensure_zcompiled $1
   builtin source $1
@@ -20,17 +14,25 @@ ensure_zcompiled ${ZDOTDIR:-$HOME}/.zshrc
 
 # additional settings
 # sheldon
-if ! command -v sheldon &> /dev/null; then
-    curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
-        | bash -s -- --repo rossmacarthur/sheldon --to ${HOME}/.local/bin
+local use_plugins=1
+if [[ $use_plugins -eq 1 ]]; then
+    if ! command -v sheldon &> /dev/null; then
+        curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
+            | bash -s -- --repo rossmacarthur/sheldon --to ${HOME}/.local/bin
+    fi
+    # eval "$(sheldon source)"
+    SHELDON_CACHE="${ZDOTDIR:-$HOME}/sheldoni_cache.zsh"
+    SHELDON_TOML="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
+    if [[ ! -r "$SHELDON_CACHE" || "$SHELDON_TOML" -nt "$SHELDON_CACHE" ]]; then
+        sheldon source > $SHELDON_CACHE
+    fi
+    source $SHELDON_CACHE
 fi
-# eval "$(sheldon source)"
-SHELDON_CACHE="${ZDOTDIR:-$HOME}/sheldoni_cache.zsh"
-SHELDON_TOML="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
-if [[ ! -r "$SHELDON_CACHE" || "$SHELDON_TOML" -nt "$SHELDON_CACHE" ]]; then
-    sheldon source > $SHELDON_CACHE
+if command -v zsh-defer &> /dev/null; then
+    DEFER="zsh-defer"
+else
+    DEFER=""
 fi
-source $SHELDON_CACHE
 
 # zoxide
 if command -v zoxide > /dev/null 2>&1; then
