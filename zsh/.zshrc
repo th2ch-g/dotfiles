@@ -1,12 +1,20 @@
 #=================================================
+# additional settings
 # sheldon
 if ! command -v sheldon &> /dev/null; then
     curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
         | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
 fi
+eval "$(sheldon source)"
 
-if command -v sheldon &> /dev/null; then
-  eval "$(sheldon source)"
+# zoxide
+if command -v zoxide > /dev/null 2>&1; then
+    eval "$(zoxide init zsh)"
+fi
+
+# exa
+if command -v exa > /dev/null 2>&1; then
+    alias ls="exa"
 fi
 
 # prompt
@@ -29,8 +37,6 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 bindkey -e
 
 # history
-HISTSIZE=100000
-SAVEHIST=100000000
 setopt share_history
 setopt hist_reduce_blanks
 setopt hist_ignore_space
@@ -44,14 +50,6 @@ setopt hist_ignore_all_dups
 # bindkey "^P" history-beginning-search-backward-end
 # bindkey "^N" history-beginning-search-forward-end
 
-# export
-export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
-export CLICOLOR=1
-export TERM="xterm-256color"
-export LANG=ja_JP.UTF-8
-export GPG_TTY=$(tty)
-# export LANG=en_US.UTF-8 # for preventing tab completion duplicate bug, default settings: ja_JP.UTF-8
-
 # compinit
 autoload -Uz compinit && compinit
 setopt auto_param_keys
@@ -61,68 +59,68 @@ zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-# alias
-alias ll="ls -stlh"
-alias la="ls -stlhA"
-alias sl="ls"
-alias l="ls -1"
-alias df="df -h"
-alias du="du -h"
-alias free="free -h"
-alias e="exit"
-alias v="vim"
-alias vi="vim"
-alias nv="nvim"
-alias n="nvim"
-alias p="top"
-alias les="less -S"
-alias ta="tmux a"
-alias tls="tmux ls"
-alias tkas="tmux kill-server"
+# cd alias
+alias .....="cd ../../../../"
+alias ....="cd ../../../"
+alias ...="cd ../../"
+alias cdb="cd $BIN"
+alias cdm="cd $MISC"
+alias cdo="cd $OTHERS"
+alias cds="cd $SHARE"
+alias cdt="cd $TOOLS"
+alias cdw="cd $WORKS"
+
+# conda alias
 alias cb="conda activate base && conda info -e"
 alias ce="conda info -e"
 alias cl="conda list"
-alias tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
-alias memo="vim ~/.memo.md"
-alias ...="cd ../../"
-alias ....="cd ../../../"
-alias .....="cd ../../../../"
-alias ......="cd ../../../../../"
-alias .......="cd ../../../../../../"
-alias ........="cd ../../../../../../../"
-alias .........="cd ../../../../../../../../"
-alias ..........="cd ../../../../../../../../../"
-alias ...........="cd ../../../../../../../../../../"
-alias cdw="cd $HOME/works"
-alias cdt="cd $HOME/works/tools"
-alias cdm="cd $HOME/works/misc"
-alias cdb="cd $HOME/works/bin"
-alias cdo="cd $HOME/works/others"
-alias cds="cd $HOME/works/share"
+
+# disk alias
+alias df="df -h"
+alias du="du -h"
+alias e="exit"
+alias free="free -h"
+
+# ls alias
+alias l="ls -1"
+alias la="ls -stlhA"
+alias ll="ls -stlh"
+alias sl="ls"
+
+# less alias
 alias batp="bat -p --paging=always"
-alias sshxy="ssh -XY"
-alias rusts="rust-script"
-alias wget="wget --hsts-file=$HOME/.config/wget-hsts"
+alias les="less -S"
+
+# vim alias
+alias n="nvim"
+alias nv="nvim"
+alias v="vim"
+alias vi="vim"
+alias memo="vim ~/.memo.md"
 alias pass="vim_ai_off; pass"
+
+# slurm alias
 alias scancela="scancel -u $USER"
 alias squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
 
-# zoxide
-if command -v zoxide > /dev/null 2>&1; then
-    eval "$(zoxide init zsh)"
-fi
+# tmux alias
+alias ta="tmux a"
+alias tkas="tmux kill-server"
+alias tls="tmux ls"
 
-# exa
-if command -v exa > /dev/null 2>&1; then
-    alias ls="exa"
-fi
+# others
+alias p="top"
+alias rusts="rust-script"
+alias sshxy="ssh -XY"
+alias tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
+alias wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
 
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
     source ${ZDOTDIR:-$HOME}/.zshrc_local
 fi
 
-# my function
+# hook
 precmd() {
     # reset cursor
     echo -ne "\e[6 q"
@@ -130,6 +128,7 @@ precmd() {
 
 chpwd() { ls -a }
 
+# my function
 tar-close() {
     tar -cvzf ${1}.tar.gz $1
 }
@@ -148,7 +147,6 @@ mydu() {
         echo "[INFO] mydu done, output file is ${today}.du" >&1
     fi
 }
-
 
 script_highlight() {
     sh_number=$(find . -name "*.sh" -type f -maxdepth 1 | wc -l)
@@ -203,10 +201,10 @@ ca() {
 }
 
 rp() {
-    if [ "$(uname)" = "Darwin" ]; then
-        readlink -f "$1"
-    elif [ "$(uname)" = "Linux" ]; then
+    if command -v realpath &> /dev/null; then
         realpath -e "$1"
+    else
+        readlink -f "$1"
     fi
 }
 
@@ -241,14 +239,14 @@ make_local_file() {
 
 update_dotfiles() {
     CWD=$PWD
-    cd ~/works/dotfiles
+    cd $WORKS/dotfiles
     git pull
     cd $CWD
     echo "[INFO] dotfiles is updated" >&1
 }
 
 prepare_base_dir() {
-    arr=( ${HOME}/works/misc/ ${HOME}/works/tools/ ${HOME}/works/others/ ${HOME}/works/bin/ ${HOME}/works/share/ )
+    arr=( $MISC $TOOLS $OTHERS $BIN $SHARE )
     for i in ${arr[@]};
     do
         if [ ! -d $i ]; then
@@ -269,12 +267,10 @@ vim_ai_on() {
     export VIM_AI=1
 }
 
-
 prepare_all() {
     prepare_base_dir
     make_local_file
 }
-
 
 function tide() {
   local USAGE='
