@@ -1,4 +1,9 @@
 #=================================================
+local DEBUG=0
+if [ $DEBUG -eq 1 ]; then
+    zmodload zsh/zprof && zprof
+fi
+
 function source {
   ensure_zcompiled $1
   builtin source $1
@@ -50,7 +55,8 @@ if command -v exa > /dev/null 2>&1; then
 fi
 
 # prompt
-autoload -Uz promptinit; promptinit && prompt pure
+autoload -Uz promptinit && promptinit
+prompt pure
 autoload -Uz colors && colors
 zstyle :prompt:pure:user color green
 zstyle :prompt:pure:host color green
@@ -83,7 +89,7 @@ setopt hist_ignore_all_dups
 # bindkey "^N" history-beginning-search-forward-end
 
 # compinit
-autoload -Uz compinit && compinit
+autoload -Uz compinit && $DEFER compinit
 setopt auto_param_keys
 setopt auto_param_slash
 setopt complete_in_word
@@ -437,4 +443,8 @@ OPTIONS:
 }
 
 $DEFER unfunction source
+
+if [ $DEBUG -eq 1 ]; then
+    zprof
+fi
 #==================================================
