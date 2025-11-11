@@ -39,6 +39,11 @@ else
     DEFER=""
 fi
 
+# exa
+if command -v exa > /dev/null 2>&1; then
+    alias ls="exa"
+fi
+
 # zoxide
 if command -v zoxide > /dev/null 2>&1; then
     # eval "$(zoxide init zsh)"
@@ -47,11 +52,6 @@ if command -v zoxide > /dev/null 2>&1; then
         zoxide init zsh > $ZOXIDE_CACHE
     fi
     $DEFER source $ZOXIDE_CACHE
-fi
-
-# exa
-if command -v exa > /dev/null 2>&1; then
-    alias ls="exa"
 fi
 
 # prompt
@@ -150,7 +150,7 @@ alias wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
 
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
-    $DEFER source ${ZDOTDIR:-$HOME}/.zshrc_local
+    source ${ZDOTDIR:-$HOME}/.zshrc_local
 fi
 
 # hook
