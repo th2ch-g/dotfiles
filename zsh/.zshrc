@@ -26,7 +26,7 @@ if [[ $use_plugins -eq 1 ]]; then
             | bash -s -- --repo rossmacarthur/sheldon --to ${HOME}/.local/bin
     fi
     # eval "$(sheldon source)"
-    SHELDON_CACHE="${ZDOTDIR:-$HOME}/sheldoni_cache.zsh"
+    SHELDON_CACHE="${XDG_STATE_HOME:-$HOME/.local/state}/sheldon_cache.zsh"
     SHELDON_TOML="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
     if [[ ! -r "$SHELDON_CACHE" || "$SHELDON_TOML" -nt "$SHELDON_CACHE" ]]; then
         sheldon source > $SHELDON_CACHE
