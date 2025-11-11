@@ -55,11 +55,47 @@ if command -v zoxide > /dev/null 2>&1; then
 fi
 
 # prompt
-autoload -Uz promptinit && promptinit
-prompt pure
-autoload -Uz colors && colors
-zstyle :prompt:pure:user color green
-zstyle :prompt:pure:host color green
+if [ $use_plugins -eq 1 ]; then
+    autoload -Uz promptinit && promptinit
+    prompt pure
+    autoload -Uz colors && colors
+    zstyle :prompt:pure:user color green
+    zstyle :prompt:pure:host color green
+else
+    # define prompt like pure
+    autoload -Uz vcs_info
+    zstyle ':vcs_info:*' enable git
+    precmd() {
+        vcs_info
+    }
+    zstyle ':vcs_info:git:*' formats       ' %F{cyan}%b%f'
+    zstyle ':vcs_info:git:*' actionformats ' %F{cyan}%b%f (%a)'
+    zstyle ':vcs_info:git:*' check-for-changes true
+    zstyle ':vcs_info:git:*' unstagedstr ' %F{yellow}* M%f'
+    zstyle ':vcs_info:git:*' stagedstr ' %F{green}* A%f'
+    setopt PROMPT_SUBST
+    REPORTTIME=3
+    preexec() {
+      (( ${TMOUT:-0} > 0 )) && { TMOUT=$TMOUT; }
+      timer=${timer:-$SECONDS}
+    }
+    precmd_exec_time() {
+      if [ $timer ]; then
+        now=$SECONDS
+        delta=$((now - timer))
+
+        if [ $delta -gt $REPORTTIME ]; then
+          RPROMPT="%F{yellow}${delta}s%f"
+        else
+          RPROMPT=""
+        fi
+        unset timer
+      fi
+    }
+    precmd_functions+=(precmd_exec_time)
+    PROMPT='%F{blue}%~%f${vcs_info_msg_0_}
+%(?.%F{blue}.%F{red})❯%f '
+fi
 
 # basic
 setopt no_beep
