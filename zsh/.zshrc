@@ -206,6 +206,10 @@ tar-open() {
     tar -xvzf $1
 }
 
+benchmark() {
+    (for i in $(seq 1 10); do time zsh -i -c exit; done)
+}
+
 script_highlight() {
     for ft in sh py bash;
     do
