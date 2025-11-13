@@ -4,6 +4,19 @@ if [ $DEBUG -eq 1 ]; then
     zmodload zsh/zprof && zprof
 fi
 
+# export
+export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export GPG_TTY=$(tty)
+export HISTFILE="$XDG_CONFIG_HOME/zsh/history"
+export LESS='-g -i -M -R -S -w -X -z-4'
+if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
+  export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+fi
+export SAVEHIST=100000000
+export HISTSIZE=100000
+export CLICOLOR=1
+
 function source {
   ensure_zcompiled $1
   builtin source $1
@@ -107,7 +120,6 @@ setopt no_beep
 setopt share_history
 setopt histignorealldups
 setopt auto_cd
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 bindkey -e
 
 # history
