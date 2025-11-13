@@ -164,9 +164,9 @@ alias free="free -h"
 
 # ls alias
 alias l="ls -1"
-alias la="ls -stlhA"
-alias ll="ls -stlh"
 alias sl="ls"
+# alias la="ls -stlhA"
+# alias ll="ls -stlh"
 
 # less alias
 alias batp="bat -p --paging=always"
@@ -207,7 +207,13 @@ precmd() {
     echo -ne "\e[6 q"
 }
 
-chpwd() { ls -a }
+chpwd() {
+    if command -v eza &> /dev/null; then
+        eza -a
+    else
+        ls -a
+    fi
+}
 
 # my function
 tar-close() {
