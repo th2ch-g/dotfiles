@@ -39,9 +39,9 @@ else
     DEFER=""
 fi
 
-# exa
-if command -v exa > /dev/null 2>&1; then
-    alias ls="exa"
+# eza
+if command -v eza > /dev/null 2>&1; then
+    alias ls="eza"
 fi
 
 # zoxide
@@ -107,7 +107,7 @@ setopt no_beep
 setopt share_history
 setopt histignorealldups
 setopt auto_cd
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 bindkey -e
 
 # history

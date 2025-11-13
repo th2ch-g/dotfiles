@@ -23,7 +23,7 @@ choose                                                              # A human-fr
 du-dust                                                             # A more intuitive version of du in rust
 evcxr_jupyter                                                       # A Jupyter Kernel
 evcxr_repl                                                          # An evaluation context for Rust.
-exa                                                                 # A modern replacement for ls
+eza                                                                 # A modern alternative to ls
 fcp                                                                 # A significantly faster alternative to the classic Unix cp(1) command, copying large files and directories in a fraction of the time.
 fd-find                                                             # A simple, fast and user-friendly alternative to 'find'
 flamegraph                                                          # Easy flamegraphs for Rust projects and everything else, without Perl or pipes <3
@@ -44,6 +44,7 @@ loop-rs                                                             # UNIX's mis
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
 nviwatch                                                            # NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
+procs                                                               # A modern replacement for ps written in Rust
 pueue                                                               # Manage your shell commands.
 r-matrix                                                            # rust port of cmatrix
 ripgrep                                                             # ripgrep recursively searches directories for a regex pattern while respecting your gitignore
@@ -64,5 +65,6 @@ typos-cli                                                           # Source cod
 viu                                                                 # Terminal image viewer with native support for iTerm and Kitty
 wasmer-cli                                                          # Fast, secure, lightweight containers based on WebAssembly
 wild-linker                                                         # A very fast linker for Linux
+xh                                                                  # Friendly and fast tool for sending HTTP requests
 xq                                                                  # Pure rust implementation of jq
 zoxide                                                              # A smarter cd command. Supports all major shells.
