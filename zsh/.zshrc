@@ -17,6 +17,7 @@ export SAVEHIST=100000000
 export HISTSIZE=100000
 export CLICOLOR=1
 
+# override source
 function source {
   ensure_zcompiled $1
   builtin source $1
@@ -171,6 +172,12 @@ alias sl="ls"
 # less alias
 alias batp="bat -p --paging=always"
 alias les="less -S"
+
+# open alias
+alias o="open"
+
+# scp alias
+alias scp="noglob scp"
 
 # vim alias
 alias n="nvim"
