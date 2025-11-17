@@ -2,10 +2,10 @@
 set -eux
 
 thread=15
-VERSION="v9.1.1265"
+VERSION="9.1.1265"
 PREFIX="${PWD}/vim-${VERSION}/build"
 
-URL=https://github.com/vim/vim/archive/refs/tags/${VERSION}.tar.gz
+URL=https://github.com/vim/vim/archive/refs/tags/v${VERSION}.tar.gz
 curl -L $URL -o vim.tar.gz && \
     tar -zxvf vim.tar.gz && \
     rm -f vim.tar.gz

@@ -1,22 +1,24 @@
 FROM ubuntu:latest
 RUN apt-get update \
-        && apt-get install -y autoconf curl git zsh bash make gcc ncurses-dev vim neovim tmux pkg-config \
+        && apt-get install -y autoconf curl git zsh bash make gcc ncurses-dev vim neovim tmux pkg-config cmake wget gettext \
         && apt install -y locales-all
+RUN chsh -s /bin/zsh
 
 # vim: /usr/bin/vim.basic because of alternative system
 RUN ln -sf /usr/bin/vim.basic /usr/bin/vim
 
-RUN mkdir -p /root/works/dotfiles
-
+RUN mkdir -p /root/works/dotfiles /root/works/tools /root/works/bin /root/works/share /root/works/misc /root/works/others
 WORKDIR /root/works/dotfiles
-
-# `git clone --depth 1 -j 8 --filter=blob:none` will be slower and bigger
 COPY . .
-
 RUN ./link.sh --git --zsh --tmux --vim --neovim --ssh --alacritty
 
-RUN chsh -s /bin/zsh
+WORKDIR /root/works/tools
+RUN ../dotfiles/install_scripts/nvim.sh
+RUN ../dotfiles/install_scripts/vim.sh
+WORKDIR /root/works/bin
+RUN ln -s /root/works/tools/neovim-*/build/bin/nvim .
+RUN ln -s /root/works/tools/vim-*/build/bin/vim .
 
 # skip cargo/python install for saving time
-
-CMD ["/bin/zsh", "-c", "echo 'This example container. Some features are not available. Run: prepare_all' && zsh"]
+WORKDIR /root/works
+CMD ["/bin/zsh", "-c", "echo 'This example container. Some features are not available.' && zsh"]
