@@ -45,6 +45,10 @@ WORKDIR /root/works/dotfiles
 COPY . .
 RUN ./link.sh --git --zsh --tmux --vim --neovim --ssh --alacritty
 
-# skip cargo/python install for saving time
 WORKDIR /root/works
+
+# install plugins
+RUN zsh -i -c exit
+
+# skip cargo/python install for saving time
 CMD ["/bin/zsh", "-c", "echo 'This example container. Some features are not available.' && zsh"]
