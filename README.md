@@ -14,6 +14,7 @@
 * [set-url for commit](#set-url-for-commit)
 * [Update](#update)
 * [Add release](#add-release)
+* [Delete release (not recommended)](#delete-release-not-recommended)
 
 <!-- /TOC -->
 
@@ -74,4 +75,10 @@ git pull
 ```bash
 git tag -a vYYYY.MM.DD -m "message"
 git push origin vYYYY.MM.DD
+```
+
+## Delete release (not recommended)
+```bash
+git tag -d vYYYY.MM.DD
+git push origin --delete vYYYY.MM.DD
 ```
