@@ -1,6 +1,21 @@
 FROM ubuntu:latest
 RUN apt-get update \
-        && apt-get install -y autoconf curl git zsh bash make gcc ncurses-dev vim neovim tmux pkg-config cmake wget gettext \
+        && apt-get install -y \
+        autoconf \
+        bash \
+        cmake \
+        curl \
+        gcc \
+        gettext \
+        git \
+        make \
+        ncurses-dev \
+        neovim \
+        pkg-config \
+        tmux \
+        vim \
+        wget \
+        zsh \
         && apt install -y locales-all
 RUN chsh -s /bin/zsh
 
