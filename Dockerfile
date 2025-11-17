@@ -42,7 +42,7 @@ RUN ln -s /root/works/tools/neovim-*/build/bin/nvim .
 RUN ln -s /root/works/tools/vim-*/build/bin/vim .
 
 WORKDIR /root/works/dotfiles
-COpy . .
+COPY . .
 RUN ./link.sh --git --zsh --tmux --vim --neovim --ssh --alacritty
 
 # skip cargo/python install for saving time
