@@ -49,8 +49,8 @@ cd ./dotfiles && \
 ### From Dockerfile
 #### Case1: Pull from ghcr
 ~~~shell
-docker pull ghcr.io/th2ch-g/dotfiles:latest
-docker run --rm -it ghcr.io/th2ch-g/dotfiles
+docker pull --platform linux/amd64 ghcr.io/th2ch-g/dotfiles:latest
+docker run --platform linux/amd64 --rm -it ghcr.io/th2ch-g/dotfiles
 ~~~
 
 #### Case2: Build locally
