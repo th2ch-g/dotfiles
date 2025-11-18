@@ -55,7 +55,9 @@ fi
 
 # eza
 if command -v eza > /dev/null 2>&1; then
-    alias ls="eza"
+    alias ls="eza --color=auto"
+else
+    alias ls="ls --color=auto"
 fi
 
 # zoxide
@@ -329,6 +331,14 @@ vim_ai_off() {
 
 vim_ai_on() {
     export VIM_AI=1
+}
+
+systemctl_restart() {
+    if [ -z "$1" ]; then
+        echo "Usage: systemctl_restart <service_name>"
+        return
+    fi
+    sudo systemctl enable $1 && sudo systemctl restart $1 && sudo systemctl status $1
 }
 
 tide() {
