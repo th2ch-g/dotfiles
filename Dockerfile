@@ -51,7 +51,7 @@ WORKDIR /root/works
 RUN zsh -i -c exit
 
 # vim ai off
-ENV VIM_AI=0
+RUN echo "export VIM_AI=0" >> /root/works/dotfiles/zsh/.zshenv_local
 
 # skip cargo/python install for saving time
 CMD ["/bin/zsh", "-c", "echo 'This example container. Some features are not available.' && zsh"]
