@@ -218,9 +218,9 @@ precmd() {
 
 chpwd() {
     if command -v eza &> /dev/null; then
-        eza -a
+        eza -a --color=auto
     else
-        ls -a
+        ls -a --color=auto
     fi
 }
 

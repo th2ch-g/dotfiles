@@ -50,5 +50,8 @@ WORKDIR /root/works
 # install plugins
 RUN zsh -i -c exit
 
+# vim ai off
+ENV VIM_AI=0
+
 # skip cargo/python install for saving time
 CMD ["/bin/zsh", "-c", "echo 'This example container. Some features are not available.' && zsh"]
