@@ -4,6 +4,7 @@ set -eux
 thread=15
 VERSION="7.1.1-47"
 PREFIX="${PWD}/ImageMagick-${VERSION}/build"
+BIN=$HOME/works/bin
 
 URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${VERSION}.tar.gz"
 wget $URL
@@ -18,6 +19,8 @@ make -j $thread && make install
 export PATH=${PREFIX}/bin:$PATH
 
 convert -version
+
+ln -s ${PREFIX}/bin/convert $BIN
 
 echo done
 
