@@ -89,12 +89,24 @@ prepare_local_rcs() {
     touch $XDG_CONFIG_HOME/zsh/.zshenv_local
 }
 
-installer() {
+install_script() {
     TARGET=$1
     CWD=$PWD
     cd $TOOLS
     $INSTALL_SCRIPTS/$TARGET.sh
     cd $CWD
+}
+
+install_brew_pkgs() {
+    cd brew
+    ./run.sh
+    cd ..
+}
+
+install_cargo_pkgs() {
+    cd cargo
+    ./run.sh
+    cd ..
 }
 
 apply_macos_settings() {
@@ -115,7 +127,8 @@ if [ $OS == "Mac" ]; then
     prepare_local_rcs
     for target in brew cargo;
     do
-        installer $target
+        install_script $target
+        install_${target}_pkgs
     done
     apply_macos_settings
     apply_iterm2_settings
@@ -127,8 +140,9 @@ if [ $OS == "Linux" ]; then
     prepare_local_rcs
     for target in fzf vim nvim tmux pixi uv imagemagick cargo;
     do
-        installer $target
+        install_script $target
     done
+    install_cargo_pkgs
 fi
 
 # For windows
