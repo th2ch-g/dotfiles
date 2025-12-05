@@ -1,5 +1,6 @@
 #==================================================
 export CARGO_HOME="$HOME/.cargo/"
+export PIXI_FROZEN=true
 export EDITOR="vim"
 export LANG="ja_JP.UTF-8"
 # export LANG=en_US.UTF-8 # for preventing tab completion duplicate bug, default settings: ja_JP.UTF-8
