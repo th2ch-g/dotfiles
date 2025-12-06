@@ -6,3 +6,4 @@ thumbs.db
 **/.gnupg/
 *.log
 .serena/
+digest.txt

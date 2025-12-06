@@ -120,7 +120,8 @@ if use_plugins == 1 then
         -- lean4
         {
             "Julian/lean.nvim",
-            event = { "BufReadPre *.lean", "BufNewFile *.lean" },
+            -- event = { "BufReadPre *.lean", "BufNewFile *.lean" },
+            ft = { "lean" },
 
             dependencies = {
                 "neovim/nvim-lspconfig",
@@ -144,15 +145,17 @@ if use_plugins == 1 then
         },
 
         -- terraform
-        {
-            "hashivim/vim-terraform",
-            event = { "BufReadPre *.tf", "BufNewFile *.tf" },
-        },
+        -- {
+        --     "hashivim/vim-terraform",
+        --     -- event = { "BufReadPre *.tf", "BufNewFile *.tf" },
+        --     ft = { "terraform" },
+        -- },
 
         -- rust
         {
             'rust-lang/rust.vim',
-            event = { "BufReadPre *.rs", "BufNewFile *.rs" },
+            -- event = { "BufReadPre *.rs", "BufNewFile *.rs" },
+            ft = { "rust" },
         },
 
         -- quick jump

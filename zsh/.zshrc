@@ -148,6 +148,9 @@ zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
+# mkdir alias
+alias mkdir="mkdir -p"
+
 # cd alias
 alias .....="cd ../../../../"
 alias ....="cd ../../../"
@@ -186,7 +189,7 @@ alias n="nvim"
 alias nv="nvim"
 alias v="vim"
 alias vi="vim"
-alias memo="vim ~/.memo.md"
+alias memo="vim ${HOME}/.memo.md"
 alias pass="vim_ai_off; pass"
 
 # slurm alias
