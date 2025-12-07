@@ -37,12 +37,21 @@ if use_plugins == 1 then
         --         vim.cmd("colorscheme tokyonight")
         --     end
         -- },
+        -- everforest
+        -- {
+        --     "sainnhe/everforest",
+        --     config = function()
+        --         vim.cmd("colorscheme everforest")
+        --     end,
+        -- },
+        -- everforest nvim
         {
-            "sainnhe/everforest",
+            "neanias/everforest-nvim",
             config = function()
                 vim.cmd("colorscheme everforest")
             end,
         },
+        -- iceberg
         -- {
         --     "cocopon/iceberg.vim",
         --     config = function()
@@ -78,7 +87,8 @@ if use_plugins == 1 then
         },
         {
             'mzlogin/vim-markdown-toc',
-            event = { "BufReadPre *.md", "BufNewFile *.md" },
+            -- event = { "BufReadPre *.md", "BufNewFile *.md" },
+            ft = { "markdown" },
             config = function()
                 vim.g.vmt_auto_update_on_save = 1
                 -- vim.g.vmt_dont_insert_fence = 1
