@@ -395,6 +395,7 @@ vim.cmd("set autoread")
 vim.cmd("set backspace=indent,eol,start")
 vim.cmd("set cindent")
 vim.cmd("set cursorline")
+vim.cmd("set clipboard=unnamed")
 vim.cmd("set display=uhex")
 vim.cmd("set encoding=utf-8")
 vim.cmd("set expandtab")
@@ -444,15 +445,6 @@ vim.cmd("set wrapscan")
 
 vim.cmd("syntax enable")
 vim.cmd("syntax on")
-
--- Defer clipboard setting
--- vim.cmd("set clipboard=unnamed")
-vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = function()
-        vim.opt.clipboard = "unnamed"
-    end,
-})
 
 vim.cmd("let g:netrw_dirhistmax = 0")
 
