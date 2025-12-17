@@ -5,7 +5,7 @@ set autoread
 set backspace=indent,eol,start
 set belloff=all
 set cindent
-set clipboard=unnamed
+" set clipboard=unnamed
 set cursorline
 set display=uhex
 set encoding=utf-8
@@ -15,7 +15,7 @@ set ffs=unix,dos,mac
 set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp
 set foldcolumn=3
 set foldlevel=10
-set foldmethod=indent
+set foldmethod=manual
 set formatoptions=lmoq
 set hidden
 set hlsearch
@@ -59,6 +59,15 @@ set wildmenu
 set wildmode=list:full
 set wrapscan
 " set ttymouse=xterm2
+
+if has('vim_starting')
+  augroup LazyClipboard
+    autocmd!
+    autocmd VimEnter * call timer_start(100, {-> execute('set clipboard=unnamed')})
+  augroup END
+else
+  set clipboard=unnamed
+endif
 
 syntax enable
 syntax on
@@ -186,7 +195,8 @@ if use_plugins == 1
     Jetpack 'tomtom/tcomment_vim'
     Jetpack 'th2ch-g/my-vim-sonictemplate'
     Jetpack 'machakann/vim-sandwich'
-    Jetpack 'airblade/vim-gitgutter'
+    Jetpack 'airblade/vim-gitgutter', {'opt': 1}
+    autocmd BufRead,BufNewFile * packadd vim-gitgutter
     call jetpack#end()
 
     for name in jetpack#names()

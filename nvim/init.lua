@@ -394,7 +394,6 @@ vim.cmd("set autoindent")
 vim.cmd("set autoread")
 vim.cmd("set backspace=indent,eol,start")
 vim.cmd("set cindent")
-vim.cmd("set clipboard=unnamed")
 vim.cmd("set cursorline")
 vim.cmd("set display=uhex")
 vim.cmd("set encoding=utf-8")
@@ -404,7 +403,7 @@ vim.cmd("set ffs=unix,dos,mac")
 vim.cmd("set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp")
 vim.cmd("set foldcolumn=3")
 vim.cmd("set foldlevel=10")
-vim.cmd("set foldmethod=indent")
+vim.cmd("set foldmethod=manual")
 vim.cmd("set formatoptions=lmoq")
 vim.cmd("set hidden")
 vim.cmd("set hlsearch")
@@ -445,6 +444,15 @@ vim.cmd("set wrapscan")
 
 vim.cmd("syntax enable")
 vim.cmd("syntax on")
+
+-- Defer clipboard setting
+-- vim.cmd("set clipboard=unnamed")
+vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+        vim.opt.clipboard = "unnamed"
+    end,
+})
 
 vim.cmd("let g:netrw_dirhistmax = 0")
 
