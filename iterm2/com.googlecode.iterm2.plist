@@ -233,6 +233,10 @@
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_CD410A46-52D6-450E-AA63-7E3DB1683C78_selection</key>
 	<integer>0</integer>
+	<key>NeverWarnAboutShortLivedSessions_D069D7D3-AEB6-4087-84EE-BCC3BC600854</key>
+	<true/>
+	<key>NeverWarnAboutShortLivedSessions_D069D7D3-AEB6-4087-84EE-BCC3BC600854_selection</key>
+	<integer>0</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
