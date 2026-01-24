@@ -1,21 +1,29 @@
 # sort by "sort -k 1"
 # broot                                                               # A new way to see and navigate directory trees
 # cargo-chef                                                          # A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.
+# cargo-make                                                          # Rust task runner and build tool.
+# fcp                                                                 # A significantly faster alternative to the classic Unix cp(1) command, copying large files and directories in a fraction of the time.
+# https://github.com/Fierthraix/2048-rs.git game_2048                 # An implementation of 2048 using ncurses in Rust
+# https://github.com/giacomo-b/rust-stakeholder.git rust-stakeholder  # Generate impressive-looking terminal output to look busy when stakeholders walk by
+# https://github.com/openai/codex.git codex-cli                       # Lightweight coding agent that runs in your terminal
 # https://github.com/sioodmy/todo.git todo                            # Simple todo cli program written in rust
 # https://github.com/th2ch-g/parrot-rs.git parrot                     # Party Parrot implemented by Rust
+# loop-rs                                                             # UNIX's missing `loop` command
 # monolith                                                            # CLI tool and library for saving complete web pages as a single HTML file
 # rustpython                                                          # A Python Interpreter written in Rust
 # sheldon                                                             # Fast, configurable, shell plugin manager
+# ssubmit                                                             # Submit slurm sbatch jobs without a script
 # starship                                                            # The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+# tomlq                                                               # A tool for getting data from TOML files on the command line
+# wasmer-cli                                                          # Fast, secure, lightweight containers based on WebAssembly
+# xq                                                                  # Pure rust implementation of jq
 # zellij                                                              # A terminal workspace with batteries included
 bat                                                                 # A cat(1) clone with wings.
 bottom                                                              # Yet another cross-platform graphical process/system monitor.
-cargo-bin                                                           # Build, cache, and run CLI tools scoped in Cargo.toml rather than installing globally. Stop the version drifts across your team, keep it all in sync within your project!
 cargo-binstall                                                      # Binary installation for rust projects
 cargo-deny                                                          # Cargo plugin for linting your dependencies
 cargo-fuzz                                                          # Command line helpers for fuzzing
 cargo-license                                                       # Cargo subcommand to see license of dependencies
-cargo-make                                                          # Rust task runner and build tool.
 cargo-tarpaulin                                                     # A code coverage tool for Rust projects
 cargo-update                                                        # A cargo subcommand for checking and applying updates to installed executables
 cfonts                                                              # Sexy fonts for the console
@@ -24,24 +32,20 @@ du-dust                                                             # A more int
 evcxr_jupyter                                                       # A Jupyter Kernel
 evcxr_repl                                                          # An evaluation context for Rust.
 eza                                                                 # A modern alternative to ls
-fcp                                                                 # A significantly faster alternative to the classic Unix cp(1) command, copying large files and directories in a fraction of the time.
 fd-find                                                             # A simple, fast and user-friendly alternative to 'find'
 flamegraph                                                          # Easy flamegraphs for Rust projects and everything else, without Perl or pipes <3
 git-delta                                                           # A syntax-highlighting pager for git, diff, grep, and blame output
 grex                                                                # A command-line tool and Rust library with Python bindings for generating regular expressions from user-provided test cases
 https://github.com/astral-sh/uv uv                                  # An extremely fast Python package and project manager, written in Rust.
 https://github.com/devmatteini/dra.git                              # A command line tool to download release assets from GitHub
-https://github.com/Fierthraix/2048-rs.git game_2048                 # An implementation of 2048 using ncurses in Rust
-https://github.com/giacomo-b/rust-stakeholder.git rust-stakeholder  # Generate impressive-looking terminal output to look busy when stakeholders walk by
 https://github.com/itsjunetime/tdf.git                              # A tui-based PDF viewer
-https://github.com/openai/codex.git codex-cli                       # Lightweight coding agent that runs in your terminal
 https://github.com/prefix-dev/pixi.git pixi                         # Package management made easy
 https://github.com/sib-swiss/termal.git                             # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
 https://github.com/tsaitoh/concal.git                               # Contribution calendar for local repository
 hyperfine                                                           # A command-line benchmarking tool
+jaq                                                                 # A jq clone focussed on correctness, speed, and simplicity
 jj-cli                                                              # A Git-compatible VCS that is both simple and powerful
-loop-rs                                                             # UNIX's missing `loop` command
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
 nviwatch                                                            # NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
@@ -56,17 +60,13 @@ sccache                                                             # Sccache is
 sd                                                                  # Intuitive find & replace CLI (sed alternative)
 silicon                                                             # Create beautiful image of your source code.
 skim                                                                # Fuzzy Finder in rust!
-ssubmit                                                             # Submit slurm sbatch jobs without a script
 stylua                                                              # A Lua code formatter
 taplo                                                               # A TOML toolkit written in Rust
 tokei                                                               # Count your code, quickly.
-tomlq                                                               # A tool for getting data from TOML files on the command line
 tre-command                                                         # Tree command, improved.
 trunk                                                               # Build, bundle & ship your Rust WASM application to the web.
 typos-cli                                                           # Source code spell checker
 viu                                                                 # Terminal image viewer with native support for iTerm and Kitty
-wasmer-cli                                                          # Fast, secure, lightweight containers based on WebAssembly
 wild-linker                                                         # A very fast linker for Linux
 xh                                                                  # Friendly and fast tool for sending HTTP requests
-xq                                                                  # Pure rust implementation of jq
 zoxide                                                              # A smarter cd command. Supports all major shells.
