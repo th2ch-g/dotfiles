@@ -137,7 +137,7 @@ apply_iterm2_settings() {
 if [[ $OS == "Mac" ]]; then
     if [[ $test_mode -eq 1 ]]; then
         prepare_common_dirs
-        for target in brew cargo pixi uv;
+        for target in brew cargo pixi uv warpd;
         do
             install_script $target
         done
@@ -146,7 +146,7 @@ if [[ $OS == "Mac" ]]; then
         apply_iterm2_settings
     else
         prepare_common_dirs
-        for target in pixi uv brew cargo;
+        for target in pixi uv brew cargo warpd;
         do
             install_script $target
         done
