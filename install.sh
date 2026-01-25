@@ -17,14 +17,14 @@ OPTIONS:
         --test              test mode (do not install large packages)
 '
 
-WORKS="$HOME/works"
-MISC="$WORKS/misc"
-TOOLS="$WORKS/tools"
-OTHERS="$WORKS/others"
-BIN="$WORKS/bin"
-SHARE="$WORKS/share"
+# WORKS="$HOME/works"
+# MISC="$WORKS/misc"
+# TOOLS="$WORKS/tools"
+# OTHERS="$WORKS/others"
+# BIN="$WORKS/bin"
+# SHARE="$WORKS/share"
+# XDG_CONFIG_HOME="$HOME/.config"
 INSTALL_SCRIPTS="$WORKS/dotfiles/install_scripts"
-XDG_CONFIG_HOME="$HOME/.config"
 
 # default setting
 test_mode=0
@@ -166,6 +166,7 @@ if [[ $OS == "Linux" ]]; then
     if [[ $test_mode -eq 1 ]]; then
         prepare_common_dirs
         for target in vim nvim uv pixi cargo;
+        # for target in uv pixi cargo;
         # for target in fzf vim nvim pixi uv imagemagick cargo node autoconf git gemini-cli password-store zsh tmux; # mold cmake;
         do
             install_script $target
