@@ -38,6 +38,8 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$CARGO_HOME/bin:$PATH"
 export PATH="$RUSTUP_HOME/bin:$PATH"
 export PATH="$PIXI_HOME/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+expoet PATH="/opt/homebrew/sbin:$PATH"
 typeset -gU cdpath fpath mailpath path
 path=(
   $HOME/{,s}bin(N)
