@@ -38,11 +38,11 @@ fd-find                                                             # A simple, 
 flamegraph                                                          # Easy flamegraphs for Rust projects and everything else, without Perl or pipes <3
 git-delta                                                           # A syntax-highlighting pager for git, diff, grep, and blame output
 grex                                                                # A command-line tool and Rust library with Python bindings for generating regular expressions from user-provided test cases
-https://github.com/devmatteini/dra.git                              # A command line tool to download release assets from GitHub
-https://github.com/itsjunetime/tdf.git                              # A tui-based PDF viewer
-https://github.com/sib-swiss/termal.git                             # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
+https://github.com/devmatteini/dra.git dra                          # A command line tool to download release assets from GitHub
+https://github.com/itsjunetime/tdf.git tdf                          # A tui-based PDF viewer
+https://github.com/sib-swiss/termal.git termal                      # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
-https://github.com/tsaitoh/concal.git                               # Contribution calendar for local repository
+https://github.com/tsaitoh/concal.git concal                        # Contribution calendar for local repository
 hyperfine                                                           # A command-line benchmarking tool
 jaq                                                                 # A jq clone focussed on correctness, speed, and simplicity
 jj-cli                                                              # A Git-compatible VCS that is both simple and powerful
