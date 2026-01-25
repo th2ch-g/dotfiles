@@ -149,15 +149,16 @@ if [[ $OS == "Mac" ]]; then
         for target in brew cargo;
         do
             install_script $target
-            install_${target}_pkgs
         done
         for target in pixi uv;
         do
             install_script $target
         done
         install_python3_pkgs
+        install_brew_pkgs
         apply_macos_settings
         apply_iterm2_settings
+        install_cargo_pkgs
     fi
 fi
 

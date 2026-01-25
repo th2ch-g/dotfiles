@@ -5,7 +5,8 @@ rustup self update
 rustup update
 
 # cargo install --locked --force cargo-quickinstall
-cargo install --locked --force cargo-binstall
+# cargo install --locked --force cargo-binstall
+cargo install --locked cargo-binstall
 
 cat list.txt | while IFS= read -r line;
 do

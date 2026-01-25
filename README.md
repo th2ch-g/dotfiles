@@ -28,6 +28,7 @@ cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --zsh && \
+zsh && \
 ./install.sh && \
 ./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git

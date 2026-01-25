@@ -23,7 +23,7 @@ brew "gh"
 brew "gemini-cli"
 brew "fzf"
 brew "dockutil"
-brew "borders"
+brew "FelixKratz/formulae/borders"
 # run: brew bundle dump
 # cask "visual-studio-code"
 # cask "thunderbird"

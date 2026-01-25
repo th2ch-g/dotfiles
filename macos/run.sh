@@ -116,7 +116,6 @@ if [ $dockutil_flag -eq 0 ]; then
     if command -v dockutil >/dev/null 2>&1; then
         dockutil --remove all --no-restart
         dockutil --add '/System/Applications/System Settings.app' --allhomes --no-restart
-        dockutil --add '/System/Applications/Launchpad.app' --allhomes --no-restart
         dockutil --add '/Applications/Google Chrome.app' --allhomes --no-restart
         dockutil --add '/Applications/Slack.app' --allhomes --no-restart
         dockutil --add '/Applications/iTerm.app' --allhomes --no-restart
