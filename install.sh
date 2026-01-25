@@ -132,25 +132,17 @@ apply_iterm2_settings() {
 if [[ $OS == "Mac" ]]; then
     if [[ $test_mode -eq 1 ]]; then
         prepare_common_dirs
-        for target in brew cargo;
-        do
-            install_script $target
-            # install_${target}_pkgs
-        done
-        for target in pixi uv;
+        for target in brew cargo pixi uv;
         do
             install_script $target
         done
-        # install_python3_pkgs
-        # apply_macos_settings
-        # apply_iterm2_settings
+        done
+        install_python3_pkgs
+        apply_macos_settings
+        apply_iterm2_settings
     else
         prepare_common_dirs
-        for target in brew cargo;
-        do
-            install_script $target
-        done
-        for target in pixi uv;
+        for target in pixi uv brew cargo;
         do
             install_script $target
         done
@@ -176,7 +168,7 @@ if [[ $OS == "Linux" ]]; then
         # install_cargo_pkgs
     else
         prepare_common_dirs
-        for target in fzf vim nvim tmux pixi uv imagemagick cargo;
+        for target in fzf vim nvim tmux pixi uv imagemagick cargo zsh;
         do
             install_script $target
         done
