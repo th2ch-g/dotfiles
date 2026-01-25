@@ -9,10 +9,12 @@ USAGE:
     ./install.sh [FLAGS]
 
 EXAMPLE:
-
+    ./install.sh
+    ./install.sh --test
 
 OPTIONS:
     -h, --help              print help
+        --test              test mode (do not install large packages)
 '
 
 WORKS="$HOME/works"
@@ -25,6 +27,7 @@ INSTALL_SCRIPTS="$WORKS/dotfiles/install_scripts"
 XDG_CONFIG_HOME="$HOME/.config"
 
 # default setting
+test_mode=0
 
 print_info() { echo "[INFO] $1" >&1;  }
 print_warn() { echo "[WARN] $1" >&2;  }
@@ -34,10 +37,13 @@ print_error() { echo "[ERROR] $1" >&2;  }
 while :;
 do
     case $1 in
-        -h | --help)
-            echo "$USAGE" >&1
-            exit 0
-            ;;
+       -h | --help)
+           echo "$USAGE" >&1
+           exit 0
+           ;;
+       --test)
+           test_mode=1
+           ;;
        --)
             shift
             break
@@ -123,26 +129,48 @@ apply_iterm2_settings() {
 
 # For mac
 if [ $OS == "Mac" ]; then
-    prepare_common_dirs
-    prepare_local_rcs
-    for target in brew cargo;
-    do
-        install_script $target
-        install_${target}_pkgs
-    done
-    apply_macos_settings
-    apply_iterm2_settings
+    if [ $test_mode -eq 1 ]; then
+        prepare_common_dirs
+        prepare_local_rcs
+        for target in brew cargo;
+        do
+            install_script $target
+            # install_${target}_pkgs
+        done
+        # apply_macos_settings
+        # apply_iterm2_settings
+    else
+        prepare_common_dirs
+        prepare_local_rcs
+        for target in brew cargo;
+        do
+            install_script $target
+            install_${target}_pkgs
+        done
+        apply_macos_settings
+        apply_iterm2_settings
+    fi
 fi
 
 # For linux
 if [ $OS == "Linux" ]; then
-    prepare_common_dirs
-    prepare_local_rcs
-    for target in fzf vim nvim tmux pixi uv imagemagick cargo;
-    do
-        install_script $target
-    done
-    install_cargo_pkgs
+    if [ $test_mode -eq 1 ]; then
+        prepare_common_dirs
+        prepare_local_rcs
+        for target in fzf vim nvim tmux pixi uv imagemagick cargo;
+        do
+            install_script $target
+        done
+        # install_cargo_pkgs
+    else
+        prepare_common_dirs
+        prepare_local_rcs
+        for target in fzf vim nvim tmux pixi uv imagemagick cargo;
+        do
+            install_script $target
+        done
+        install_cargo_pkgs
+    fi
 fi
 
 # For windows
