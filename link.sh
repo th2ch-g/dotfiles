@@ -212,6 +212,12 @@ if [ $zsh_flag -eq 0 ]; then
     create_link ${PWD}/zsh ${XDG_CONFIG_HOME}/zsh
     create_link ${PWD}/zsh/.zshenv ${HOME}/.zshenv
     create_link ${PWD}/sheldon ${XDG_CONFIG_HOME}/sheldon
+    if [[ ! -f $XDG_CONFIG_HOME/zsh/.zshrc_local ]]; then
+        touch $XDG_CONFIG_HOME/zsh/.zshrc_local
+    fi
+    if [[ ! -f $XDG_CONFIG_HOME/zsh/.zshenv_local ]]; then
+        touch $XDG_CONFIG_HOME/zsh/.zshenv_local
+    fi
     print_info "zsh link done"
 fi
 

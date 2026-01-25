@@ -7,10 +7,13 @@ PREFIX="${PWD}/password-store-${VERSION}"
 
 wget $URL
 tar Jxfv password-store-${VERSION}.tar.xz
+rm -rf password-store-${VERSION}.tar.xz
 cd password-store-${VERSION}
 
 sed -i -e "s#PREFIX ?= /usr#PREFIX ?= ${PREFIX}#g" Makefile
 
 make install
+
+ln -s ${PREFIX}/bin/* $HOME/works/bin
 
 echo done

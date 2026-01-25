@@ -8,7 +8,7 @@ fi
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export GPG_TTY=$(tty)
-export HISTFILE="$XDG_CONFIG_HOME/zsh/history"
+export HISTFILE="${ZDOTDIR:-$HOME/.config/zsh}/history"
 export LESS='-g -i -M -R -S -w -X -z-4'
 if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
@@ -29,7 +29,7 @@ function ensure_zcompiled {
     zcompile $1
   fi
 }
-ensure_zcompiled ${ZDOTDIR:-$HOME}/.zshrc
+ensure_zcompiled ${ZDOTDIR:-$HOME/.config/zsh}/.zshrc
 
 # additional settings
 # sheldon
@@ -40,7 +40,7 @@ if [[ $use_plugins -eq 1 ]]; then
             | bash -s -- --repo rossmacarthur/sheldon --to ${HOME}/.local/bin
     fi
     # eval "$(sheldon source)"
-    SHELDON_CACHE="${XDG_STATE_HOME:-$HOME/.local/state}/sheldon_cache.zsh"
+    SHELDON_CACHE="${ZDOTDIR:-$HOME/.config/zsh}/sheldon_cache.zsh"
     SHELDON_TOML="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
     if [[ ! -r "$SHELDON_CACHE" || "$SHELDON_TOML" -nt "$SHELDON_CACHE" ]]; then
         sheldon source > $SHELDON_CACHE
@@ -63,7 +63,7 @@ fi
 # zoxide
 if command -v zoxide > /dev/null 2>&1; then
     # eval "$(zoxide init zsh)"
-    ZOXIDE_CACHE="${ZDOTDIR:-$HOME}/zoxide_cache.zsh"
+    ZOXIDE_CACHE="${ZDOTDIR:-$HOME/.config/zsh}/zoxide_cache.zsh"
     if [[ ! -r "$ZOXIDE_CACHE" || "$SHELDON_TOML" -nt "$ZOXIDE_CACHE" ]]; then
         zoxide init zsh > $ZOXIDE_CACHE
     fi

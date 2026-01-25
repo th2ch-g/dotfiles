@@ -21,14 +21,25 @@
 ## Install
 
 ### For me
+- Bootstrap Installation on local
+~~~shell
+mkdir -p ${HOME}/works && \
+cd ${HOME}/works && \
+git clone https://github.com/th2ch-g/dotfiles.git && \
+cd ./dotfiles && \
+./link.sh --zsh && \
+zsh -c "./install.sh" &6 \
+./link.sh --git --tmux --vim --neovim --ssh --yabai --skhd && \
+git remote set-url origin git@github.com:th2ch-g/dotfiles.git
+~~~
+
 - Install on local via SSH
 ~~~shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd && \
-./install.sh
+./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
 ~~~
 
 - Install on local via HTTPS
@@ -37,7 +48,7 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd && \
+./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
 ./install.sh
 ~~~
 

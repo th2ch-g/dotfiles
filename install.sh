@@ -90,11 +90,6 @@ prepare_common_dirs() {
     done
 }
 
-prepare_local_rcs() {
-    touch $XDG_CONFIG_HOME/zsh/.zshrc_local
-    touch $XDG_CONFIG_HOME/zsh/.zshenv_local
-}
-
 install_script() {
     TARGET=$1
     CWD=$PWD
@@ -115,6 +110,12 @@ install_cargo_pkgs() {
     cd ..
 }
 
+install_python3_pkgs() {
+    cd python3
+    ./run.sh
+    cd ..
+}
+
 apply_macos_settings() {
     cd macos
     ./run.sh --dockutil
@@ -131,22 +132,30 @@ apply_iterm2_settings() {
 if [ $OS == "Mac" ]; then
     if [ $test_mode -eq 1 ]; then
         prepare_common_dirs
-        prepare_local_rcs
         for target in brew cargo;
         do
             install_script $target
             # install_${target}_pkgs
         done
+        for target in pixi uv;
+        do
+            install_script $target
+        done
+        # install_python3_pkgs
         # apply_macos_settings
         # apply_iterm2_settings
     else
         prepare_common_dirs
-        prepare_local_rcs
         for target in brew cargo;
         do
             install_script $target
             install_${target}_pkgs
         done
+        for target in pixi uv;
+        do
+            install_script $target
+        done
+        install_python3_pkgs
         apply_macos_settings
         apply_iterm2_settings
     fi
@@ -156,19 +165,20 @@ fi
 if [ $OS == "Linux" ]; then
     if [ $test_mode -eq 1 ]; then
         prepare_common_dirs
-        prepare_local_rcs
-        for target in fzf vim nvim tmux pixi uv imagemagick cargo;
+        for target in vim nvim uv pixi cargo;
+        # for target in fzf vim nvim pixi uv imagemagick cargo node autoconf git gemini-cli password-store zsh tmux; # mold cmake;
         do
             install_script $target
         done
+        install_python3_pkgs
         # install_cargo_pkgs
     else
         prepare_common_dirs
-        prepare_local_rcs
         for target in fzf vim nvim tmux pixi uv imagemagick cargo;
         do
             install_script $target
         done
+        install_python3_pkgs
         install_cargo_pkgs
     fi
 fi

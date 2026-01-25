@@ -3,6 +3,7 @@ RUN apt-get update \
         && apt-get install -y \
         autoconf \
         bash \
+        build-essential \
         cmake \
         curl \
         gcc \
@@ -12,46 +13,45 @@ RUN apt-get update \
         ncurses-dev \
         neovim \
         pkg-config \
+        imagemagick \
         tmux \
         vim \
         wget \
         zsh \
-        && apt install -y locales-all
-RUN chsh -s /bin/zsh
+        && apt install -y locales-all \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
 
 # vim: /usr/bin/vim.basic because of alternative system
 RUN ln -sf /usr/bin/vim.basic /usr/bin/vim
 
-RUN mkdir -p \
-        /root/works/dotfiles \
-        /root/works/dotfiles/install_scripts \
-        /root/works/tools \
-        /root/works/bin \
-        /root/works/share \
-        /root/works/misc \
-        /root/works/others
+RUN mkdir -p /root/works/dotfiles
 
+# for zsh
 WORKDIR /root/works/dotfiles
-COPY install_scripts/ /root/works/dotfiles/install_scripts/
+COPY ./link.sh .
+COPY ./zsh ./zsh
+COPY ./sheldon/ ./sheldon
+RUN ./link.sh --zsh
+RUN zsh -i -c exit
+RUN chsh -s /bin/zsh
 
-WORKDIR /root/works/tools
-RUN ../dotfiles/install_scripts/nvim.sh
-RUN ../dotfiles/install_scripts/vim.sh
-WORKDIR /root/works/bin
-RUN ln -s /root/works/tools/neovim-*/build/bin/nvim .
-RUN ln -s /root/works/tools/vim-*/build/bin/vim .
+# for layer cache
+WORKDIR /root/works/dotfiles
+COPY ./install_scripts ./install_scripts
+COPY ./install.sh .
+COPY ./python3 ./python3
+COPY ./cargo ./cargo
+RUN zsh -c "./install.sh --test" # for using ENV in zshenv
 
+# copy remain
 WORKDIR /root/works/dotfiles
 COPY . .
-RUN ./link.sh --git --zsh --tmux --vim --neovim --ssh --alacritty
-
-WORKDIR /root/works
-
-# install plugins
-RUN zsh -i -c exit
+RUN ./link.sh --git --tmux --vim --neovim --ssh --alacritty
 
 # vim ai off
 RUN echo "export VIM_AI=0" >> /root/works/dotfiles/zsh/.zshenv_local
 
 # skip cargo/python install for saving time
+WORKDIR /root/works
 CMD ["/bin/zsh", "-c", "echo 'This example container. Some features are not available.' && zsh"]
