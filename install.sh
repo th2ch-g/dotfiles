@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 set -e
 
 USAGE='
@@ -59,11 +59,11 @@ do
 done
 
 # OS check
-if [ "$(uname)" == 'Darwin' ]; then
+if [[ "$(uname)" == 'Darwin' ]]; then
   OS='Mac'
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
+elif [[ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]]; then
   OS='Linux'
-elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
+elif [[ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]]; then
   OS='Cygwin'
 else
   print_error "Your platform ($(uname -a)) is not supported."
@@ -76,7 +76,7 @@ arch=$(uname -m)
 print_info "detect $arch CPU"
 
 # cwd check
-if [ ! -e $PWD/install.sh ]; then
+if [[ ! -e $PWD/install.sh ]]; then
     print_error "install.sh is not detected"
     print_error "execute ./install.sh in dotfiles directory"
     exit 1
@@ -129,8 +129,8 @@ apply_iterm2_settings() {
 }
 
 # For mac
-if [ $OS == "Mac" ]; then
-    if [ $test_mode -eq 1 ]; then
+if [[ $OS == "Mac" ]]; then
+    if [[ $test_mode -eq 1 ]]; then
         prepare_common_dirs
         for target in brew cargo;
         do
@@ -162,8 +162,8 @@ if [ $OS == "Mac" ]; then
 fi
 
 # For linux
-if [ $OS == "Linux" ]; then
-    if [ $test_mode -eq 1 ]; then
+if [[ $OS == "Linux" ]]; then
+    if [[ $test_mode -eq 1 ]]; then
         prepare_common_dirs
         for target in vim nvim uv pixi cargo;
         # for target in fzf vim nvim pixi uv imagemagick cargo node autoconf git gemini-cli password-store zsh tmux; # mold cmake;
@@ -184,7 +184,7 @@ if [ $OS == "Linux" ]; then
 fi
 
 # For windows
-if [ $OS == "Cygwin" ]; then
+if [[ $OS == "Cygwin" ]]; then
     print_warn "Cygwin is not supported"
     exit 1
 fi

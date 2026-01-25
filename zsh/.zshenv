@@ -27,6 +27,7 @@ export OTHERS="$WORKS/others"
 export VIM_AI=1 # ON
 export CARGO_HOME="$TOOLS/cargo"
 export RUSTUP_HOME="$TOOLS/rustup"
+export UV_NO_MODIFY_PATH=1
 export PIXI_FROZEN=true
 export PIXI_HOME="$TOOLS/pixi"
 

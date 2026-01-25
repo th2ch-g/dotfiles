@@ -42,7 +42,7 @@ COPY ./install_scripts ./install_scripts
 COPY ./install.sh .
 COPY ./python3 ./python3
 COPY ./cargo ./cargo
-RUN zsh -c "./install.sh --test" # for using ENV in zshenv
+RUN ./install.sh --test # for using ENV in zshenv
 
 # copy remain
 WORKDIR /root/works/dotfiles
