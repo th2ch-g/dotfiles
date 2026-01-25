@@ -15,6 +15,7 @@ EXAMPLE:
 OPTIONS:
     -h, --help              print help
         --test              test mode (do not install large packages)
+    -n ,--no-cargo-pkgs     do not install cargo packages
 '
 
 # WORKS="$HOME/works"
@@ -28,6 +29,7 @@ INSTALL_SCRIPTS="$WORKS/dotfiles/install_scripts"
 
 # default setting
 test_mode=0
+no_cargo_pkgs=0
 
 print_info() { echo "[INFO] $1" >&1;  }
 print_warn() { echo "[WARN] $1" >&2;  }
@@ -37,14 +39,17 @@ print_error() { echo "[ERROR] $1" >&2;  }
 while :;
 do
     case $1 in
-       -h | --help)
+        -h | --help)
            echo "$USAGE" >&1
            exit 0
            ;;
-       --test)
+        --test)
            test_mode=1
            ;;
-       --)
+        -n | --no-cargo-pkgs)
+           no_cargo_pkgs=1
+           ;;
+        --)
             shift
             break
             ;;
@@ -136,7 +141,6 @@ if [[ $OS == "Mac" ]]; then
         do
             install_script $target
         done
-        done
         install_python3_pkgs
         apply_macos_settings
         apply_iterm2_settings
@@ -150,7 +154,7 @@ if [[ $OS == "Mac" ]]; then
         install_brew_pkgs
         apply_macos_settings
         apply_iterm2_settings
-        install_cargo_pkgs
+        [ $no_cargo_pkgs -eq 0 ] && install_cargo_pkgs
     fi
 fi
 
@@ -165,7 +169,7 @@ if [[ $OS == "Linux" ]]; then
             install_script $target
         done
         install_python3_pkgs
-        # install_cargo_pkgs
+        # [ $no_cargo_pkgs -eq 0 ] && install_cargo_pkgs
     else
         prepare_common_dirs
         for target in fzf vim nvim tmux pixi uv imagemagick cargo zsh;
@@ -173,7 +177,7 @@ if [[ $OS == "Linux" ]]; then
             install_script $target
         done
         install_python3_pkgs
-        install_cargo_pkgs
+        [ $no_cargo_pkgs -eq 0 ] && install_cargo_pkgs
     fi
 fi
 
