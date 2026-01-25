@@ -30,6 +30,7 @@ export RUSTUP_HOME="$TOOLS/rust/rustup"
 export UV_NO_MODIFY_PATH=1
 export PIXI_FROZEN=true
 export PIXI_HOME="$TOOLS/pixi"
+export PIXI_NO_PATH_UPDATE=1
 
 # path
 export PATH="$BIN:$PATH"
