@@ -9,6 +9,12 @@ fi
 # default setting
 dockutil_flag=1
 
+USAGE='
+Usage:
+    -h, --help      Show this help message
+    -d, --dockutil  Use dockutil
+'
+
 # option parser
 while :;
 do
