@@ -7,9 +7,9 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 
 brew bundle
-yabai --start-service
-skhd --start-service
-yabai --restart-service
-skhd --restart-service
+# yabai --start-service
+# skhd --start-service
+# yabai --restart-service
+# skhd --restart-service
 
 echo done

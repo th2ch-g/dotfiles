@@ -29,7 +29,7 @@ git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --zsh && \
 ./install.sh && \
-./link.sh --git --tmux --vim --neovim --ssh --yabai --skhd && \
+./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git
 ~~~
 
@@ -39,7 +39,7 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
+./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace
 ~~~
 
 - Install on local via HTTPS
@@ -48,7 +48,7 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --yabai --skhd
+./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace
 ./install.sh
 ~~~
 

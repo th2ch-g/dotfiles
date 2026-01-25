@@ -24,6 +24,7 @@ OPTIONS:
     -n, --neovim            neovim dotfiles link
     -y, --yabai             yabai dotfiles link
     -s, --skhd              skhd dotfiles link
+        --aerospace         aerospace dotfiles link
         --gemini            gemini dotfiles link
         --codex             codex dotfiles link
         --ssh               ssh config file copy
@@ -50,6 +51,7 @@ yabai_flag=1
 skhd_flag=1
 gemini_flag=1
 codex_flag=1
+aerospace_flag=1
 
 print_info() { echo "[INFO] $1" >&1;  }
 print_warn() { echo "[WARN] $1" >&2;  }
@@ -122,6 +124,9 @@ do
             ;;
         -s | --skhd)
             skhd_flag=0
+            ;;
+        --aerospace)
+            aerospace_flag=0
             ;;
         --gemini)
             gemini_flag=0
@@ -297,6 +302,13 @@ if [[ $skhd_flag -eq 0 && $OS == "Mac" ]]; then
         skhd --start-service
         skhd --restart-service
     fi
+fi
+
+# aerospace
+if [[ $aerospace_flag -eq 0 && $OS == "Mac" ]]; then
+    print_info "aerospace link start"
+    create_link ${PWD}/aerospace ${XDG_CONFIG_HOME}/aerospace
+    print_info "aerospace link done"
 fi
 
 if [ $gemini_flag -eq 0 ]; then
