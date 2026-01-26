@@ -24,6 +24,7 @@
 - Bootstrap Installation on local
   - Prerequisite: git, zsh (check by `git --version && zsh --version`)
     - macos: `xcode-select --install`
+      - **DO NOT** launch zsh in other terminal until the installation is done (up to brew) because of OpenSSL issue
     - linux: `sudo apt install zsh git` or manually install by `install_scripts/`
 
 ~~~shell
