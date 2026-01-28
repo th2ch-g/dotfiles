@@ -90,7 +90,8 @@ defaults -currentHost write com.apple.screensaver idleTime -int 0
 
 # Menubar
 defaults write NSGlobalDomain _HIHideMenuBar -bool true
-
+defaults -currentHost write com.apple.controlcenter.BatteryShowPercentage -bool true
+killall ControlCenter
 
 # DS Store
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
@@ -110,6 +111,9 @@ defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
 # Sound
 defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -bool false
 defaults write NSGlobalDomain com.apple.sound.beep.feedback -bool false
+defaults write -g com.apple.sound.uiaudio.enabled -int 0
+sudo nvram SystemAudioVolume=%01
+killall SystemUIServer
 
 # office
 defaults write com.microsoft.autoupdate2 HowToCheck -string "Manual"
