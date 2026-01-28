@@ -7,3 +7,4 @@ thumbs.db
 *.log
 .serena/
 digest.txt
+.ipynb_checkpoints/
