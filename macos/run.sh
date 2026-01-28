@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 if [ "$(uname)" != "Darwin" ]; then
     echo "this script is only for macOS" >&2
@@ -46,11 +46,12 @@ defaults write com.apple.dock orientation -string left
 defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock show-recents -bool false
 
+# accessibility
+# cannot
 
 # Cursor
-# Error
-# defaults write com.apple.universalaccess mouseDriverCursorSize -float 5
-# defaults write com.apple.universalaccess accessibilityCursorSize -float 3.0
+sudo defaults write com.apple.universalaccess mouseDriverCursorSize -float 5
+sudo defaults write com.apple.universalaccess accessibilityCursorSize -float 3.0
 
 
 # Keyboard
@@ -109,6 +110,9 @@ defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
 # Sound
 defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -bool false
 defaults write NSGlobalDomain com.apple.sound.beep.feedback -bool false
+
+# office
+defaults write com.microsoft.autoupdate2 HowToCheck -string "Manual"
 
 
 # dockutil
