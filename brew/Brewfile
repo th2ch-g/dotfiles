@@ -1,5 +1,6 @@
 tap "FelixKratz/formulae"
 cask "xquartz"
+cask "utm"
 cask "tor-browser"
 cask "slack"
 cask "nikitabobko/tap/aerospace"
