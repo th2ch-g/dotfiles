@@ -23,6 +23,7 @@ export TOOLS="$WORKS/tools"
 export SHARE="$WORKS/share"
 export MISC="$WORKS/misc"
 export BIN="$WORKS/bin"
+export MNT="$WORKS/mnt"
 export OTHERS="$WORKS/others"
 export VIM_AI=1 # ON
 export CARGO_HOME="$TOOLS/rust/cargo"

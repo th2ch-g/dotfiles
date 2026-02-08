@@ -161,6 +161,7 @@ alias cdo="cd $OTHERS"
 alias cds="cd $SHARE"
 alias cdt="cd $TOOLS"
 alias cdw="cd $WORKS"
+alias cdn="cd $MNT"
 
 # disk alias
 alias df="df -h"
@@ -270,7 +271,8 @@ script_unhighlight() {
 }
 
 rp() {
-    if command -v realpath &> /dev/null; then
+    # if command -v realpath &> /dev/null; then
+    if [[ $(uname) == "Linux" ]]; then
         realpath -e "$1"
     else
         readlink -f "$1"

@@ -88,7 +88,7 @@ if [[ ! -e $PWD/install.sh ]]; then
 fi
 
 prepare_common_dirs() {
-    arr=( $MISC $TOOLS $OTHERS $BIN $SHARE )
+    arr=( $MISC $TOOLS $OTHERS $BIN $SHARE $MNT )
     for i in ${arr[@]};
     do
         mkdir -p $i
