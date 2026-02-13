@@ -192,6 +192,7 @@ alias v="vim"
 alias vi="vim"
 alias memo="vim ${HOME}/.memo.md"
 alias pass="vim_ai_off; pass"
+alias gp="gopass"
 
 # slurm alias
 alias scancela="scancel -u $USER"
