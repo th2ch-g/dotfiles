@@ -247,6 +247,10 @@ dont_sleep() {
     caffeinate -i -d
 }
 
+function tenki(){
+    curl "https://ja.wttr.in/$1?2nF"
+}
+
 script_highlight() {
     for ft in sh py bash;
     do
