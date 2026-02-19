@@ -47,6 +47,7 @@ https://github.com/tsaitoh/concal.git concal                        # Contributi
 hyperfine                                                           # A command-line benchmarking tool
 jaq                                                                 # A jq clone focussed on correctness, speed, and simplicity
 jj-cli                                                              # A Git-compatible VCS that is both simple and powerful
+just                                                                # Just a command runner
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
 nviwatch                                                            # NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
