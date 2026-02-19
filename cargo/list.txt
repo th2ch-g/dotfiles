@@ -3,8 +3,8 @@
 # cargo-chef                                                          # A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.
 # cargo-make                                                          # Rust task runner and build tool.
 # fcp                                                                 # A significantly faster alternative to the classic Unix cp(1) command, copying large files and directories in a fraction of the time.
-# https://github.com/Fierthraix/2048-rs.git game_2048                 # An implementation of 2048 using ncurses in Rust
 # https://github.com/astral-sh/uv uv                                  # An extremely fast Python package and project manager, written in Rust.
+# https://github.com/Fierthraix/2048-rs.git game_2048                 # An implementation of 2048 using ncurses in Rust
 # https://github.com/giacomo-b/rust-stakeholder.git rust-stakeholder  # Generate impressive-looking terminal output to look busy when stakeholders walk by
 # https://github.com/openai/codex.git codex-cli                       # Lightweight coding agent that runs in your terminal
 # https://github.com/prefix-dev/pixi.git pixi                         # Package management made easy
@@ -30,6 +30,7 @@ cargo-tarpaulin                                                     # A code cov
 cargo-update                                                        # A cargo subcommand for checking and applying updates to installed executables
 cfonts                                                              # Sexy fonts for the console
 choose                                                              # A human-friendly and fast alternative to cut and (sometimes) awk
+code2prompt                                                         # A CLI tool to convert your codebase into a single LLM prompt with source tree, prompt templating, and token counting.
 du-dust                                                             # A more intuitive version of du in rust
 evcxr_jupyter                                                       # A Jupyter Kernel
 evcxr_repl                                                          # An evaluation context for Rust.
