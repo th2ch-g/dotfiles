@@ -91,8 +91,9 @@ git pull
 
 ## Add release
 ```bash
-git tag -a vYYYY.MM.DD -m "message"
-git push origin vYYYY.MM.DD
+TAG=v$(date +'%Y.%m.%d') && \
+git tag -a $TAG -m "Release $TAG" && \
+git push origin $TAG
 ```
 
 ## Delete release (not recommended)
