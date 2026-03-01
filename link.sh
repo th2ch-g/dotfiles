@@ -354,6 +354,23 @@ if [ $claude_flag -eq 0 ]; then
         claude plugin install equity-research@financial-services-plugins
         claude plugin install private-equity@financial-services-plugins
         claude plugin install wealth-management@financial-services-plugins
+
+        # official plugins
+        claude plugin marketplace add anthropics/claude-plugins-official
+        claude plugin install typescript-lsp@claude-plugins-official
+        claude plugin install pyright-lsp@claude-plugins-official
+        claude plugin install rust-analyzer-lsp@claude-plugins-official
+        claude plugin install commit-commands@claude-plugins-official
+        claude plugin install pr-review-toolkit@claude-plugins-official
+        claude plugin install feature-dev@claude-plugins-official
+        claude plugin install code-review@claude-plugins-official
+        claude plugin install agent-sdk-dev@claude-plugins-official
+        claude plugin install plugin-dev@claude-plugins-official
+        claude plugin install security-guidance@claude-plugins-official
+        claude plugin install ralph-loop@claude-plugins-official
+        claude plugin install claude-code-setup@claude-plugins-official
+        claude plugin install claude-md-management@claude-plugins-official
+        claude plugin install skill-creator@claude-plugins-official
         set -e
     fi
     print_info "claude link done"
