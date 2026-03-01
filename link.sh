@@ -27,6 +27,7 @@ OPTIONS:
         --aerospace         aerospace dotfiles link
         --gemini            gemini dotfiles link
         --codex             codex dotfiles link
+        --claude            claude dotfiles link
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
         --cp                use cp instaead of ln
@@ -51,6 +52,7 @@ yabai_flag=1
 skhd_flag=1
 gemini_flag=1
 codex_flag=1
+claude_flag=1
 aerospace_flag=1
 
 print_info() { echo "[INFO] $1" >&1;  }
@@ -134,6 +136,9 @@ do
         --codex)
             codex_flag=0
             ;;
+        --claude)
+            claude_flag=0
+            ;;
        --)
             shift
             break
@@ -182,7 +187,7 @@ if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
     print_warn "Ignore error"
 
     # $HOME/dotfiles
-    for dotfile in .bash_profile .gemini .codex;
+    for dotfile in .bash_profile .gemini .codex .claude;
     do
         remove_link $HOME/$dotfile
     done
@@ -321,6 +326,12 @@ if [ $codex_flag -eq 0 ]; then
     print_info "codex link start"
     create_link ${PWD}/codex ${HOME}/.codex
     print_info "codex link done"
+fi
+
+if [ $claude_flag -eq 0 ]; then
+    print_info "claude link start"
+    create_link ${PWD}/claude ${HOME}/.claude
+    print_info "claude link done"
 fi
 
 echo "[INFO] done" >&1

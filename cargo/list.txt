@@ -50,6 +50,7 @@ jaq                                                                 # A jq clone
 jj-cli                                                              # A Git-compatible VCS that is both simple and powerful
 just                                                                # Just a command runner
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
+nono-cli                                                            # Secure, kernel-enforced sandbox CLI and SDKs for AI agents. Capability-based isolation with secure key management, atomic rollback, cryptographic immutable audit chain of provenance. Run your agents in a zero-trust environment.
 nviwatch                                                            # NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
 procs                                                               # A modern replacement for ps written in Rust

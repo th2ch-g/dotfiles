@@ -146,7 +146,7 @@ if [[ $OS == "Mac" ]]; then
         apply_iterm2_settings
     else
         prepare_common_dirs
-        for target in pixi uv brew cargo warpd;
+        for target in pixi uv brew claude-code cargo warpd;
         do
             install_script $target
         done
@@ -172,7 +172,7 @@ if [[ $OS == "Linux" ]]; then
         # [ $no_cargo_pkgs -eq 0 ] && install_cargo_pkgs
     else
         prepare_common_dirs
-        for target in fzf vim nvim tmux pixi uv imagemagick cargo zsh;
+        for target in fzf vim nvim tmux pixi uv claude-code imagemagick cargo zsh;
         do
             install_script $target
         done
