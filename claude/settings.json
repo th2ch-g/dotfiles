@@ -4,7 +4,7 @@
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1",
     "CLAUDE_CODE_IDE_SKIP_VALID_CHECK": "1",
-    "EDITOR": "nvim -n +'set awa' +'startinsert'",
+    "EDITOR": "nvim",
     "ENABLE_TOOL_SEARCH": "true"
   },
   "permissions": {
@@ -25,7 +25,6 @@
   },
   "outputStyle": "Explanatory",
   "language": "ja",
-  "alwaysThinkingEnabled": true,
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "showTurnDuration": true
