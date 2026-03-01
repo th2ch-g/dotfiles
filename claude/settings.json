@@ -1,29 +1,32 @@
 {
   "env": {
-    "EDITOR": "nvim -n +'set awa' +'startinsert'",
     "CLAUDE_CODE_AUTO_CONNECT_IDE": "0",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1",
     "CLAUDE_CODE_IDE_SKIP_VALID_CHECK": "1",
-    "ENABLE_TOOL_SEARCH": true
+    "EDITOR": "nvim -n +'set awa' +'startinsert'",
+    "ENABLE_TOOL_SEARCH": "true"
   },
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
-  "mcpServers": {
-    "serena": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena-mcp-server",
-        "--project-from-cwd"
-      ]
-    }
+  "hooks": {
+    "PostToolUseFailure": [
+      {
+        "matcher": "Read|Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/nono-hook.sh"
+          }
+        ]
+      }
+    ]
   },
-  "language": "ja",
   "outputStyle": "Explanatory",
-  "showTurnDuration": true,
+  "language": "ja",
   "alwaysThinkingEnabled": true,
-  "autoUpdatesChannel": "none"
+  "autoUpdatesChannel": "latest",
+  "skipDangerousModePermissionPrompt": true,
+  "showTurnDuration": true
 }
