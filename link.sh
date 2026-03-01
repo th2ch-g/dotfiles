@@ -332,14 +332,16 @@ if [ $claude_flag -eq 0 ]; then
     print_info "claude link start"
     create_link ${PWD}/claude ${HOME}/.claude
     if command -v claude >/dev/null 2>&1; then
+        set +e
         claude mcp add serena \
             --scope user \
             -- uvx \
             --from git+https://github.com/oraios/serena \
             serena-mcp-server \
             --project-from-cwd \
-            --enable-web-dashboard
+            --enable-web-dashboard \
             false
+        set -e
     fi
     print_info "claude link done"
 fi
