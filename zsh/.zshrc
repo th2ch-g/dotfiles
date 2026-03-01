@@ -209,7 +209,6 @@ alias rusts="rust-script"
 alias sshxy="ssh -XY"
 alias tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
 alias wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
-alias cld="nono run --allow-cwd --allow $HOME/.local/bin/ --allow $HOME/.cache --allow $HOME/.local/share --allow $HOME/.serena --profile claude-code -- claude"
 
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
@@ -246,6 +245,18 @@ benchmark() {
 dont_sleep() {
     # macos
     caffeinate -i -d
+}
+
+cld() {
+    nono run \
+        --allow-cwd \
+        --allow $HOME/.local/bin/ \
+        --allow $HOME/.cache \
+        --allow $HOME/.local/share \
+        --allow $HOME/.serena \
+        --allow $PWD/.serena \
+        --profile claude-code \
+        -- claude
 }
 
 function tenki(){
