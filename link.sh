@@ -341,6 +341,19 @@ if [ $claude_flag -eq 0 ]; then
         #     --context claude-code \
         #     --project . \
         #     --enable-web-dashboard false
+
+        # essential skills
+        claude plugin marketplace add anthropics/skills
+        claude plugin install document-skills@anthropic-agent-skills
+        claude plugin install example-skills@anthropic-agent-skills
+
+        # financial skill
+        claude plugin marketplace add anthropics/financial-services-plugins
+        claude plugin install financial-analysis@financial-services-plugins
+        claude plugin install investment-banking@financial-services-plugins
+        claude plugin install equity-research@financial-services-plugins
+        claude plugin install private-equity@financial-services-plugins
+        claude plugin install wealth-management@financial-services-plugins
         set -e
     fi
     print_info "claude link done"

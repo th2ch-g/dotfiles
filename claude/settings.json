@@ -23,6 +23,29 @@
       }
     ]
   },
+  "enabledPlugins": {
+    "document-skills@anthropic-agent-skills": true,
+    "example-skills@anthropic-agent-skills": true,
+    "financial-analysis@financial-services-plugins": true,
+    "investment-banking@financial-services-plugins": true,
+    "equity-research@financial-services-plugins": true,
+    "private-equity@financial-services-plugins": true,
+    "wealth-management@financial-services-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    },
+    "financial-services-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/financial-services-plugins"
+      }
+    }
+  },
   "outputStyle": "Explanatory",
   "language": "ja",
   "autoUpdatesChannel": "latest",
