@@ -343,56 +343,56 @@ if [ $claude_flag -eq 0 ]; then
         #     --enable-web-dashboard false
 
         # essential skills
-        claude plugin marketplace add anthropics/skills
-        claude plugin install document-skills@anthropic-agent-skills
-        claude plugin install example-skills@anthropic-agent-skills
+        # claude plugin marketplace add anthropics/skills
+        # claude plugin install document-skills@anthropic-agent-skills
+        # claude plugin install example-skills@anthropic-agent-skills
 
         # financial skill
-        claude plugin marketplace add anthropics/financial-services-plugins
-        claude plugin install financial-analysis@financial-services-plugins
-        claude plugin install investment-banking@financial-services-plugins
-        claude plugin install equity-research@financial-services-plugins
-        claude plugin install private-equity@financial-services-plugins
-        claude plugin install wealth-management@financial-services-plugins
+        # claude plugin marketplace add anthropics/financial-services-plugins
+        # claude plugin install financial-analysis@financial-services-plugins
+        # claude plugin install investment-banking@financial-services-plugins
+        # claude plugin install equity-research@financial-services-plugins
+        # claude plugin install private-equity@financial-services-plugins
+        # claude plugin install wealth-management@financial-services-plugins
 
         # official plugins
-        claude plugin marketplace add anthropics/claude-plugins-official
-        claude plugin install agent-sdk-dev@claude-plugins-official
-        claude plugin install asana@claude-plugins-official
+        # claude plugin marketplace add anthropics/claude-plugins-official
+        # claude plugin install agent-sdk-dev@claude-plugins-official
+        # claude plugin install asana@claude-plugins-official
         # claude plugin install atlassian@claude-plugins-official
-        claude plugin install clangd-lsp@claude-plugins-official
-        claude plugin install claude-code-setup@claude-plugins-official
-        claude plugin install claude-md-management@claude-plugins-official
-        claude plugin install code-review@claude-plugins-official
-        claude plugin install code-simplifier@claude-plugins-official
-        claude plugin install commit-commands@claude-plugins-official
-        claude plugin install csharp-lsp@claude-plugins-official
-        claude plugin install explanatory-output-style@claude-plugins-official
-        claude plugin install feature-dev@claude-plugins-official
+        # claude plugin install clangd-lsp@claude-plugins-official
+        # claude plugin install claude-code-setup@claude-plugins-official
+        # claude plugin install claude-md-management@claude-plugins-official
+        # claude plugin install code-review@claude-plugins-official
+        # claude plugin install code-simplifier@claude-plugins-official
+        # claude plugin install commit-commands@claude-plugins-official
+        # claude plugin install csharp-lsp@claude-plugins-official
+        # claude plugin install explanatory-output-style@claude-plugins-official
+        # claude plugin install feature-dev@claude-plugins-official
         # claude plugin install figma@claude-plugins-official
         # claude plugin install firebase@claude-plugins-official
-        claude plugin install frontend-design@claude-plugins-official
+        # claude plugin install frontend-design@claude-plugins-official
         # claude plugin install github@claude-plugins-official
         # claude plugin install gitlab@claude-plugins-official
-        claude plugin install gopls-lsp@claude-plugins-official
-        claude plugin install greptile@claude-plugins-official
-        claude plugin install hookify@claude-plugins-official
-        claude plugin install jdtls-lsp@claude-plugins-official
+        # claude plugin install gopls-lsp@claude-plugins-official
+        # claude plugin install greptile@claude-plugins-official
+        # claude plugin install hookify@claude-plugins-official
+        # claude plugin install jdtls-lsp@claude-plugins-official
         # claude plugin install kotlin-lsp@claude-plugins-official
-        claude plugin install learning-output-style@claude-plugins-official
-        claude plugin install linear@claude-plugins-official
-        claude plugin install lua-lsp@claude-plugins-official
+        # claude plugin install learning-output-style@claude-plugins-official
+        # claude plugin install linear@claude-plugins-official
+        # claude plugin install lua-lsp@claude-plugins-official
         # claude plugin install php-lsp@claude-plugins-official
         # claude plugin install pinecone@claude-plugins-official
-        claude plugin install playground@claude-plugins-official
-        claude plugin install plugin-dev@claude-plugins-official
-        claude plugin install pr-review-toolkit@claude-plugins-official
+        # claude plugin install playground@claude-plugins-official
+        # claude plugin install plugin-dev@claude-plugins-official
+        # claude plugin install pr-review-toolkit@claude-plugins-official
         # claude plugin install pyright-lsp@claude-plugins-official
         # claude plugin install ralph-loop@claude-plugins-official
         # claude plugin install rust-analyzer-lsp@claude-plugins-official
-        claude plugin install security-guidance@claude-plugins-official
+        # claude plugin install security-guidance@claude-plugins-official
         # claude plugin install serena@claude-plugins-official
-        claude plugin install skill-creator@claude-plugins-official
+        # claude plugin install skill-creator@claude-plugins-official
         # claude plugin install slack@claude-plugins-official
         # claude plugin install stripe@claude-plugins-official
         # claude plugin install supabase@claude-plugins-official
