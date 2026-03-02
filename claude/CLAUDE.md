@@ -2,6 +2,7 @@
 
 - 基本的に回答は日本語で簡潔に書くこと
 - 分からないことや不明な場合は質問すること
+- 可能であれば積極的にSkillsを使用すること
 
 <!-- nono-sandbox-start -->
 ## Nono Sandbox - CRITICAL

@@ -265,7 +265,8 @@ cld() {
 }
 
 function tenki(){
-    curl "https://ja.wttr.in/$1?2nF"
+    local target=$1
+    curl "https://ja.wttr.in/${target}?2nF"
 }
 
 script_highlight() {
