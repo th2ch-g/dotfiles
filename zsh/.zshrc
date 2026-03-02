@@ -250,12 +250,14 @@ dont_sleep() {
 cld() {
     nono run \
         --allow-cwd \
-        --allow $HOME/.local/bin/ \
+        --read $BIN \
+        --read $HOME/.local/bin/ \
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
         --allow $PWD/.serena \
         --profile claude-code \
+        -v \
         -- claude \
         --permission-mode bypassPermissions \
         --allow-dangerously-skip-permissions \
