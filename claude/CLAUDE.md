@@ -1,4 +1,7 @@
+# CLAUDE.md
 
+- 基本的に回答は日本語で簡潔に書くこと
+- 分からないことや不明な場合は質問すること
 
 <!-- nono-sandbox-start -->
 ## Nono Sandbox - CRITICAL
