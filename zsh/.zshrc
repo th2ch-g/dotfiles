@@ -256,7 +256,10 @@ cld() {
         --allow $HOME/.serena \
         --allow $PWD/.serena \
         --profile claude-code \
-        -- claude
+        -- claude \
+        --permission-mode bypassPermissions \
+        --allow-dangerously-skip-permissions \
+        --dangerously-skip-permissions
 }
 
 function tenki(){

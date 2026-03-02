@@ -7,9 +7,6 @@
     "EDITOR": "nvim",
     "ENABLE_TOOL_SEARCH": "true"
   },
-  "permissions": {
-    "defaultMode": "bypassPermissions"
-  },
   "hooks": {
     "PostToolUseFailure": [
       {
@@ -97,6 +94,6 @@
   "outputStyle": "Explanatory",
   "language": "ja",
   "autoUpdatesChannel": "latest",
-  "skipDangerousModePermissionPrompt": true,
-  "showTurnDuration": true
+  "showTurnDuration": true,
+  "skipDangerousModePermissionPrompt": true
 }
