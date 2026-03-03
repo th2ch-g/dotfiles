@@ -255,7 +255,8 @@ cld() {
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
-        --allow $PWD/.serena \
+        --allow $TOOLS/rust/ \
+        --allow $TOOLS/pixi/ \
         --profile claude-code \
         -v \
         -- claude \
