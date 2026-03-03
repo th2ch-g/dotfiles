@@ -252,11 +252,12 @@ cld() {
         --allow-cwd \
         --read $BIN \
         --read $HOME/.local/bin/ \
+        --read $TOOLS/rust/ \
+        --read $TOOLS/pixi/ \
+        --read $CONFIG/git/ \
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
-        --allow $TOOLS/rust/ \
-        --allow $TOOLS/pixi/ \
         --profile claude-code \
         -v \
         -- claude \
