@@ -203,6 +203,10 @@ alias ta="tmux a"
 alias tkas="tmux kill-server"
 alias tls="tmux ls"
 
+# git alias
+alias gac='git add -A && git commit -m "$(git diff --staged | claude -p "Generate a concise git commit message for this diff. Output the message and Co-author:")" && git push'
+alias gc='git add -A && git commits -m add && git push'
+
 # others
 alias p="top"
 alias rusts="rust-script"
