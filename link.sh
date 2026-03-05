@@ -37,23 +37,23 @@ OPTIONS:
 XDG_CONFIG_HOME="${HOME}/.config"
 
 # default setting
-unlink_flag=1
-vim_flag=1
-zsh_flag=1
-tmux_flag=1
-git_flag=1
-alacritty_flag=1
-neovim_flag=1
-ssh_flag=1
-bash_flag=1
-cp_flag=1
-rm_flag=1
-yabai_flag=1
-skhd_flag=1
-gemini_flag=1
-codex_flag=1
-claude_flag=1
-aerospace_flag=1
+unlink_flag=false
+vim_flag=false
+zsh_flag=false
+tmux_flag=false
+git_flag=false
+alacritty_flag=false
+neovim_flag=false
+ssh_flag=false
+bash_flag=false
+cp_flag=false
+rm_flag=false
+yabai_flag=false
+skhd_flag=false
+gemini_flag=false
+codex_flag=false
+claude_flag=false
+aerospace_flag=false
 
 print_info() { echo "[INFO] $1" >&1;  }
 print_warn() { echo "[WARN] $1" >&2;  }
@@ -61,7 +61,7 @@ print_error() { echo "[ERROR] $1" >&2;  }
 create_link() {
     local src=$1
     local dest=$2
-    if [ $cp_flag -eq 0 ]; then
+    if $cp_flag; then
         cp -r "$src" "$dest" && print_info "Copied $(basename "$dest")"
     else
         ln -nsi "$src" "$dest" && print_info "Linked $(basename "$dest")"
@@ -69,7 +69,7 @@ create_link() {
 }
 remove_link() {
     local target=$1
-    if [ $rm_flag -eq 0 ]; then
+    if $rm_flag; then
         rm -ir "$target" && print_info "Removed $(basename "$target")"
     else
         if [ -L "$target" ]; then
@@ -88,56 +88,56 @@ do
             exit 0
             ;;
         -u | --unlink)
-            unlink_flag=0
+            unlink_flag=true
             break
             ;;
         -v | --vim)
-            vim_flag=0
+            vim_flag=true
             ;;
         -z | --zsh)
-            zsh_flag=0
+            zsh_flag=true
             ;;
         -t | --tmux)
-            tmux_flag=0
+            tmux_flag=true
             ;;
         -g | --git)
-            git_flag=0
+            git_flag=true
             ;;
         -a | --alacritty)
-            alacritty_flag=0
+            alacritty_flag=true
             ;;
         -n | --neovim)
-            neovim_flag=0
+            neovim_flag=true
             ;;
         --ssh)
-            ssh_flag=0
+            ssh_flag=true
             ;;
         --bash)
-            bash_flag=0
+            bash_flag=true
             ;;
         --cp)
-            cp_flag=0
+            cp_flag=true
             ;;
         --rm)
-            rm_flag=0
+            rm_flag=true
             ;;
         -y | --yabai)
-            yabai_flag=0
+            yabai_flag=true
             ;;
         -s | --skhd)
-            skhd_flag=0
+            skhd_flag=true
             ;;
         --aerospace)
-            aerospace_flag=0
+            aerospace_flag=true
             ;;
         --gemini)
-            gemini_flag=0
+            gemini_flag=true
             ;;
         --codex)
-            codex_flag=0
+            codex_flag=true
             ;;
         --claude)
-            claude_flag=0
+            claude_flag=true
             ;;
        --)
             shift
@@ -181,7 +181,7 @@ if [ ! -d ${XDG_CONFIG_HOME} ]; then
     mkdir -p ${XDG_CONFIG_HOME}
 fi
 
-if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
+if $unlink_flag || $rm_flag; then
     print_info "Start unlink dotfiles"
     set +e
     print_warn "Ignore error"
@@ -204,7 +204,7 @@ if [[ $unlink_flag -eq 0 || $rm_flag -eq 0 ]]; then
 fi
 
 # vim link
-if [ $vim_flag -eq 0 ]; then
+if $vim_flag; then
     print_info "vim link start"
     create_link ${PWD}/vim ${XDG_CONFIG_HOME}/vim
     if command -v vim >/dev/null 2>&1; then
@@ -217,7 +217,7 @@ if [ $vim_flag -eq 0 ]; then
 fi
 
 # zsh link
-if [ $zsh_flag -eq 0 ]; then
+if $zsh_flag; then
     print_info "zsh link start"
     create_link ${PWD}/zsh ${XDG_CONFIG_HOME}/zsh
     create_link ${PWD}/zsh/.zshenv ${HOME}/.zshenv
@@ -232,28 +232,28 @@ if [ $zsh_flag -eq 0 ]; then
 fi
 
 # tmux link
-if [ $tmux_flag -eq 0 ]; then
+if $tmux_flag; then
     print_info "tmux link start"
     create_link ${PWD}/tmux ${XDG_CONFIG_HOME}/tmux
     print_info "tmux link done"
 fi
 
 # git link
-if [ $git_flag -eq 0 ]; then
+if $git_flag; then
     print_info "git link start"
     create_link ${PWD}/git ${XDG_CONFIG_HOME}/git
     print_info "git link done"
 fi
 
 # alacritty link
-if [ $alacritty_flag -eq 0 ]; then
+if $alacritty_flag; then
     print_info "alacritty link start"
     create_link $PWD/alacritty/ ${XDG_CONFIG_HOME}/alacritty
     print_info "alacritty link done"
 fi
 
 # neovim link
-if [ $neovim_flag -eq 0 ]; then
+if $neovim_flag; then
     print_info "neovim link start"
     create_link $PWD/nvim/ ${XDG_CONFIG_HOME}/nvim
     if command -v nvim >/dev/null 2>&1; then
@@ -266,7 +266,7 @@ if [ $neovim_flag -eq 0 ]; then
 fi
 
 # ssh config file copy
-if [ $ssh_flag -eq 0 ]; then
+if $ssh_flag; then
     print_info "ssh config file copy start"
     if [ ! -d ${HOME}/.ssh ]; then
         mkdir -p ${HOME}/.ssh
@@ -281,14 +281,14 @@ if [ $ssh_flag -eq 0 ]; then
 fi
 
 # bash link
-if [ $bash_flag -eq 0 ]; then
+if $bash_flag; then
     print_info "bash file link start"
     create_link ${PWD}/bash/.bash_profile ${HOME}/.bash_profile
     print_info "bash file link done"
 fi
 
 # yabai
-if [[ $yabai_flag -eq 0 && $OS == "Mac" ]]; then
+if $yabai_flag && [[ $OS == "Mac" ]]; then
     print_info "yabai link start"
     create_link ${PWD}/yabai ${XDG_CONFIG_HOME}/yabai
     print_info "yabai link done"
@@ -299,7 +299,7 @@ if [[ $yabai_flag -eq 0 && $OS == "Mac" ]]; then
 fi
 
 # skhd
-if [[ $skhd_flag -eq 0 && $OS == "Mac" ]]; then
+if $skhd_flag && [[ $OS == "Mac" ]]; then
     print_info "skhd link start"
     create_link ${PWD}/skhd ${XDG_CONFIG_HOME}/skhd
     print_info "skhd link done"
@@ -310,25 +310,25 @@ if [[ $skhd_flag -eq 0 && $OS == "Mac" ]]; then
 fi
 
 # aerospace
-if [[ $aerospace_flag -eq 0 && $OS == "Mac" ]]; then
+if $aerospace_flag && [[ $OS == "Mac" ]]; then
     print_info "aerospace link start"
     create_link ${PWD}/aerospace ${XDG_CONFIG_HOME}/aerospace
     print_info "aerospace link done"
 fi
 
-if [ $gemini_flag -eq 0 ]; then
+if $gemini_flag; then
     print_info "gemini link start"
     create_link ${PWD}/gemini ${HOME}/.gemini
     print_info "gemini link done"
 fi
 
-if [ $codex_flag -eq 0 ]; then
+if $codex_flag; then
     print_info "codex link start"
     create_link ${PWD}/codex ${HOME}/.codex
     print_info "codex link done"
 fi
 
-if [ $claude_flag -eq 0 ]; then
+if $claude_flag; then
     print_info "claude link start"
     create_link ${PWD}/claude ${HOME}/.claude
     if command -v claude >/dev/null 2>&1; then

@@ -9,7 +9,7 @@ export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export GPG_TTY=$(tty)
 export HISTFILE="${ZDOTDIR:-$HOME/.config/zsh}/history"
-export LESS='-g -i -M -R -S -w -X -z-4'
+export LESS='-g -i -M -Q -R -S -w -X -z-4 --no-vbell'
 if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
@@ -64,7 +64,7 @@ fi
 if command -v zoxide > /dev/null 2>&1; then
     # eval "$(zoxide init zsh)"
     ZOXIDE_CACHE="${ZDOTDIR:-$HOME/.config/zsh}/zoxide_cache.zsh"
-    if [[ ! -r "$ZOXIDE_CACHE" || "$SHELDON_TOML" -nt "$ZOXIDE_CACHE" ]]; then
+    if [[ ! -r "$ZOXIDE_CACHE" || "$(command -v zoxide)" -nt "$ZOXIDE_CACHE" ]]; then
         zoxide init zsh > $ZOXIDE_CACHE
     fi
     $DEFER source $ZOXIDE_CACHE
@@ -101,9 +101,9 @@ else
         delta=$((now - timer))
 
         if [ $delta -gt $REPORTTIME ]; then
-          RPROMPT="%F{yellow}${delta}s%f"
+          PROMPT="%F{yellow}${delta}s%f"
         else
-          RPROMPT=""
+          PROMPT=""
         fi
         unset timer
       fi
@@ -119,9 +119,6 @@ setopt ignore_eof
 setopt correct
 setopt auto_pushd
 setopt pushd_ignore_dups
-setopt no_beep
-setopt share_history
-setopt histignorealldups
 setopt auto_cd
 bindkey -e
 
@@ -399,7 +396,7 @@ EXAMPLE:
 OPTIONS:
     -h, --help              Print help
     -n, --name [NAME]       Name of tmux window [default: home]
-    -t, --type {1,2,3,4}    Type of window. Choose {1,2,3}.
+    -t, --type {1,2,3,4}    Type of window. Choose {1,2,3,4}.
     type1 means 2+3 window, type2 means 2x2 window, type3 means 1+1 window(horizontal), type4 means 1+1 window(vertical) [default: 1]
     -x, --top-off           Do not put on top on the right edge [default: not set]
     -c, --cmd [command]     Command to run after log into tmux
@@ -411,143 +408,78 @@ OPTIONS:
   local cmd=""
 
   if ! command -v tmux >/dev/null; then
-      echo "[ERROR] tmux is not found" >&2
-      return 1
+    echo "[ERROR] tmux is not found" >&2
+    return 1
   fi
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      -h|--help)
-        echo "$USAGE"
-        return 0
-        ;;
+      -h|--help) echo "$USAGE"; return 0 ;;
       -n|--name)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] WINDOW_NAME is necessary, if -n/--name option is present" >&2
-          return 1
-        fi
-        tmux_window_name="$2"
-        shift 2
-        continue
-        ;;
+        [[ -z "$2" ]] && { echo "[ERROR] WINDOW_NAME is necessary, if -n/--name option is present" >&2; return 1; }
+        tmux_window_name="$2"; shift 2 ;;
       -t|--type)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] window_type is necessary, if -t/--type option is present" >&2
-          return 1
-        fi
-        if [[ "$2" == "1" ]]; then
-          echo "[INFO] window type is \"type1\""
-          window_type="1"
-        elif [[ "$2" == "2" ]]; then
-          echo "[INFO] window type is \"type2\""
-          window_type="2"
-        elif [[ "$2" == "3" ]]; then
-          echo "[INFO] window type is \"type3\""
-          window_type="3"
-        elif [[ "$2" == "4" ]]; then
-            echo "[INFO] window type is \"type4\""
-            window_type="4"
-        else
-          echo "[ERROR] window_type must be \"1\", \"2\" or \"3\" or \"4\", if -t/--type option is present" >&2
-          return 1
-        fi
-        shift 2
-        continue
-        ;;
-      -x|--top-off)
-        top_off=1
-        shift
-        continue
-        ;;
+        [[ -z "$2" ]] && { echo "[ERROR] window_type is necessary, if -t/--type option is present" >&2; return 1; }
+        [[ "$2" =~ ^[1-4]$ ]] || { echo "[ERROR] window_type must be \"1\", \"2\", \"3\" or \"4\", if -t/--type option is present" >&2; return 1; }
+        echo "[INFO] window type is \"type${2}\""
+        window_type="$2"; shift 2 ;;
+      -x|--top-off) top_off=1; shift ;;
       -c|--cmd)
-        if [[ -z "$2" ]]; then
-          echo "[ERROR] command is necessary, if -c/--cmd option is present" >&2
-          return 1
-        fi
-        cmd="$2"
-        shift 2
-        continue
-        ;;
-      --)
-        shift
-        break
-        ;;
-      -*)
-        echo "[ERROR] Unknown option: $1" >&2
-        return 1
-        ;;
-      *)
-        break
-        ;;
+        [[ -z "$2" ]] && { echo "[ERROR] command is necessary, if -c/--cmd option is present" >&2; return 1; }
+        cmd="$2"; shift 2 ;;
+      --) shift; break ;;
+      -*) echo "[ERROR] Unknown option: $1" >&2; return 1 ;;
+      *) break ;;
     esac
   done
 
-  echo "[INFO] Start making tmux named \"$tmux_window_name\""
+  # Send $cmd to panes 0..last_pane
+  _tide_send_cmd() {
+    local last_pane=$1
+    [[ -z "$cmd" ]] && return
+    for i in $(seq 0 $last_pane); do
+      tmux send-keys -t "$i" "$cmd" C-m
+    done
+  }
 
+  echo "[INFO] Start making tmux named \"$tmux_window_name\""
   tmux new -s "$tmux_window_name" -d
 
-  if [[ "$window_type" == "1" ]]; then
-    tmux split-window -h
-    tmux split-window -v
-    tmux split-window -v
-    tmux select-pane -t 0
-    tmux split-window -v
-    tmux select-pane -t 2 && tmux resize-pane -D 35
-    tmux select-pane -t 4 && tmux resize-pane -D 8
-    if [[ $top_off -eq 0 ]]; then
-      tmux send-keys -t 4 "top" C-m
-    fi
-    tmux select-pane -t 0
+  case "$window_type" in
+    1)
+      tmux split-window -h
+      tmux split-window -v
+      tmux split-window -v
+      tmux select-pane -t 0
+      tmux split-window -v
+      tmux select-pane -t 2 && tmux resize-pane -D 35
+      tmux select-pane -t 4 && tmux resize-pane -D 8
+      [[ $top_off -eq 0 ]] && tmux send-keys -t 4 "top" C-m
+      tmux select-pane -t 0
+      _tide_send_cmd $(( top_off == 0 ? 3 : 4 ))
+      ;;
+    2)
+      tmux split-window -h
+      tmux split-window -v
+      tmux select-pane -t 0
+      tmux split-window -v
+      [[ $top_off -eq 0 ]] && tmux send-keys -t 3 "top" C-m
+      tmux select-pane -t 0
+      _tide_send_cmd $(( top_off == 0 ? 2 : 3 ))
+      ;;
+    3)
+      tmux split-window -h
+      tmux select-pane -t 0
+      _tide_send_cmd 1
+      ;;
+    4)
+      tmux split-window -v
+      tmux select-pane -t 0
+      _tide_send_cmd 1
+      ;;
+  esac
 
-    if [[ -n "$cmd" ]]; then
-      for i in {0..4}; do
-        if [[ "$i" -eq 4 && $top_off -eq 0 ]]; then
-          break
-        fi
-        tmux send-keys -t "$i" "$cmd" C-m
-      done
-    fi
-  fi
-
-  if [[ "$window_type" == "2" ]]; then
-    tmux split-window -h
-    tmux split-window -v
-    tmux select-pane -t 0
-    tmux split-window -v
-    if [[ $top_off -eq 0 ]]; then
-      tmux send-keys -t 3 "top" C-m
-    fi
-    tmux select-pane -t 0
-
-    if [[ -n "$cmd" ]]; then
-      for i in {0..3}; do
-        if [[ "$i" -eq 3 && $top_off -eq 0 ]]; then
-          break
-        fi
-        tmux send-keys -t "$i" "$cmd" C-m
-      done
-    fi
-  fi
-
-  if [[ "$window_type" == "3" ]]; then
-    tmux split-window -h
-    tmux select-pane -t 0
-    if [[ -n "$cmd" ]]; then
-      for i in {0..1}; do
-        tmux send-keys -t "$i" "$cmd" C-m
-      done
-    fi
-  fi
-
-  if [[ "$window_type" == "4" ]]; then
-    tmux split-window -v
-    tmux select-pane -t 0
-    if [[ -n "$cmd" ]]; then
-      for i in {0..1}; do
-        tmux send-keys -t "$i" "$cmd" C-m
-      done
-    fi
-  fi
+  unfunction _tide_send_cmd 2>/dev/null
 
   echo "[INFO] Make tmux named \"$tmux_window_name\""
   echo "[INFO] tmux ls Result"

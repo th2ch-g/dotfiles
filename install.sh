@@ -18,13 +18,13 @@ OPTIONS:
     -n ,--no-cargo-pkgs     do not install cargo packages
 '
 
-# WORKS="$HOME/works"
-# MISC="$WORKS/misc"
-# TOOLS="$WORKS/tools"
-# OTHERS="$WORKS/others"
-# BIN="$WORKS/bin"
-# SHARE="$WORKS/share"
-# XDG_CONFIG_HOME="$HOME/.config"
+: "${WORKS:=$HOME/works}"
+: "${TOOLS:=$WORKS/tools}"
+: "${MISC:=$WORKS/misc}"
+: "${OTHERS:=$WORKS/others}"
+: "${BIN:=$WORKS/bin}"
+: "${SHARE:=$WORKS/share}"
+: "${MNT:=$WORKS/mnt}"
 INSTALL_SCRIPTS="$WORKS/dotfiles/install_scripts"
 
 # default setting
@@ -96,11 +96,7 @@ prepare_common_dirs() {
 }
 
 install_script() {
-    TARGET=$1
-    CWD=$PWD
-    cd $TOOLS
-    $INSTALL_SCRIPTS/$TARGET.sh
-    cd $CWD
+    (cd "$TOOLS" && "$INSTALL_SCRIPTS/$1.sh")
 }
 
 install_brew_pkgs() {
