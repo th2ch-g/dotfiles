@@ -36,6 +36,10 @@ Installs tools and packages. Must be run from the repository root.
 | `--git` | `git/` | `~/.config/git/` |
 | `--tmux` | `tmux/` | `~/.config/tmux/` |
 | `--aerospace` | `aerospace/` | `~/.config/aerospace/` |
+| `--alacritty` | `alacritty/` | `~/.config/alacritty/` |
+| `--yabai` | `yabai/` | `~/.config/yabai/` (Mac only, auto-restarts service) |
+| `--skhd` | `skhd/` | `~/.config/skhd/` (Mac only, auto-restarts service) |
+| `--sheldon` | `sheldon/` | `~/.config/sheldon/` |
 | `--claude` | `claude/` | `~/.claude/` |
 | `--gemini` | `gemini/` | `~/.gemini/` |
 | `--codex` | `codex/` | `~/.codex/` |
@@ -57,6 +61,9 @@ Installs tools and packages. Must be run from the repository root.
 ### Vim
 - Config: `vim/vimrc`
 - Plugin manager: vim-jetpack (stored as git submodule under `vim/pack/jetpack/`)
+
+### Shared Utilities
+- `lib/utils.sh` — sourced by both `install.sh` and `link.sh`; provides OS detection (`detect_os` → `$OS`: `Mac`/`Linux`/`Cygwin`) and logging helpers (`print_info`, `print_warn`, `print_error`)
 
 ### Install Scripts
 - `install_scripts/*.sh` — individual tool installers (invoked by `install.sh`)
