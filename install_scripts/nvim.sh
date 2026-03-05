@@ -4,10 +4,10 @@ set -eux
 VERSION="0.10.4"
 PREFIX="${PWD}/neovim-${VERSION}/build"
 thread=15
-BIN=$HOME/works/bin
+BIN=${BIN:-$HOME/works/bin}
 
 URL="https://github.com/neovim/neovim/archive/refs/tags/v${VERSION}.tar.gz"
-wget $URL
+curl -L "$URL" -o "v${VERSION}.tar.gz"
 tar -xvzf v${VERSION}.tar.gz
 rm -rf v${VERSION}.tar.gz
 cd neovim-${VERSION}
@@ -16,4 +16,4 @@ make -j $thread install
 
 ln -s ${PREFIX}/bin/nvim $BIN
 
-echo done >&1
+echo "[INFO] nvim install done" >&1

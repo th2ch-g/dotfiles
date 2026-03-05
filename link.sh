@@ -77,6 +77,12 @@ remove_link() {
         fi
     fi
 }
+do_link() {
+    local name=$1 src=$2 dest=$3
+    print_info "$name link start"
+    create_link "$src" "$dest"
+    print_info "$name link done"
+}
 
 
 # option parser
@@ -193,7 +199,7 @@ if $unlink_flag || $rm_flag; then
     done
 
     # $XDG_CONFIG_HOME/dotfiles
-    for target in git zsh sheldon tmux alacritty vim nvim yabai skhd;
+    for target in git zsh sheldon tmux alacritty vim nvim yabai skhd aerospace;
     do
         remove_link ${XDG_CONFIG_HOME}/$target
     done
@@ -205,15 +211,13 @@ fi
 
 # vim link
 if $vim_flag; then
-    print_info "vim link start"
-    create_link ${PWD}/vim ${XDG_CONFIG_HOME}/vim
+    do_link "vim" "${PWD}/vim" "${XDG_CONFIG_HOME}/vim"
     if command -v vim >/dev/null 2>&1; then
         set +e
         export VIM_AI=1
         vim -e -c "JetpackSync" -c "qa"
         set -e
     fi
-    print_info "vim link done"
 fi
 
 # zsh link
@@ -233,36 +237,28 @@ fi
 
 # tmux link
 if $tmux_flag; then
-    print_info "tmux link start"
-    create_link ${PWD}/tmux ${XDG_CONFIG_HOME}/tmux
-    print_info "tmux link done"
+    do_link "tmux" "${PWD}/tmux" "${XDG_CONFIG_HOME}/tmux"
 fi
 
 # git link
 if $git_flag; then
-    print_info "git link start"
-    create_link ${PWD}/git ${XDG_CONFIG_HOME}/git
-    print_info "git link done"
+    do_link "git" "${PWD}/git" "${XDG_CONFIG_HOME}/git"
 fi
 
 # alacritty link
 if $alacritty_flag; then
-    print_info "alacritty link start"
-    create_link $PWD/alacritty/ ${XDG_CONFIG_HOME}/alacritty
-    print_info "alacritty link done"
+    do_link "alacritty" "${PWD}/alacritty/" "${XDG_CONFIG_HOME}/alacritty"
 fi
 
 # neovim link
 if $neovim_flag; then
-    print_info "neovim link start"
-    create_link $PWD/nvim/ ${XDG_CONFIG_HOME}/nvim
+    do_link "neovim" "${PWD}/nvim/" "${XDG_CONFIG_HOME}/nvim"
     if command -v nvim >/dev/null 2>&1; then
         export VIM_AI=1
         set +e
         nvim --headless "+Lazy! update" +qa
         set -e
     fi
-    print_info "neovim link done"
 fi
 
 # ssh config file copy
@@ -282,16 +278,12 @@ fi
 
 # bash link
 if $bash_flag; then
-    print_info "bash file link start"
-    create_link ${PWD}/bash/.bash_profile ${HOME}/.bash_profile
-    print_info "bash file link done"
+    do_link "bash" "${PWD}/bash/.bash_profile" "${HOME}/.bash_profile"
 fi
 
 # yabai
 if $yabai_flag && [[ $OS == "Mac" ]]; then
-    print_info "yabai link start"
-    create_link ${PWD}/yabai ${XDG_CONFIG_HOME}/yabai
-    print_info "yabai link done"
+    do_link "yabai" "${PWD}/yabai" "${XDG_CONFIG_HOME}/yabai"
     if command -v yabai >/dev/null 2>&1; then
         yabai --start-service
         yabai --restart-service
@@ -300,9 +292,7 @@ fi
 
 # skhd
 if $skhd_flag && [[ $OS == "Mac" ]]; then
-    print_info "skhd link start"
-    create_link ${PWD}/skhd ${XDG_CONFIG_HOME}/skhd
-    print_info "skhd link done"
+    do_link "skhd" "${PWD}/skhd" "${XDG_CONFIG_HOME}/skhd"
     if command -v skhd >/dev/null 2>&1; then
         skhd --start-service
         skhd --restart-service
@@ -311,26 +301,22 @@ fi
 
 # aerospace
 if $aerospace_flag && [[ $OS == "Mac" ]]; then
-    print_info "aerospace link start"
-    create_link ${PWD}/aerospace ${XDG_CONFIG_HOME}/aerospace
-    print_info "aerospace link done"
+    do_link "aerospace" "${PWD}/aerospace" "${XDG_CONFIG_HOME}/aerospace"
 fi
 
+# gemini
 if $gemini_flag; then
-    print_info "gemini link start"
-    create_link ${PWD}/gemini ${HOME}/.gemini
-    print_info "gemini link done"
+    do_link "gemini" "${PWD}/gemini" "${HOME}/.gemini"
 fi
 
+# codex
 if $codex_flag; then
-    print_info "codex link start"
-    create_link ${PWD}/codex ${HOME}/.codex
-    print_info "codex link done"
+    do_link "codex" "${PWD}/codex" "${HOME}/.codex"
 fi
 
+# claude
 if $claude_flag; then
-    print_info "claude link start"
-    create_link ${PWD}/claude ${HOME}/.claude
+    do_link "claude" "${PWD}/claude" "${HOME}/.claude"
     if command -v claude >/dev/null 2>&1; then
         set +e
         claude mcp add -s user -t http deepwiki https://mcp.deepwiki.com/mcp
@@ -403,7 +389,6 @@ if $claude_flag; then
         # claude plugin install vercel@claude-plugins-official
         set -e
     fi
-    print_info "claude link done"
 fi
 
 echo "[INFO] done" >&1

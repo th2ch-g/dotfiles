@@ -3,4 +3,4 @@ set -e
 
 curl -fsSL https://claude.ai/install.sh | bash
 
-echo done
+echo "[INFO] claude-code install done" >&1

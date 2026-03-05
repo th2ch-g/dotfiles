@@ -7,4 +7,4 @@ else
     curl -LsSf https://astral.sh/uv/install.sh | sh -s -- --no-modify-path
 fi
 
-echo done
+echo "[INFO] uv install done" >&1

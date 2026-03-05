@@ -201,7 +201,8 @@ alias tkas="tmux kill-server"
 alias tls="tmux ls"
 
 # git alias
-alias gac='git add -A && git commit -m "$(git diff --staged | claude -p "Generate a concise git commit message for this diff. Output the message and Co-author:")"'
+# alias gac='git add -A && git commit -m "$(git diff --staged | claude -p "Generate a concise git commit message for this diff. Output the message and Co-author:")"'
+alias gac='git add -A && claude -p "/commit-commands:commit"'
 alias gc='git add -A && git commits -m add && git push'
 
 # others

@@ -25,6 +25,7 @@ OPTIONS:
 : "${BIN:=$WORKS/bin}"
 : "${SHARE:=$WORKS/share}"
 : "${MNT:=$WORKS/mnt}"
+export BIN
 INSTALL_SCRIPTS="$WORKS/dotfiles/install_scripts"
 
 # default setting
@@ -99,34 +100,8 @@ install_script() {
     (cd "$TOOLS" && "$INSTALL_SCRIPTS/$1.sh")
 }
 
-install_brew_pkgs() {
-    cd brew
-    ./run.sh
-    cd ..
-}
-
-install_cargo_pkgs() {
-    cd cargo
-    ./run.sh
-    cd ..
-}
-
-install_python3_pkgs() {
-    cd python3
-    ./run.sh
-    cd ..
-}
-
-apply_macos_settings() {
-    cd macos
-    ./run.sh --dockutil
-    cd ..
-}
-
-apply_iterm2_settings() {
-    cd iterm2
-    ./run.sh
-    cd ..
+run_local() {
+    (cd "$1" && ./run.sh "${@:2}")
 }
 
 # For mac
@@ -137,20 +112,20 @@ if [[ $OS == "Mac" ]]; then
         do
             install_script $target
         done
-        install_python3_pkgs
-        apply_macos_settings
-        apply_iterm2_settings
+        run_local python3
+        run_local macos --dockutil
+        run_local iterm2
     else
         prepare_common_dirs
         for target in pixi uv brew claude-code cargo warpd;
         do
             install_script $target
         done
-        install_python3_pkgs
-        install_brew_pkgs
-        apply_macos_settings
-        apply_iterm2_settings
-        [ $no_cargo_pkgs -eq 0 ] && install_cargo_pkgs
+        run_local python3
+        run_local brew
+        run_local macos --dockutil
+        run_local iterm2
+        [ $no_cargo_pkgs -eq 0 ] && run_local cargo
     fi
 fi
 
@@ -164,16 +139,16 @@ if [[ $OS == "Linux" ]]; then
         do
             install_script $target
         done
-        install_python3_pkgs
-        # [ $no_cargo_pkgs -eq 0 ] && install_cargo_pkgs
+        run_local python3
+        # [ $no_cargo_pkgs -eq 0 ] && run_local cargo
     else
         prepare_common_dirs
         for target in fzf vim nvim tmux pixi uv claude-code imagemagick cargo zsh;
         do
             install_script $target
         done
-        install_python3_pkgs
-        [ $no_cargo_pkgs -eq 0 ] && install_cargo_pkgs
+        run_local python3
+        [ $no_cargo_pkgs -eq 0 ] && run_local cargo
     fi
 fi
 
@@ -183,4 +158,4 @@ if [[ $OS == "Cygwin" ]]; then
     exit 1
 fi
 
-echo done
+echo "[INFO] done" >&1

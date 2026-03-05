@@ -7,4 +7,4 @@ else
     curl -fsSL https://pixi.sh/install.sh | sh
 fi
 
-echo done
+echo "[INFO] pixi install done" >&1
