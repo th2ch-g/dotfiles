@@ -266,7 +266,8 @@ cld() {
         --effort high \
         --permission-mode bypassPermissions \
         --allow-dangerously-skip-permissions \
-        --dangerously-skip-permissions
+        --dangerously-skip-permissions \
+        $@
 }
 
 function tenki(){
