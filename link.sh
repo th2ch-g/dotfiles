@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+if [[ ! -e link.sh ]]; then
+    echo "Please run this script from dotfiles root directory"
+    exit 1
+fi
+
+DOTFILES_DIR=$PWD
+source "$DOTFILES_DIR/lib/utils.sh"
+
 USAGE='
 link.sh:
     dotfiles linker / copier / unlinker
@@ -16,48 +24,42 @@ EXAMPLE:
 OPTIONS:
     -h, --help              print help
     -u, --unlink            all dotfiles unlink
-    -v, --vim               vim dotfiles link
-    -z, --zsh               zsh dotfiles link
-    -t, --tmux              tmux dotfiles link
-    -g, --git               git dotfiles link
-    -a, --alacritty         alacritty dotfiles link
-    -n, --neovim            neovim dotfiles link
-    -y, --yabai             yabai dotfiles link
-    -s, --skhd              skhd dotfiles link
+        --vim               vim dotfiles link
+        --zsh               zsh dotfiles link
+        --tmux              tmux dotfiles link
+        --git               git dotfiles link
+        --alacritty         alacritty dotfiles link
+        --neovim            neovim dotfiles link
+        --yabai             yabai dotfiles link
+        --skhd              skhd dotfiles link
         --aerospace         aerospace dotfiles link
         --gemini            gemini dotfiles link
         --codex             codex dotfiles link
         --claude            claude dotfiles link
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
-        --cp                use cp instaead of ln
-        --rm                use rm instaead of unlink
+        --cp                use cp instead of ln
+        --rm                use rm instead of unlink
 '
 
 XDG_CONFIG_HOME="${HOME}/.config"
 
-# default setting
+# mode flags
 unlink_flag=false
-vim_flag=false
-zsh_flag=false
-tmux_flag=false
-git_flag=false
-alacritty_flag=false
-neovim_flag=false
-ssh_flag=false
-bash_flag=false
 cp_flag=false
 rm_flag=false
-yabai_flag=false
-skhd_flag=false
-gemini_flag=false
-codex_flag=false
-claude_flag=false
-aerospace_flag=false
 
-print_info() { echo "[INFO] $1" >&1;  }
-print_warn() { echo "[WARN] $1" >&2;  }
-print_error() { echo "[ERROR] $1" >&2;  }
+# enabled tools (populated by option parser)
+tools=()
+
+has_tool() {
+    local t
+    for t in "${tools[@]}"; do
+        [[ "$t" == "$1" ]] && return 0
+    done
+    return 1
+}
+
 create_link() {
     local src=$1
     local dest=$2
@@ -97,54 +99,22 @@ do
             unlink_flag=true
             break
             ;;
-        -v | --vim)
-            vim_flag=true
-            ;;
-        -z | --zsh)
-            zsh_flag=true
-            ;;
-        -t | --tmux)
-            tmux_flag=true
-            ;;
-        -g | --git)
-            git_flag=true
-            ;;
-        -a | --alacritty)
-            alacritty_flag=true
-            ;;
-        -n | --neovim)
-            neovim_flag=true
-            ;;
-        --ssh)
-            ssh_flag=true
-            ;;
-        --bash)
-            bash_flag=true
-            ;;
-        --cp)
-            cp_flag=true
-            ;;
-        --rm)
-            rm_flag=true
-            ;;
-        -y | --yabai)
-            yabai_flag=true
-            ;;
-        -s | --skhd)
-            skhd_flag=true
-            ;;
-        --aerospace)
-            aerospace_flag=true
-            ;;
-        --gemini)
-            gemini_flag=true
-            ;;
-        --codex)
-            codex_flag=true
-            ;;
-        --claude)
-            claude_flag=true
-            ;;
+        --vim)            tools+=(vim)       ;;
+        --zsh)            tools+=(zsh)       ;;
+        --tmux)           tools+=(tmux)      ;;
+        --git)            tools+=(git)       ;;
+        --alacritty)      tools+=(alacritty) ;;
+        --neovim)         tools+=(neovim)    ;;
+        --ssh)            tools+=(ssh)       ;;
+        --bash)           tools+=(bash)      ;;
+        --cp)             cp_flag=true       ;;
+        --rm)             rm_flag=true       ;;
+        --yabai)          tools+=(yabai)     ;;
+        --skhd)           tools+=(skhd)      ;;
+        --aerospace)      tools+=(aerospace) ;;
+        --gemini)         tools+=(gemini)    ;;
+        --codex)          tools+=(codex)     ;;
+        --claude)         tools+=(claude)    ;;
        --)
             shift
             break
@@ -160,16 +130,7 @@ do
 done
 
 # OS check
-if [ "$(uname)" == 'Darwin' ]; then
-  OS='Mac'
-elif [ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]; then
-  OS='Linux'
-elif [ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]; then
-  OS='Cygwin'
-else
-  print_error "Your platform ($(uname -a)) is not supported."
-  exit 1
-fi
+detect_os
 print_info "detect $OS OS"
 
 # CPU check
@@ -210,7 +171,7 @@ if $unlink_flag || $rm_flag; then
 fi
 
 # vim link
-if $vim_flag; then
+if has_tool vim; then
     do_link "vim" "${PWD}/vim" "${XDG_CONFIG_HOME}/vim"
     if command -v vim >/dev/null 2>&1; then
         set +e
@@ -221,7 +182,7 @@ if $vim_flag; then
 fi
 
 # zsh link
-if $zsh_flag; then
+if has_tool zsh; then
     print_info "zsh link start"
     create_link ${PWD}/zsh ${XDG_CONFIG_HOME}/zsh
     create_link ${PWD}/zsh/.zshenv ${HOME}/.zshenv
@@ -236,22 +197,22 @@ if $zsh_flag; then
 fi
 
 # tmux link
-if $tmux_flag; then
+if has_tool tmux; then
     do_link "tmux" "${PWD}/tmux" "${XDG_CONFIG_HOME}/tmux"
 fi
 
 # git link
-if $git_flag; then
+if has_tool git; then
     do_link "git" "${PWD}/git" "${XDG_CONFIG_HOME}/git"
 fi
 
 # alacritty link
-if $alacritty_flag; then
+if has_tool alacritty; then
     do_link "alacritty" "${PWD}/alacritty/" "${XDG_CONFIG_HOME}/alacritty"
 fi
 
 # neovim link
-if $neovim_flag; then
+if has_tool neovim; then
     do_link "neovim" "${PWD}/nvim/" "${XDG_CONFIG_HOME}/nvim"
     if command -v nvim >/dev/null 2>&1; then
         export VIM_AI=1
@@ -262,7 +223,7 @@ if $neovim_flag; then
 fi
 
 # ssh config file copy
-if $ssh_flag; then
+if has_tool ssh; then
     print_info "ssh config file copy start"
     if [ ! -d ${HOME}/.ssh ]; then
         mkdir -p ${HOME}/.ssh
@@ -277,12 +238,12 @@ if $ssh_flag; then
 fi
 
 # bash link
-if $bash_flag; then
+if has_tool bash; then
     do_link "bash" "${PWD}/bash/.bash_profile" "${HOME}/.bash_profile"
 fi
 
 # yabai
-if $yabai_flag && [[ $OS == "Mac" ]]; then
+if has_tool yabai && [[ $OS == "Mac" ]]; then
     do_link "yabai" "${PWD}/yabai" "${XDG_CONFIG_HOME}/yabai"
     if command -v yabai >/dev/null 2>&1; then
         yabai --start-service
@@ -291,7 +252,7 @@ if $yabai_flag && [[ $OS == "Mac" ]]; then
 fi
 
 # skhd
-if $skhd_flag && [[ $OS == "Mac" ]]; then
+if has_tool skhd && [[ $OS == "Mac" ]]; then
     do_link "skhd" "${PWD}/skhd" "${XDG_CONFIG_HOME}/skhd"
     if command -v skhd >/dev/null 2>&1; then
         skhd --start-service
@@ -300,22 +261,22 @@ if $skhd_flag && [[ $OS == "Mac" ]]; then
 fi
 
 # aerospace
-if $aerospace_flag && [[ $OS == "Mac" ]]; then
+if has_tool aerospace && [[ $OS == "Mac" ]]; then
     do_link "aerospace" "${PWD}/aerospace" "${XDG_CONFIG_HOME}/aerospace"
 fi
 
 # gemini
-if $gemini_flag; then
+if has_tool gemini; then
     do_link "gemini" "${PWD}/gemini" "${HOME}/.gemini"
 fi
 
 # codex
-if $codex_flag; then
+if has_tool codex; then
     do_link "codex" "${PWD}/codex" "${HOME}/.codex"
 fi
 
 # claude
-if $claude_flag; then
+if has_tool claude; then
     do_link "claude" "${PWD}/claude" "${HOME}/.claude"
     if command -v claude >/dev/null 2>&1; then
         set +e

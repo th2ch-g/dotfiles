@@ -1,6 +1,14 @@
 #!/bin/zsh
 set -e
 
+if [[ ! -e install.sh ]]; then
+    echo "Please run this script from dotfiles root directory"
+    exit 1
+fi
+
+DOTFILES_DIR=$PWD
+source "$DOTFILES_DIR/lib/utils.sh"
+
 USAGE='
 install.sh:
     boosrap installer
@@ -26,15 +34,11 @@ OPTIONS:
 : "${SHARE:=$WORKS/share}"
 : "${MNT:=$WORKS/mnt}"
 export BIN
-INSTALL_SCRIPTS="$WORKS/dotfiles/install_scripts"
+INSTALL_SCRIPTS="$DOTFILES_DIR/install_scripts"
 
 # default setting
 test_mode=0
 no_cargo_pkgs=0
-
-print_info() { echo "[INFO] $1" >&1;  }
-print_warn() { echo "[WARN] $1" >&2;  }
-print_error() { echo "[ERROR] $1" >&2;  }
 
 # option parser
 while :;
@@ -65,16 +69,7 @@ do
 done
 
 # OS check
-if [[ "$(uname)" == 'Darwin' ]]; then
-  OS='Mac'
-elif [[ "$(expr substr $(uname -s) 1 5)" == 'Linux' ]]; then
-  OS='Linux'
-elif [[ "$(expr substr $(uname -s) 1 10)" == 'MINGW32_NT' ]]; then
-  OS='Cygwin'
-else
-  print_error "Your platform ($(uname -a)) is not supported."
-  exit 1
-fi
+detect_os
 print_info "detect $OS OS"
 
 # CPU check
@@ -104,10 +99,11 @@ run_local() {
     (cd "$1" && ./run.sh "${@:2}")
 }
 
+prepare_common_dirs
+
 # For mac
 if [[ $OS == "Mac" ]]; then
     if [[ $test_mode -eq 1 ]]; then
-        prepare_common_dirs
         for target in brew cargo pixi uv warpd;
         do
             install_script $target
@@ -116,7 +112,6 @@ if [[ $OS == "Mac" ]]; then
         run_local macos --dockutil
         run_local iterm2
     else
-        prepare_common_dirs
         for target in pixi uv brew claude-code cargo warpd;
         do
             install_script $target
@@ -132,17 +127,12 @@ fi
 # For linux
 if [[ $OS == "Linux" ]]; then
     if [[ $test_mode -eq 1 ]]; then
-        prepare_common_dirs
         for target in vim nvim uv pixi cargo;
-        # for target in uv pixi cargo;
-        # for target in fzf vim nvim pixi uv imagemagick cargo node autoconf git gemini-cli password-store zsh tmux; # mold cmake;
         do
             install_script $target
         done
         run_local python3
-        # [ $no_cargo_pkgs -eq 0 ] && run_local cargo
     else
-        prepare_common_dirs
         for target in fzf vim nvim tmux pixi uv claude-code imagemagick cargo zsh;
         do
             install_script $target
