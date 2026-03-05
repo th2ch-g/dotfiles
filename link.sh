@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 
-if [[ ! -e link.sh ]]; then
-    echo "Please run this script from dotfiles root directory"
+# cwd check
+if [ ! -e $PWD/link.sh ]; then
+    print_error "link.sh is not detected"
+    print_error "execute ./link.sh in dotfiles directory"
     exit 1
 fi
 
@@ -136,13 +138,6 @@ print_info "detect $OS OS"
 # CPU check
 arch=$(uname -m)
 print_info "detect $arch CPU"
-
-# cwd check
-if [ ! -e $PWD/link.sh ]; then
-    print_error "link.sh is not detected"
-    print_error "execute ./link.sh in dotfiles directory"
-    exit 1
-fi
 
 if [ ! -d ${XDG_CONFIG_HOME} ]; then
     mkdir -p ${XDG_CONFIG_HOME}

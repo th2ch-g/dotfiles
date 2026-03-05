@@ -1,8 +1,10 @@
 #!/bin/zsh
 set -e
 
-if [[ ! -e install.sh ]]; then
-    echo "Please run this script from dotfiles root directory"
+# cwd check
+if [[ ! -e $PWD/install.sh ]]; then
+    print_error "install.sh is not detected"
+    print_error "execute ./install.sh in dotfiles directory"
     exit 1
 fi
 
@@ -75,13 +77,6 @@ print_info "detect $OS OS"
 # CPU check
 arch=$(uname -m)
 print_info "detect $arch CPU"
-
-# cwd check
-if [[ ! -e $PWD/install.sh ]]; then
-    print_error "install.sh is not detected"
-    print_error "execute ./install.sh in dotfiles directory"
-    exit 1
-fi
 
 prepare_common_dirs() {
     arr=( $MISC $TOOLS $OTHERS $BIN $SHARE $MNT )
