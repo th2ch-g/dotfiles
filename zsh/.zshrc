@@ -201,7 +201,7 @@ alias tkas="tmux kill-server"
 alias tls="tmux ls"
 
 # git alias
-alias gac='git add -A && claude -p "/commit-commands:commit"'
+alias gac='git add -A && claude -p "/commit-commands:commit please commit in English"'
 alias gc='git add -A && git commits -m add && git push'
 
 # others
