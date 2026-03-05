@@ -333,6 +333,8 @@ if [ $claude_flag -eq 0 ]; then
     create_link ${PWD}/claude ${HOME}/.claude
     if command -v claude >/dev/null 2>&1; then
         set +e
+        claude mcp add -s user -t http deepwiki https://mcp.deepwiki.com/mcp
+
         # claude mcp add serena \
         #     --scope user \
         #     -- uvx \
