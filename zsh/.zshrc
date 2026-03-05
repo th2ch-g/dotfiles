@@ -256,6 +256,7 @@ cld() {
         --read $TOOLS/rust/ \
         --read $TOOLS/pixi/ \
         --read $CONFIG/git/ \
+        --read $CONFIG/gh \
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
