@@ -12,6 +12,7 @@
 # https://github.com/th2ch-g/parrot-rs.git parrot                     # Party Parrot implemented by Rust
 # loop-rs                                                             # UNIX's missing `loop` command
 # monolith                                                            # CLI tool and library for saving complete web pages as a single HTML file
+# parsync                                                             # Parallel rsync-like pull sync over SSH with resume
 # rustpython                                                          # A Python Interpreter written in Rust
 # sheldon                                                             # Fast, configurable, shell plugin manager
 # ssubmit                                                             # Submit slurm sbatch jobs without a script

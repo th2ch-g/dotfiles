@@ -29,6 +29,7 @@ RUN mkdir -p /root/works/dotfiles
 
 # for zsh
 WORKDIR /root/works/dotfiles
+COPY ./lib/ ./lib
 COPY ./link.sh .
 COPY ./zsh ./zsh
 COPY ./sheldon/ ./sheldon

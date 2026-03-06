@@ -4,7 +4,7 @@ set -eux
 thread=15
 VERSION="9.1.1265"
 PREFIX="${PWD}/vim-${VERSION}/build"
-BIN=$HOME/works/bin
+BIN=${BIN:-$HOME/works/bin}
 
 URL=https://github.com/vim/vim/archive/refs/tags/v${VERSION}.tar.gz
 curl -L $URL -o vim.tar.gz && \
