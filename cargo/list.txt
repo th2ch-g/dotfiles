@@ -43,6 +43,7 @@ grex                                                                # A command-
 https://github.com/devmatteini/dra.git dra                          # A command line tool to download release assets from GitHub
 https://github.com/itsjunetime/tdf.git                              # A tui-based PDF viewer
 https://github.com/mogura-rs/mmterm-rs                              # Rust implementation of https://github.com/jgreener64/mmterm
+https://github.com/rtk-ai/rtk                                       # CLI proxy that reduces LLM token consumption by 60-90% on common dev commands. Single Rust binary, zero dependencies
 https://github.com/sib-swiss/termal.git                             # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
 https://github.com/tsaitoh/concal.git concal                        # Contribution calendar for local repository

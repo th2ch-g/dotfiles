@@ -260,6 +260,7 @@ cld() {
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
+        --allow "$HOME/Library/Application Support/rtk" \
         --profile claude-code \
         -v \
         -- claude \
