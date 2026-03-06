@@ -3,8 +3,8 @@ set -e
 
 # cwd check
 if [[ ! -e $PWD/install.sh ]]; then
-    print_error "install.sh is not detected"
-    print_error "execute ./install.sh in dotfiles directory"
+    echo "install.sh is not detected"
+    echo "execute ./install.sh in dotfiles directory"
     exit 1
 fi
 

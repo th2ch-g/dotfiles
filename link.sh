@@ -3,8 +3,8 @@ set -e
 
 # cwd check
 if [ ! -e $PWD/link.sh ]; then
-    print_error "link.sh is not detected"
-    print_error "execute ./link.sh in dotfiles directory"
+    echo "link.sh is not detected"
+    echo "execute ./link.sh in dotfiles directory"
     exit 1
 fi
 
