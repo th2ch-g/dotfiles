@@ -7,3 +7,4 @@ gitingest
 lizard
 nvitop
 terminaltexteffects
+rendercv[full]
