@@ -86,15 +86,15 @@ if use_plugins == 1 then
             -- or :call mkdp#util#install()
         },
         {
-            'mzlogin/vim-markdown-toc',
+            "mzlogin/vim-markdown-toc",
             -- event = { "BufReadPre *.md", "BufNewFile *.md" },
             ft = { "markdown" },
             config = function()
                 vim.g.vmt_auto_update_on_save = 1
                 -- vim.g.vmt_dont_insert_fence = 1
-                vim.g.vmt_fence_text = 'TOC'
-                vim.g.vmt_fence_closing_text = '/TOC'
-            end
+                vim.g.vmt_fence_text = "TOC"
+                vim.g.vmt_fence_closing_text = "/TOC"
+            end,
         },
 
         -- term utils
@@ -163,7 +163,7 @@ if use_plugins == 1 then
 
         -- rust
         {
-            'rust-lang/rust.vim',
+            "rust-lang/rust.vim",
             -- event = { "BufReadPre *.rs", "BufNewFile *.rs" },
             ft = { "rust" },
         },
@@ -177,7 +177,7 @@ if use_plugins == 1 then
             event = "BufWinEnter",
             config = function()
                 require("tint").setup()
-            end
+            end,
         },
 
         {
@@ -185,18 +185,18 @@ if use_plugins == 1 then
             event = "VeryLazy",
             cond = vim.g.neovide == nil,
             opts = {
-              hide_target_hack = true,
-              cursor_color = "none",
+                hide_target_hack = true,
+                cursor_color = "none",
             },
             specs = {
-              -- disable mini.animate cursor
-              {
-                "nvim-mini/mini.animate",
-                optional = true,
-                opts = {
-                  cursor = { enable = false },
+                -- disable mini.animate cursor
+                {
+                    "nvim-mini/mini.animate",
+                    optional = true,
+                    opts = {
+                        cursor = { enable = false },
+                    },
                 },
-              },
             },
         },
     }
@@ -230,8 +230,18 @@ if use_plugins == 1 then
                 vim.keymap.set("i", "<C-l>", function()
                     return vim.fn["codeium#AcceptNextLine"]()
                 end, { silent = true, nowait = true, expr = true })
-                vim.keymap.set("i", "<C-]>", "<Cmd>call codeium#CycleCompletions(1)<CR>", { silent = true, nowait = true })
-                vim.keymap.set("i", "<C-[>", "<Cmd>call codeium#CycleCompletions(-1)<CR>", { silent = true, nowait = true })
+                vim.keymap.set(
+                    "i",
+                    "<C-]>",
+                    "<Cmd>call codeium#CycleCompletions(1)<CR>",
+                    { silent = true, nowait = true }
+                )
+                vim.keymap.set(
+                    "i",
+                    "<C-[>",
+                    "<Cmd>call codeium#CycleCompletions(-1)<CR>",
+                    { silent = true, nowait = true }
+                )
                 vim.keymap.set("i", "<C-d>", "<Cmd>call codeium#Clear()<CR>", { silent = true, nowait = true })
                 vim.opt.statusline = vim.opt.statusline:get() .. " %3{codeium#GetStatusString()}"
             end,
@@ -388,7 +398,6 @@ if use_plugins == 1 then
 else
     vim.cmd("colorscheme habamax")
 end
-
 
 vim.cmd("set autoindent")
 vim.cmd("set autoread")
