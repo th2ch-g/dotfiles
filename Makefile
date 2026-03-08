@@ -1,4 +1,4 @@
-.PHONY: set-url update release delete-release docker u r d s
+.PHONY: set-url update release delete-release docker docker-pull u r d s
 
 u: update
 r: release
@@ -23,6 +23,11 @@ release:
 docker:
 	docker image build -t myenv .
 	docker run --rm -it myenv
+
+# Pull and run the latest Docker image from ghcr.io
+docker-pull:
+	docker pull --platform linux/amd64 ghcr.io/th2ch-g/dotfiles:latest
+	docker run --platform linux/amd64 --rm -it ghcr.io/th2ch-g/dotfiles
 
 # Delete a release tag locally and remotely (usage: make delete-release TAG=vYYYY.MM.DD)
 delete-release:
