@@ -1,8 +1,8 @@
 - 基本的に回答は日本語で簡潔に書くこと
 - 分からないことや不明な場合は質問すること
+- code内のコメントは英語で書くこと
+- pythonのprojectではuvを使用すること
 - 可能であれば積極的にSkillsを使用すること
-- codeのコメントは英語で
-- pythonのprojectではuvを使用
 
 <!-- nono-sandbox-start -->
 ## Nono Sandbox - CRITICAL
