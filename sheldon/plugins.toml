@@ -30,5 +30,8 @@ apply = ["defer"]
 github = "sindresorhus/pure"
 apply = ["fpath", "defer"]
 
-# [plugins.zsh-abbr]
-# github = "olets/zsh-abbr"
+[plugins.zsh-abbr]
+github = "olets/zsh-abbr"
+
+# [plugins.zsh-job-queue]
+# github = "olets/zsh-job-queue"

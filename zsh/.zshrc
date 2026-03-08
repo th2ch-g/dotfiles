@@ -20,7 +20,7 @@ export CLICOLOR=1
 # override source
 function source {
   ensure_zcompiled $1
-  builtin source $1
+  builtin source "$@"
 }
 function ensure_zcompiled {
   local compiled="$1.zwc"
@@ -145,71 +145,80 @@ zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
+# alias+abbr
+bindkey -M emacs ' ' abbr-expand-and-insert
+abbr-add() {
+  local word="${1%%=*}"
+  local expansion="${1#*=}"
+  abbr add --force -S "$1" > /dev/null
+  alias "${word}=${expansion}"
+}
+
 # mkdir alias
-alias mkdir="mkdir -p"
+abbr-add mkdir="mkdir -p"
 
 # cd alias
-alias .....="cd ../../../../"
-alias ....="cd ../../../"
-alias ...="cd ../../"
-alias cdb="cd $BIN"
-alias cdm="cd $MISC"
-alias cdo="cd $OTHERS"
-alias cds="cd $SHARE"
-alias cdt="cd $TOOLS"
-alias cdw="cd $WORKS"
-alias cdn="cd $MNT"
+abbr-add .....="cd ../../../../"
+abbr-add ....="cd ../../../"
+abbr-add ...="cd ../../"
+abbr-add cdb="cd $BIN"
+abbr-add cdm="cd $MISC"
+abbr-add cdo="cd $OTHERS"
+abbr-add cds="cd $SHARE"
+abbr-add cdt="cd $TOOLS"
+abbr-add cdw="cd $WORKS"
+abbr-add cdn="cd $MNT"
 
 # disk alias
-alias df="df -h"
-alias du="du -h"
-alias e="exit"
-alias free="free -h"
+abbr-add df="df -h"
+abbr-add du="du -h"
+abbr-add e="exit"
+abbr-add free="free -h"
 
 # ls alias
-alias l="ls -1"
-alias sl="ls"
-# alias la="ls -stlhA"
-# alias ll="ls -stlh"
+abbr-add l="ls -1"
+abbr-add sl="ls"
+# abbr-add la="ls -stlhA"
+# abbr-add ll="ls -stlh"
 
 # less alias
-alias batp="bat -p --paging=always"
-alias les="less -S"
+abbr-add batp="bat -p --paging=always"
+abbr-add les="less -S"
 
 # open alias
-alias o="open"
+abbr-add o="open"
 
 # scp alias
-alias scp="noglob scp"
+abbr-add scp="noglob scp"
 
 # vim alias
-alias n="nvim"
-alias nv="nvim"
-alias v="vim"
-alias vi="vim"
-alias memo="vim ${HOME}/.memo.md"
-alias pass="vim_ai_off; pass"
-alias gp="gopass"
+abbr-add n="nvim"
+abbr-add nv="nvim"
+abbr-add v="vim"
+abbr-add vi="vim"
+abbr-add memo="vim ${HOME}/.memo.md"
+abbr-add pass="vim_ai_off; pass"
+abbr-add gp="gopass"
 
 # slurm alias
-alias scancela="scancel -u $USER"
-alias squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
+abbr-add scancela="scancel -u $USER"
+abbr-add squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
 
 # tmux alias
-alias ta="tmux a"
-alias tkas="tmux kill-server"
-alias tls="tmux ls"
+abbr-add ta="tmux a"
+abbr-add tkas="tmux kill-server"
+abbr-add tls="tmux ls"
 
 # git alias
-alias gac='git add -A && rtk git diff --staged | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
-alias gc='git add -A && git commits -m add && git push'
+abbr-add gac='git add -A && rtk git diff --staged | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
+abbr-add gc='git add -A && git commits -m add && git push'
 
 # others
-alias p="top"
-alias rusts="rust-script"
-alias sshxy="ssh -XY"
-alias tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
-alias wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
+abbr-add p="top"
+abbr-add rusts="rust-script"
+abbr-add sshxy="ssh -XY"
+abbr-add tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
+abbr-add wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
 
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
