@@ -1,8 +1,8 @@
-.PHONY: set-url update release delete-release u r d s
+.PHONY: set-url update release delete-release docker u r d s
 
 u: update
 r: release
-d: delete-release
+d: docker
 s: set-url
 
 # Switch remote URL to SSH for committing
@@ -18,6 +18,11 @@ release:
 	$(eval TAG := v$(shell date +'%Y.%m.%d'))
 	git tag -a $(TAG) -m "Release $(TAG)"
 	git push origin $(TAG)
+
+# Build and run Docker image locally
+docker:
+	docker image build -t myenv .
+	docker run --rm -it myenv
 
 # Delete a release tag locally and remotely (usage: make delete-release TAG=vYYYY.MM.DD)
 delete-release:
