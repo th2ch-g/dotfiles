@@ -57,6 +57,18 @@ cd ./dotfiles && \
 ./install.sh
 ~~~
 
+- Install without git
+~~~shell
+mkdir -p ${HOME}/works && \
+wget https://github.com/th2ch-g/dotfiles/archive/refs/heads/main.zip && \
+unzip main.zip && \
+rm main.zip && \
+mv dotfiles-main dotfiles && \
+cd ./dotfiles && \
+./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
+./install.sh
+~~~
+
 ### For Guest
 ~~~shell
 git clone https://github.com/th2ch-g/dotfiles.git && \
