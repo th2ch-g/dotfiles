@@ -28,6 +28,8 @@ RUN ln -sf /usr/bin/vim.basic /usr/bin/vim
 RUN mkdir -p /root/works/dotfiles
 
 # for zsh
+# Link zsh config before install.sh so that env vars in zshenv (e.g. PATH)
+# are available when install.sh runs. Also run zsh once to initialize sheldon.
 WORKDIR /root/works/dotfiles
 COPY ./lib/ ./lib
 COPY ./link.sh .
