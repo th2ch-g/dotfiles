@@ -1,3 +1,6 @@
+-- Enable Lua bytecode cache for faster subsequent startups (Neovim 0.9+)
+vim.loader.enable()
+
 local use_plugins = 1
 
 if use_plugins == 1 then
@@ -47,6 +50,8 @@ if use_plugins == 1 then
         -- everforest nvim
         {
             "neanias/everforest-nvim",
+            lazy = false,
+            priority = 1000, -- load colorscheme before other plugins
             config = function()
                 vim.cmd("colorscheme everforest")
             end,
@@ -394,71 +399,82 @@ if use_plugins == 1 then
         --     },
         -- })
     end
-    require("lazy").setup(plugins)
+
+    require("lazy").setup(plugins, {
+        performance = {
+            rtp = {
+                -- Disable unused built-in plugins to reduce RTP scan overhead
+                disabled_plugins = {
+                    "gzip",
+                    "matchit",
+                    "tarPlugin",
+                    "tohtml",
+                    "tutor",
+                    "zipPlugin",
+                },
+            },
+        },
+    })
 else
     vim.cmd("colorscheme habamax")
 end
 
-vim.cmd("set autoindent")
-vim.cmd("set autoread")
-vim.cmd("set backspace=indent,eol,start")
-vim.cmd("set cindent")
-vim.cmd("set cursorline")
-vim.cmd("set clipboard=unnamed")
-vim.cmd("set display=uhex")
-vim.cmd("set encoding=utf-8")
-vim.cmd("set expandtab")
--- vim.cmd("set fenc=utf-8")
-vim.cmd("set ffs=unix,dos,mac")
-vim.cmd("set fileencodings=utf-8,cp932,euc-jp,iso-2022-jp")
-vim.cmd("set foldcolumn=3")
-vim.cmd("set foldlevel=10")
-vim.cmd("set foldmethod=manual")
-vim.cmd("set formatoptions=lmoq")
-vim.cmd("set hidden")
-vim.cmd("set hlsearch")
-vim.cmd("set ignorecase")
-vim.cmd("set incsearch")
-vim.cmd("set laststatus=2")
-vim.cmd("set list")
-vim.cmd("set listchars=tab:>\\")
-vim.cmd("set matchpairs& matchpairs+=<:>")
-vim.cmd("set matchtime=1")
-vim.cmd("set mouse=a")
-vim.cmd("set nobackup")
-vim.cmd("set noswapfile")
-vim.cmd("set notitle")
-vim.cmd("set nowrap")
-vim.cmd("set number")
-vim.cmd("set ruler")
-vim.cmd("set scrolloff=5")
-vim.cmd("set shiftwidth=4")
-vim.cmd("set shortmess-=S")
-vim.cmd("set showcmd")
-vim.cmd("set showmatch")
-vim.cmd("set showmode")
-vim.cmd("set smartcase")
-vim.cmd("set smartindent")
-vim.cmd("set softtabstop=4")
-vim.cmd("set statusline=%<%f\\ #%n%m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%y%=%l,%c%V%8P")
-vim.cmd("set tabstop=4")
-vim.cmd("set title")
-vim.cmd("set tw=0")
-vim.cmd("set virtualedit=onemore")
-vim.cmd("set visualbell")
-vim.cmd("set whichwrap=b,s,h,s,<,>,[,]")
-vim.cmd("set wildmenu")
-vim.cmd("set wildmode=list:full")
-vim.cmd("set wrapscan")
--- vim.cmd("set termencoding=utf-8")
+-- Options via vim.opt API (faster than vim.cmd("set ...") as it bypasses Vimscript parser)
+vim.opt.autoindent = true
+vim.opt.autoread = true
+vim.opt.backspace = "indent,eol,start"
+vim.opt.cindent = true
+vim.opt.cursorline = true
+vim.opt.clipboard = "unnamed"
+vim.opt.display = "uhex"
+vim.opt.encoding = "utf-8"
+vim.opt.expandtab = true
+vim.opt.fileformats = { "unix", "dos", "mac" }
+vim.opt.fileencodings = { "utf-8", "cp932", "euc-jp", "iso-2022-jp" }
+vim.opt.foldcolumn = "3"
+vim.opt.foldlevel = 10
+vim.opt.foldmethod = "manual"
+vim.opt.formatoptions = "lmoq"
+vim.opt.hidden = true
+vim.opt.hlsearch = true
+vim.opt.ignorecase = true
+vim.opt.incsearch = true
+vim.opt.laststatus = 2
+vim.opt.list = true
+vim.opt.listchars = { tab = ">\\" }
+vim.opt.matchpairs:append("<:>")
+vim.opt.matchtime = 1
+vim.opt.mouse = "a"
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.title = true
+vim.opt.wrap = false
+vim.opt.number = true
+vim.opt.ruler = true
+vim.opt.scrolloff = 5
+vim.opt.shiftwidth = 4
+vim.opt.shortmess:remove("S")
+vim.opt.showcmd = true
+vim.opt.showmatch = true
+vim.opt.showmode = true
+vim.opt.smartcase = true
+vim.opt.smartindent = true
+vim.opt.softtabstop = 4
+vim.opt.statusline = "%<%f #%n%m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%y%=%l,%c%V%8P"
+vim.opt.tabstop = 4
+vim.opt.textwidth = 0
+vim.opt.virtualedit = "onemore"
+vim.opt.visualbell = true
+vim.opt.whichwrap = "b,s,h,s,<,>,[,]"
+vim.opt.wildmenu = true
+vim.opt.wildmode = "list:full"
+vim.opt.wrapscan = true
 
-vim.cmd("syntax enable")
 vim.cmd("syntax on")
 
-vim.cmd("let g:netrw_dirhistmax = 0")
+vim.g.netrw_dirhistmax = 0
 
-vim.cmd("nmap <Esc><Esc> :nohlsearch<CR><Esc>")
-
+vim.keymap.set("n", "<Esc><Esc>", ":nohlsearch<CR><Esc>")
 vim.keymap.set("t", "<ESC>", [[<C-\><C-n>]], { silent = true })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
