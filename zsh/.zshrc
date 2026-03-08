@@ -33,8 +33,8 @@ ensure_zcompiled ${ZDOTDIR:-$HOME/.config/zsh}/.zshrc
 
 # additional settings
 # sheldon
-local use_plugins=1
-if [[ $use_plugins -eq 1 ]]; then
+local USE_PLUGINS=1
+if [[ $USE_PLUGINS -eq 1 ]]; then
     if ! command -v sheldon &> /dev/null; then
         curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
             | bash -s -- --repo rossmacarthur/sheldon --to ${HOME}/.local/bin
@@ -71,7 +71,7 @@ if (( $+commands[zoxide] )); then
 fi
 
 # prompt
-if [ $use_plugins -eq 1 ]; then
+if [ $USE_PLUGINS -eq 1 ]; then
     autoload -Uz promptinit && promptinit
     prompt pure
     zstyle :prompt:pure:user color green
@@ -152,13 +152,15 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # alias+abbr
-$DEFER bindkey -M emacs ' ' abbr-expand-and-insert
+if [[ $USE_PLUGINS -eq 1 ]]; then
+    $DEFER bindkey -M emacs ' ' abbr-expand-and-insert
+fi
 _abbr_pending=()
 abbr-add() {
     local word="${1%%=*}"
     local expansion="${1#*=}"
     alias "${word}=${expansion}"
-    if [[ $use_plugins -eq 1 ]]; then
+    if [[ $USE_PLUGINS -eq 1 ]]; then
         _abbr_pending+=("$1")
     fi
 }
