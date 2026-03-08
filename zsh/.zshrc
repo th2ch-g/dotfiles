@@ -47,21 +47,21 @@ if [[ $use_plugins -eq 1 ]]; then
     fi
     source $SHELDON_CACHE
 fi
-if command -v zsh-defer &> /dev/null; then
+if (( $+functions[zsh-defer] )); then
     DEFER="zsh-defer"
 else
     DEFER=""
 fi
 
 # eza
-if command -v eza > /dev/null 2>&1; then
+if (( $+commands[eza] )); then
     alias ls="eza --color=auto"
 else
     alias ls="ls --color=auto"
 fi
 
 # zoxide
-if command -v zoxide > /dev/null 2>&1; then
+if (( $+commands[zoxide] )); then
     # eval "$(zoxide init zsh)"
     ZOXIDE_CACHE="${ZDOTDIR:-$HOME/.config/zsh}/zoxide_cache.zsh"
     if [[ ! -r "$ZOXIDE_CACHE" || "$(command -v zoxide)" -nt "$ZOXIDE_CACHE" ]]; then
@@ -74,9 +74,10 @@ fi
 if [ $use_plugins -eq 1 ]; then
     autoload -Uz promptinit && promptinit
     prompt pure
-    autoload -Uz colors && colors
     zstyle :prompt:pure:user color green
     zstyle :prompt:pure:host color green
+    $DEFER autoload -Uz colors
+    $DEFER colors
 else
     # define prompt like pure
     autoload -Uz vcs_info
@@ -152,13 +153,21 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # alias+abbr
 $DEFER bindkey -M emacs ' ' abbr-expand-and-insert
+_abbr_pending=()
 abbr-add() {
     local word="${1%%=*}"
     local expansion="${1#*=}"
     alias "${word}=${expansion}"
     if [[ $use_plugins -eq 1 ]]; then
-        $DEFER abbr add --force -S "$1" > /dev/null
+        _abbr_pending+=("$1")
     fi
+}
+_flush_abbr() {
+    for _item in "${_abbr_pending[@]}"; do
+        abbr add --force -S "$_item" > /dev/null
+    done
+    unset _abbr_pending _item
+    unfunction _flush_abbr
 }
 
 # mkdir alias
@@ -227,6 +236,8 @@ abbr-add sshxy="ssh -XY"
 abbr-add tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
 abbr-add wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
 
+$DEFER _flush_abbr
+
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
     source ${ZDOTDIR:-$HOME}/.zshrc_local
@@ -239,7 +250,7 @@ precmd() {
 }
 
 chpwd() {
-    if command -v eza &> /dev/null; then
+    if (( $+commands[eza] )); then
         eza -a --color=auto
     else
         ls -a --color=auto
