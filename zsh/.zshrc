@@ -7,7 +7,7 @@ fi
 # export
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-export GPG_TTY=$(tty)
+export GPG_TTY=$TTY
 export HISTFILE="${ZDOTDIR:-$HOME/.config/zsh}/history"
 export LESS='-g -i -M -Q -R -S -w -X -z-4 --no-vbell'
 if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
@@ -137,7 +137,12 @@ setopt hist_ignore_all_dups
 # bindkey "^N" history-beginning-search-forward-end
 
 # compinit
-autoload -Uz compinit && $DEFER compinit
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME/.config/zsh}/.zcompdump(#qN.mh+24) ]]; then
+    $DEFER compinit
+else
+    $DEFER compinit -C
+fi
 setopt auto_param_keys
 setopt auto_param_slash
 setopt complete_in_word

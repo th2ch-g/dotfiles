@@ -22,9 +22,9 @@ apply = ["defer"]
 github = "zsh-users/zsh-autosuggestions"
 apply = ["defer"]
 
-[plugins.prezto-spectrum]
-remote = "https://raw.githubusercontent.com/sorin-ionescu/prezto/refs/heads/master/modules/spectrum/init.zsh"
-apply = ["defer"]
+# [plugins.prezto-spectrum]
+# remote = "https://raw.githubusercontent.com/sorin-ionescu/prezto/refs/heads/master/modules/spectrum/init.zsh"
+# apply = ["defer"]
 
 [plugins.pure]
 github = "sindresorhus/pure"

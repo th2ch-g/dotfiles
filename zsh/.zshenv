@@ -2,7 +2,6 @@
 export EDITOR="vim"
 export LANG="ja_JP.UTF-8"
 # export LANG=en_US.UTF-8 # for preventing tab completion duplicate bug, default settings: ja_JP.UTF-8
-export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export PAGER='less'
 export TERM="xterm-256color"
 export TERMINFO=/usr/share/terminfo # for tmux
@@ -34,18 +33,17 @@ export PIXI_HOME="$TOOLS/pixi"
 export PIXI_NO_PATH_UPDATE=1
 
 # path
-export PATH="$BIN:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$CARGO_HOME/bin:$PATH"
-export PATH="$RUSTUP_HOME/bin:$PATH"
-export PATH="$PIXI_HOME/bin:$PATH"
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/opt/homebrew/sbin:$PATH"
 typeset -gU cdpath fpath mailpath path
 path=(
-  $HOME/{,s}bin(N)
-  /opt/{homebrew,local}/{,s}bin(N)
-  /usr/local/{,s}bin(N)
+  $BIN
+  $HOME/.local/bin
+  $CARGO_HOME/bin
+  $RUSTUP_HOME/bin
+  $PIXI_HOME/bin
+  /opt/homebrew/{bin,sbin}(N)
+  /opt/local/{bin,sbin}(N)
+  /usr/local/{bin,sbin}(N)
+  $HOME/{bin,sbin}(N)
   $path
 )
 
