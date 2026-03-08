@@ -146,15 +146,13 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # alias+abbr
-bindkey -M emacs ' ' abbr-expand-and-insert
+$DEFER bindkey -M emacs ' ' abbr-expand-and-insert
 abbr-add() {
     local word="${1%%=*}"
     local expansion="${1#*=}"
+    alias "${word}=${expansion}"
     if [[ $use_plugins -eq 1 ]]; then
         $DEFER abbr add --force -S "$1" > /dev/null
-        $DEFER alias "${word}=${expansion}"
-    else
-        $DEFER alias "${word}=${expansion}"
     fi
 }
 

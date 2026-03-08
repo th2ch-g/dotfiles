@@ -32,6 +32,7 @@ apply = ["fpath", "defer"]
 
 [plugins.zsh-abbr]
 github = "olets/zsh-abbr"
+apply = ["defer"]
 
 # [plugins.zsh-job-queue]
 # github = "olets/zsh-job-queue"
