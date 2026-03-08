@@ -67,7 +67,7 @@ sd                                                                  # Intuitive 
 silicon                                                             # Create beautiful image of your source code.
 skim                                                                # Fuzzy Finder in rust!
 stylua                                                              # A Lua code formatter
-taplo                                                               # A TOML toolkit written in Rust
+taplo-cli                                                           # A TOML toolkit written in Rust
 tokei                                                               # Count your code, quickly.
 tre-command                                                         # Tree command, improved.
 trunk                                                               # Build, bundle & ship your Rust WASM application to the web.
