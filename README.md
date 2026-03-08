@@ -93,23 +93,20 @@ docker run --rm -it myenv
 
 ## set-url for commit
 ~~~shell
-git remote set-url origin git@github.com:th2ch-g/dotfiles.git
+make s
 ~~~
 
 ## Update
-~~~
-git pull
+~~~shell
+make u
 ~~~
 
 ## Add release
 ```bash
-TAG=v$(date +'%Y.%m.%d') && \
-git tag -a $TAG -m "Release $TAG" && \
-git push origin $TAG
+make r
 ```
 
 ## Delete release (not recommended)
 ```bash
-git tag -d vYYYY.MM.DD
-git push origin --delete vYYYY.MM.DD
+make d TAG=vYYYY.MM.DD
 ```
