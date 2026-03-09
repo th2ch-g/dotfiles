@@ -118,6 +118,6 @@
   "outputStyle": "Explanatory",
   "language": "ja",
   "autoUpdatesChannel": "latest",
-  "showTurnDuration": true,
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "showTurnDuration": true
 }
