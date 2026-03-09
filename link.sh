@@ -40,6 +40,8 @@ OPTIONS:
         --claude            claude dotfiles link
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
+        --cargo             cargo config link (~/.cargo/config.toml)
+        --mise              mise config link
         --cp                use cp instead of ln
         --rm                use rm instead of unlink
 '
@@ -117,6 +119,8 @@ do
         --gemini)         tools+=(gemini)    ;;
         --codex)          tools+=(codex)     ;;
         --claude)         tools+=(claude)    ;;
+        --cargo)          tools+=(cargo)     ;;
+        --mise)           tools+=(mise)      ;;
        --)
             shift
             break
@@ -149,13 +153,13 @@ if $unlink_flag || $rm_flag; then
     print_warn "Ignore error"
 
     # $HOME/dotfiles
-    for dotfile in .bash_profile .gemini .codex .claude;
+    for dotfile in .bash_profile .gemini .codex .claude .cargo/config.toml;
     do
         remove_link $HOME/$dotfile
     done
 
     # $XDG_CONFIG_HOME/dotfiles
-    for target in git zsh sheldon tmux alacritty vim nvim yabai skhd aerospace;
+    for target in git zsh sheldon tmux alacritty vim nvim yabai skhd aerospace mise;
     do
         remove_link ${XDG_CONFIG_HOME}/$target
     done
@@ -268,6 +272,21 @@ fi
 # codex
 if has_tool codex; then
     do_link "codex" "${PWD}/codex" "${HOME}/.codex"
+fi
+
+# cargo config
+if has_tool cargo; then
+    print_info "cargo config link start"
+    if [ ! -d "${HOME}/.cargo" ]; then
+        mkdir -p "${HOME}/.cargo"
+    fi
+    create_link "${PWD}/cargo/config.toml" "${HOME}/.cargo/config.toml"
+    print_info "cargo config link done"
+fi
+
+# mise
+if has_tool mise; then
+    do_link "mise" "${PWD}/mise" "${XDG_CONFIG_HOME}/mise"
 fi
 
 # claude
