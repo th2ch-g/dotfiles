@@ -4,6 +4,7 @@
 zsh/*
 !zsh/.zshenv
 !zsh/.zshrc
+!zsh/.zprofile
 vim/*
 !vim/vimrc
 nvim/*

@@ -32,7 +32,7 @@ export PIXI_FROZEN=true
 export PIXI_HOME="$TOOLS/pixi"
 export PIXI_NO_PATH_UPDATE=1
 
-# path
+# path - for non-login shells (scripts); .zprofile re-orders this after path_helper for login shells
 typeset -gU cdpath fpath mailpath path
 path=(
   $BIN
