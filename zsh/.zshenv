@@ -35,15 +35,15 @@ export PIXI_NO_PATH_UPDATE=1
 # path - for non-login shells (scripts); .zprofile re-orders this after path_helper for login shells
 typeset -gU cdpath fpath mailpath path
 path=(
+  /opt/local/{bin,sbin}(N)
+  /usr/local/{bin,sbin}(N)
+  $HOME/{bin,sbin}(N)
+  /opt/homebrew/{bin,sbin}(N)
   $BIN
   $HOME/.local/bin
   $CARGO_HOME/bin
   $RUSTUP_HOME/bin
   $PIXI_HOME/bin
-  /opt/homebrew/{bin,sbin}(N)
-  /opt/local/{bin,sbin}(N)
-  /usr/local/{bin,sbin}(N)
-  $HOME/{bin,sbin}(N)
   $path
 )
 

@@ -1,0 +1,74 @@
+[tools]
+# Runtimes
+rust   = "stable"
+node   = "24"
+uv     = "latest"
+neovim = "latest"
+fzf    = "latest"
+
+# Cargo tools - cargo subcommands
+"cargo:cargo-deny"      = "latest"
+"cargo:cargo-fuzz"      = "latest"
+"cargo:cargo-license"   = "latest"
+"cargo:cargo-tarpaulin" = "latest"
+
+# Cargo tools - CLI utilities (sort by name)
+"cargo:bat"          = "latest"    # A cat(1) clone with wings.
+"cargo:bottom"       = "latest"    # Cross-platform graphical process/system monitor.
+"cargo:cfonts"       = "latest"    # Sexy fonts for the console
+"cargo:choose"       = "latest"    # Human-friendly alternative to cut and awk
+"cargo:code2prompt"  = "latest"    # Convert codebase into a single LLM prompt
+"cargo:du-dust"      = "latest"    # A more intuitive version of du
+"cargo:evcxr_jupyter" = "latest"   # A Jupyter Kernel for Rust
+"cargo:evcxr_repl"   = "latest"    # An evaluation context for Rust
+"cargo:eza"          = "latest"    # A modern alternative to ls
+"cargo:fd-find"      = "latest"    # A simple, fast alternative to find
+"cargo:flamegraph"   = "latest"    # Easy flamegraphs for Rust projects
+"cargo:git-delta"    = "latest"    # Syntax-highlighting pager for git/diff
+"cargo:grex"         = "latest"    # Generate regular expressions from test cases
+"cargo:hyperfine"    = "latest"    # A command-line benchmarking tool
+"cargo:jaq"          = "latest"    # A jq clone focussed on correctness and speed
+"cargo:jj-cli"       = "latest"    # A Git-compatible VCS
+"cargo:just"         = "latest"    # Just a command runner
+"cargo:mdbook"       = "latest"    # Create book from markdown files
+"cargo:nono-cli"     = "latest"    # Secure, kernel-enforced sandbox CLI
+# nviwatch: see [tasks.install-extras] below
+"cargo:pastel"       = "latest"    # Generate, analyze, convert colors
+"cargo:procs"        = "latest"    # A modern replacement for ps
+"cargo:pueue"        = "latest"    # Manage your shell commands
+"cargo:r-matrix"     = "latest"    # Rust port of cmatrix
+"cargo:ripgrep"      = "latest"    # Recursively search directories for a regex
+"cargo:ripgrep_all"  = "latest"    # rga: ripgrep, but also search in PDFs etc.
+"cargo:rnr"          = "latest"    # Batch rename files and directories
+"cargo:rust-script"  = "latest"    # Run Rust files as scripts
+"cargo:sccache"      = "latest"    # A ccache-like compiler cache
+"cargo:sd"           = "latest"    # Intuitive find & replace CLI
+"cargo:silicon"      = "latest"    # Create beautiful images of source code
+"cargo:skim"         = "latest"    # Fuzzy Finder in Rust
+"cargo:stylua"       = "latest"    # A Lua code formatter
+"cargo:taplo-cli"    = "latest"    # A TOML toolkit
+"cargo:tokei"        = "latest"    # Count your code, quickly
+"cargo:tre-command"  = "latest"    # Tree command, improved
+"cargo:trunk"        = "latest"    # Build & ship Rust WASM to the web
+"cargo:typos-cli"    = "latest"    # Source code spell checker
+"cargo:viu"          = "latest"    # Terminal image viewer
+"cargo:wild-linker"  = "latest"    # A very fast linker for Linux
+"cargo:xh"           = "latest"    # Friendly tool for sending HTTP requests
+"cargo:zoxide"       = "latest"    # A smarter cd command
+
+# Cargo tools - from git
+"cargo:https://github.com/devmatteini/dra.git"    = "latest"   # Download release assets from GitHub
+"cargo:https://github.com/itsjunetime/tdf.git"    = "latest"   # A tui-based PDF viewer
+"cargo:https://github.com/mogura-rs/mmterm-rs"    = "latest"   # Rust implementation of mmterm
+"cargo:https://github.com/rtk-ai/rtk"             = "latest"   # CLI proxy for LLM token reduction
+"cargo:https://github.com/sib-swiss/termal.git"   = "latest"   # Terminal-based alignment viewer
+# kanban: see [tasks.install-extras] below
+"cargo:https://github.com/tsaitoh/concal.git"     = "latest"   # Contribution calendar for local repo
+
+# Tools that require special install handling (not supported by mise cargo backend)
+[tasks.install-extras]
+description = "Install tools that cannot be managed by mise directly"
+run = """
+cargo install --locked --force --git https://github.com/th2ch-g/kanban.git kanban
+cargo binstall -y --locked --force nviwatch
+"""

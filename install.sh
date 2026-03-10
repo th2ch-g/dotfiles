@@ -99,41 +99,43 @@ prepare_common_dirs
 # For mac
 if [[ $OS == "Mac" ]]; then
     if [[ $test_mode -eq 1 ]]; then
-        for target in brew cargo pixi uv warpd;
+        for target in mise brew pixi warpd;
         do
             install_script $target
         done
+        mise install
         run_local python3
         run_local macos --dockutil
         run_local iterm2
     else
-        for target in pixi uv brew claude-code cargo warpd;
+        for target in mise pixi brew claude-code warpd;
         do
             install_script $target
         done
+        [ $no_cargo_pkgs -eq 0 ] && mise install
         run_local python3
         run_local brew
         run_local macos --dockutil
         run_local iterm2
-        [ $no_cargo_pkgs -eq 0 ] && run_local cargo
     fi
 fi
 
 # For linux
 if [[ $OS == "Linux" ]]; then
     if [[ $test_mode -eq 1 ]]; then
-        for target in vim nvim uv pixi cargo;
+        for target in mise vim pixi;
         do
             install_script $target
         done
+        mise install
         run_local python3
     else
-        for target in fzf vim nvim tmux pixi uv claude-code imagemagick cargo zsh;
+        for target in mise vim tmux pixi claude-code imagemagick zsh;
         do
             install_script $target
         done
+        [ $no_cargo_pkgs -eq 0 ] && mise install
         run_local python3
-        [ $no_cargo_pkgs -eq 0 ] && run_local cargo
     fi
 fi
 
