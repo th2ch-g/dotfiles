@@ -299,6 +299,27 @@ cld() {
         $@
 }
 
+
+cdx() {
+    nono run \
+        --allow-cwd \
+        --read $BIN \
+        --read $HOME/.local/bin/ \
+        --read $TOOLS/rust/ \
+        --read $TOOLS/pixi/ \
+        --read $CONFIG/git/ \
+        --read $CONFIG/gh \
+        --allow $HOME/.cache \
+        --allow $HOME/.local/share \
+        --allow $HOME/.serena \
+        --allow $HOME/.codex \
+        --profile claude-code \
+        -v \
+        -- codex \
+        --dangerously-bypass-approvals-and-sandbox \
+        "$@"
+}
+
 function tenki(){
     local target=$1
     curl "https://ja.wttr.in/${target}?2nF"
