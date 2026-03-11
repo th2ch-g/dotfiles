@@ -115,21 +115,21 @@ else
 fi
 
 # basic
-setopt no_beep
-setopt ignore_eof
-setopt correct
-setopt auto_pushd
-setopt pushd_ignore_dups
 setopt auto_cd
+setopt auto_pushd
+setopt correct
+setopt ignore_eof
+setopt no_beep
+setopt pushd_ignore_dups
 bindkey -e
 
 # history
-setopt share_history
-setopt hist_reduce_blanks
-setopt hist_ignore_space
 setopt extended_history
-setopt hist_save_no_dups
 setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt share_history
 
 # autoload -Uz history-search-end
 # zle -N history-beginning-search-backward-end history-search-end
@@ -152,93 +152,100 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # alias+abbr
-if [[ $USE_PLUGINS -eq 1 ]]; then
+local USER_ABBR=0
+if [[ $USE_PLUGINS -eq 1 ]] && [[ $USER_ABBR -eq 1 ]]; then
     $DEFER bindkey -M emacs ' ' abbr-expand-and-insert
+    _abbr_pending=()
+    alias2() {
+        local word="${1%%=*}"
+        local expansion="${1#*=}"
+        alias "${word}=${expansion}"
+        if [[ $USE_PLUGINS -eq 1 ]] && [[ $USER_ABBR -eq 1 ]]; then
+            _abbr_pending+=("$1")
+        fi
+    }
+    _flush_abbr() {
+        for _item in "${_abbr_pending[@]}"; do
+            abbr add --force -S "$_item" > /dev/null
+        done
+        unset _abbr_pending _item
+        unfunction _flush_abbr alias2
+    }
+else
+    alias2() {
+        alias "${1%%=*}=${1#*=}"
+    }
 fi
-_abbr_pending=()
-abbr-add() {
-    local word="${1%%=*}"
-    local expansion="${1#*=}"
-    alias "${word}=${expansion}"
-    if [[ $USE_PLUGINS -eq 1 ]]; then
-        _abbr_pending+=("$1")
-    fi
-}
-_flush_abbr() {
-    for _item in "${_abbr_pending[@]}"; do
-        abbr add --force -S "$_item" > /dev/null
-    done
-    unset _abbr_pending _item
-    unfunction _flush_abbr
-}
 
 # mkdir alias
-abbr-add mkdir="mkdir -p"
+alias2 mkdir="mkdir -p"
 
 # cd alias
-abbr-add .....="cd ../../../../"
-abbr-add ....="cd ../../../"
-abbr-add ...="cd ../../"
-abbr-add cdb="cd $BIN"
-abbr-add cdm="cd $MISC"
-abbr-add cdo="cd $OTHERS"
-abbr-add cds="cd $SHARE"
-abbr-add cdt="cd $TOOLS"
-abbr-add cdw="cd $WORKS"
-abbr-add cdn="cd $MNT"
+alias2 .....="cd ../../../../"
+alias2 ....="cd ../../../"
+alias2 ...="cd ../../"
+alias2 cdb="cd $BIN"
+alias2 cdm="cd $MISC"
+alias2 cdo="cd $OTHERS"
+alias2 cds="cd $SHARE"
+alias2 cdt="cd $TOOLS"
+alias2 cdw="cd $WORKS"
+alias2 cdn="cd $MNT"
 
 # disk alias
-abbr-add df="df -h"
-abbr-add du="du -h"
-abbr-add e="exit"
-abbr-add free="free -h"
+alias2 df="df -h"
+alias2 du="du -h"
+alias2 e="exit"
+alias2 free="free -h"
 
 # ls alias
-abbr-add l="ls -1"
-abbr-add sl="ls"
-# abbr-add la="ls -stlhA"
-# abbr-add ll="ls -stlh"
+alias2 l="ls -1"
+alias2 sl="ls"
+# alias2 la="ls -stlhA"
+# alias2 ll="ls -stlh"
 
 # less alias
-abbr-add batp="bat -p --paging=always"
-abbr-add les="less -S"
+alias2 batp="bat -p --paging=always"
+alias2 les="less -S"
 
 # open alias
-abbr-add o="open"
+alias2 o="open"
 
 # scp alias
-abbr-add scp="noglob scp"
+alias2 scp="noglob scp"
 
 # vim alias
-abbr-add n="nvim"
-abbr-add nv="nvim"
-abbr-add v="vim"
-abbr-add vi="vim"
-abbr-add memo="vim ${HOME}/.memo.md"
-abbr-add pass="vim_ai_off; pass"
-abbr-add gp="gopass"
+alias2 n="nvim"
+alias2 nv="nvim"
+alias2 v="vim"
+alias2 vi="vim"
+alias2 memo="vim ${HOME}/.memo.md"
+alias2 pass="vim_ai_off; pass"
+alias2 gp="gopass"
 
 # slurm alias
-abbr-add scancela="scancel -u $USER"
-abbr-add squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
+alias2 scancela="scancel -u $USER"
+alias2 squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
 
 # tmux alias
-abbr-add ta="tmux a"
-abbr-add tkas="tmux kill-server"
-abbr-add tls="tmux ls"
+alias2 ta="tmux a"
+alias2 tkas="tmux kill-server"
+alias2 tls="tmux ls"
 
 # git alias
-abbr-add gac='git add -A && rtk git diff --staged | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
-abbr-add gc='git add -A && git commits -m add && git push'
+alias2 gac='git add -A && rtk git diff --staged | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
+alias2 gc='git add -A && git commits -m add && git push'
 
 # others
-abbr-add p="top"
-abbr-add rusts="rust-script"
-abbr-add sshxy="ssh -XY"
-abbr-add tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
-abbr-add wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
+alias2 p="top"
+alias2 rusts="rust-script"
+alias2 sshxy="ssh -XY"
+alias2 tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
+alias2 wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
 
-$DEFER _flush_abbr
+if [[ $USE_PLUGINS -eq 1 ]] && [[ $USER_ABBR -eq 1 ]]; then
+    $DEFER _flush_abbr
+fi
 
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
