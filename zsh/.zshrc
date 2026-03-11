@@ -151,101 +151,72 @@ zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-# alias+abbr
-local USER_ABBR=0
-if [[ $USE_PLUGINS -eq 1 ]] && [[ $USER_ABBR -eq 1 ]]; then
-    $DEFER bindkey -M emacs ' ' abbr-expand-and-insert
-    _abbr_pending=()
-    alias2() {
-        local word="${1%%=*}"
-        local expansion="${1#*=}"
-        alias "${word}=${expansion}"
-        if [[ $USE_PLUGINS -eq 1 ]] && [[ $USER_ABBR -eq 1 ]]; then
-            _abbr_pending+=("$1")
-        fi
-    }
-    _flush_abbr() {
-        for _item in "${_abbr_pending[@]}"; do
-            abbr add --force -S "$_item" > /dev/null
-        done
-        unset _abbr_pending _item
-        unfunction _flush_abbr alias2
-    }
-else
-    alias2() {
-        alias "${1%%=*}=${1#*=}"
-    }
-fi
-
+# alias
 # mkdir alias
-alias2 mkdir="mkdir -p"
+alias mkdir="mkdir -p"
 
 # cd alias
-alias2 .....="cd ../../../../"
-alias2 ....="cd ../../../"
-alias2 ...="cd ../../"
-alias2 cdb="cd $BIN"
-alias2 cdm="cd $MISC"
-alias2 cdo="cd $OTHERS"
-alias2 cds="cd $SHARE"
-alias2 cdt="cd $TOOLS"
-alias2 cdw="cd $WORKS"
-alias2 cdn="cd $MNT"
+alias .....="cd ../../../../"
+alias ....="cd ../../../"
+alias ...="cd ../../"
+alias cdb="cd $BIN"
+alias cdm="cd $MISC"
+alias cdo="cd $OTHERS"
+alias cds="cd $SHARE"
+alias cdt="cd $TOOLS"
+alias cdw="cd $WORKS"
+alias cdn="cd $MNT"
 
 # disk alias
-alias2 df="df -h"
-alias2 du="du -h"
-alias2 e="exit"
-alias2 free="free -h"
+alias df="df -h"
+alias du="du -h"
+alias e="exit"
+alias free="free -h"
 
 # ls alias
-alias2 l="ls -1"
-alias2 sl="ls"
-# alias2 la="ls -stlhA"
-# alias2 ll="ls -stlh"
+alias l="ls -1"
+alias sl="ls"
+# alias la="ls -stlhA"
+# alias ll="ls -stlh"
 
 # less alias
-alias2 batp="bat -p --paging=always"
-alias2 les="less -S"
+alias batp="bat -p --paging=always"
+alias les="less -S"
 
 # open alias
-alias2 o="open"
+alias o="open"
 
 # scp alias
-alias2 scp="noglob scp"
+alias scp="noglob scp"
 
 # vim alias
-alias2 n="nvim"
-alias2 nv="nvim"
-alias2 v="vim"
-alias2 vi="vim"
-alias2 memo="vim ${HOME}/.memo.md"
-alias2 pass="vim_ai_off; pass"
-alias2 gp="gopass"
+alias n="nvim"
+alias nv="nvim"
+alias v="vim"
+alias vi="vim"
+alias memo="vim ${HOME}/.memo.md"
+alias pass="vim_ai_off; pass"
+alias gp="gopass"
 
 # slurm alias
-alias2 scancela="scancel -u $USER"
-alias2 squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
+alias scancela="scancel -u $USER"
+alias squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C %b'"
 
 # tmux alias
-alias2 ta="tmux a"
-alias2 tkas="tmux kill-server"
-alias2 tls="tmux ls"
+alias ta="tmux a"
+alias tkas="tmux kill-server"
+alias tls="tmux ls"
 
 # git alias
-alias2 gac='git add -A && rtk git diff --staged | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
-alias2 gc='git add -A && git commits -m add && git push'
+alias gac='git add -A && rtk git diff --staged | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
+alias gc='git add -A && git commits -m add && git push'
 
 # others
-alias2 p="top"
-alias2 rusts="rust-script"
-alias2 sshxy="ssh -XY"
-alias2 tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
-alias2 wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
-
-if [[ $USE_PLUGINS -eq 1 ]] && [[ $USER_ABBR -eq 1 ]]; then
-    $DEFER _flush_abbr
-fi
+alias p="top"
+alias rusts="rust-script"
+alias sshxy="ssh -XY"
+alias tree="pwd;find . | sort | sed '1d;s/^\.//;s/\/\([^/]*\)$/|--\1/;s/\/[^/|]*/|  /g'"
+alias wget="wget --hsts-file=$XDG_CONFIG_HOME/wget-hsts"
 
 # local specific file
 if [ -e ${ZDOTDIR:-$HOME}/.zshrc_local ]; then
