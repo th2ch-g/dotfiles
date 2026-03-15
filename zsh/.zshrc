@@ -255,6 +255,22 @@ dont_sleep() {
     caffeinate -i -d
 }
 
+sandbox() {
+    nono run \
+        --allow-cwd \
+        --read $BIN \
+        --read $HOME/.local/bin/ \
+        --read $TOOLS/rust/ \
+        --read $TOOLS/pixi/ \
+        --read $CONFIG/git/ \
+        --read $CONFIG/gh \
+        --allow $HOME/.cache \
+        --allow $HOME/.local/share \
+        --allow "$HOME/Library/Application Support/rtk" \
+        -v \
+        -- $@
+}
+
 cld() {
     nono run \
         --allow-cwd \
@@ -291,8 +307,7 @@ cdx() {
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
-        --allow $HOME/.codex \
-        --profile claude-code \
+        --profile codex \
         -v \
         -- codex \
         --dangerously-bypass-approvals-and-sandbox \
