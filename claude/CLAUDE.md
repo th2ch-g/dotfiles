@@ -2,7 +2,7 @@
 - 分からないことや不明な場合は質問すること
 - code内のコメントは英語で書くこと
 - pythonのprojectではuvを使用すること
-- 可能であれば積極的にSkillsを使用すること
+- 可能であれば積極的にPluginを使用すること
 
 <!-- nono-sandbox-start -->
 ## Nono Sandbox - CRITICAL
