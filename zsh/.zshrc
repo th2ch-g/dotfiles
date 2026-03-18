@@ -260,6 +260,7 @@ sandbox() {
         --allow-cwd \
         --read $BIN \
         --read $HOME/.local/bin/ \
+        --read $TOOLS \
         --read $TOOLS/rust/ \
         --read $TOOLS/pixi/ \
         --read $CONFIG/git/ \
@@ -311,6 +312,7 @@ cdx() {
         -v \
         -- codex \
         --dangerously-bypass-approvals-and-sandbox \
+        --no-alt-screen \
         "$@"
 }
 

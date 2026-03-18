@@ -4,7 +4,8 @@
 git+https://github.com/github/spec-kit.git
 git+https://github.com/th2ch-g/tmplot.git
 gitingest
+kaggle
 lizard
 nvitop
-terminaltexteffects
 rendercv[full]
+terminaltexteffects
