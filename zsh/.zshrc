@@ -261,7 +261,7 @@ sandbox() {
         --read $BIN \
         --read $HOME/.local/bin/ \
         --read $TOOLS \
-        --read $TOOLS/rust/ \
+        --allow $TOOLS/rust/ \
         --read $TOOLS/pixi/ \
         --read $CONFIG/git/ \
         --read $CONFIG/gh \
@@ -277,7 +277,7 @@ cld() {
         --allow-cwd \
         --read $BIN \
         --read $HOME/.local/bin/ \
-        --read $TOOLS/rust/ \
+        --allow $TOOLS/rust/ \
         --read $TOOLS/pixi/ \
         --read $CONFIG/git/ \
         --read $CONFIG/gh \
@@ -301,7 +301,7 @@ cdx() {
         --allow-cwd \
         --read $BIN \
         --read $HOME/.local/bin/ \
-        --read $TOOLS/rust/ \
+        --allow $TOOLS/rust/ \
         --read $TOOLS/pixi/ \
         --read $CONFIG/git/ \
         --read $CONFIG/gh \

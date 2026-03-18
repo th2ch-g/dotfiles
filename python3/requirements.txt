@@ -6,6 +6,7 @@ git+https://github.com/th2ch-g/tmplot.git
 gitingest
 kaggle
 lizard
+maturin
 nvitop
 rendercv[full]
 terminaltexteffects
