@@ -8,6 +8,7 @@
 # https://github.com/giacomo-b/rust-stakeholder.git rust-stakeholder  # Generate impressive-looking terminal output to look busy when stakeholders walk by
 # https://github.com/openai/codex.git codex-cli                       # Lightweight coding agent that runs in your terminal
 # https://github.com/prefix-dev/pixi.git pixi                         # Package management made easy
+# https://github.com/rtk-ai/rtk                                       # CLI proxy that reduces LLM token consumption by 60-90% on common dev commands. Single Rust binary, zero dependencies
 # https://github.com/sioodmy/todo.git todo                            # Simple todo cli program written in rust
 # https://github.com/th2ch-g/parrot-rs.git parrot                     # Party Parrot implemented by Rust
 # loop-rs                                                             # UNIX's missing `loop` command
@@ -44,7 +45,6 @@ https://github.com/001TMF/ProteinView.git fetch                     # Terminal p
 https://github.com/devmatteini/dra.git dra                          # A command line tool to download release assets from GitHub
 https://github.com/itsjunetime/tdf.git                              # A tui-based PDF viewer
 https://github.com/mogura-rs/mmterm-rs                              # Rust implementation of https://github.com/jgreener64/mmterm
-https://github.com/rtk-ai/rtk                                       # CLI proxy that reduces LLM token consumption by 60-90% on common dev commands. Single Rust binary, zero dependencies
 https://github.com/sib-swiss/termal.git                             # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
 https://github.com/tsaitoh/concal.git concal                        # Contribution calendar for local repository

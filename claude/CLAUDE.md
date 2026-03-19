@@ -3,5 +3,3 @@
 - code内のコメントは英語で書くこと
 - pythonのprojectではuvを使用すること
 - 可能であれば積極的にPluginを使用すること
-
-@RTK.md
