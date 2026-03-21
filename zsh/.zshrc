@@ -313,6 +313,7 @@ cdx() {
         -- codex \
         --dangerously-bypass-approvals-and-sandbox \
         --no-alt-screen \
+        -c model_reasoning_effort=high \
         "$@"
 }
 
