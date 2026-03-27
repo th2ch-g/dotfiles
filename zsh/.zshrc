@@ -267,7 +267,6 @@ sandbox() {
         --read $CONFIG/gh \
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
-        --allow "$HOME/Library/Application Support/rtk" \
         -v \
         -- $@
 }
@@ -279,12 +278,10 @@ cld() {
         --read $HOME/.local/bin/ \
         --allow $TOOLS/rust/ \
         --read $TOOLS/pixi/ \
-        --read $CONFIG/git/ \
         --read $CONFIG/gh \
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
-        --allow "$HOME/Library/Application Support/rtk" \
         --allow $HOME/.codex \
         --profile claude-code \
         -v \
@@ -293,6 +290,8 @@ cld() {
         --allow-dangerously-skip-permissions \
         --dangerously-skip-permissions \
         $@
+
+        # --read $CONFIG/git/ \
 }
 
 
