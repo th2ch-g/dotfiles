@@ -122,6 +122,16 @@ setopt ignore_eof
 setopt no_beep
 setopt pushd_ignore_dups
 bindkey -e
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[5D' backward-word
+bindkey '^[[5C' forward-word
+bindkey '^[[1;6D' backward-word
+bindkey '^[[1;6C' forward-word
+bindkey '^[[6D' backward-word
+bindkey '^[[6C' forward-word
+bindkey '^[b' backward-word
+bindkey '^[f' forward-word
 
 # history
 setopt extended_history
