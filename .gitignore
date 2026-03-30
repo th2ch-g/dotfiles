@@ -14,3 +14,4 @@ nvim/*
 !/gemini/settings.json
 /codex/*
 !/codex/config.toml
+!/codex/AGENTS.md

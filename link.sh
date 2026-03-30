@@ -36,7 +36,7 @@ OPTIONS:
         --skhd              skhd dotfiles link
         --aerospace         aerospace dotfiles link
         --gemini            gemini dotfiles link
-        --codex             codex dotfiles link
+        --codex             codex dotfiles copy
         --claude            claude dotfiles link
         --ssh               ssh config file copy
         --bash              bash profile link (not recommend)
@@ -265,9 +265,11 @@ if has_tool gemini; then
     do_link "gemini" "${PWD}/gemini" "${HOME}/.gemini"
 fi
 
-# codex
+# codex (always copy, not symlink)
 if has_tool codex; then
-    do_link "codex" "${PWD}/codex" "${HOME}/.codex"
+    print_info "codex copy start"
+    cp -r "${PWD}/codex" "${HOME}/.codex" && print_info "Copied .codex"
+    print_info "codex copy done"
 fi
 
 # claude
