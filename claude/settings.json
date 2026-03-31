@@ -82,7 +82,8 @@
     "financial-analysis@financial-services-plugins": false,
     "investment-banking@financial-services-plugins": false,
     "private-equity@financial-services-plugins": false,
-    "wealth-management@financial-services-plugins": false
+    "wealth-management@financial-services-plugins": false,
+    "codex@openai-codex": true
   },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
@@ -101,6 +102,12 @@
       "source": {
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
       }
     }
   },
