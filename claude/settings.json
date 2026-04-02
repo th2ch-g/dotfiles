@@ -115,5 +115,6 @@
   "language": "ja",
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
-  "showTurnDuration": true
+  "showTurnDuration": true,
+  "voiceEnabled": true
 }
