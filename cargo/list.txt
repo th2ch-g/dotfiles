@@ -35,12 +35,14 @@ cargo-update                                                        # A cargo su
 cfonts                                                              # Sexy fonts for the console
 choose                                                              # A human-friendly and fast alternative to cut and (sometimes) awk
 code2prompt                                                         # A CLI tool to convert your codebase into a single LLM prompt with source tree, prompt templating, and token counting.
+csview                                                              # Pretty and fast csv viewer for cli with cjk/emoji support.
 du-dust                                                             # A more intuitive version of du in rust
 evcxr_jupyter                                                       # A Jupyter Kernel
 evcxr_repl                                                          # An evaluation context for Rust.
 eza                                                                 # A modern alternative to ls
 fd-find                                                             # A simple, fast and user-friendly alternative to 'find'
 flamegraph                                                          # Easy flamegraphs for Rust projects and everything else, without Perl or pipes <3
+git-cliff                                                           # A highly customizable Changelog Generator that follows Conventional Commit specifications
 git-delta                                                           # A syntax-highlighting pager for git, diff, grep, and blame output
 gitui                                                               # Blazing fast terminal-ui for git written in rust
 grex                                                                # A command-line tool and Rust library with Python bindings for generating regular expressions from user-provided test cases
@@ -59,8 +61,10 @@ jaq                                                                 # A jq clone
 jj-cli                                                              # A Git-compatible VCS that is both simple and powerful
 just                                                                # Just a command runner
 mdbook                                                              # Create book from markdown files. Like Gitbook but implemented in Rust
+mprocs                                                              # Run multiple commands in parallel
 nono-cli                                                            # Secure, kernel-enforced sandbox CLI and SDKs for AI agents. Capability-based isolation with secure key management, atomic rollback, cryptographic immutable audit chain of provenance. Run your agents in a zero-trust environment.
 nviwatch                                                            # NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes
+ouch                                                                # Painless compression and decompression in the terminal
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
 procs                                                               # A modern replacement for ps written in Rust
 pueue                                                               # Manage your shell commands.
