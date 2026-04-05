@@ -80,3 +80,4 @@ viu                                                                 # Terminal i
 wild-linker                                                         # A very fast linker for Linux
 xh                                                                  # Friendly and fast tool for sending HTTP requests
 zoxide                                                              # A smarter cd command. Supports all major shells.
+yazi-fm                                                             # Blazing fast terminal file manager written in Rust, based on async I/O.

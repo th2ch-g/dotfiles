@@ -186,6 +186,7 @@ alias free="free -h"
 # ls alias
 alias l="ls -1"
 alias sl="ls"
+alias y="yazi"
 # alias la="ls -stlhA"
 # alias ll="ls -stlh"
 
