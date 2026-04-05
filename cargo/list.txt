@@ -66,6 +66,7 @@ nono-cli                                                            # Secure, ke
 nviwatch                                                            # NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes
 ouch                                                                # Painless compression and decompression in the terminal
 pastel                                                              # A command-line tool to generate, analyze, convert and manipulate colors
+presenterm                                                          # A markdown terminal slideshow tool
 procs                                                               # A modern replacement for ps written in Rust
 pueue                                                               # Manage your shell commands.
 r-matrix                                                            # rust port of cmatrix
