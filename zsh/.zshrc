@@ -297,6 +297,7 @@ cld() {
         --profile claude-code \
         -v \
         -- claude \
+        --model opusplan \
         --permission-mode bypassPermissions \
         --allow-dangerously-skip-permissions \
         --dangerously-skip-permissions \

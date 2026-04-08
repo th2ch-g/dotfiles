@@ -113,9 +113,10 @@
   },
   "outputStyle": "Explanatory",
   "language": "ja",
+  "effortLevel": "high",
   "autoUpdatesChannel": "latest",
+  "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "showTurnDuration": true,
-  "effortLevel": "high",
-  "voiceEnabled": true
+  "model": "opusplan"
 }
