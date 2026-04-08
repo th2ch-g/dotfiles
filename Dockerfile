@@ -45,7 +45,35 @@ COPY ./install_scripts ./install_scripts
 COPY ./install.sh .
 COPY ./python3 ./python3
 COPY ./cargo ./cargo
-RUN ./install.sh --vim --nvim --uv --pixi --cargo --python3 # for using ENV in zshenv
+# for using ENV in zshenv
+RUN ./install.sh \
+        --cargo \
+        --nvim \
+        --pixi \
+        --python3 \
+        --uv \
+        --vim \
+        --autoconf \
+        --brew \
+        --brew-pkgs \
+        --claude-code \
+        --cmake \
+        --conda \
+        --fzf \
+        --gemini-cli \
+        --git \
+        --imagemagick \
+        --iterm2 \
+        --less \
+        --macos \
+        --mold \
+        --node \
+        --password-store \
+        --supertuxkart \
+        --tmux \
+        --warpd \
+        --zsh
+        # --cargo-pkgs
 
 # copy remain
 WORKDIR /root/works/dotfiles

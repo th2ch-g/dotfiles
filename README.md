@@ -33,19 +33,9 @@ cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --zsh && \
-./install.sh && \
+./install.sh --pixi --uv --cargo --cargo-pkgs --brew --brew-pkgs --warpd --claude-code --python3 --iterm2 --macos && \
 ./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git
-~~~
-
-- Selective install (specify tools via flags)
-~~~shell
-# install only specific tools
-./install.sh --pixi --uv --python3
-./install.sh --vim --nvim --cargo --cargo-pkgs
-# available flags: --pixi --uv --brew --brew-pkgs --cargo --cargo-pkgs
-#                  --warpd --claude-code --fzf --vim --nvim --tmux
-#                  --imagemagick --zsh --python3 --macos --iterm2
 ~~~
 
 - Install on local via SSH
@@ -54,7 +44,8 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace
+./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
+./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
 ~~~
 
 - Install on local via HTTPS
@@ -63,8 +54,8 @@ mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace
-./install.sh
+./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
+./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
 ~~~
 
 - Install without git
@@ -76,7 +67,7 @@ rm main.zip && \
 mv dotfiles-main dotfiles && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
-./install.sh
+./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
 ~~~
 
 ### For Guest
