@@ -4,22 +4,55 @@ set -eux
 source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
 
 VERSION="3.31.6"
-INSTALL_PREFIX="${PWD}/cmake-${VERSION}/build"
 BIN=${BIN:-$HOME/works/bin}
-thread=$(detect_nproc)
+OS_NAME="$(uname -s)"
+CPU="$(uname -m)"
 
-[ -d "cmake-${VERSION}" ] && { print_info "cmake-${VERSION} already present, skipping"; exit 0; }
+case "$OS_NAME" in
+    Darwin)
+        ARCHIVE_PLATFORM="macos-universal"
+        ;;
+    Linux)
+        case "$CPU" in
+            x86_64 | amd64)
+                ARCHIVE_PLATFORM="linux-x86_64"
+                ;;
+            aarch64 | arm64)
+                ARCHIVE_PLATFORM="linux-aarch64"
+                ;;
+            *)
+                print_error "Unsupported architecture for CMake binary: $CPU"
+                exit 1
+                ;;
+        esac
+        ;;
+    *)
+        print_error "Unsupported OS for CMake binary: $OS_NAME"
+        exit 1
+        ;;
+esac
 
-URL="https://github.com/Kitware/CMake/releases/download/v${VERSION}/cmake-${VERSION}.tar.gz"
-curl -LO "$URL"
-tar -zxvf cmake-${VERSION}.tar.gz
-cd cmake-${VERSION}
+ARCHIVE="cmake-${VERSION}-${ARCHIVE_PLATFORM}.tar.gz"
+EXTRACT_DIR="cmake-${VERSION}-${ARCHIVE_PLATFORM}"
 
-./bootstrap --prefix=${INSTALL_PREFIX} --parallel=$thread
+[ -d "$EXTRACT_DIR" ] && { print_info "$EXTRACT_DIR already present, skipping"; exit 0; }
 
-make -j $thread
-make install -j $thread
+URL="https://github.com/Kitware/CMake/releases/download/v${VERSION}/${ARCHIVE}"
+curl -fL -o "$ARCHIVE" "$URL"
+tar -xvzf "$ARCHIVE"
+rm -f "$ARCHIVE"
 
-ensure_bin ${INSTALL_PREFIX}/bin/cmake
+if [ -d "${PWD}/${EXTRACT_DIR}/bin" ]; then
+    BIN_DIR="${PWD}/${EXTRACT_DIR}/bin"
+elif [ -d "${PWD}/${EXTRACT_DIR}/CMake.app/Contents/bin" ]; then
+    BIN_DIR="${PWD}/${EXTRACT_DIR}/CMake.app/Contents/bin"
+else
+    print_error "CMake binary directory was not found in ${EXTRACT_DIR}"
+    exit 1
+fi
+
+for f in "${BIN_DIR}/"*; do
+    ensure_bin "$f"
+done
 
 print_info "cmake install done"

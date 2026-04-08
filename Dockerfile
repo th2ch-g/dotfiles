@@ -53,27 +53,28 @@ RUN ./install.sh \
         --python3 \
         --uv \
         --vim \
-        --autoconf \
-        --brew \
-        --brew-pkgs \
-        --claude-code \
-        --cmake \
-        --conda \
-        --fzf \
-        --gemini-cli \
-        --git \
-        --imagemagick \
-        --iterm2 \
-        --less \
-        --macos \
-        --mold \
-        --node \
-        --password-store \
-        --supertuxkart \
-        --tmux \
-        --warpd \
-        --zsh
-        # --cargo-pkgs
+        # --autoconf \
+        # --brew \
+        # --brew-pkgs \
+        # --claude-code \
+        # --cmake \
+        # --fzf \
+        # --git \
+        # --imagemagick \
+        # --iterm2 \
+        # --less \
+        # --macos \
+        # --node \
+        # --password-store \
+        # --tmux \
+        # --warpd \
+        # --zsh
+        #
+        # --gemini-cli \ # currently not used
+        # --mold \ # wild is alternative
+        # --supertuxkart \ # currently not used
+        # --conda \ # currently not used
+        # --cargo-pkgs \ # take too long
 
 # copy remain
 WORKDIR /root/works/dotfiles
