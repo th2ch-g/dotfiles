@@ -31,7 +31,7 @@ do
             break
             ;;
         -?*)
-            print_error "Unknown option: $1"
+            echo "[ERROR] Unknown option: $1" >&2
             exit 1
             ;;
         *)

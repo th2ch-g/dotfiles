@@ -1,10 +1,12 @@
 #!/bin/bash
 set -e
 
-if command -v uv >/dev/null 2>&1; then
-    echo "uv is already installed"
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
+if need_cmd uv; then
+    print_info "uv is already installed"
 else
     curl -LsSf https://astral.sh/uv/install.sh | sh -s -- --no-modify-path
 fi
 
-echo "[INFO] uv install done" >&1
+print_info "uv install done"

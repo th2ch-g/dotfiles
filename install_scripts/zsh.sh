@@ -1,10 +1,14 @@
 #!/bin/bash
 set -eux
 
-thread=15
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 VERSION="5.9"
 PREFIX="${PWD}/zsh-zsh-${VERSION}/build"
 BIN=${BIN:-$HOME/works/bin}
+thread=$(detect_nproc)
+
+[ -d "zsh-zsh-${VERSION}" ] && { print_info "zsh-zsh-${VERSION} already present, skipping"; exit 0; }
 
 URL=https://github.com/zsh-users/zsh/archive/refs/tags/zsh-${VERSION}.tar.gz
 curl -L $URL -o zsh.tar.gz && \
@@ -18,6 +22,6 @@ cd zsh-zsh-${VERSION} && \
     make -j $thread && make install && \
     cd ..
 
-ln -s ${PREFIX}/bin/zsh $BIN
+ensure_bin ${PREFIX}/bin/zsh
 
-echo "[INFO] zsh install done" >&1
+print_info "zsh install done"

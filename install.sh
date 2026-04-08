@@ -9,6 +9,7 @@ if [[ ! -e $PWD/install.sh ]]; then
 fi
 
 DOTFILES_DIR=$PWD
+export DOTFILES_DIR
 source "$DOTFILES_DIR/lib/utils.sh"
 
 USAGE='

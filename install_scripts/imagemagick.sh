@@ -1,13 +1,17 @@
 #!/bin/bash
 set -eux
 
-thread=15
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 VERSION="7.1.1-47"
 PREFIX="${PWD}/ImageMagick-${VERSION}/build"
-BIN=$HOME/works/bin
+BIN=${BIN:-$HOME/works/bin}
+thread=$(detect_nproc)
+
+[ -d "ImageMagick-${VERSION}" ] && { print_info "ImageMagick-${VERSION} already present, skipping"; exit 0; }
 
 URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${VERSION}.tar.gz"
-wget $URL
+curl -LO "$URL"
 tar -xvzf ${VERSION}.tar.gz
 rm -f ${VERSION}.tar.gz
 cd ImageMagick-${VERSION}
@@ -16,11 +20,6 @@ cd ImageMagick-${VERSION}
 
 make -j $thread && make install
 
-export PATH=${PREFIX}/bin:$PATH
+ensure_bin ${PREFIX}/bin/convert
 
-convert -version
-
-ln -s ${PREFIX}/bin/convert $BIN
-
-echo done
-
+print_info "imagemagick install done"

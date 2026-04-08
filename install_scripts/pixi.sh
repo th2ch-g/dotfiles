@@ -1,10 +1,12 @@
 #!/bin/bash
 set -e
 
-if command -v pixi >/dev/null 2>&1; then
-    echo "pixi is already installed"
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
+if need_cmd pixi; then
+    print_info "pixi is already installed"
 else
     curl -fsSL https://pixi.sh/install.sh | sh
 fi
 
-echo "[INFO] pixi install done" >&1
+print_info "pixi install done"

@@ -1,11 +1,13 @@
 #!/bin/bash
 set -e
 
-if ! command -v brew > /dev/null 2>&1; then
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
+if ! need_cmd brew; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     export PATH="/opt/homebrew/bin:$PATH"
 else
-    echo "brew is already installed"
+    print_info "brew is already installed"
 fi
 
-echo done
+print_info "brew install done"

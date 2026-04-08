@@ -1,12 +1,17 @@
 #!/bin/bash
-set -e
+set -eux
+
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
 
 VERSION=2.71
 URL=http://ftp.gnu.org/gnu/autoconf/autoconf-${VERSION}.tar.gz
 PREFIX=$PWD/autoconf-${VERSION}/build
-BIN=$HOME/works/bin
+BIN=${BIN:-$HOME/works/bin}
+thread=$(detect_nproc)
 
-wget $URL
+[ -d "autoconf-${VERSION}" ] && { print_info "autoconf-${VERSION} already present, skipping"; exit 0; }
+
+curl -LO "$URL"
 
 tar xvfz autoconf-${VERSION}.tar.gz
 
@@ -16,10 +21,10 @@ cd autoconf-${VERSION}
 
 ./configure --prefix=$PREFIX
 
-make -j 8
+make -j $thread
 
 make install
 
-ln -s $PREFIX/bin/* $BIN/
+ensure_bin $PREFIX/bin/autoconf
 
-echo done
+print_info "autoconf install done"

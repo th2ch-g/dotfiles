@@ -40,6 +40,16 @@ Flags for tool installers (`install_scripts/`):
 | `--tmux` | tmux |
 | `--imagemagick` | imagemagick |
 | `--zsh` | zsh |
+| `--node` | Node.js |
+| `--conda` | conda (miniconda) |
+| `--gemini-cli` | gemini-cli |
+| `--git` | git |
+| `--autoconf` | autoconf |
+| `--cmake` | cmake |
+| `--mold` | mold linker |
+| `--less` | less |
+| `--password-store` | password-store |
+| `--supertuxkart` | SuperTuxKart |
 
 Flags for package runners (`*/run.sh`):
 
@@ -88,12 +98,20 @@ Flags for package runners (`*/run.sh`):
 - Plugin manager: vim-jetpack (stored as git submodule under `vim/pack/jetpack/`)
 
 ### Shared Utilities
-- `lib/utils.sh` — sourced by both `install.sh` and `link.sh`; provides OS detection (`detect_os` → `$OS`: `Mac`/`Linux`/`Cygwin`) and logging helpers (`print_info`, `print_warn`, `print_error`)
+- `lib/utils.sh` — sourced by `install.sh`, `link.sh`, and all `install_scripts/*.sh`; provides:
+  - `detect_os` → `$OS`: `Mac`/`Linux`/`Cygwin`
+  - `print_info` / `print_warn` / `print_error` — logging helpers
+  - `need_cmd <cmd>` — check if command exists on PATH
+  - `skip_if_installed <cmd>` — exit 0 with message if already installed
+  - `ensure_bin <path>` — `ln -sf` binary into `$BIN` (default: `$HOME/works/bin`)
+  - `detect_nproc` — cross-platform CPU count (macOS: `sysctl -n hw.ncpu`, Linux: `nproc`)
 
 ### Install Scripts
 - `install_scripts/*.sh` — individual tool installers (invoked by `install.sh`)
+- Built tools are symlinked into `$BIN` (`$HOME/works/bin`); sources are extracted to `$TOOLS` (`$HOME/works/tools`)
+- All scripts source `lib/utils.sh` via `$DOTFILES_DIR`; re-running is safe (idempotency checks built in)
 - `brew/run.sh` — Homebrew package list
-- `cargo/` — Cargo package list (macOS only by default)
+- `cargo/run.sh` — Cargo package list (use `--cargo-pkgs` flag)
 - `python3/run.sh` — Python package installs
 
 ## Local Customization Pattern

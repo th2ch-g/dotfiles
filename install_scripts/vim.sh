@@ -1,10 +1,14 @@
 #!/bin/bash
 set -eux
 
-thread=15
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 VERSION="9.1.1265"
 PREFIX="${PWD}/vim-${VERSION}/build"
 BIN=${BIN:-$HOME/works/bin}
+thread=$(detect_nproc)
+
+[ -d "vim-${VERSION}" ] && { print_info "vim-${VERSION} already present, skipping"; exit 0; }
 
 URL=https://github.com/vim/vim/archive/refs/tags/v${VERSION}.tar.gz
 curl -L $URL -o vim.tar.gz && \
@@ -18,6 +22,6 @@ cd vim-${VERSION} && \
     make -j $thread && make install && \
     cd ..
 
-ln -s ${PREFIX}/bin/vim $BIN
+ensure_bin ${PREFIX}/bin/vim
 
-echo "[INFO] vim install done" >&1
+print_info "vim install done"

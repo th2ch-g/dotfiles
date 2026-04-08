@@ -1,10 +1,14 @@
 #!/bin/bash
 set -eux
 
-VERSION="v2.40.0-rc1"
-thread=15
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
+VERSION="v2.47.1"
+thread=$(detect_nproc)
 PREFIX="${PWD}/git-${VERSION}/build"
-BIN=$HOME/works/bin
+BIN=${BIN:-$HOME/works/bin}
+
+[ -d "git-${VERSION}" ] && { print_info "git-${VERSION} already present, skipping"; exit 0; }
 
 URL="https://github.com/git/git/archive/refs/tags/${VERSION}.tar.gz"
 curl -L $URL -o git-${VERSION}.tar.gz && \
@@ -14,9 +18,8 @@ curl -L $URL -o git-${VERSION}.tar.gz && \
 cd git-${VERSION} && \
     make configure && \
     ./configure --prefix=${PREFIX} && \
-    make all -j $thread && cd ..
+    make all -j $thread && make install && cd ..
 
-ln -s ${PREFIX}/bin/git $BIN
+ensure_bin ${PREFIX}/bin/git
 
-echo "[INFO] git install done" >&1
-
+print_info "git install done"

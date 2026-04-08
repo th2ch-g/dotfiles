@@ -1,10 +1,14 @@
 #!/bin/bash
 set -eux
 
-thread=15
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 VERSION="668"
 PREFIX="${PWD}/less-${VERSION}/build"
 BIN=${BIN:-$HOME/works/bin}
+thread=$(detect_nproc)
+
+[ -d "less-${VERSION}" ] && { print_info "less-${VERSION} already present, skipping"; exit 0; }
 
 URL=https://greenwoodsoftware.com/less/less-${VERSION}.tar.gz
 curl -L $URL -o less.tar.gz && \
@@ -16,6 +20,6 @@ cd less-${VERSION} && \
     make -j $thread && make install && \
     cd ..
 
-ln -s ${PREFIX}/bin/less $BIN
+ensure_bin ${PREFIX}/bin/less
 
-echo "[INFO] less install done" >&1
+print_info "less install done"
