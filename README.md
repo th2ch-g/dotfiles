@@ -38,6 +38,16 @@ cd ./dotfiles && \
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git
 ~~~
 
+- Selective install (specify tools via flags)
+~~~shell
+# install only specific tools
+./install.sh --pixi --uv --python3
+./install.sh --vim --nvim --cargo --cargo-pkgs
+# available flags: --pixi --uv --brew --brew-pkgs --cargo --cargo-pkgs
+#                  --warpd --claude-code --fzf --vim --nvim --tmux
+#                  --imagemagick --zsh --python3 --macos --iterm2
+~~~
+
 - Install on local via SSH
 ~~~shell
 mkdir -p ${HOME}/works && \
@@ -108,5 +118,5 @@ make r
 
 ## Delete release (not recommended)
 ```bash
-make d TAG=vYYYY.MM.DD
+make delete TAG=vYYYY.MM.DD
 ```

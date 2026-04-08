@@ -19,10 +19,37 @@ Must be run from the repository root. Links individual tool configs via flags:
 Installs tools and packages. Must be run from the repository root.
 
 ```bash
-./install.sh             # full install (Mac: brew + cargo + pixi + uv + ...)
-./install.sh --test      # test mode, skips large packages
-./install.sh --no-cargo-pkgs  # skip cargo packages
+./install.sh                              # full install for current OS (Mac/Linux defaults)
+./install.sh --pixi --uv --python3        # selective: install only specified tools
+./install.sh --vim --nvim --cargo --cargo-pkgs
 ```
+
+Flags for tool installers (`install_scripts/`):
+
+| Flag | Tool |
+|------|------|
+| `--pixi` | pixi |
+| `--uv` | uv |
+| `--brew` | Homebrew (Mac only) |
+| `--cargo` | Rust toolchain |
+| `--warpd` | warpd (Mac only) |
+| `--claude-code` | claude-code |
+| `--fzf` | fzf |
+| `--vim` | vim |
+| `--nvim` | neovim |
+| `--tmux` | tmux |
+| `--imagemagick` | imagemagick |
+| `--zsh` | zsh |
+
+Flags for package runners (`*/run.sh`):
+
+| Flag | Action |
+|------|--------|
+| `--brew-pkgs` | install Homebrew packages (Mac only) |
+| `--cargo-pkgs` | install cargo packages |
+| `--python3` | install Python packages |
+| `--macos` | configure macOS settings (Mac only) |
+| `--iterm2` | configure iTerm2 (Mac only) |
 
 ## Symlink Targets
 
