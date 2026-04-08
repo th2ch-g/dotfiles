@@ -116,5 +116,6 @@
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "showTurnDuration": true,
+  "effortLevel": "high",
   "voiceEnabled": true
 }
