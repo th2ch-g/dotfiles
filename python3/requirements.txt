@@ -6,6 +6,7 @@ git+https://github.com/th2ch-g/tmplot.git
 gitingest
 kaggle
 lizard
+markitdown[all]
 maturin
 nvitop
 rendercv[full]
