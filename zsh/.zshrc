@@ -154,6 +154,8 @@ if [[ -n ${ZDOTDIR:-$HOME/.config/zsh}/.zcompdump(#qN.mh+24) ]]; then
 else
     $DEFER compinit -C
 fi
+# Register zoxide tab completion after compinit (compdef is unavailable before compinit)
+(( $+commands[zoxide] )) && $DEFER compdef __zoxide_z_complete z
 setopt auto_param_keys
 setopt auto_param_slash
 setopt complete_in_word
