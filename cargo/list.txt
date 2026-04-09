@@ -50,6 +50,7 @@ https://github.com/001TMF/ProteinView.git fetch                     # Terminal p
 https://github.com/devmatteini/dra.git dra                          # A command line tool to download release assets from GitHub
 https://github.com/imsnif/bandwhich.git                             # Terminal bandwidth utilization tool
 https://github.com/itsjunetime/tdf.git                              # A tui-based PDF viewer
+https://github.com/junhoyeo/tokscale.git                            # A CLI tool for tracking token usage from OpenCode, Claude Code, OpenClaw (Clawdbot/Moltbot), Pi, Codex, Gemini, Cursor, AmpCode, Factory Droid, Kimi, and more! • Global Leaderboard + 2D/3D Contributions Graph
 https://github.com/mogura-rs/mdtraj-rs                              # Implementation of MDTraj in Rust
 https://github.com/mogura-rs/mmterm-rs                              # Rust implementation of https://github.com/jgreener64/mmterm
 https://github.com/nooscraft/tokuin                                 # CLI tool – estimates LLM tokens/costs and runs provider-aware load tests for OpenAI, Anthropic, OpenRouter, or custom endpoints.
