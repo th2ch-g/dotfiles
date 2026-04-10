@@ -5,6 +5,7 @@
     "CLAUDE_CODE_IDE_SKIP_VALID_CHECK": "1",
     "ENABLE_TOOL_SEARCH": "true"
   },
+  "model": "opusplan",
   "hooks": {
     "PostToolUseFailure": [
       {
@@ -118,5 +119,5 @@
   "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "showTurnDuration": true,
-  "model": "opusplan"
+  "advisorModel": "opus"
 }
