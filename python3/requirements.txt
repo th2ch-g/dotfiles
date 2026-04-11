@@ -9,5 +9,6 @@ lizard
 markitdown[all]
 maturin
 nvitop
+openshell
 rendercv[full]
 terminaltexteffects

@@ -7,7 +7,7 @@ do
     line_2=$(echo $line | awk '{print $2}')
     [[ "$line_1" =~ "#" ]] && continue
     echo "+ $line_1" >&1
-    uv tool install $line_1
+    uv tool install -U $line_1
 done
 
 echo done
