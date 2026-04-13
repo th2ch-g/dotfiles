@@ -1,6 +1,14 @@
+approval_policy = "never"
 model = "gpt-5.4"
 model_reasoning_effort = "high"
-approval_policy = "never"
+personality = "pragmatic"
+plan_mode_reasoning_effort = "high"
+
+[analytics]
+enabled = false
+
+[feedback]
+enabled = false
 
 [notice.model_migrations]
 "gpt-5.3-codex" = "gpt-5.4"
