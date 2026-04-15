@@ -217,6 +217,7 @@ alias squeue_full="squeue -o '%.18i %.9P %.50j %.8u %.8T %.10M %.6D %R %y %Z %C 
 
 # tmux alias
 alias ta="tmux a"
+alias tad="tmux a -d"
 alias tkas="tmux kill-server"
 alias tls="tmux ls"
 
