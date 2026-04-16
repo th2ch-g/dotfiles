@@ -88,10 +88,8 @@ do_link() {
     print_info "$name link done"
 }
 
-
 # option parser
-while :;
-do
+while :; do
     case $1 in
         -h | --help)
             echo "$USAGE" >&1
@@ -101,23 +99,23 @@ do
             unlink_flag=true
             break
             ;;
-        --vim)            tools+=(vim)       ;;
-        --zsh)            tools+=(zsh)       ;;
-        --tmux)           tools+=(tmux)      ;;
-        --git)            tools+=(git)       ;;
-        --alacritty)      tools+=(alacritty) ;;
-        --neovim)         tools+=(neovim)    ;;
-        --ssh)            tools+=(ssh)       ;;
-        --bash)           tools+=(bash)      ;;
-        --cp)             cp_flag=true       ;;
-        --rm)             rm_flag=true       ;;
-        --yabai)          tools+=(yabai)     ;;
-        --skhd)           tools+=(skhd)      ;;
-        --aerospace)      tools+=(aerospace) ;;
-        --gemini)         tools+=(gemini)    ;;
-        --codex)          tools+=(codex)     ;;
-        --claude)         tools+=(claude)    ;;
-       --)
+        --vim) tools+=(vim) ;;
+        --zsh) tools+=(zsh) ;;
+        --tmux) tools+=(tmux) ;;
+        --git) tools+=(git) ;;
+        --alacritty) tools+=(alacritty) ;;
+        --neovim) tools+=(neovim) ;;
+        --ssh) tools+=(ssh) ;;
+        --bash) tools+=(bash) ;;
+        --cp) cp_flag=true ;;
+        --rm) rm_flag=true ;;
+        --yabai) tools+=(yabai) ;;
+        --skhd) tools+=(skhd) ;;
+        --aerospace) tools+=(aerospace) ;;
+        --gemini) tools+=(gemini) ;;
+        --codex) tools+=(codex) ;;
+        --claude) tools+=(claude) ;;
+        --)
             shift
             break
             ;;
@@ -127,6 +125,7 @@ do
             ;;
         *)
             break
+            ;;
     esac
     shift
 done
@@ -149,14 +148,12 @@ if $unlink_flag || $rm_flag; then
     print_warn "Ignore error"
 
     # $HOME/dotfiles
-    for dotfile in .bash_profile .gemini .codex .claude;
-    do
+    for dotfile in .bash_profile .gemini .codex .claude; do
         remove_link $HOME/$dotfile
     done
 
     # $XDG_CONFIG_HOME/dotfiles
-    for target in git zsh sheldon tmux alacritty vim nvim yabai skhd aerospace;
-    do
+    for target in git zsh sheldon tmux alacritty vim nvim yabai skhd aerospace; do
         remove_link ${XDG_CONFIG_HOME}/$target
     done
     remove_link ${HOME}/.zshenv
@@ -168,7 +165,7 @@ fi
 # vim link
 if has_tool vim; then
     do_link "vim" "${PWD}/vim" "${XDG_CONFIG_HOME}/vim"
-    if command -v vim >/dev/null 2>&1; then
+    if command -v vim > /dev/null 2>&1; then
         set +e
         export VIM_AI=1
         vim -e -c "JetpackSync" -c "qa"
@@ -209,7 +206,7 @@ fi
 # neovim link
 if has_tool neovim; then
     do_link "neovim" "${PWD}/nvim/" "${XDG_CONFIG_HOME}/nvim"
-    if command -v nvim >/dev/null 2>&1; then
+    if command -v nvim > /dev/null 2>&1; then
         export VIM_AI=1
         set +e
         nvim --headless "+Lazy! update" +qa
@@ -240,7 +237,7 @@ fi
 # yabai
 if has_tool yabai && [[ $OS == "Mac" ]]; then
     do_link "yabai" "${PWD}/yabai" "${XDG_CONFIG_HOME}/yabai"
-    if command -v yabai >/dev/null 2>&1; then
+    if command -v yabai > /dev/null 2>&1; then
         yabai --start-service
         yabai --restart-service
     fi
@@ -249,7 +246,7 @@ fi
 # skhd
 if has_tool skhd && [[ $OS == "Mac" ]]; then
     do_link "skhd" "${PWD}/skhd" "${XDG_CONFIG_HOME}/skhd"
-    if command -v skhd >/dev/null 2>&1; then
+    if command -v skhd > /dev/null 2>&1; then
         skhd --start-service
         skhd --restart-service
     fi
@@ -275,7 +272,7 @@ fi
 # claude
 if has_tool claude; then
     do_link "claude" "${PWD}/claude" "${HOME}/.claude"
-    if command -v claude >/dev/null 2>&1; then
+    if command -v claude > /dev/null 2>&1; then
         set +e
         claude mcp add -s user -t http deepwiki https://mcp.deepwiki.com/mcp
 

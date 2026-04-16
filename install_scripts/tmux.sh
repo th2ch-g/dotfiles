@@ -11,7 +11,10 @@ NCURSES_PREFIX="${PWD}/ncurses-${NCURSES_VERSION}/build"
 LIBEVENT_PREFIX="${PWD}/libevent-${LIBEVENT_VERSION}/build"
 thread=$(detect_nproc)
 
-[ -d "tmux-${TMUX_VERSION}" ] && { print_info "tmux-${TMUX_VERSION} already present, skipping"; exit 0; }
+[ -d "tmux-${TMUX_VERSION}" ] && {
+    print_info "tmux-${TMUX_VERSION} already present, skipping"
+    exit 0
+}
 
 # release link
 TMUX_URL=https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
@@ -32,23 +35,23 @@ rm -f tmux.tar.gz libevent.tar.gz ncurses.tar.gz
 
 cd ncurses-${NCURSES_VERSION}
 ./configure --prefix=${NCURSES_PREFIX} --enable-pc-files \
-    --with-pkg-config-libdir=${NCURSES_PREFIX}/lib/pkgconfig --with-termlib \
-    && make -j $thread && make install
+    --with-pkg-config-libdir=${NCURSES_PREFIX}/lib/pkgconfig --with-termlib &&
+    make -j $thread && make install
 cd ..
 print_info "ncurses install done"
 
 cd libevent-${LIBEVENT_VERSION}
-./configure --prefix=${LIBEVENT_PREFIX} \
-    && make -j $thread && make install
+./configure --prefix=${LIBEVENT_PREFIX} &&
+    make -j $thread && make install
 cd ..
 print_info "libevent install done"
 
 cd tmux-${TMUX_VERSION}
 ./configure --prefix=${TMUX_PREFIX} \
     LDFLAGS="-L${NCURSES_PREFIX}/lib -L${LIBEVENT_PREFIX}/lib" \
-    CFLAGS="-I${NCURSES_PREFIX}/include -I${LIBEVENT_PREFIX}/include" \
-    && make -j $thread \
-    && make install
+    CFLAGS="-I${NCURSES_PREFIX}/include -I${LIBEVENT_PREFIX}/include" &&
+    make -j $thread &&
+    make install
 cd ..
 
 ensure_bin ${TMUX_PREFIX}/bin/tmux

@@ -21,7 +21,10 @@ case "$CPU" in
         ;;
 esac
 
-[ -d "node-v${VERSION}-${OS}-${NODE_CPU}" ] && { print_info "node-v${VERSION} already present, skipping"; exit 0; }
+[ -d "node-v${VERSION}-${OS}-${NODE_CPU}" ] && {
+    print_info "node-v${VERSION} already present, skipping"
+    exit 0
+}
 
 URL="https://nodejs.org/download/release/v${VERSION}/node-v${VERSION}-${OS}-${NODE_CPU}.tar.gz"
 ARCHIVE="$(basename "$URL")"

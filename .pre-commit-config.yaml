@@ -9,6 +9,11 @@ repos:
       - id: check-yaml
       - id: check-toml
       - id: check-json
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
@@ -18,3 +23,25 @@ repos:
         # zsh files use zsh-specific syntax that shellcheck does not support
         args: ['--external-sources', '--shell=bash', '--severity=warning']
         exclude: ^zsh/
+
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v2.0.2
+    hooks:
+      - id: stylua
+        args: ['--indent-type', 'Spaces', '--indent-width', '4']
+        files: ^nvim/.*\.lua$
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.8.0-1
+    hooks:
+      - id: shfmt
+        args: [-i, "4", -ci, -sr, -w]
+
+  - repo: local
+    hooks:
+      - id: zsh-syntax-check
+        name: zsh syntax check
+        language: system
+        entry: zsh -n
+        files: ^zsh/
+        types: [file]

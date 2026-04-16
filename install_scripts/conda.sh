@@ -33,7 +33,7 @@ if ! need_cmd conda; then
     bash Miniconda3-latest-*-*.sh -p ${CONDA_BASE_PATH} -b
     rm -f Miniconda3-latest-*-*.sh
 
-    cat >> ${HOME}/.config/zsh/.zshrc_local <<EOF
+    cat >> ${HOME}/.config/zsh/.zshrc_local << EOF
 
 # <<< Conda initialization for Zsh >>>
 # !! Contents within this block are managed by 'conda init' !!

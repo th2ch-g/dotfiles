@@ -1,8 +1,8 @@
 # Shared utilities for dotfiles scripts.
 # Source this file from install.sh and link.sh.
 
-print_info()  { echo "[INFO] $1" >&1; }
-print_warn()  { echo "[WARN] $1" >&2; }
+print_info() { echo "[INFO] $1" >&1; }
+print_warn() { echo "[WARN] $1" >&2; }
 print_error() { echo "[ERROR] $1" >&2; }
 
 # Sets global OS variable to 'Mac', 'Linux', or 'Cygwin'.
@@ -10,9 +10,9 @@ print_error() { echo "[ERROR] $1" >&2; }
 detect_os() {
     # shellcheck disable=SC2034  # OS is used by callers that source this file
     case "$(uname -s)" in
-        Darwin)       OS='Mac'    ;;
-        Linux*)       OS='Linux'  ;;
-        MINGW32_NT*)  OS='Cygwin' ;;
+        Darwin) OS='Mac' ;;
+        Linux*) OS='Linux' ;;
+        MINGW32_NT*) OS='Cygwin' ;;
         *)
             print_error "Your platform ($(uname -a)) is not supported."
             exit 1
@@ -21,7 +21,7 @@ detect_os() {
 }
 
 # Returns true if the given command exists on PATH.
-need_cmd() { command -v "$1" >/dev/null 2>&1; }
+need_cmd() { command -v "$1" > /dev/null 2>&1; }
 
 # Print a message and exit 0 if the given command is already installed.
 skip_if_installed() {

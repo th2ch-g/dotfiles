@@ -16,8 +16,7 @@ Usage:
 '
 
 # option parser
-while :;
-do
+while :; do
     case $1 in
         -h | --help)
             echo "$USAGE" >&1
@@ -26,7 +25,7 @@ do
         -d | --dockutil)
             dockutil_flag=0
             ;;
-       --)
+        --)
             shift
             break
             ;;
@@ -36,10 +35,10 @@ do
             ;;
         *)
             break
+            ;;
     esac
     shift
 done
-
 
 # Dock
 defaults write com.apple.dock orientation -string left
@@ -53,7 +52,6 @@ defaults write com.apple.dock show-recents -bool false
 sudo defaults write com.apple.universalaccess mouseDriverCursorSize -float 5
 sudo defaults write com.apple.universalaccess accessibilityCursorSize -float 3.0
 
-
 # Keyboard
 defaults write NSGlobalDomain KeyRepeat -int 2
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
@@ -62,7 +60,6 @@ defaults write com.apple.inputmethod.Kotoeri JIMPrefLiveConversionKey -bool fals
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
-
 
 # Trackpad
 defaults write com.apple.AppleMultitouchTrackpad FirstClickThreshold -int 0
@@ -80,7 +77,6 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCorner
 
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-
 
 # Window
 defaults write com.apple.WindowManager GloballyEnabled -bool false
@@ -103,10 +99,8 @@ defaults write com.apple.screencapture type png
 defaults write com.apple.screencapture name "ss"
 defaults write com.apple.screencapture disable-sound -bool true
 
-
 # Xquartz
 defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
-
 
 # Sound
 defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -bool false
@@ -118,10 +112,9 @@ killall SystemUIServer
 # office
 defaults write com.microsoft.autoupdate2 HowToCheck -string "Manual"
 
-
 # dockutil
 if [ $dockutil_flag -eq 0 ]; then
-    if command -v dockutil >/dev/null 2>&1; then
+    if command -v dockutil > /dev/null 2>&1; then
         dockutil --remove all --no-restart
         dockutil --add '/System/Applications/System Settings.app' --allhomes --no-restart
         dockutil --add '/Applications/Google Chrome.app' --allhomes --no-restart

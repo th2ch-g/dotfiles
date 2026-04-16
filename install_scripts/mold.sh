@@ -7,7 +7,10 @@ PREFIX="${PWD}/mold/build"
 BIN=${BIN:-$HOME/works/bin}
 thread=$(detect_nproc)
 
-[ -d "mold" ] && { print_info "mold already present, skipping"; exit 0; }
+[ -d "mold" ] && {
+    print_info "mold already present, skipping"
+    exit 0
+}
 
 git clone --branch stable https://github.com/rui314/mold.git
 cd mold

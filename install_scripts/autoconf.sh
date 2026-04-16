@@ -9,7 +9,10 @@ PREFIX=$PWD/autoconf-${VERSION}/build
 BIN=${BIN:-$HOME/works/bin}
 thread=$(detect_nproc)
 
-[ -d "autoconf-${VERSION}" ] && { print_info "autoconf-${VERSION} already present, skipping"; exit 0; }
+[ -d "autoconf-${VERSION}" ] && {
+    print_info "autoconf-${VERSION} already present, skipping"
+    exit 0
+}
 
 curl -LO "$URL"
 

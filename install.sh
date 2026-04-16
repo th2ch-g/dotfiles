@@ -95,94 +95,93 @@ do_password_store=0
 do_supertuxkart=0
 
 # option parser
-while :;
-do
+while :; do
     case $1 in
         -h | --help)
-           echo "$USAGE" >&1
-           exit 0
-           ;;
+            echo "$USAGE" >&1
+            exit 0
+            ;;
         --pixi)
-           do_pixi=1;
-           ;;
+            do_pixi=1
+            ;;
         --uv)
-           do_uv=1;
-           ;;
+            do_uv=1
+            ;;
         --brew)
-           do_brew=1;
-           ;;
+            do_brew=1
+            ;;
         --brew-pkgs)
-           do_brew_pkgs=1;
-           ;;
+            do_brew_pkgs=1
+            ;;
         --cargo)
-           do_cargo=1;
-           ;;
+            do_cargo=1
+            ;;
         --cargo-pkgs)
-           do_cargo_pkgs=1;
-           ;;
+            do_cargo_pkgs=1
+            ;;
         --warpd)
-           do_warpd=1;
-           ;;
+            do_warpd=1
+            ;;
         --claude-code)
-           do_claude_code=1;
-           ;;
+            do_claude_code=1
+            ;;
         --fzf)
-           do_fzf=1;
-           ;;
+            do_fzf=1
+            ;;
         --vim)
-           do_vim=1;
-           ;;
+            do_vim=1
+            ;;
         --nvim)
-           do_nvim=1;
-           ;;
+            do_nvim=1
+            ;;
         --tmux)
-           do_tmux=1;
-           ;;
+            do_tmux=1
+            ;;
         --imagemagick)
-           do_imagemagick=1;
-           ;;
+            do_imagemagick=1
+            ;;
         --zsh)
-           do_zsh=1;
-           ;;
+            do_zsh=1
+            ;;
         --python3)
-           do_python3=1;
-           ;;
+            do_python3=1
+            ;;
         --macos)
-           do_macos=1;
-           ;;
+            do_macos=1
+            ;;
         --iterm2)
-           do_iterm2=1;
-           ;;
+            do_iterm2=1
+            ;;
         --node)
-           do_node=1;
-           ;;
+            do_node=1
+            ;;
         --conda)
-           do_conda=1;
-           ;;
+            do_conda=1
+            ;;
         --gemini-cli)
-           do_gemini_cli=1;
-           ;;
+            do_gemini_cli=1
+            ;;
         --git)
-           do_git=1;
-           ;;
+            do_git=1
+            ;;
         --autoconf)
-           do_autoconf=1;
-           ;;
+            do_autoconf=1
+            ;;
         --cmake)
-           do_cmake=1;
-           ;;
+            do_cmake=1
+            ;;
         --mold)
-           do_mold=1;
-           ;;
+            do_mold=1
+            ;;
         --less)
-           do_less=1;
-           ;;
+            do_less=1
+            ;;
         --password-store)
-           do_password_store=1;
-           ;;
+            do_password_store=1
+            ;;
         --supertuxkart)
-           do_supertuxkart=1;
-           ;;
+            do_supertuxkart=1
+            ;;
         --)
             shift
             break
@@ -193,6 +192,7 @@ do
             ;;
         *)
             break
+            ;;
     esac
     shift
 done
@@ -206,7 +206,7 @@ arch=$(uname -m)
 print_info "detect $arch CPU"
 
 prepare_common_dirs() {
-    arr=( "$MISC" "$TOOLS" "$OTHERS" "$BIN" "$SHARE" "$MNT" )
+    arr=("$MISC" "$TOOLS" "$OTHERS" "$BIN" "$SHARE" "$MNT")
     for i in "${arr[@]}"; do
         mkdir -p "$i"
     done

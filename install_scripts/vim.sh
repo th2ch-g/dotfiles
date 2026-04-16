@@ -8,18 +8,21 @@ PREFIX="${PWD}/vim-${VERSION}/build"
 BIN=${BIN:-$HOME/works/bin}
 thread=$(detect_nproc)
 
-[ -d "vim-${VERSION}" ] && { print_info "vim-${VERSION} already present, skipping"; exit 0; }
+[ -d "vim-${VERSION}" ] && {
+    print_info "vim-${VERSION} already present, skipping"
+    exit 0
+}
 
 URL=https://github.com/vim/vim/archive/refs/tags/v${VERSION}.tar.gz
-curl -L $URL -o vim.tar.gz && \
-    tar -zxvf vim.tar.gz && \
+curl -L $URL -o vim.tar.gz &&
+    tar -zxvf vim.tar.gz &&
     rm -f vim.tar.gz
 
-cd vim-${VERSION} && \
+cd vim-${VERSION} &&
     ./configure --prefix=${PREFIX} --enable-perlinterp --enable-rubyinterp \
-    --enable-multibyte --disable-netbeans --disable-gtktest --disable-acl \
-    --disable-gpm --disable-xim --without-x --disable-gui && \
-    make -j $thread && make install && \
+        --enable-multibyte --disable-netbeans --disable-gtktest --disable-acl \
+        --disable-gpm --disable-xim --without-x --disable-gui &&
+    make -j $thread && make install &&
     cd ..
 
 ensure_bin ${PREFIX}/bin/vim

@@ -8,8 +8,7 @@ rustup update
 # cargo install --locked --force cargo-binstall
 cargo install --locked cargo-binstall
 
-cat list.txt | while IFS= read -r line;
-do
+cat list.txt | while IFS= read -r line; do
     line_1=$(echo $line | awk '{print $1}')
     line_2=$(echo $line | awk '{print $2}')
     [[ "$line_1" =~ "#" ]] && continue
@@ -26,5 +25,5 @@ do
         # cargo quickinstall $line_1
         cargo binstall -y --locked --force $line_1
     fi
-done \
-    && echo "[INFO] cargo-install-list done" >&1
+done &&
+    echo "[INFO] cargo-install-list done" >&1

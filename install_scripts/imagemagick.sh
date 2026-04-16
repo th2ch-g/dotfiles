@@ -8,7 +8,10 @@ PREFIX="${PWD}/ImageMagick-${VERSION}/build"
 BIN=${BIN:-$HOME/works/bin}
 thread=$(detect_nproc)
 
-[ -d "ImageMagick-${VERSION}" ] && { print_info "ImageMagick-${VERSION} already present, skipping"; exit 0; }
+[ -d "ImageMagick-${VERSION}" ] && {
+    print_info "ImageMagick-${VERSION} already present, skipping"
+    exit 0
+}
 
 URL="https://github.com/ImageMagick/ImageMagick/archive/refs/tags/${VERSION}.tar.gz"
 curl -LO "$URL"

@@ -35,7 +35,10 @@ esac
 ARCHIVE="cmake-${VERSION}-${ARCHIVE_PLATFORM}.tar.gz"
 EXTRACT_DIR="cmake-${VERSION}-${ARCHIVE_PLATFORM}"
 
-[ -d "$EXTRACT_DIR" ] && { print_info "$EXTRACT_DIR already present, skipping"; exit 0; }
+[ -d "$EXTRACT_DIR" ] && {
+    print_info "$EXTRACT_DIR already present, skipping"
+    exit 0
+}
 
 URL="https://github.com/Kitware/CMake/releases/download/v${VERSION}/${ARCHIVE}"
 curl -fL -o "$ARCHIVE" "$URL"

@@ -8,7 +8,10 @@ URL="https://git.zx2c4.com/password-store/snapshot/password-store-${VERSION}.tar
 PREFIX="${PWD}/password-store-${VERSION}"
 BIN=${BIN:-$HOME/works/bin}
 
-[ -d "password-store-${VERSION}" ] && { print_info "password-store-${VERSION} already present, skipping"; exit 0; }
+[ -d "password-store-${VERSION}" ] && {
+    print_info "password-store-${VERSION} already present, skipping"
+    exit 0
+}
 
 curl -LO "$URL"
 tar Jxfv password-store-${VERSION}.tar.xz
