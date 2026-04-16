@@ -9,7 +9,7 @@ repos:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: mixed-line-ending
-        args: ['--fix=lf']
+        args: ["--fix=lf"]
       - id: check-yaml
       - id: check-toml
       - id: check-json
@@ -31,13 +31,23 @@ repos:
     rev: v2.14.0
     hooks:
       - id: hadolint-docker
-        args: ['--config', '.hadolint.yaml']
+        args: ["--config", ".hadolint.yaml"]
         files: ^Dockerfile$
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2
     hooks:
       - id: gitleaks
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.31.3
+    hooks:
+      - id: check-github-workflows
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
 
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.8
@@ -50,15 +60,22 @@ repos:
       - id: shellcheck
         # --external-sources: follow `source` paths; --shell=bash: default shell for files without shebang
         # zsh files use zsh-specific syntax that shellcheck does not support
-        args: ['--external-sources', '--shell=bash', '--severity=warning']
+        args: ["--external-sources", "--shell=bash", "--severity=warning"]
         exclude: ^zsh/
 
   - repo: https://github.com/JohnnyMorganz/StyLua
     rev: v2.0.2
     hooks:
       - id: stylua
-        args: ['--indent-type', 'Spaces', '--indent-width', '4']
+        args: ["--indent-type", "Spaces", "--indent-width", "4"]
         files: ^nvim/.*\.lua$
+
+  # - repo: https://github.com/astral-sh/ruff-pre-commit
+  #   rev: v0.11.13
+  #   hooks:
+  #     - id: ruff
+  #       args: ["--fix"]
+  #     - id: ruff-format
 
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.8.0-1
@@ -92,6 +109,16 @@ repos:
     hooks:
       - id: gitlint
         stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        language: node
+        entry: prettier
+        args: ["--write", "--ignore-unknown"]
+        additional_dependencies: ["prettier@3.5.3"]
+        files: \.(json|md|ya?ml)$
 
   - repo: local
     hooks:

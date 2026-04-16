@@ -15,22 +15,16 @@
       ]
     },
     "fetch": {
-        "command": "uvx",
-        "args": ["mcp-server-fetch"]
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
     },
     "sequential-thinking": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-sequential-thinking"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
     },
     "filesystem": {
       "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem"
-      ]
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"]
     },
     "time": {
       "command": "uvx",

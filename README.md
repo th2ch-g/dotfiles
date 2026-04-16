@@ -32,7 +32,7 @@
     - linux: `sudo apt install zsh git` or manually install by
       `install_scripts/`
 
-~~~shell
+```shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
@@ -42,33 +42,33 @@ cd ./dotfiles && \
 ./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git && \
 pre-commit install
-~~~
+```
 
 - Install on local via SSH
 
-~~~shell
+```shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
 ./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
-~~~
+```
 
 - Install on local via HTTPS
 
-~~~shell
+```shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
 ./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
-~~~
+```
 
 - Install without git
 
-~~~shell
+```shell
 mkdir -p ${HOME}/works && \
 wget https://github.com/th2ch-g/dotfiles/archive/refs/heads/main.zip && \
 unzip main.zip && \
@@ -77,68 +77,68 @@ mv dotfiles-main dotfiles && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
 ./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
-~~~
+```
 
 ### For Guest
 
-~~~shell
+```shell
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --zsh --vim --tmux --neovim
-~~~
+```
 
 ### From Dockerfile
 
 #### Case1: Pull from ghcr
 
-~~~shell
+```shell
 docker pull --platform linux/amd64 ghcr.io/th2ch-g/dotfiles:latest
 docker run --platform linux/amd64 --rm -it ghcr.io/th2ch-g/dotfiles
-~~~
+```
 
 #### Case2: Build locally
 
-~~~shell
+```shell
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 docker image build -t myenv . && \
 docker run --rm -it myenv
-~~~
+```
 
 ## set-url for commit
 
-~~~shell
+```shell
 make s
-~~~
+```
 
 ## Update
 
-~~~shell
+```shell
 make u
-~~~
+```
 
 ## Add release
 
-~~~bash
+```bash
 make r
-~~~
+```
 
 ## Delete release (not recommended)
 
-~~~bash
+```bash
 make delete TAG=vYYYY.MM.DD
-~~~
+```
 
 ## Development setup
 
 Activate pre-commit hooks after cloning:
 
-~~~bash
+```bash
 make setup
-~~~
+```
 
 Run all linters/formatters manually:
 
-~~~bash
+```bash
 make l
-~~~
+```

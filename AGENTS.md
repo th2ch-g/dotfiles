@@ -30,59 +30,59 @@ Installs tools and packages. Must be run from the repository root.
 
 Flags for tool installers (`install_scripts/`):
 
-| Flag | Tool |
-|------|------|
-| `--pixi` | pixi |
-| `--uv` | uv |
-| `--brew` | Homebrew (Mac only) |
-| `--cargo` | Rust toolchain |
-| `--warpd` | warpd (Mac only) |
-| `--claude-code` | claude-code |
-| `--fzf` | fzf |
-| `--vim` | vim |
-| `--nvim` | neovim |
-| `--tmux` | tmux |
-| `--imagemagick` | imagemagick |
-| `--zsh` | zsh |
-| `--node` | Node.js |
-| `--conda` | conda (miniconda) |
-| `--gemini-cli` | gemini-cli |
-| `--git` | git |
-| `--autoconf` | autoconf |
-| `--cmake` | cmake |
-| `--mold` | mold linker |
-| `--less` | less |
-| `--password-store` | password-store |
-| `--supertuxkart` | SuperTuxKart |
+| Flag               | Tool                |
+| ------------------ | ------------------- |
+| `--pixi`           | pixi                |
+| `--uv`             | uv                  |
+| `--brew`           | Homebrew (Mac only) |
+| `--cargo`          | Rust toolchain      |
+| `--warpd`          | warpd (Mac only)    |
+| `--claude-code`    | claude-code         |
+| `--fzf`            | fzf                 |
+| `--vim`            | vim                 |
+| `--nvim`           | neovim              |
+| `--tmux`           | tmux                |
+| `--imagemagick`    | imagemagick         |
+| `--zsh`            | zsh                 |
+| `--node`           | Node.js             |
+| `--conda`          | conda (miniconda)   |
+| `--gemini-cli`     | gemini-cli          |
+| `--git`            | git                 |
+| `--autoconf`       | autoconf            |
+| `--cmake`          | cmake               |
+| `--mold`           | mold linker         |
+| `--less`           | less                |
+| `--password-store` | password-store      |
+| `--supertuxkart`   | SuperTuxKart        |
 
 Flags for package runners (`*/run.sh`):
 
-| Flag | Action |
-|------|--------|
-| `--brew-pkgs` | install Homebrew packages (Mac only) |
-| `--cargo-pkgs` | install cargo packages |
-| `--python3` | install Python packages |
-| `--macos` | configure macOS settings (Mac only) |
-| `--iterm2` | configure iTerm2 (Mac only) |
+| Flag           | Action                               |
+| -------------- | ------------------------------------ |
+| `--brew-pkgs`  | install Homebrew packages (Mac only) |
+| `--cargo-pkgs` | install cargo packages               |
+| `--python3`    | install Python packages              |
+| `--macos`      | configure macOS settings (Mac only)  |
+| `--iterm2`     | configure iTerm2 (Mac only)          |
 
 ## Symlink Targets
 
-| Flag | Source | Destination |
-|------|--------|-------------|
-| `--zsh` | `zsh/` | `~/.config/zsh/`, `~/.zshenv` |
-| `--vim` | `vim/` | `~/.config/vim/` |
-| `--neovim` | `nvim/` | `~/.config/nvim/` |
-| `--git` | `git/` | `~/.config/git/` |
-| `--tmux` | `tmux/` | `~/.config/tmux/` |
-| `--aerospace` | `aerospace/` | `~/.config/aerospace/` |
-| `--alacritty` | `alacritty/` | `~/.config/alacritty/` |
-| `--yabai` | `yabai/` | `~/.config/yabai/` (Mac only, auto-restarts service) |
-| `--skhd` | `skhd/` | `~/.config/skhd/` (Mac only, auto-restarts service) |
-| `--sheldon` | `sheldon/` | `~/.config/sheldon/` |
-| `--claude` | `claude/` | `~/.claude/` |
-| `--gemini` | `gemini/` | `~/.gemini/` |
-| `--codex` | `codex/` | `~/.codex/` |
-| `--ssh` | `ssh/config` | `~/.ssh/config` (copy, not link) |
+| Flag          | Source       | Destination                                          |
+| ------------- | ------------ | ---------------------------------------------------- |
+| `--zsh`       | `zsh/`       | `~/.config/zsh/`, `~/.zshenv`                        |
+| `--vim`       | `vim/`       | `~/.config/vim/`                                     |
+| `--neovim`    | `nvim/`      | `~/.config/nvim/`                                    |
+| `--git`       | `git/`       | `~/.config/git/`                                     |
+| `--tmux`      | `tmux/`      | `~/.config/tmux/`                                    |
+| `--aerospace` | `aerospace/` | `~/.config/aerospace/`                               |
+| `--alacritty` | `alacritty/` | `~/.config/alacritty/`                               |
+| `--yabai`     | `yabai/`     | `~/.config/yabai/` (Mac only, auto-restarts service) |
+| `--skhd`      | `skhd/`      | `~/.config/skhd/` (Mac only, auto-restarts service)  |
+| `--sheldon`   | `sheldon/`   | `~/.config/sheldon/`                                 |
+| `--claude`    | `claude/`    | `~/.claude/`                                         |
+| `--gemini`    | `gemini/`    | `~/.gemini/`                                         |
+| `--codex`     | `codex/`     | `~/.codex/`                                          |
+| `--ssh`       | `ssh/config` | `~/.ssh/config` (copy, not link)                     |
 
 ## Architecture
 
@@ -181,9 +181,11 @@ Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending,
 check-yaml/toml/json, check-added-large-files, check-case-conflict,
 check-merge-conflict, check-symlinks, destroyed-symlinks, detect-private-key,
 check-executables-have-shebangs, check-shebang-scripts-are-executable,
-actionlint, shellcheck (excludes `zsh/`), stylua (for `nvim/*.lua`), shfmt,
-typos, markdownlint-cli2, taplo TOML formatter, bash syntax check, zsh syntax
-check (`zsh/` and `install.sh`).
+check-jsonschema (GitHub workflows), gitleaks, detect-secrets, actionlint,
+shellcheck (excludes `zsh/`), stylua (for `nvim/*.lua`), ruff, ruff-format,
+shfmt, typos, yamllint, markdownlint-cli2, prettier, taplo TOML formatter,
+checkmake, gitlint, bash syntax check, zsh syntax check (`zsh/` and
+`install.sh`).
 
 ## Makefile Shortcuts
 
