@@ -1,0 +1,46 @@
+name: lint
+
+on:
+  # push:
+  #   branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine checkout ref
+        id: ref
+        run: |
+          REF="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          echo "value=${REF}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.ref.outputs.value }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install taplo
+        run: |
+          curl -fsSL https://github.com/tamasfe/taplo/releases/latest/download/taplo-linux-x86_64.gz \
+            | gzip -d | install -m 755 /dev/stdin /usr/local/bin/taplo
+
+      # Pass 1: run and let auto-fixers (shfmt, stylua, etc.) modify files
+      - uses: pre-commit/action@v3.0.1
+        continue-on-error: true
+
+      # Commit any auto-fixed files; [skip ci] prevents re-triggering this workflow
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: auto-fix by pre-commit [skip ci]"
+
+      # Pass 2: verify everything passes (fails if unfixable errors remain)
+      - uses: pre-commit/action@v3.0.1
