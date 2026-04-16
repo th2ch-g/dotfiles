@@ -106,6 +106,12 @@ Flags for package runners (`*/run.sh`):
   - `ensure_bin <path>` — `ln -sf` binary into `$BIN` (default: `$HOME/works/bin`)
   - `detect_nproc` — cross-platform CPU count (macOS: `sysctl -n hw.ncpu`, Linux: `nproc`)
 
+## Gotchas
+
+- `link.sh --codex` copies `codex/` into `~/.codex`; it does not create a symlink.
+- `link.sh --claude` links `claude/` into `~/.claude` and, when `claude` is installed, also registers user-scoped MCP entries with `claude mcp add`.
+- `claude/plugins/cache/` contains vendored plugin cache data; treat it as external snapshot data unless the task explicitly targets plugin cache updates.
+
 ### Install Scripts
 - `install_scripts/*.sh` — individual tool installers (invoked by `install.sh`)
 - Built tools are symlinked into `$BIN` (`$HOME/works/bin`); sources are extracted to `$TOOLS` (`$HOME/works/tools`)
@@ -143,3 +149,13 @@ make l        # runs: pre-commit run --all-files
 ```
 
 Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending, check-yaml/toml/json, check-added-large-files, check-merge-conflict, detect-private-key, check-executables-have-shebangs, check-shebang-scripts-are-executable, shellcheck (excludes `zsh/`), stylua (for `nvim/*.lua`), shfmt, typos, taplo TOML formatter, zsh syntax check (`zsh/` files).
+
+## Makefile Shortcuts
+
+```bash
+make setup
+make l
+make s
+make u
+make delete-release TAG=vYYYY.MM.DD
+```
