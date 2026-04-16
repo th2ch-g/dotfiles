@@ -1,4 +1,4 @@
-.PHONY: help set-url update release delete-release docker docker-pull u r d s
+.PHONY: help set-url update release delete-release docker docker-pull u r d s setup lint l
 
 .DEFAULT_GOAL := help
 
@@ -6,6 +6,7 @@ u: update
 r: release
 d: docker
 s: set-url
+l: lint
 
 # Show this help message
 help:
@@ -34,3 +35,9 @@ delete-release: ## Delete a release tag locally and remotely (usage: make delete
 	@test -n "$(TAG)" || (echo "Error: TAG is required. Usage: make delete-release TAG=vYYYY.MM.DD" && exit 1)
 	git tag -d $(TAG)
 	git push origin --delete $(TAG)
+
+setup: ## Install pre-commit hooks into this repository
+	pre-commit install
+
+lint: ## Run all pre-commit hooks on every file
+	pre-commit run --all-files

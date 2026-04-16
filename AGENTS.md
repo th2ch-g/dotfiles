@@ -127,3 +127,19 @@ TAG=v$(date +'%Y.%m.%d') && git tag -a $TAG -m "Release $TAG" && git push origin
 ```
 
 CI (`.github/workflows/release.yml`) handles Docker image builds on tag push.
+
+## Pre-commit Hooks
+
+This repository uses [pre-commit](https://pre-commit.com/) for automated linting and formatting. Configuration: `.pre-commit-config.yaml`.
+
+After cloning, activate hooks:
+```bash
+make setup    # runs: pre-commit install
+```
+
+Run all hooks manually:
+```bash
+make l        # runs: pre-commit run --all-files
+```
+
+Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending, check-yaml/toml/json, check-added-large-files, check-merge-conflict, detect-private-key, check-executables-have-shebangs, check-shebang-scripts-are-executable, shellcheck (excludes `zsh/`), stylua (for `nvim/*.lua`), shfmt, typos, taplo TOML formatter, zsh syntax check (`zsh/` files).

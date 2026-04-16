@@ -15,6 +15,7 @@
 * [Update](#update)
 * [Add release](#add-release)
 * [Delete release (not recommended)](#delete-release-not-recommended)
+* [Development setup](#development-setup)
 
 <!-- /TOC -->
 
@@ -35,7 +36,8 @@ cd ./dotfiles && \
 ./link.sh --zsh && \
 ./install.sh --pixi --uv --cargo --cargo-pkgs --brew --brew-pkgs --warpd --claude-code --python3 --iterm2 --macos && \
 ./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
-git remote set-url origin git@github.com:th2ch-g/dotfiles.git
+git remote set-url origin git@github.com:th2ch-g/dotfiles.git && \
+pre-commit install
 ~~~
 
 - Install on local via SSH
@@ -110,4 +112,15 @@ make r
 ## Delete release (not recommended)
 ```bash
 make delete TAG=vYYYY.MM.DD
+```
+
+## Development setup
+Activate pre-commit hooks after cloning:
+```bash
+make setup
+```
+
+Run all linters/formatters manually:
+```bash
+make l
 ```

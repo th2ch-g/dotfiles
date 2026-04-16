@@ -117,7 +117,7 @@ fi
 # basic
 setopt auto_cd
 setopt auto_pushd
-setopt correct
+# setopt correct
 setopt ignore_eof
 setopt no_beep
 setopt pushd_ignore_dups
