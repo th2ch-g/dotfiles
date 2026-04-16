@@ -24,7 +24,15 @@ repos:
 
   - repo: meta
     hooks:
+      - id: check-hooks-apply
       - id: check-useless-excludes
+
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.14.0
+    hooks:
+      - id: hadolint-docker
+        args: ['--config', '.hadolint.yaml']
+        files: ^Dockerfile$
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2
@@ -99,6 +107,27 @@ repos:
         entry: taplo fmt
         language: system
         types: [toml]
+
+      - id: sort-brewfile
+        name: sort brewfile
+        language: system
+        entry: lib/check_sorted.sh brewfile
+        files: ^brew/Brewfile$
+        types: [file]
+
+      - id: sort-cargo-list
+        name: sort cargo list
+        language: system
+        entry: lib/check_sorted.sh plain
+        files: ^cargo/list\.txt$
+        types: [file]
+
+      - id: sort-python-requirements
+        name: sort python requirements
+        language: system
+        entry: lib/check_sorted.sh plain
+        files: ^python3/requirements\.txt$
+        types: [file]
 
       - id: zsh-syntax-check
         name: zsh syntax check
