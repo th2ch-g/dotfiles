@@ -10,10 +10,18 @@ repos:
       - id: check-toml
       - id: check-json
       - id: check-added-large-files
+      - id: check-case-conflict
       - id: check-merge-conflict
+      - id: check-symlinks
+      - id: destroyed-symlinks
       - id: detect-private-key
       - id: check-executables-have-shebangs
       - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.8
+    hooks:
+      - id: actionlint
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
@@ -42,8 +50,20 @@ repos:
     hooks:
       - id: typos
 
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+      - id: markdownlint-cli2
+
   - repo: local
     hooks:
+      - id: bash-syntax-check
+        name: bash syntax check
+        language: system
+        entry: bash -n
+        files: ^(link\.sh|lib/.*\.sh|install_scripts/.*\.sh|.*/run\.sh)$
+        types: [file]
+
       - id: toml-format
         name: toml format
         entry: taplo fmt
@@ -54,5 +74,5 @@ repos:
         name: zsh syntax check
         language: system
         entry: zsh -n
-        files: ^zsh/
+        files: ^(zsh/|install\.sh$)
         types: [file]

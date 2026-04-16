@@ -28,6 +28,14 @@ jobs:
         with:
           python-version: "3.x"
 
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "stable"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
       - name: Install system dependencies
         run: |
           sudo apt-get install -y zsh
