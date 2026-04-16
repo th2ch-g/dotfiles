@@ -1,6 +1,11 @@
-.PHONY: help set-url update release delete-release docker docker-pull u r d s setup lint l
+.PHONY: all test clean help set-url update release delete-release docker docker-pull u r d s setup lint l
 
 .DEFAULT_GOAL := help
+
+all: help
+test: lint
+clean: ## Clean generated local caches when present
+	rm -rf .pytest_cache .mypy_cache .ruff_cache
 
 u: update
 r: release
@@ -37,7 +42,7 @@ delete-release: ## Delete a release tag locally and remotely (usage: make delete
 	git push origin --delete $(TAG)
 
 setup: ## Install pre-commit hooks into this repository
-	pre-commit install
+	pre-commit install --install-hooks
 
 lint: ## Run all pre-commit hooks on every file
 	pre-commit run --all-files
