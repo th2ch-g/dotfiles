@@ -1,0 +1,5 @@
+[default.extend-words]
+# Apple iTerm2 plist key name (cannot be changed)
+Interpeter = "Interpeter"
+# tre-command is the actual crate name on crates.io
+tre = "tre"

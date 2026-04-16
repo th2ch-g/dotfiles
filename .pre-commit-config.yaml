@@ -37,8 +37,19 @@ repos:
       - id: shfmt
         args: [-i, "4", -ci, -sr, -w]
 
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.45.1
+    hooks:
+      - id: typos
+
   - repo: local
     hooks:
+      - id: toml-format
+        name: toml format
+        entry: taplo fmt
+        language: system
+        types: [toml]
+
       - id: zsh-syntax-check
         name: zsh syntax check
         language: system
