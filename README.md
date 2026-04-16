@@ -1,32 +1,36 @@
 # dotfiles
+
 ![last-commit](https://img.shields.io/github/last-commit/th2ch-g/dotfiles)
 ![license](https://img.shields.io/github/license/th2ch-g/dotfiles)
 ![repo-size](https://img.shields.io/github/repo-size/th2ch-g/dotfiles)
 
 <!-- TOC GFM -->
 
-* [Install](#install)
-    * [For me](#for-me)
-    * [For Guest](#for-guest)
-    * [From Dockerfile](#from-dockerfile)
-        * [Case1: Pull from ghcr](#case1-pull-from-ghcr)
-        * [Case2: Build locally](#case2-build-locally)
-* [set-url for commit](#set-url-for-commit)
-* [Update](#update)
-* [Add release](#add-release)
-* [Delete release (not recommended)](#delete-release-not-recommended)
-* [Development setup](#development-setup)
+- [Install](#install)
+  - [For me](#for-me)
+  - [For Guest](#for-guest)
+  - [From Dockerfile](#from-dockerfile)
+    - [Case1: Pull from ghcr](#case1-pull-from-ghcr)
+    - [Case2: Build locally](#case2-build-locally)
+- [set-url for commit](#set-url-for-commit)
+- [Update](#update)
+- [Add release](#add-release)
+- [Delete release (not recommended)](#delete-release-not-recommended)
+- [Development setup](#development-setup)
 
 <!-- /TOC -->
 
 ## Install
 
 ### For me
+
 - Bootstrap Installation on local
   - Prerequisite: git, zsh (check by `git --version && zsh --version`)
     - macos: `xcode-select --install`
-      - **DO NOT** launch zsh in other terminal until the installation is done (up to brew) because of OpenSSL issue
-    - linux: `sudo apt install zsh git` or manually install by `install_scripts/`
+      - **DO NOT** launch zsh in other terminal until the installation is done
+        (up to brew) because of OpenSSL issue
+    - linux: `sudo apt install zsh git` or manually install by
+      `install_scripts/`
 
 ~~~shell
 mkdir -p ${HOME}/works && \
@@ -41,6 +45,7 @@ pre-commit install
 ~~~
 
 - Install on local via SSH
+
 ~~~shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
@@ -51,6 +56,7 @@ cd ./dotfiles && \
 ~~~
 
 - Install on local via HTTPS
+
 ~~~shell
 mkdir -p ${HOME}/works && \
 cd ${HOME}/works && \
@@ -61,6 +67,7 @@ cd ./dotfiles && \
 ~~~
 
 - Install without git
+
 ~~~shell
 mkdir -p ${HOME}/works && \
 wget https://github.com/th2ch-g/dotfiles/archive/refs/heads/main.zip && \
@@ -73,6 +80,7 @@ cd ./dotfiles && \
 ~~~
 
 ### For Guest
+
 ~~~shell
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
@@ -80,13 +88,16 @@ cd ./dotfiles && \
 ~~~
 
 ### From Dockerfile
+
 #### Case1: Pull from ghcr
+
 ~~~shell
 docker pull --platform linux/amd64 ghcr.io/th2ch-g/dotfiles:latest
 docker run --platform linux/amd64 --rm -it ghcr.io/th2ch-g/dotfiles
 ~~~
 
 #### Case2: Build locally
+
 ~~~shell
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
@@ -95,32 +106,39 @@ docker run --rm -it myenv
 ~~~
 
 ## set-url for commit
+
 ~~~shell
 make s
 ~~~
 
 ## Update
+
 ~~~shell
 make u
 ~~~
 
 ## Add release
-```bash
+
+~~~bash
 make r
-```
+~~~
 
 ## Delete release (not recommended)
-```bash
+
+~~~bash
 make delete TAG=vYYYY.MM.DD
-```
+~~~
 
 ## Development setup
+
 Activate pre-commit hooks after cloning:
-```bash
+
+~~~bash
 make setup
-```
+~~~
 
 Run all linters/formatters manually:
-```bash
+
+~~~bash
 make l
-```
+~~~

@@ -54,6 +54,7 @@ repos:
     rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
+        exclude: ^claude/CLAUDE.md$
 
   - repo: local
     hooks:

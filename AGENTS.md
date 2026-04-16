@@ -2,11 +2,14 @@
 
 ## Overview
 
-Personal dotfiles repository for macOS and Linux. The core mechanism is `link.sh`, which creates symlinks from this repository into `~/.config/` (XDG_CONFIG_HOME) and `$HOME`.
+Personal dotfiles repository for macOS and Linux. The core mechanism is
+`link.sh`, which creates symlinks from this repository into `~/.config/`
+(XDG_CONFIG_HOME) and `$HOME`.
 
 ## Key Scripts
 
 ### `link.sh` — Dotfiles linker
+
 Must be run from the repository root. Links individual tool configs via flags:
 
 ```bash
@@ -16,6 +19,7 @@ Must be run from the repository root. Links individual tool configs via flags:
 ```
 
 ### `install.sh` — Bootstrap installer
+
 Installs tools and packages. Must be run from the repository root.
 
 ```bash
@@ -83,39 +87,59 @@ Flags for package runners (`*/run.sh`):
 ## Architecture
 
 ### zsh
+
 - Entry: `zsh/.zshenv` → sets `ZDOTDIR`, loads `zsh/.zshrc`
-- Plugin manager: [sheldon](https://sheldon.cli.rs/) with cache at `zsh/sheldon_cache.zsh`
-- Local overrides: `zsh/.zshrc_local`, `zsh/.zshenv_local` (machine-specific, not committed)
+- Plugin manager: [sheldon](https://sheldon.cli.rs/) with cache at
+  `zsh/sheldon_cache.zsh`
+- Local overrides: `zsh/.zshrc_local`, `zsh/.zshenv_local`
+  (machine-specific, not committed)
 - `.zshrc` files are compiled to `.zwc` on change for faster startup
 
 ### Neovim
+
 - Single file config: `nvim/init.lua`
-- Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim) (auto-installed on first run)
+- Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim)
+  (auto-installed on first run)
 - Lock file: `nvim/lazy-lock.json`
 
 ### Vim
+
 - Config: `vim/vimrc`
-- Plugin manager: vim-jetpack (stored as git submodule under `vim/pack/jetpack/`)
+- Plugin manager: vim-jetpack
+  (stored as git submodule under `vim/pack/jetpack/`)
 
 ### Shared Utilities
-- `lib/utils.sh` — sourced by `install.sh`, `link.sh`, and all `install_scripts/*.sh`; provides:
+
+- `lib/utils.sh` — sourced by `install.sh`, `link.sh`, and all
+  `install_scripts/*.sh`; provides:
   - `detect_os` → `$OS`: `Mac`/`Linux`/`Cygwin`
   - `print_info` / `print_warn` / `print_error` — logging helpers
   - `need_cmd <cmd>` — check if command exists on PATH
   - `skip_if_installed <cmd>` — exit 0 with message if already installed
-  - `ensure_bin <path>` — `ln -sf` binary into `$BIN` (default: `$HOME/works/bin`)
-  - `detect_nproc` — cross-platform CPU count (macOS: `sysctl -n hw.ncpu`, Linux: `nproc`)
+  - `ensure_bin <path>` — `ln -sf` binary into `$BIN`
+    (default: `$HOME/works/bin`)
+  - `detect_nproc` — cross-platform CPU count
+    (macOS: `sysctl -n hw.ncpu`, Linux: `nproc`)
 
 ## Gotchas
 
-- `link.sh --codex` copies `codex/` into `~/.codex`; it does not create a symlink.
-- `link.sh --claude` links `claude/` into `~/.claude` and, when `claude` is installed, also registers user-scoped MCP entries with `claude mcp add`.
-- `claude/plugins/cache/` contains vendored plugin cache data; treat it as external snapshot data unless the task explicitly targets plugin cache updates.
+- `link.sh --codex` copies `codex/` into `~/.codex`; it does not create
+  a symlink.
+- `link.sh --claude` links `claude/` into `~/.claude` and, when `claude`
+  is installed, also registers user-scoped MCP entries with
+  `claude mcp add`.
+- `claude/plugins/cache/` contains vendored plugin cache data; treat it as
+  external snapshot data unless the task explicitly targets plugin cache
+  updates.
 
 ### Install Scripts
-- `install_scripts/*.sh` — individual tool installers (invoked by `install.sh`)
-- Built tools are symlinked into `$BIN` (`$HOME/works/bin`); sources are extracted to `$TOOLS` (`$HOME/works/tools`)
-- All scripts source `lib/utils.sh` via `$DOTFILES_DIR`; re-running is safe (idempotency checks built in)
+
+- `install_scripts/*.sh` — individual tool installers
+  (invoked by `install.sh`)
+- Built tools are symlinked into `$BIN` (`$HOME/works/bin`); sources are
+  extracted to `$TOOLS` (`$HOME/works/tools`)
+- All scripts source `lib/utils.sh` via `$DOTFILES_DIR`; re-running is safe
+  (idempotency checks built in)
 - `brew/run.sh` — Homebrew package list
 - `cargo/run.sh` — Cargo package list (use `--cargo-pkgs` flag)
 - `python3/run.sh` — Python package installs
@@ -123,6 +147,7 @@ Flags for package runners (`*/run.sh`):
 ## Local Customization Pattern
 
 Machine-specific settings go in untracked local files:
+
 - `zsh/.zshrc_local` — extra zsh config
 - `zsh/.zshenv_local` — extra env vars (e.g., `PATH` additions)
 
@@ -132,23 +157,33 @@ Machine-specific settings go in untracked local files:
 TAG=v$(date +'%Y.%m.%d') && git tag -a $TAG -m "Release $TAG" && git push origin $TAG
 ```
 
-CI (`.github/workflows/release.yml`) handles Docker image builds on tag push.
+CI (`.github/workflows/release.yml`) handles Docker image builds on
+tag push.
 
 ## Pre-commit Hooks
 
-This repository uses [pre-commit](https://pre-commit.com/) for automated linting and formatting. Configuration: `.pre-commit-config.yaml`.
+This repository uses [pre-commit](https://pre-commit.com/) for automated
+linting and formatting. Configuration: `.pre-commit-config.yaml`.
 
 After cloning, activate hooks:
+
 ```bash
 make setup    # runs: pre-commit install
 ```
 
 Run all hooks manually:
+
 ```bash
 make l        # runs: pre-commit run --all-files
 ```
 
-Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending, check-yaml/toml/json, check-added-large-files, check-merge-conflict, detect-private-key, check-executables-have-shebangs, check-shebang-scripts-are-executable, shellcheck (excludes `zsh/`), stylua (for `nvim/*.lua`), shfmt, typos, taplo TOML formatter, zsh syntax check (`zsh/` files).
+Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending,
+check-yaml/toml/json, check-added-large-files, check-case-conflict,
+check-merge-conflict, check-symlinks, destroyed-symlinks, detect-private-key,
+check-executables-have-shebangs, check-shebang-scripts-are-executable,
+actionlint, shellcheck (excludes `zsh/`), stylua (for `nvim/*.lua`), shfmt,
+typos, markdownlint-cli2, taplo TOML formatter, bash syntax check, zsh syntax
+check (`zsh/` and `install.sh`).
 
 ## Makefile Shortcuts
 
