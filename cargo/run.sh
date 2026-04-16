@@ -28,4 +28,3 @@ do
     fi
 done \
     && echo "[INFO] cargo-install-list done" >&1
-

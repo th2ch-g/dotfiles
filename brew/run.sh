@@ -12,4 +12,4 @@ brew bundle
 # yabai --restart-service
 # skhd --restart-service
 
-echo done
+echo "done"

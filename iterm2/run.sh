@@ -7,4 +7,4 @@ defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$WORKS/dotfiles/
 
 defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
 
-echo done
+echo "done"

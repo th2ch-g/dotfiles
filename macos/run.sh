@@ -129,8 +129,8 @@ if [ $dockutil_flag -eq 0 ]; then
         dockutil --add '/Applications/iTerm.app' --allhomes --no-restart
         dockutil --add '/Applications/Docker.app' --allhomes --no-restart
         dockutil --add '/Applications/Utilities/XQuartz.app' --allhomes --no-restart
-        dockutil --add '~/Desktop' --allhomes --no-restart
-        dockutil --add '~/Downloads' --allhomes --no-restart
+        dockutil --add "$HOME/Desktop" --allhomes --no-restart
+        dockutil --add "$HOME/Downloads" --allhomes --no-restart
         killall Dock
     else
         echo "please install dockutil using brew" >&2

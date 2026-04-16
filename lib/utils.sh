@@ -8,6 +8,7 @@ print_error() { echo "[ERROR] $1" >&2; }
 # Sets global OS variable to 'Mac', 'Linux', or 'Cygwin'.
 # Exits with error if the platform is unsupported.
 detect_os() {
+    # shellcheck disable=SC2034  # OS is used by callers that source this file
     case "$(uname -s)" in
         Darwin)       OS='Mac'    ;;
         Linux*)       OS='Linux'  ;;

@@ -20,5 +20,3 @@ Host github github.com
 #     IdentityFile /path/to/id_rsa
 #     LocalForward 10993 mail.example.com:993
 #     LocalForward 10025 mail.example.com:25
-
-

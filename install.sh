@@ -206,10 +206,9 @@ arch=$(uname -m)
 print_info "detect $arch CPU"
 
 prepare_common_dirs() {
-    arr=( $MISC $TOOLS $OTHERS $BIN $SHARE $MNT )
-    for i in ${arr[@]};
-    do
-        mkdir -p $i
+    arr=( "$MISC" "$TOOLS" "$OTHERS" "$BIN" "$SHARE" "$MNT" )
+    for i in "${arr[@]}"; do
+        mkdir -p "$i"
     done
 }
 
