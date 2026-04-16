@@ -52,7 +52,7 @@ RUN ./install.sh \
         --pixi \
         --python3 \
         --uv \
-        --vim \
+        --vim
         # --autoconf \
         # --brew \
         # --brew-pkgs \
