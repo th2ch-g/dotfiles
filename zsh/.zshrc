@@ -382,10 +382,7 @@ calc() {
 }
 
 update_dotfiles() {
-    CWD=$PWD
-    cd $WORKS/dotfiles
-    git pull
-    cd $CWD
+    git -C $WORKS/dotfiles pull
     echo "[INFO] dotfiles is updated" >&1
 }
 
