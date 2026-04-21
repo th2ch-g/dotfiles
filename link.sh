@@ -287,6 +287,8 @@ if has_tool claude; then
         #     --project . \
         #     --enable-web-dashboard false
 
+        # claude mcp add playwright npx @playwright/mcp@latest
+
         # essential skills
         # claude plugin marketplace add anthropics/skills
         # claude plugin install document-skills@anthropic-agent-skills

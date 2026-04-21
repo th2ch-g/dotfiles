@@ -25,24 +25,41 @@ case "$mode" in
         ;;
 esac
 
-status=0
-
 for file in "$@"; do
     actual=$(mktemp)
-    expected=$(mktemp)
+    sorted=$(mktemp)
+    rewritten=$(mktemp)
 
     if ! grep -E "$filter" "$file" > "$actual"; then
         : > "$actual"
     fi
 
-    LC_ALL=C sort "${sort_args[@]}" "$actual" > "$expected"
+    LC_ALL=C sort "${sort_args[@]}" "$actual" > "$sorted"
 
-    if ! diff -u "$expected" "$actual"; then
-        echo "Please sort $file with the documented order." >&2
-        status=1
+    if ! cmp -s "$actual" "$sorted"; then
+        awk -v filter="$filter" -v sorted_file="$sorted" '
+            BEGIN {
+                while ((getline line < sorted_file) > 0) {
+                    sorted[++count] = line
+                }
+                close(sorted_file)
+            }
+            $0 ~ filter {
+                print sorted[++line_index]
+                next
+            }
+            { print }
+            END {
+                if (line_index != count) {
+                    exit 1
+                }
+            }
+        ' "$file" > "$rewritten"
+        cat "$rewritten" > "$file"
+        echo "Sorted $file" >&2
     fi
 
-    rm -f "$actual" "$expected"
+    rm -f "$actual" "$sorted" "$rewritten"
 done
 
-exit "$status"
+exit 0

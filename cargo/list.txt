@@ -54,6 +54,7 @@ https://github.com/junhoyeo/tokscale.git                            # A CLI tool
 https://github.com/mogura-rs/mdtraj-rs                              # Implementation of MDTraj in Rust
 https://github.com/mogura-rs/mmterm-rs                              # Rust implementation of https://github.com/jgreener64/mmterm
 https://github.com/nooscraft/tokuin                                 # CLI tool – estimates LLM tokens/costs and runs provider-aware load tests for OpenAI, Anthropic, OpenRouter, or custom endpoints.
+https://github.com/pamburus/termframe.git                           # Terminal output SVG screenshot tool
 https://github.com/sib-swiss/termal.git                             # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
 https://github.com/tsaitoh/concal.git concal                        # Contribution calendar for local repository
