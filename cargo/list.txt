@@ -58,6 +58,7 @@ https://github.com/pamburus/termframe.git                           # Terminal o
 https://github.com/sib-swiss/termal.git                             # Termal: a fast and interactive terminal-based viewer for multiple sequence alignments
 https://github.com/th2ch-g/kanban.git kanban                        # Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
 https://github.com/tsaitoh/concal.git concal                        # Contribution calendar for local repository
+https://github.com/uutils/coreutils coreutils                       # Cross-platform Rust rewrite of the GNU coreutils
 https://github.com/zmactep/pymol-rs                                 # A Rust reimplementation of PyMOL molecular visualization
 hyperfine                                                           # A command-line benchmarking tool
 jaq                                                                 # A jq clone focussed on correctness, speed, and simplicity
