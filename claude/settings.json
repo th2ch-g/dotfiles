@@ -7,9 +7,9 @@
     "DISABLE_BUG_COMMAND": "1",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "ENABLE_TOOL_SEARCH": "true"
   },
-  "model": "opusplan",
   "hooks": {
     "PostToolUseFailure": [
       {
@@ -118,10 +118,10 @@
   },
   "outputStyle": "Explanatory",
   "language": "ja",
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
+  "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
-  "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "showTurnDuration": true,
-  "advisorModel": "opus"
+  "voiceEnabled": true
 }
