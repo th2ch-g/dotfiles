@@ -221,36 +221,36 @@ if use_plugins == 1 then
         --         })
         --     end,
         -- })
-        table.insert(plugins, {
-            "Exafunction/codeium.vim",
-            event = "BufEnter",
-            config = function()
-                vim.g.codeium_disable_bindings = 1
-                vim.keymap.set("i", "<C-f>", function()
-                    return vim.fn["codeium#Accept"]()
-                end, { silent = true, nowait = true, expr = true })
-                vim.keymap.set("i", "<C-k>", function()
-                    return vim.fn["codeium#AcceptNextWord"]()
-                end, { silent = true, nowait = true, expr = true })
-                vim.keymap.set("i", "<C-l>", function()
-                    return vim.fn["codeium#AcceptNextLine"]()
-                end, { silent = true, nowait = true, expr = true })
-                vim.keymap.set(
-                    "i",
-                    "<C-]>",
-                    "<Cmd>call codeium#CycleCompletions(1)<CR>",
-                    { silent = true, nowait = true }
-                )
-                vim.keymap.set(
-                    "i",
-                    "<C-[>",
-                    "<Cmd>call codeium#CycleCompletions(-1)<CR>",
-                    { silent = true, nowait = true }
-                )
-                vim.keymap.set("i", "<C-d>", "<Cmd>call codeium#Clear()<CR>", { silent = true, nowait = true })
-                vim.opt.statusline = vim.opt.statusline:get() .. " %3{codeium#GetStatusString()}"
-            end,
-        })
+        -- table.insert(plugins, {
+        --     "Exafunction/codeium.vim",
+        --     event = "BufEnter",
+        --     config = function()
+        --         vim.g.codeium_disable_bindings = 1
+        --         vim.keymap.set("i", "<C-f>", function()
+        --             return vim.fn["codeium#Accept"]()
+        --         end, { silent = true, nowait = true, expr = true })
+        --         vim.keymap.set("i", "<C-k>", function()
+        --             return vim.fn["codeium#AcceptNextWord"]()
+        --         end, { silent = true, nowait = true, expr = true })
+        --         vim.keymap.set("i", "<C-l>", function()
+        --             return vim.fn["codeium#AcceptNextLine"]()
+        --         end, { silent = true, nowait = true, expr = true })
+        --         vim.keymap.set(
+        --             "i",
+        --             "<C-]>",
+        --             "<Cmd>call codeium#CycleCompletions(1)<CR>",
+        --             { silent = true, nowait = true }
+        --         )
+        --         vim.keymap.set(
+        --             "i",
+        --             "<C-[>",
+        --             "<Cmd>call codeium#CycleCompletions(-1)<CR>",
+        --             { silent = true, nowait = true }
+        --         )
+        --         vim.keymap.set("i", "<C-d>", "<Cmd>call codeium#Clear()<CR>", { silent = true, nowait = true })
+        --         vim.opt.statusline = vim.opt.statusline:get() .. " %3{codeium#GetStatusString()}"
+        --     end,
+        -- })
         -- table.insert(plugins, {
         --     "yetone/avante.nvim",
         --     event = "VeryLazy",
