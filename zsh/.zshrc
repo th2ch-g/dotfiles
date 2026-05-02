@@ -166,6 +166,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # alias
 # mkdir alias
 alias mkdir="mkdir -p"
+alias mkdird="mkdir -p $(date +'%Y.%-m.%-d')"
 
 # cd alias
 alias .....="cd ../../../../"
@@ -297,10 +298,10 @@ cld() {
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
         --allow $HOME/.codex \
+        --allow $HOME/.kaggle \
         --profile claude-code \
         -v \
         -- claude \
-        --model opusplan \
         --permission-mode bypassPermissions \
         --allow-dangerously-skip-permissions \
         --dangerously-skip-permissions \
@@ -322,12 +323,12 @@ cdx() {
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
+        --allow $HOME/.kaggle \
         --profile codex \
         -v \
         -- codex \
         --dangerously-bypass-approvals-and-sandbox \
         --no-alt-screen \
-        -c model_reasoning_effort=high \
         "$@"
 }
 
