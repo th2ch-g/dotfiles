@@ -10,34 +10,7 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "ENABLE_TOOL_SEARCH": "true"
   },
-  "hooks": {
-    "PostToolUseFailure": [
-      {
-        "matcher": "Read|Write|Edit|Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/nono-hook.sh"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "file=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // empty'); [[ \"$file\" == *.lua ]] && stylua --indent-type Spaces --indent-width 4 \"$file\" || true"
-          },
-          {
-            "type": "command",
-            "command": "file=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // empty'); [[ \"$file\" == *.toml ]] && taplo fmt \"$file\" || true"
-          }
-        ]
-      }
-    ]
-  },
+  "hooks": {},
   "enabledPlugins": {
     "document-skills@anthropic-agent-skills": true,
     "example-skills@anthropic-agent-skills": false,
@@ -63,7 +36,7 @@
     "hookify@claude-plugins-official": true,
     "jdtls-lsp@claude-plugins-official": false,
     "kotlin-lsp@claude-plugins-official": false,
-    "learning-output-style@claude-plugins-official": true,
+    "learning-output-style@claude-plugins-official": false,
     "linear@claude-plugins-official": false,
     "lua-lsp@claude-plugins-official": false,
     "php-lsp@claude-plugins-official": false,
@@ -122,6 +95,7 @@
   "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
+  "verbose": false,
   "showTurnDuration": true,
   "voiceEnabled": true
 }
