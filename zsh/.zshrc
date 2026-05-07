@@ -271,6 +271,18 @@ dont_sleep() {
 }
 
 sandbox() {
+    # Generic nono runner. On macOS, override the keychain deny for the
+    # single login keychain file so tools that depend on macOS keychain
+    # auth (gh, aws, etc.) can read tokens. On Linux, the equivalent
+    # keychain paths differ and are not blanket-denied here, so no
+    # override is needed.
+    local keychain_args=()
+    if [[ $(uname) == "Darwin" ]]; then
+        keychain_args=(
+            --override-deny "$HOME/Library/Keychains/login.keychain-db"
+            --read-file "$HOME/Library/Keychains/login.keychain-db"
+        )
+    fi
     nono run \
         --allow-cwd \
         --read $BIN \
@@ -282,11 +294,27 @@ sandbox() {
         --read $CONFIG/gh \
         --allow $HOME/.cache \
         --allow $HOME/.local/share \
+        "${keychain_args[@]}" \
         -v \
         -- $@
 }
 
 cld() {
+    # Skip --profile claude-code: that profile auto-installs nono-hook.sh
+    # into ~/.claude/settings.json, which is symlinked to this dotfiles repo.
+    # Falls back to the default profile and adds Claude paths explicitly.
+    # On macOS the login keychain holds the auth token; the default
+    # profile's deny_keychains_macos group blocks the parent dir, so the
+    # deny is overridden for the single keychain file. On Linux, claude
+    # stores its credentials under $HOME/.local/share/claude, which is
+    # already covered by --allow $HOME/.local/share below.
+    local keychain_args=()
+    if [[ $(uname) == "Darwin" ]]; then
+        keychain_args=(
+            --override-deny "$HOME/Library/Keychains/login.keychain-db"
+            --read-file "$HOME/Library/Keychains/login.keychain-db"
+        )
+    fi
     nono run \
         --allow-cwd \
         --read $BIN \
@@ -299,7 +327,10 @@ cld() {
         --allow $HOME/.serena \
         --allow $HOME/.codex \
         --allow $HOME/.kaggle \
-        --profile claude-code \
+        --allow $HOME/.claude \
+        --allow-file $HOME/.claude.json \
+        --allow-file $HOME/.claude.json.lock \
+        "${keychain_args[@]}" \
         -v \
         -- claude \
         --permission-mode bypassPermissions \
@@ -312,6 +343,21 @@ cld() {
 
 
 cdx() {
+    # Skip --profile codex for consistency with cld(): rely on the default
+    # profile and add codex paths explicitly. ~/.codex is copy-deployed
+    # (not symlinked) so hook injection is not a concern, but keeping the
+    # invocation style uniform makes the allow-set easier to audit.
+    # On macOS the login keychain holds the OAuth token; default profile
+    # denies the parent dir, so the deny is overridden for the single
+    # keychain file. On Linux, codex auth lives in $HOME/.codex which is
+    # already covered by --allow $HOME/.codex.
+    local keychain_args=()
+    if [[ $(uname) == "Darwin" ]]; then
+        keychain_args=(
+            --override-deny "$HOME/Library/Keychains/login.keychain-db"
+            --read-file "$HOME/Library/Keychains/login.keychain-db"
+        )
+    fi
     nono run \
         --allow-cwd \
         --read $BIN \
@@ -324,7 +370,8 @@ cdx() {
         --allow $HOME/.local/share \
         --allow $HOME/.serena \
         --allow $HOME/.kaggle \
-        --profile codex \
+        --allow $HOME/.codex \
+        "${keychain_args[@]}" \
         -v \
         -- codex \
         --dangerously-bypass-approvals-and-sandbox \
