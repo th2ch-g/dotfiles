@@ -91,7 +91,7 @@
   },
   "outputStyle": "Explanatory",
   "language": "ja",
-  "effortLevel": "xhigh",
+  "effortLevel": "max",
   "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
