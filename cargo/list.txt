@@ -48,6 +48,7 @@ gitui                                                               # Blazing fa
 grex                                                                # A command-line tool and Rust library with Python bindings for generating regular expressions from user-provided test cases
 https://github.com/001TMF/ProteinView.git fetch                     # Terminal protein structure viewer — interactive 3D visualization of PDB/mmCIF structures with cartoon ribbons, braille rendering, and Sixel/Kitty graphics
 https://github.com/devmatteini/dra.git dra                          # A command line tool to download release assets from GitHub
+https://github.com/googleworkspace/cli                              # Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.
 https://github.com/imsnif/bandwhich.git                             # Terminal bandwidth utilization tool
 https://github.com/itsjunetime/tdf.git                              # A tui-based PDF viewer
 https://github.com/junhoyeo/tokscale.git                            # A CLI tool for tracking token usage from OpenCode, Claude Code, OpenClaw (Clawdbot/Moltbot), Pi, Codex, Gemini, Cursor, AmpCode, Factory Droid, Kimi, and more! • Global Leaderboard + 2D/3D Contributions Graph
