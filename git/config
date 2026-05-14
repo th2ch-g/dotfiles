@@ -25,3 +25,5 @@
 
 # [commit]
 #     template = ~/.config/git/commit.template
+[push]
+	autoSetupRemote = true
