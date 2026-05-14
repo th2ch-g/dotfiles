@@ -346,6 +346,16 @@ if has_tool claude; then
         # claude plugin install swift-lsp@claude-plugins-official
         # claude plugin install typescript-lsp@claude-plugins-official
         # claude plugin install vercel@claude-plugins-official
+
+        claude plugin marketplace add anthropics/claude-for-legal
+        for p in commercial-legal corporate-legal privacy-legal product-legal employment-legal ai-governance-legal regulatory-legal ip-legal litigation-legal legal-clinic law-student legal-builder-hub cocounsel-legal; do
+            claude plugin install "$p@claude-for-legal"
+        done
+
+        claude plugin marketplace add anthropics/knowledge-work-plugins
+        for p in productivity sales customer-support product-management marketing legal finance data enterprise-search bio-research cowork-plugin-management; do
+            claude plugin install "$p@knowledge-work-plugins"
+        done
         set -e
     fi
 fi

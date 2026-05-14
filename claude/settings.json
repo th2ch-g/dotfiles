@@ -62,7 +62,31 @@
     "investment-banking@financial-services-plugins": false,
     "private-equity@financial-services-plugins": false,
     "wealth-management@financial-services-plugins": false,
-    "codex@openai-codex": true
+    "codex@openai-codex": true,
+    "commercial-legal@claude-for-legal": false,
+    "corporate-legal@claude-for-legal": false,
+    "privacy-legal@claude-for-legal": false,
+    "product-legal@claude-for-legal": false,
+    "employment-legal@claude-for-legal": false,
+    "ai-governance-legal@claude-for-legal": false,
+    "regulatory-legal@claude-for-legal": false,
+    "ip-legal@claude-for-legal": false,
+    "litigation-legal@claude-for-legal": false,
+    "legal-clinic@claude-for-legal": false,
+    "law-student@claude-for-legal": false,
+    "legal-builder-hub@claude-for-legal": false,
+    "cocounsel-legal@claude-for-legal": false,
+    "productivity@knowledge-work-plugins": true,
+    "sales@knowledge-work-plugins": false,
+    "customer-support@knowledge-work-plugins": false,
+    "product-management@knowledge-work-plugins": false,
+    "marketing@knowledge-work-plugins": false,
+    "legal@knowledge-work-plugins": false,
+    "finance@knowledge-work-plugins": false,
+    "data@knowledge-work-plugins": false,
+    "enterprise-search@knowledge-work-plugins": false,
+    "bio-research@knowledge-work-plugins": false,
+    "cowork-plugin-management@knowledge-work-plugins": false
   },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
@@ -87,6 +111,18 @@
       "source": {
         "source": "github",
         "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "claude-for-legal": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-for-legal"
+      }
+    },
+    "knowledge-work-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/knowledge-work-plugins"
       }
     }
   },
