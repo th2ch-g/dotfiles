@@ -131,6 +131,7 @@
   "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
   "verbose": false,
   "showTurnDuration": true,
   "voiceEnabled": true
