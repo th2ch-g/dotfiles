@@ -10,5 +10,6 @@ markitdown[all]
 maturin
 nvitop
 openshell
+pre-commit
 rendercv[full]
 terminaltexteffects
