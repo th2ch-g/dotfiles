@@ -22,11 +22,12 @@ USAGE:
 EXAMPLE:
     ./install.sh
     ./install.sh --pixi --uv --python3
-    ./install.sh --vim --nvim --cargo --python3
+    ./install.sh --pixi --pixi-pkgs --cargo --cargo-pkgs
 
 OPTIONS:
     -h, --help          print help
         --pixi          install pixi
+        --pixi-pkgs     install pixi global packages
         --uv            install uv
         --brew          install Homebrew (Mac only)
         --brew-pkgs     install Homebrew packages (Mac only)
@@ -34,20 +35,9 @@ OPTIONS:
         --cargo-pkgs    install cargo packages
         --warpd         install warpd (Mac only)
         --claude-code   install claude-code
-        --fzf           install fzf
-        --vim           install vim
-        --nvim          install neovim
-        --tmux          install tmux
-        --imagemagick   install imagemagick
-        --zsh           install zsh
-        --node          install Node.js
         --conda         install conda
         --gemini-cli    install gemini-cli
-        --git           install git
-        --autoconf      install autoconf
-        --cmake         install cmake
         --mold          install mold
-        --less          install less
         --password-store install password-store
         --supertuxkart  install supertuxkart
         --python3       install python packages
@@ -67,6 +57,7 @@ INSTALL_SCRIPTS="$DOTFILES_DIR/install_scripts"
 
 # flags
 do_pixi=0
+do_pixi_pkgs=0
 do_uv=0
 do_brew=0
 do_brew_pkgs=0
@@ -74,23 +65,12 @@ do_cargo=0
 do_cargo_pkgs=0
 do_warpd=0
 do_claude_code=0
-do_fzf=0
-do_vim=0
-do_nvim=0
-do_tmux=0
-do_imagemagick=0
-do_zsh=0
 do_python3=0
 do_macos=0
 do_iterm2=0
-do_node=0
 do_conda=0
 do_gemini_cli=0
-do_git=0
-do_autoconf=0
-do_cmake=0
 do_mold=0
-do_less=0
 do_password_store=0
 do_supertuxkart=0
 
@@ -103,6 +83,9 @@ while :; do
             ;;
         --pixi)
             do_pixi=1
+            ;;
+        --pixi-pkgs)
+            do_pixi_pkgs=1
             ;;
         --uv)
             do_uv=1
@@ -125,24 +108,6 @@ while :; do
         --claude-code)
             do_claude_code=1
             ;;
-        --fzf)
-            do_fzf=1
-            ;;
-        --vim)
-            do_vim=1
-            ;;
-        --nvim)
-            do_nvim=1
-            ;;
-        --tmux)
-            do_tmux=1
-            ;;
-        --imagemagick)
-            do_imagemagick=1
-            ;;
-        --zsh)
-            do_zsh=1
-            ;;
         --python3)
             do_python3=1
             ;;
@@ -152,29 +117,14 @@ while :; do
         --iterm2)
             do_iterm2=1
             ;;
-        --node)
-            do_node=1
-            ;;
         --conda)
             do_conda=1
             ;;
         --gemini-cli)
             do_gemini_cli=1
             ;;
-        --git)
-            do_git=1
-            ;;
-        --autoconf)
-            do_autoconf=1
-            ;;
-        --cmake)
-            do_cmake=1
-            ;;
         --mold)
             do_mold=1
-            ;;
-        --less)
-            do_less=1
             ;;
         --password-store)
             do_password_store=1
@@ -225,6 +175,9 @@ prepare_common_dirs
 # pixi
 [[ $do_pixi -eq 1 ]] && install_script pixi
 
+# pixi global packages
+[[ $do_pixi_pkgs -eq 1 ]] && run_local pixi
+
 # uv
 [[ $do_uv -eq 1 ]] && install_script uv
 
@@ -252,47 +205,14 @@ fi
 # claude-code
 [[ $do_claude_code -eq 1 ]] && install_script claude-code
 
-# fzf
-[[ $do_fzf -eq 1 ]] && install_script fzf
-
-# vim
-[[ $do_vim -eq 1 ]] && install_script vim
-
-# nvim
-[[ $do_nvim -eq 1 ]] && install_script nvim
-
-# tmux
-[[ $do_tmux -eq 1 ]] && install_script tmux
-
-# imagemagick
-[[ $do_imagemagick -eq 1 ]] && install_script imagemagick
-
-# zsh
-[[ $do_zsh -eq 1 ]] && install_script zsh
-
-# node
-[[ $do_node -eq 1 ]] && install_script node
-
 # conda
 [[ $do_conda -eq 1 ]] && install_script conda
 
 # gemini-cli
 [[ $do_gemini_cli -eq 1 ]] && install_script gemini-cli
 
-# git
-[[ $do_git -eq 1 ]] && install_script git
-
-# autoconf
-[[ $do_autoconf -eq 1 ]] && install_script autoconf
-
-# cmake
-[[ $do_cmake -eq 1 ]] && install_script cmake
-
 # mold
 [[ $do_mold -eq 1 ]] && install_script mold
-
-# less
-[[ $do_less -eq 1 ]] && install_script less
 
 # password-store
 [[ $do_password_store -eq 1 ]] && install_script password-store

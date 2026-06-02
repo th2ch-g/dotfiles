@@ -25,7 +25,7 @@ Installs tools and packages. Must be run from the repository root.
 ```bash
 ./install.sh                              # full install for current OS (Mac/Linux defaults)
 ./install.sh --pixi --uv --python3        # selective: install only specified tools
-./install.sh --vim --nvim --cargo --cargo-pkgs
+./install.sh --pixi --pixi-pkgs --cargo --cargo-pkgs
 ```
 
 Flags for tool installers (`install_scripts/`):
@@ -38,20 +38,9 @@ Flags for tool installers (`install_scripts/`):
 | `--cargo`          | Rust toolchain      |
 | `--warpd`          | warpd (Mac only)    |
 | `--claude-code`    | claude-code         |
-| `--fzf`            | fzf                 |
-| `--vim`            | vim                 |
-| `--nvim`           | neovim              |
-| `--tmux`           | tmux                |
-| `--imagemagick`    | imagemagick         |
-| `--zsh`            | zsh                 |
-| `--node`           | Node.js             |
 | `--conda`          | conda (miniconda)   |
 | `--gemini-cli`     | gemini-cli          |
-| `--git`            | git                 |
-| `--autoconf`       | autoconf            |
-| `--cmake`          | cmake               |
 | `--mold`           | mold linker         |
-| `--less`           | less                |
 | `--password-store` | password-store      |
 | `--supertuxkart`   | SuperTuxKart        |
 
@@ -59,6 +48,7 @@ Flags for package runners (`*/run.sh`):
 
 | Flag           | Action                               |
 | -------------- | ------------------------------------ |
+| `--pixi-pkgs`  | install pixi global packages         |
 | `--brew-pkgs`  | install Homebrew packages (Mac only) |
 | `--cargo-pkgs` | install cargo packages               |
 | `--python3`    | install Python packages              |
@@ -143,6 +133,12 @@ Flags for package runners (`*/run.sh`):
 - `brew/run.sh` — Homebrew package list
 - `cargo/run.sh` — Cargo package list (use `--cargo-pkgs` flag)
 - `python3/run.sh` — Python package installs
+- `pixi/run.sh` — pixi global tool manifest (`pixi-global.toml`); symlinks it
+  to `$PIXI_HOME/manifests/` and runs `pixi global sync` (use `--pixi-pkgs`).
+  Tools formerly built from source (git, vim, nvim, tmux, zsh, less,
+  imagemagick, autoconf, cmake, node) and fzf now come from conda-forge via
+  pixi, along with several CLIs moved off Homebrew (wget, gh, tor, typst,
+  rclone, htop, vhs).
 
 ## Local Customization Pattern
 

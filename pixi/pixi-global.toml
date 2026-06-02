@@ -1,0 +1,91 @@
+version = 1
+
+[envs.git]
+channels = ["conda-forge"]
+dependencies = { git = "*" }
+exposed = { git = "git" }
+
+[envs.vim]
+channels = ["conda-forge"]
+dependencies = { vim = "*" }
+exposed = { vim = "vim" }
+
+[envs.nvim]
+channels = ["conda-forge"]
+dependencies = { nvim = "*" }
+exposed = { nvim = "nvim" }
+
+[envs.tmux]
+channels = ["conda-forge"]
+dependencies = { tmux = "*" }
+exposed = { tmux = "tmux" }
+
+[envs.zsh]
+channels = ["conda-forge"]
+dependencies = { zsh = "*" }
+exposed = { zsh = "zsh" }
+
+[envs.less]
+channels = ["conda-forge"]
+dependencies = { less = "*" }
+exposed = { less = "less" }
+
+[envs.imagemagick]
+channels = ["conda-forge"]
+dependencies = { imagemagick = "*" }
+exposed = { magick = "magick", convert = "convert" }
+
+[envs.autoconf]
+channels = ["conda-forge"]
+dependencies = { autoconf = "*" }
+exposed = { autoconf = "autoconf", autoreconf = "autoreconf" }
+
+[envs.cmake]
+channels = ["conda-forge"]
+dependencies = { cmake = "*" }
+exposed = { cmake = "cmake", ctest = "ctest", cpack = "cpack" }
+
+[envs.nodejs]
+channels = ["conda-forge"]
+dependencies = { nodejs = "*" }
+exposed = { node = "node", npm = "npm", npx = "npx" }
+
+[envs.fzf]
+channels = ["conda-forge"]
+dependencies = { fzf = "*" }
+exposed = { fzf = "fzf" }
+
+[envs.gh]
+channels = ["conda-forge"]
+dependencies = { gh = "*" }
+exposed = { gh = "gh" }
+
+[envs.htop]
+channels = ["conda-forge"]
+dependencies = { htop = "*" }
+exposed = { htop = "htop" }
+
+# [envs.rclone]
+# channels = ["conda-forge"]
+# dependencies = { rclone = "*" }
+# exposed = { rclone = "rclone" }
+
+[envs.tor]
+channels = ["conda-forge"]
+dependencies = { tor = "*" }
+exposed = { tor = "tor" }
+
+[envs.typst]
+channels = ["conda-forge"]
+dependencies = { typst = "*" }
+exposed = { typst = "typst" }
+
+[envs.vhs]
+channels = ["conda-forge"]
+dependencies = { vhs = "*" }
+exposed = { vhs = "vhs" }
+
+[envs.wget]
+channels = ["conda-forge"]
+dependencies = { wget = "*" }
+exposed = { wget = "wget" }
