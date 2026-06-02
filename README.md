@@ -38,7 +38,7 @@ cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --zsh && \
-./install.sh --pixi --uv --cargo --cargo-pkgs --brew --brew-pkgs --warpd --claude-code --python3 --iterm2 --macos && \
+./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --brew --brew-pkgs --warpd --claude-code --python3 --iterm2 --macos && \
 ./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git && \
 pre-commit install
@@ -52,7 +52,7 @@ cd ${HOME}/works && \
 git clone git@github.com:th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
-./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
+./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --python3
 ```
 
 - Install on local via HTTPS
@@ -63,7 +63,7 @@ cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
-./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
+./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --python3
 ```
 
 - Install without git
@@ -76,7 +76,7 @@ rm main.zip && \
 mv dotfiles-main dotfiles && \
 cd ./dotfiles && \
 ./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
-./install.sh --pixi --uv --cargo --cargo-pkgs --claude-code --python3
+./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --python3
 ```
 
 ### For Guest
@@ -126,7 +126,7 @@ make r
 ## Delete release (not recommended)
 
 ```bash
-make delete TAG=vYYYY.MM.DD
+make delete-release TAG=vYYYY.MM.DD
 ```
 
 ## Development setup

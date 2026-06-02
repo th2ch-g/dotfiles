@@ -1,29 +1,20 @@
 FROM ubuntu:latest
+
+# Minimal base: pixi global provides the CLIs (git, vim, nvim, tmux, less,
+# imagemagick, autoconf, cmake, node, etc.) from conda-forge, so apt only
+# needs the bootstrap toolchain. zsh is kept from apt to act as the login
+# shell (chsh below); the pixi zsh stays on PATH for interactive use.
 RUN apt-get update \
         && apt-get install -y \
-        autoconf \
         bash \
         build-essential \
-        cmake \
+        ca-certificates \
         curl \
-        gcc \
-        gettext \
         git \
-        make \
-        ncurses-dev \
-        neovim \
-        pkg-config \
-        imagemagick \
-        tmux \
-        vim \
-        wget \
+        locales-all \
         zsh \
-        && apt install -y locales-all \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/*
-
-# vim: /usr/bin/vim.basic because of alternative system
-RUN ln -sf /usr/bin/vim.basic /usr/bin/vim
 
 RUN mkdir -p /root/works/dotfiles
 
@@ -43,38 +34,25 @@ RUN chsh -s /bin/zsh
 WORKDIR /root/works/dotfiles
 COPY ./install_scripts ./install_scripts
 COPY ./install.sh .
+COPY ./pixi ./pixi
 COPY ./python3 ./python3
 COPY ./cargo ./cargo
-# for using ENV in zshenv
+# Install pixi/uv/cargo, then sync the pixi global manifest. --pixi-pkgs
+# installs every tool in pixi/pixi-global.toml (git, vim, nvim, tmux, zsh,
+# less, imagemagick, autoconf, cmake, node + wget, gh, tor, typst, rclone,
+# htop, vhs, fzf).
 RUN ./install.sh \
         --cargo \
-        --nvim \
         --pixi \
+        --pixi-pkgs \
         --python3 \
-        --uv \
-        --vim
-        # --autoconf \
-        # --brew \
-        # --brew-pkgs \
-        # --claude-code \
-        # --cmake \
-        # --fzf \
-        # --git \
-        # --imagemagick \
-        # --iterm2 \
-        # --less \
-        # --macos \
-        # --node \
-        # --password-store \
-        # --tmux \
-        # --warpd \
-        # --zsh
-        #
-        # --gemini-cli \ # currently not used
-        # --mold \ # wild is alternative
-        # --supertuxkart \ # currently not used
-        # --conda \ # currently not used
-        # --cargo-pkgs \ # take too long
+        --uv
+        # Skipped in the container image:
+        # --brew --brew-pkgs --macos --iterm2 --warpd  # macOS only
+        # --claude-code --gemini-cli --supertuxkart --conda  # not needed here
+        # --mold  # Linux linker, wild is the alternative
+        # --password-store  # no conda-forge package
+        # --cargo-pkgs  # takes too long
 
 # copy remain
 WORKDIR /root/works/dotfiles
