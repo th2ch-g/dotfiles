@@ -10,22 +10,16 @@ fi
 mode=$1
 shift
 
-case "$mode" in
-    plain)
-        filter='^[[:space:]]*[^#[:space:]]'
-        sort_args=("-k" "1")
-        ;;
-    brewfile)
-        filter='^(tap|brew|cask) '
-        sort_args=("-k" "1,1r" "-k" "2,2r")
-        ;;
-    *)
-        echo "unknown mode: $mode" >&2
-        exit 2
-        ;;
-esac
+# Sort the lines matching `filter` in `file` in place, preserving the positions
+# of non-matching lines. The file is rewritten only when the matched lines are
+# not already sorted; the position-preserving rewrite lets pre-commit detect the
+# change and fail the hook.
+sort_block() {
+    local file=$1 filter=$2
+    shift 2
+    local sort_args=("$@")
 
-for file in "$@"; do
+    local actual sorted rewritten
     actual=$(mktemp)
     sorted=$(mktemp)
     rewritten=$(mktemp)
@@ -60,6 +54,39 @@ for file in "$@"; do
     fi
 
     rm -f "$actual" "$sorted" "$rewritten"
-done
+}
+
+case "$mode" in
+    plain)
+        for file in "$@"; do
+            sort_block "$file" '^[[:space:]]*[^#[:space:]]' -k 1
+        done
+        ;;
+    brewfile)
+        # Brewfile holds two independent descending blocks: active package
+        # lines and commented-out (disabled) package lines. Commented-out
+        # packages must sit below every active one. An active line appearing
+        # after a commented package line is an interleave that cannot be
+        # auto-fixed (e.g. a freshly commented-out entry left in place), so we
+        # fail loudly instead of guessing where to move it.
+        active='^(tap|brew|cask) '
+        commented='^# (tap|brew|cask) '
+        for file in "$@"; do
+            last_active=$(grep -nE "$active" "$file" | tail -n1 | cut -d: -f1) || true
+            first_commented=$(grep -nE "$commented" "$file" | head -n1 | cut -d: -f1) || true
+            if [[ -n "$last_active" && -n "$first_commented" && "$first_commented" -lt "$last_active" ]]; then
+                echo "Error: $file: commented-out package at line $first_commented is above active package at line $last_active" >&2
+                echo "Move commented-out packages below all active ones." >&2
+                exit 1
+            fi
+            sort_block "$file" "$active" -k 1,1r -k 2,2r
+            sort_block "$file" "$commented" -k 2,2r -k 3,3r
+        done
+        ;;
+    *)
+        echo "unknown mode: $mode" >&2
+        exit 2
+        ;;
+esac
 
 exit 0
