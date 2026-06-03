@@ -52,6 +52,7 @@ Flags for package runners (`*/run.sh`):
 | `--brew-pkgs`  | install Homebrew packages (Mac only) |
 | `--cargo-pkgs` | install cargo packages               |
 | `--python3`    | install Python packages              |
+| `--gh-ext`     | install gh extensions                |
 | `--macos`      | configure macOS settings (Mac only)  |
 | `--iterm2`     | configure iTerm2 (Mac only)          |
 
@@ -133,6 +134,7 @@ Flags for package runners (`*/run.sh`):
 - `brew/run.sh` — Homebrew package list
 - `cargo/run.sh` — Cargo package list (use `--cargo-pkgs` flag)
 - `python3/run.sh` — Python package installs
+- `gh-ext/run.sh` — gh extension list (use `--gh-ext` flag)
 - `pixi/run.sh` — pixi global tool manifest (`pixi-global.toml`); symlinks it
   to `$PIXI_HOME/manifests/` and runs `pixi global sync` (use `--pixi-pkgs`).
   Tools formerly built from source (git, vim, nvim, tmux, zsh, less,

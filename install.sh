@@ -41,6 +41,7 @@ OPTIONS:
         --password-store install password-store
         --supertuxkart  install supertuxkart
         --python3       install python packages
+        --gh-ext        install gh extensions
         --macos         configure macOS settings (Mac only)
         --iterm2        configure iTerm2 (Mac only)
 '
@@ -66,6 +67,7 @@ do_cargo_pkgs=0
 do_warpd=0
 do_claude_code=0
 do_python3=0
+do_gh_ext=0
 do_macos=0
 do_iterm2=0
 do_conda=0
@@ -110,6 +112,9 @@ while :; do
             ;;
         --python3)
             do_python3=1
+            ;;
+        --gh-ext)
+            do_gh_ext=1
             ;;
         --macos)
             do_macos=1
@@ -222,6 +227,9 @@ fi
 
 # python packages
 [[ $do_python3 -eq 1 ]] && run_local python3
+
+# gh extensions
+[[ $do_gh_ext -eq 1 ]] && run_local gh-ext
 
 # macOS settings (Mac only)
 if [[ $do_macos -eq 1 ]]; then

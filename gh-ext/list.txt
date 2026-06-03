@@ -1,0 +1,3 @@
+# gh extensions (OWNER/REPO). Installed via: ./install.sh --gh-ext
+th2ch-g/gh-email-get
+babarot/gh-infra
