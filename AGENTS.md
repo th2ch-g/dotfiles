@@ -58,22 +58,22 @@ Flags for package runners (`*/run.sh`):
 
 ## Symlink Targets
 
-| Flag          | Source       | Destination                                          |
-| ------------- | ------------ | ---------------------------------------------------- |
-| `--zsh`       | `zsh/`       | `~/.config/zsh/`, `~/.zshenv`                        |
-| `--vim`       | `vim/`       | `~/.config/vim/`                                     |
-| `--neovim`    | `nvim/`      | `~/.config/nvim/`                                    |
-| `--git`       | `git/`       | `~/.config/git/`                                     |
-| `--tmux`      | `tmux/`      | `~/.config/tmux/`                                    |
-| `--aerospace` | `aerospace/` | `~/.config/aerospace/`                               |
-| `--alacritty` | `alacritty/` | `~/.config/alacritty/`                               |
-| `--yabai`     | `yabai/`     | `~/.config/yabai/` (Mac only, auto-restarts service) |
-| `--skhd`      | `skhd/`      | `~/.config/skhd/` (Mac only, auto-restarts service)  |
-| `--sheldon`   | `sheldon/`   | `~/.config/sheldon/`                                 |
-| `--claude`    | `claude/`    | `~/.claude/`                                         |
-| `--gemini`    | `gemini/`    | `~/.gemini/`                                         |
-| `--codex`     | `codex/`     | `~/.codex/`                                          |
-| `--ssh`       | `ssh/config` | `~/.ssh/config` (copy, not link)                     |
+| Flag          | Source               | Destination                                          |
+| ------------- | -------------------- | ---------------------------------------------------- |
+| `--zsh`       | `zsh/`, `sheldon/`   | `~/.config/zsh/`, `~/.zshenv`, `~/.config/sheldon/`  |
+| `--vim`       | `vim/`               | `~/.config/vim/`                                     |
+| `--neovim`    | `nvim/`              | `~/.config/nvim/`                                    |
+| `--git`       | `git/`               | `~/.config/git/`                                     |
+| `--tmux`      | `tmux/`              | `~/.config/tmux/`                                    |
+| `--aerospace` | `aerospace/`         | `~/.config/aerospace/`                               |
+| `--alacritty` | `alacritty/`         | `~/.config/alacritty/`                               |
+| `--yabai`     | `yabai/`             | `~/.config/yabai/` (Mac only, auto-restarts service) |
+| `--skhd`      | `skhd/`              | `~/.config/skhd/` (Mac only, auto-restarts service)  |
+| `--bash`      | `bash/.bash_profile` | `~/.bash_profile` (not recommended)                  |
+| `--claude`    | `claude/`            | `~/.claude/`                                         |
+| `--gemini`    | `gemini/`            | `~/.gemini/`                                         |
+| `--codex`     | `codex/`             | `~/.codex/`                                          |
+| `--ssh`       | `ssh/config`         | `~/.ssh/config` (copy, not link)                     |
 
 ## Architecture
 
@@ -111,14 +111,18 @@ Flags for package runners (`*/run.sh`):
     (default: `$HOME/works/bin`)
   - `detect_nproc` — cross-platform CPU count
     (macOS: `sysctl -n hw.ncpu`, Linux: `nproc`)
+- `lib/check_sorted.sh` — used by the pre-commit sort hooks to verify
+  `brew/Brewfile`, `cargo/list.txt`, and `python3/requirements.txt` stay
+  sorted (modes: `brewfile`, `plain`; also validates commented-out entries)
 
 ## Gotchas
 
 - `link.sh --codex` copies `codex/` into `~/.codex`; it does not create
   a symlink.
 - `link.sh --claude` links `claude/` into `~/.claude` and, when `claude`
-  is installed, also registers user-scoped MCP entries with
-  `claude mcp add`.
+  is installed, also registers user-scoped MCP entries (`deepwiki`, `codex`)
+  via `claude mcp add` and installs the `claude-for-legal` /
+  `knowledge-work-plugins` marketplace plugins.
 - `claude/plugins/cache/` contains vendored plugin cache data; treat it as
   external snapshot data unless the task explicitly targets plugin cache
   updates.
@@ -140,7 +144,7 @@ Flags for package runners (`*/run.sh`):
   Tools formerly built from source (git, vim, nvim, tmux, zsh, less,
   imagemagick, autoconf, cmake, node) and fzf now come from conda-forge via
   pixi, along with several CLIs moved off Homebrew (wget, gh, tor, typst,
-  rclone, htop, vhs).
+  htop, vhs).
 
 ## Local Customization Pattern
 
@@ -152,7 +156,7 @@ Machine-specific settings go in untracked local files:
 ## Release Workflow
 
 ```bash
-TAG=v$(date +'%Y.%m.%d') && git tag -a $TAG -m "Release $TAG" && git push origin $TAG
+make r   # tags v$(date +'%Y.%m.%d') and pushes it (Makefile `release` target)
 ```
 
 CI (`.github/workflows/release.yml`) handles Docker image builds on
@@ -166,7 +170,7 @@ linting and formatting. Configuration: `.pre-commit-config.yaml`.
 After cloning, activate hooks:
 
 ```bash
-make setup    # runs: pre-commit install
+make setup    # runs: pre-commit install --install-hooks (pre-commit + commit-msg)
 ```
 
 Run all hooks manually:
@@ -179,18 +183,23 @@ Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending,
 check-yaml/toml/json, check-added-large-files, check-case-conflict,
 check-merge-conflict, check-symlinks, destroyed-symlinks, detect-private-key,
 check-executables-have-shebangs, check-shebang-scripts-are-executable,
-check-jsonschema (GitHub workflows), gitleaks, detect-secrets, actionlint,
-shellcheck (excludes `zsh/`), stylua (for `nvim/*.lua`), ruff, ruff-format,
-shfmt, typos, yamllint, markdownlint-cli2, prettier, taplo TOML formatter,
-checkmake, gitlint, bash syntax check, zsh syntax check (`zsh/` and
-`install.sh`).
+hadolint (Dockerfile), check-jsonschema (GitHub workflows), gitleaks,
+detect-secrets, actionlint, shellcheck (excludes `zsh/`), stylua (for
+`nvim/*.lua`), shfmt, typos, yamllint, markdownlint-cli2, prettier, taplo
+TOML formatter, checkmake, gitlint, bash syntax check, zsh syntax check
+(`zsh/` and `install.sh`), and custom sort checks for `brew/Brewfile`,
+`cargo/list.txt`, `python3/requirements.txt` (via `lib/check_sorted.sh`).
 
 ## Makefile Shortcuts
 
 ```bash
-make setup
-make l
-make s
-make u
+make setup         # pre-commit install --install-hooks
+make l             # pre-commit run --all-files (lint)
+make s             # git remote set-url origin (switch to SSH)
+make u             # git pull (update)
+make r             # create & push dated release tag
+make d             # build & run Docker image locally
+make docker-pull   # pull & run latest ghcr.io image
 make delete-release TAG=vYYYY.MM.DD
+make help          # list all targets
 ```
