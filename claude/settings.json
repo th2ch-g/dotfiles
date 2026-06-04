@@ -11,6 +11,9 @@
     "CLAUDE_CODE_EFFORT_LEVEL": "max",
     "ENABLE_TOOL_SEARCH": "true"
   },
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "hooks": {},
   "enabledPlugins": {
     "document-skills@anthropic-agent-skills": true,
