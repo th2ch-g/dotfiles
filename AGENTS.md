@@ -38,6 +38,7 @@ Flags for tool installers (`install_scripts/`):
 | `--cargo`          | Rust toolchain      |
 | `--warpd`          | warpd (Mac only)    |
 | `--claude-code`    | claude-code         |
+| `--codex`          | codex               |
 | `--conda`          | conda (miniconda)   |
 | `--gemini-cli`     | gemini-cli          |
 | `--mold`           | mold linker         |

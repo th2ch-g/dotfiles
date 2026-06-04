@@ -35,6 +35,7 @@ OPTIONS:
         --cargo-pkgs    install cargo packages
         --warpd         install warpd (Mac only)
         --claude-code   install claude-code
+        --codex         install codex
         --conda         install conda
         --gemini-cli    install gemini-cli
         --mold          install mold
@@ -66,6 +67,7 @@ do_cargo=0
 do_cargo_pkgs=0
 do_warpd=0
 do_claude_code=0
+do_codex=0
 do_python3=0
 do_gh_ext=0
 do_macos=0
@@ -109,6 +111,9 @@ while :; do
             ;;
         --claude-code)
             do_claude_code=1
+            ;;
+        --codex)
+            do_codex=1
             ;;
         --python3)
             do_python3=1
@@ -209,6 +214,9 @@ fi
 
 # claude-code
 [[ $do_claude_code -eq 1 ]] && install_script claude-code
+
+# codex
+[[ $do_codex -eq 1 ]] && install_script codex
 
 # conda
 [[ $do_conda -eq 1 ]] && install_script conda
