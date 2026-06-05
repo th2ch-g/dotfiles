@@ -57,6 +57,7 @@ _LOG_GREEN=$'\033[32m'
 _LOG_YELLOW=$'\033[33m'
 _LOG_RED=$'\033[31m'
 _LOG_RESET=$'\033[0m'
+_LOG_BOLD=$'\033[1m'
 
 # Print "<icon> <msg>" to the current stream, wrapping it in <color>...reset
 # only when the target fd ($4) is a TTY and NO_COLOR is unset. This keeps
@@ -73,6 +74,23 @@ _log() {
 print_info() { _log "$_LOG_GREEN" '✔' "$1" 1; }
 print_warn() { _log "$_LOG_YELLOW" '⚠' "$1" 2 >&2; }
 print_error() { _log "$_LOG_RED" '✖' "$1" 2 >&2; }
+
+# Section header. Mirrors print_section in lib/utils.sh; setup.sh ships its own
+# copy because lib/utils.sh does not exist during a pre-clone curl|bash run.
+print_section() {
+    local title="$1"
+    if [ -z "${NO_COLOR:-}" ] && [ -t 1 ]; then
+        local cols width line
+        cols=$(tput cols 2> /dev/null || echo 80)
+        [ "$cols" -gt 80 ] && cols=80
+        width=$((cols - ${#title} - 4))
+        [ "$width" -lt 0 ] && width=0
+        line=$(printf '%*s' "$width" '')
+        printf '%s── %s %s%s\n' "$_LOG_BOLD" "$title" "${line// /─}" "$_LOG_RESET"
+    else
+        printf -- '-- %s --\n' "$title"
+    fi
+}
 
 need_cmd() { command -v "$1" > /dev/null 2>&1; }
 
@@ -348,7 +366,8 @@ choose_profile() {
     fi
     local ans=""
     {
-        printf '\nSelect install profile:\n'
+        printf '\n'
+        print_section "install profile"
         printf '  1) full       everything for this machine\n'
         printf '  2) standard   core tools (pixi, uv, cargo, claude-code, ...)\n'
         printf '  3) guest      link-only (zsh, vim, tmux, nvim)\n'
@@ -403,7 +422,8 @@ build_guest() {
 # Mac-only items are offered only on macOS.
 customize() {
     {
-        printf '\n-- link components --\n'
+        printf '\n'
+        print_section "link components"
     } > "$TTY"
     if ask_yn "link zsh?" y; then LINK_TOOLS+=(--zsh); fi
     if ask_yn "link git?" y; then LINK_TOOLS+=(--git); fi
@@ -423,7 +443,8 @@ customize() {
     if ask_yn "link bash profile? (not recommended)" n; then LINK_TOOLS+=(--bash); fi
 
     {
-        printf '\n-- install components --\n'
+        printf '\n'
+        print_section "install components"
     } > "$TTY"
     if ask_yn "install pixi + global pkgs?" y; then INSTALL_FLAGS+=(--pixi --pixi-pkgs); fi
     if ask_yn "install uv?" y; then INSTALL_FLAGS+=(--uv); fi
@@ -468,7 +489,8 @@ choose_dev_steps() {
     if [[ "$DO_SETURL_SSH" -eq 1 ]]; then d1="y"; else d1="n"; fi
     if [[ "$DO_MAKE_SETUP" -eq 1 ]]; then d2="y"; else d2="n"; fi
     {
-        printf '\n-- developer setup --\n'
+        printf '\n'
+        print_section "developer setup"
     } > "$TTY"
     if ask_yn "set git origin to SSH (for committing)?" "$d1"; then
         DO_SETURL_SSH=1
@@ -534,7 +556,8 @@ confirm_and_run() {
         exit 0
     fi
 
-    printf '\n=== planned actions (repo: %s, profile: %s) ===\n' "$REPO_DIR" "$PROFILE"
+    printf '\n'
+    print_section "planned actions (repo: $REPO_DIR, profile: $PROFILE)"
     [[ "${#LINK_TOOLS[@]}" -gt 0 ]] && printf '  link    : ./link.sh %s\n' "${LINK_TOOLS[*]}"
     [[ "${#INSTALL_FLAGS[@]}" -gt 0 ]] && printf '  install : ./install.sh %s\n' "${INSTALL_FLAGS[*]}"
     [[ "$DO_SETURL_SSH" -eq 1 ]] && printf '  remote  : git remote set-url origin (ssh)\n'

@@ -6,6 +6,8 @@ _LOG_GREEN=$'\033[32m'
 _LOG_YELLOW=$'\033[33m'
 _LOG_RED=$'\033[31m'
 _LOG_RESET=$'\033[0m'
+_LOG_DIM=$'\033[2m'
+_LOG_BOLD=$'\033[1m'
 
 # Print "<icon> <msg>" to the current stream, wrapping it in <color>...reset
 # only when the target fd ($4) is a TTY and NO_COLOR is unset. This keeps
@@ -22,6 +24,28 @@ _log() {
 print_info() { _log "$_LOG_GREEN" '✔' "$1" 1; }
 print_warn() { _log "$_LOG_YELLOW" '⚠' "$1" 2 >&2; }
 print_error() { _log "$_LOG_RED" '✖' "$1" 2 >&2; }
+
+# Progress marker for "currently working on <x>" lines inside loops.
+# Dim, so it stays visually subordinate to the ✔/⚠/✖ result lines.
+print_step() { _log "$_LOG_DIM" '▸' "$1" 1; }
+
+# Section header: "── title ──────" padded to the terminal width (max 80).
+# Bold/achromatic; degrades to a plain "-- title --" on non-TTY / NO_COLOR
+# so piped logs stay greppable.
+print_section() {
+    local title="$1"
+    if [ -z "${NO_COLOR:-}" ] && [ -t 1 ]; then
+        local cols width line
+        cols=$(tput cols 2> /dev/null || echo 80)
+        [ "$cols" -gt 80 ] && cols=80
+        width=$((cols - ${#title} - 4))
+        [ "$width" -lt 0 ] && width=0
+        line=$(printf '%*s' "$width" '')
+        printf '%s── %s %s%s\n' "$_LOG_BOLD" "$title" "${line// /─}" "$_LOG_RESET"
+    else
+        printf -- '-- %s --\n' "$title"
+    fi
+}
 
 # Sets global OS variable to 'Mac', 'Linux', or 'Cygwin'.
 # Exits with error if the platform is unsupported.

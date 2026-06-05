@@ -21,7 +21,7 @@ while IFS= read -r line; do
 
     # First whitespace-delimited token is the tool spec; ignore any trailing text.
     read -r target _ <<< "$line"
-    echo "+ $target"
+    print_step "$target"
 
     uv tool install -U "$target" || failed+=("$target")
 done < requirements.txt

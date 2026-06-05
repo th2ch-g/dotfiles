@@ -19,6 +19,18 @@ export SAVEHIST=100000000
 export HISTSIZE=100000
 export CLICOLOR=1
 
+# log helpers (mirror lib/utils.sh: ✔ green / ⚠ yellow / ✖ red).
+# Gate on TTY + NO_COLOR so piped / NO_COLOR output stays plain.
+print_info() {
+    if [[ -z ${NO_COLOR:-} && -t 1 ]]; then print -- "\033[32m✔ $1\033[0m"; else print -r -- "✔ $1"; fi
+}
+print_warn() {
+    if [[ -z ${NO_COLOR:-} && -t 2 ]]; then print -u2 -- "\033[33m⚠ $1\033[0m"; else print -u2 -r -- "⚠ $1"; fi
+}
+print_error() {
+    if [[ -z ${NO_COLOR:-} && -t 2 ]]; then print -u2 -- "\033[31m✖ $1\033[0m"; else print -u2 -r -- "✖ $1"; fi
+}
+
 # override source
 function source {
   ensure_zcompiled $1
@@ -392,7 +404,7 @@ script_highlight() {
         ft_number=$(find . -name "*.${ft}" -type f -maxdepth 1 | wc -l)
         if [ $ft_number -ne 0 ]; then
             chmod a+x *.${ft}
-            echo "[info] highlighted : $(echo *.${ft})"
+            print_info "highlighted : $(echo *.${ft})"
         fi
 
     done
@@ -404,7 +416,7 @@ script_unhighlight() {
         ft_number=$(find . -name "*.${ft}" -type f -maxdepth 1 | wc -l)
         if [ $ft_number -ne 0 ]; then
             chmod a-x *.${ft}
-            echo "[info] unhighlighted : $(echo *.${ft})"
+            print_info "unhighlighted : $(echo *.${ft})"
         fi
 
     done
@@ -433,7 +445,7 @@ calc() {
 
 update_dotfiles() {
     git -C $WORKS/dotfiles pull
-    echo "[INFO] dotfiles is updated" >&1
+    print_info "dotfiles is updated"
 }
 
 prepare_all() {
@@ -448,13 +460,13 @@ make_local_file() {
     do
         if [ ! -e ${ZDOTDIR:-$HOME}/${i} ]; then
             touch ${ZDOTDIR:-$HOME}/${i}
-            echo "[INFO] touch ${ZDOTDIR:-$HOME}/${i}" >&1
+            print_info "touch ${ZDOTDIR:-$HOME}/${i}"
             flag=0
         fi
     done
 
     if [ $flag -eq 1 ]; then
-        echo "[INFO] nothing was created" >&1
+        print_info "nothing was created"
     fi
 }
 
@@ -464,12 +476,12 @@ prepare_base_dir() {
     do
         if [ ! -d $i ]; then
             mkdir -p $i
-            echo "[INFO] $i was created" >&1
+            print_info "$i was created"
         else
-            echo "[WARN] $i is already created" >&1
+            print_warn "$i is already created"
         fi
     done
-    echo "[INFO] base directories were prepared" >&1
+    print_info "base directories were prepared"
 }
 
 vim_ai_off() {
@@ -519,7 +531,7 @@ OPTIONS:
   local cmd=""
 
   if ! command -v tmux >/dev/null; then
-    echo "[ERROR] tmux is not found" >&2
+    print_error "tmux is not found"
     return 1
   fi
 
@@ -527,19 +539,19 @@ OPTIONS:
     case "$1" in
       -h|--help) echo "$USAGE"; return 0 ;;
       -n|--name)
-        [[ -z "$2" ]] && { echo "[ERROR] WINDOW_NAME is necessary, if -n/--name option is present" >&2; return 1; }
+        [[ -z "$2" ]] && { print_error "WINDOW_NAME is necessary, if -n/--name option is present"; return 1; }
         tmux_window_name="$2"; shift 2 ;;
       -t|--type)
-        [[ -z "$2" ]] && { echo "[ERROR] window_type is necessary, if -t/--type option is present" >&2; return 1; }
-        [[ "$2" =~ ^[1-4]$ ]] || { echo "[ERROR] window_type must be \"1\", \"2\", \"3\" or \"4\", if -t/--type option is present" >&2; return 1; }
-        echo "[INFO] window type is \"type${2}\""
+        [[ -z "$2" ]] && { print_error "window_type is necessary, if -t/--type option is present"; return 1; }
+        [[ "$2" =~ ^[1-4]$ ]] || { print_error 'window_type must be "1", "2", "3" or "4", if -t/--type option is present'; return 1; }
+        print_info "window type is \"type${2}\""
         window_type="$2"; shift 2 ;;
       -x|--top-off) top_off=1; shift ;;
       -c|--cmd)
-        [[ -z "$2" ]] && { echo "[ERROR] command is necessary, if -c/--cmd option is present" >&2; return 1; }
+        [[ -z "$2" ]] && { print_error "command is necessary, if -c/--cmd option is present"; return 1; }
         cmd="$2"; shift 2 ;;
       --) shift; break ;;
-      -*) echo "[ERROR] Unknown option: $1" >&2; return 1 ;;
+      -*) print_error "Unknown option: $1"; return 1 ;;
       *) break ;;
     esac
   done
@@ -553,7 +565,7 @@ OPTIONS:
     done
   }
 
-  echo "[INFO] Start making tmux named \"$tmux_window_name\""
+  print_info "Start making tmux named \"$tmux_window_name\""
   tmux new -s "$tmux_window_name" -d
 
   case "$window_type" in
@@ -592,8 +604,8 @@ OPTIONS:
 
   unfunction _tide_send_cmd 2>/dev/null
 
-  echo "[INFO] Make tmux named \"$tmux_window_name\""
-  echo "[INFO] tmux ls Result"
+  print_info "Make tmux named \"$tmux_window_name\""
+  print_info "tmux ls Result"
   tmux ls
 
   tmux attach

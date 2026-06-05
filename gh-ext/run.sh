@@ -20,7 +20,7 @@ while IFS= read -r line; do
     ext=$(echo "$line" | awk '{print $1}')
     [[ -z "$ext" ]] && continue
     [[ "$ext" =~ ^# ]] && continue
-    echo "+ $ext" >&1
+    print_step "$ext"
     if grep -qF "$ext" <<< "$installed"; then
         print_info "$ext already installed, skipping"
     else

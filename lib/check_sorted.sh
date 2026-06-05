@@ -2,8 +2,11 @@
 
 set -euo pipefail
 
+# shellcheck source=lib/utils.sh
+source "$(dirname "$0")/utils.sh"
+
 if [[ $# -lt 2 ]]; then
-    echo "usage: $0 <plain|brewfile> <file>..." >&2
+    print_error "usage: $0 <plain|brewfile> <file>..."
     exit 2
 fi
 
@@ -50,7 +53,7 @@ sort_block() {
             }
         ' "$file" > "$rewritten"
         cat "$rewritten" > "$file"
-        echo "Sorted $file" >&2
+        print_warn "Sorted $file"
     fi
 
     rm -f "$actual" "$sorted" "$rewritten"
@@ -75,8 +78,8 @@ case "$mode" in
             last_active=$(grep -nE "$active" "$file" | tail -n1 | cut -d: -f1) || true
             first_commented=$(grep -nE "$commented" "$file" | head -n1 | cut -d: -f1) || true
             if [[ -n "$last_active" && -n "$first_commented" && "$first_commented" -lt "$last_active" ]]; then
-                echo "Error: $file: commented-out package at line $first_commented is above active package at line $last_active" >&2
-                echo "Move commented-out packages below all active ones." >&2
+                print_error "$file: commented-out package at line $first_commented is above active package at line $last_active"
+                print_error "Move commented-out packages below all active ones."
                 exit 1
             fi
             sort_block "$file" "$active" -k 1,1r -k 2,2r
@@ -84,7 +87,7 @@ case "$mode" in
         done
         ;;
     *)
-        echo "unknown mode: $mode" >&2
+        print_error "unknown mode: $mode"
         exit 2
         ;;
 esac

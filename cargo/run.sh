@@ -30,7 +30,7 @@ while IFS= read -r line; do
     # Split into the first token (crate or git URL) and an optional spec;
     # the trailing `# ...` description, if any, is discarded into `_`.
     read -r target spec _ <<< "$line"
-    echo "+ $target"
+    print_step "$target"
 
     if [[ "$target" == https://* ]]; then
         if [[ -z "$spec" || "$spec" == \#* ]]; then
