@@ -51,6 +51,9 @@ curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | ba
 
 ### For me
 
+<details>
+<summary>Manual one-liners (same result as Quick start)</summary>
+
 - Bootstrap Installation on local
   - Prerequisite: git, zsh (check by `git --version && zsh --version`)
     - macos: `xcode-select --install`
@@ -106,7 +109,12 @@ cd ./dotfiles && \
 ./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --codex --python3
 ```
 
+</details>
+
 ### For Guest
+
+<details>
+<summary>Guest install (link-only)</summary>
 
 ```shell
 git clone https://github.com/th2ch-g/dotfiles.git && \
@@ -114,7 +122,12 @@ cd ./dotfiles && \
 ./link.sh --zsh --vim --tmux --neovim
 ```
 
+</details>
+
 ### From Dockerfile
+
+<details>
+<summary>Docker usage</summary>
 
 #### Case1: Pull from ghcr
 
@@ -131,6 +144,8 @@ cd ./dotfiles && \
 docker image build -t myenv . && \
 docker run --rm -it myenv
 ```
+
+</details>
 
 ## set-url for commit
 
