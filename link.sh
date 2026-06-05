@@ -360,4 +360,4 @@ if has_tool claude; then
     fi
 fi
 
-echo "[INFO] done" >&1
+print_info "done"

@@ -249,4 +249,4 @@ if [[ $do_iterm2 -eq 1 ]]; then
     [[ $OS == "Mac" ]] && run_local iterm2 || print_warn "--iterm2 is Mac only, skipping"
 fi
 
-echo "[INFO] done" >&1
+print_info "done"

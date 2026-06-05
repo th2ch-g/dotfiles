@@ -10,6 +10,8 @@
 
 set -uo pipefail
 
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 failed=()
 
 while IFS= read -r line; do
@@ -25,9 +27,9 @@ while IFS= read -r line; do
 done < requirements.txt
 
 if ((${#failed[@]} > 0)); then
-    echo "[ERROR] python-install-list: ${#failed[@]} tool(s) failed:" >&2
+    print_error "python-install-list: ${#failed[@]} tool(s) failed:"
     printf '  - %s\n' "${failed[@]}" >&2
     exit 1
 fi
 
-echo "[INFO] python-install-list done"
+print_info "python-install-list done"

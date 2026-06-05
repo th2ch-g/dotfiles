@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 if ! command -v brew > /dev/null 2>&1; then
-    echo "brew is not installed"
+    print_error "brew is not installed"
     exit 1
 fi
 
@@ -16,4 +18,4 @@ brew bundle install --cleanup --force-cleanup
 # yabai --restart-service
 # skhd --restart-service
 
-echo "done"
+print_info "done"

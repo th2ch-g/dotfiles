@@ -1,8 +1,10 @@
 #!/bin/bash
 set -ex
 
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 if [ "$(uname)" != "Darwin" ]; then
-    echo "this script is only for macOS" >&2
+    print_error "this script is only for macOS"
     exit 1
 fi
 
@@ -30,7 +32,7 @@ while :; do
             break
             ;;
         -?*)
-            echo "[ERROR] Unknown option: $1" >&2
+            print_error "Unknown option: $1"
             exit 1
             ;;
         *)
@@ -126,9 +128,9 @@ if [ $dockutil_flag -eq 0 ]; then
         dockutil --add "$HOME/Downloads" --allhomes --no-restart
         killall Dock
     else
-        echo "please install dockutil using brew" >&2
+        print_warn "please install dockutil using brew"
         exit 0
     fi
 fi
 
-echo "done" >&1
+print_info "done"

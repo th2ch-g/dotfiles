@@ -1,6 +1,6 @@
 - 回答は日本語で短く簡潔に
 - お世辞や機嫌取りは禁止
 - 不明な点は質問
-- code/document内のコメントは英語
+- code/document/commit内のコメントは英語
 - python時はuvを使用
 - 積極的にPlugin/Skillsを使用

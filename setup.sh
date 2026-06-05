@@ -52,9 +52,27 @@ PM_DISPLAY=""
 
 # --- self-contained helpers (lib/utils.sh is not available pre-clone) ---
 
-print_info() { printf '[INFO] %s\n' "$1"; }
-print_warn() { printf '[WARN] %s\n' "$1" >&2; }
-print_error() { printf '[ERROR] %s\n' "$1" >&2; }
+# ANSI colors for the log helpers below (gated per-call on TTY + NO_COLOR).
+_LOG_GREEN=$'\033[32m'
+_LOG_YELLOW=$'\033[33m'
+_LOG_RED=$'\033[31m'
+_LOG_RESET=$'\033[0m'
+
+# Print "<icon> <msg>" to the current stream, wrapping it in <color>...reset
+# only when the target fd ($4) is a TTY and NO_COLOR is unset. This keeps
+# piped/redirected output and NO_COLOR users on plain, un-escaped text.
+_log() {
+    local color="$1" icon="$2" msg="$3" fd="$4"
+    if [ -z "${NO_COLOR:-}" ] && [ -t "$fd" ]; then
+        printf '%s%s %s%s\n' "$color" "$icon" "$msg" "$_LOG_RESET"
+    else
+        printf '%s %s\n' "$icon" "$msg"
+    fi
+}
+
+print_info() { _log "$_LOG_GREEN" '✔' "$1" 1; }
+print_warn() { _log "$_LOG_YELLOW" '⚠' "$1" 2 >&2; }
+print_error() { _log "$_LOG_RED" '✖' "$1" 2 >&2; }
 
 need_cmd() { command -v "$1" > /dev/null 2>&1; }
 

@@ -12,6 +12,8 @@
 
 set -uo pipefail
 
+source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
+
 rustup self update
 rustup update
 
@@ -45,9 +47,9 @@ while IFS= read -r line; do
 done < list.txt
 
 if ((${#failed[@]} > 0)); then
-    echo "[ERROR] cargo-install-list: ${#failed[@]} package(s) failed:" >&2
+    print_error "cargo-install-list: ${#failed[@]} package(s) failed:"
     printf '  - %s\n' "${failed[@]}" >&2
     exit 1
 fi
 
-echo "[INFO] cargo-install-list done"
+print_info "cargo-install-list done"
