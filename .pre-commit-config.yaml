@@ -126,7 +126,7 @@ repos:
         name: bash syntax check
         language: system
         entry: bash -n
-        files: ^(link\.sh|lib/.*\.sh|install_scripts/.*\.sh|.*/run\.sh)$
+        files: ^(setup\.sh|link\.sh|lib/.*\.sh|install_scripts/.*\.sh|.*/run\.sh)$
         types: [file]
 
       - id: toml-format

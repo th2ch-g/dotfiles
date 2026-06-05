@@ -8,6 +8,24 @@ Personal dotfiles repository for macOS and Linux. The core mechanism is
 
 ## Key Scripts
 
+### `setup.sh` — Interactive bootstrap
+
+Self-contained `curl ... | bash` entry point (rustup-style). Reads prompts from
+`/dev/tty` (so it works when piped), can install missing `git`/`zsh`/`unzip`
+after a confirmation prompt (apt/dnf/pacman/zypper/apk via sudo, or
+`xcode-select` on macOS), fetches the repo into `~/works/dotfiles` (override with
+`SETUP_DIR`) via HTTPS clone / SSH clone / ZIP download, then delegates to
+`link.sh` / `install.sh` based on a chosen profile (`full` / `standard` /
+`guest` / `customize`). For git checkouts it can also switch `origin` to SSH and
+run `make setup`. Non-interactive env: `SETUP_PROFILE=full|standard|guest`,
+`SETUP_FETCH=https|ssh|zip`, `SETUP_DIR=/path`. Does not source `lib/utils.sh`
+(the repo may not exist yet during a piped run).
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | bash
+./setup.sh                                # from an existing checkout
+```
+
 ### `link.sh` — Dotfiles linker
 
 Must be run from the repository root. Links individual tool configs via flags:

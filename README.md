@@ -7,6 +7,7 @@
 <!-- TOC GFM -->
 
 - [Install](#install)
+  - [Quick start (interactive)](#quick-start-interactive)
   - [For me](#for-me)
   - [For Guest](#for-guest)
   - [From Dockerfile](#from-dockerfile)
@@ -21,6 +22,32 @@
 <!-- /TOC -->
 
 ## Install
+
+### Quick start (interactive)
+
+Bootstrap with a single `curl ... | bash` command (rustup-style). It prompts for
+how to fetch the repo, an install profile, and optional developer setup, then
+delegates to `link.sh` / `install.sh`:
+
+```shell
+curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | bash
+```
+
+- Fetch method: `HTTPS clone`, `SSH clone`, or `ZIP download` (no git history —
+  the "without git" path).
+- Profiles: `full` (everything for this machine), `standard` (core tools),
+  `guest` (link-only), or `customize` (toggle each component).
+- Prerequisites: missing `git` / `zsh` / `unzip` can be installed on the spot
+  after a confirmation prompt (Linux: apt/dnf/pacman/zypper/apk via sudo;
+  macOS: `xcode-select --install`).
+- Developer setup (git checkouts only): optionally switch `origin` to SSH and
+  run `make setup` (pre-commit hooks).
+- Install location: defaults to `~/works/dotfiles`; override with
+  `SETUP_DIR=/path/to/dir` or by typing a path at the interactive prompt.
+- Non-interactive (CI / containers): set `SETUP_PROFILE=full|standard|guest`
+  (and optionally `SETUP_FETCH=https|ssh|zip`), e.g.
+  `curl -fsSL .../setup.sh | SETUP_PROFILE=standard bash`.
+- The manual one-liners below remain available and produce the same result.
 
 ### For me
 
