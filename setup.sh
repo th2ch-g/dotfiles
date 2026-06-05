@@ -96,17 +96,18 @@ prompt_read() {
     printf -v "$__var" '%s' "$__ans"
 }
 
-# Yes/no prompt. Usage: ask_yn <prompt> <default:y|n> ; returns 0 for yes.
+# Yes/no prompt. Usage: ask_yn <prompt> <recommended:y|n> ; returns 0 for yes.
+# An explicit y/n is required: empty input (Enter) re-asks instead of taking the
+# recommended value, so the choice is always made on purpose.
 ask_yn() {
-    local prompt="$1" def="$2" ans="" hint
-    if [[ "$def" == "y" ]]; then
-        hint="[Y/n]"
+    local prompt="$1" rec="$2" ans="" hint
+    if [[ "$rec" == "y" ]]; then
+        hint="[y/n] (recommended: y)"
     else
-        hint="[y/N]"
+        hint="[y/n] (recommended: n)"
     fi
     while :; do
         prompt_read ans "  ${prompt} ${hint} "
-        ans="${ans:-$def}"
         case "$ans" in
             [yY] | [yY][eE][sS]) return 0 ;;
             [nN] | [nN][oO]) return 1 ;;
