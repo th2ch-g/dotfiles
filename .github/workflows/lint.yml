@@ -8,23 +8,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: Determine checkout ref
-        id: ref
-        run: |
-          REF="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-          echo "value=${REF}" >> "$GITHUB_OUTPUT"
-
-      # git-auto-commit-action (below) pushes using the token that checkout
-      # persists, so credentials must stay; suppress the artipacked finding.
-      - uses: actions/checkout@v6.0.2 # zizmor: ignore[artipacked]
+      - uses: actions/checkout@v6.0.2
         with:
-          ref: ${{ steps.ref.outputs.value }}
+          persist-credentials: false
 
       - uses: actions/setup-python@v6
         with:
@@ -45,14 +37,9 @@ jobs:
           curl -fsSL https://github.com/tamasfe/taplo/releases/latest/download/taplo-linux-x86_64.gz \
             | gzip -d | install -m 755 /dev/stdin /usr/local/bin/taplo
 
-      # Pass 1: run and let auto-fixers (shfmt, stylua, etc.) modify files
-      - uses: pre-commit/action@v3.0.1
-        continue-on-error: true
-
-      # Commit any auto-fixed files; [skip ci] prevents re-triggering this workflow
-      - uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: "style: auto-fix by pre-commit [skip ci]"
-
-      # Pass 2: verify everything passes (fails if unfixable errors remain)
+      # Verify only -- do NOT auto-fix-and-commit. Pushing a bot commit onto a
+      # Dependabot PR blocks its rebase, and a "[skip ci]" commit would become a
+      # HEAD without the required pre-commit check, deadlocking auto-merge. Local
+      # hooks (make setup) format before commit; if CI still fails, run `make l`
+      # and push the fixes.
       - uses: pre-commit/action@v3.0.1
