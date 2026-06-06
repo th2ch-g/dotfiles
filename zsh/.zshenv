@@ -12,7 +12,7 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 if [[ -z "$BROWSER" && "$OSTYPE" == darwin* ]]; then
-  export BROWSER='open'
+    export BROWSER='open'
 fi
 
 # custom
@@ -35,16 +35,16 @@ export PIXI_NO_PATH_UPDATE=1
 # path - for non-login shells (scripts); .zprofile re-orders this after path_helper for login shells
 typeset -gU cdpath fpath mailpath path
 path=(
-  $BIN
-  $HOME/.local/bin
-  $CARGO_HOME/bin
-  $RUSTUP_HOME/bin
-  $PIXI_HOME/bin
-  /opt/homebrew/{bin,sbin}(N)
-  /opt/local/{bin,sbin}(N)
-  /usr/local/{bin,sbin}(N)
-  $HOME/{bin,sbin}(N)
-  $path
+    $BIN
+    $HOME/.local/bin
+    $CARGO_HOME/bin
+    $RUSTUP_HOME/bin
+    $PIXI_HOME/bin
+    /opt/homebrew/{bin,sbin}(N)
+    /opt/local/{bin,sbin}(N)
+    /usr/local/{bin,sbin}(N)
+    $HOME/{bin,sbin}(N)
+    $path
 )
 
 # local specific file
