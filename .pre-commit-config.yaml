@@ -88,7 +88,10 @@ repos:
     rev: v3.13.1-1
     hooks:
       - id: shfmt
+        # shfmt parses sh/bash/mksh, not zsh; zsh/ uses zsh-only syntax that
+        # its parser rejects (same reason shellcheck excludes zsh/ above).
         args: [-i, "4", -ci, -sr, -w]
+        exclude: ^zsh/
 
   - repo: https://github.com/crate-ci/typos
     rev: v1.47.0
