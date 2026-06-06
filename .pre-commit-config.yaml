@@ -54,6 +54,13 @@ repos:
     hooks:
       - id: actionlint
 
+  # Security static analysis for GitHub Actions; complements actionlint (syntax).
+  # Config: .github/zizmor.yml
+  - repo: https://github.com/zizmorcore/zizmor-pre-commit
+    rev: v1.25.2
+    hooks:
+      - id: zizmor
+
   - repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.10.0.1
     hooks:

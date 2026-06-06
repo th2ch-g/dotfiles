@@ -20,7 +20,9 @@ jobs:
           REF="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
           echo "value=${REF}" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/checkout@v4
+      # git-auto-commit-action (below) pushes using the token that checkout
+      # persists, so credentials must stay; suppress the artipacked finding.
+      - uses: actions/checkout@v4 # zizmor: ignore[artipacked]
         with:
           ref: ${{ steps.ref.outputs.value }}
 

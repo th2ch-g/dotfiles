@@ -47,6 +47,12 @@ curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | ba
 - Non-interactive (CI / containers): set `SETUP_PROFILE=full|standard|guest`
   (and optionally `SETUP_FETCH=https|ssh|zip`), e.g.
   `curl -fsSL .../setup.sh | SETUP_PROFILE=standard bash`.
+- Flags (highest precedence): the same selections work as flags, e.g.
+  `./setup.sh --profile full --fetch ssh --yes`, or pick components directly with
+  `link.sh` / `install.sh` toggles like `./setup.sh --zsh --git --pixi --uv`.
+  Over `curl ... | bash`, pass them after `-s --`:
+  `curl -fsSL .../setup.sh | bash -s -- --profile standard`.
+  Run `./setup.sh --help` for the full list.
 - The manual one-liners below remain available and produce the same result.
 
 ### For me

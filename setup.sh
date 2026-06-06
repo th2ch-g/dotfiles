@@ -21,6 +21,17 @@
 #   SETUP_FETCH=https|ssh|zip           choose the fetch method (default https)
 #   SETUP_DIR=/path                     install directory (default ~/works/dotfiles)
 #
+# Flags (highest precedence; override the env vars above). Run --help for the
+# full list. The essentials:
+#   --profile full|standard|guest   choose the profile (customize: tty only)
+#   --fetch https|ssh|zip           choose the fetch method
+#   --dir /path                     install directory
+#   -y, --yes                       skip the final confirm (implies non-interactive)
+#   -h, --help                      print help and exit
+# Any link.sh / install.sh toggle is also accepted to pick components directly
+# (e.g. --zsh --git --pixi --uv). Over `curl ... | bash`, pass flags after -s --:
+#   curl -fsSL .../setup.sh | bash -s -- --profile standard
+#
 # This script is self-contained on purpose: during a `curl | bash` run the
 # repository (and lib/utils.sh) does not exist yet, so it ships its own tiny
 # logging / OS-detect helpers and only delegates to link.sh / install.sh once
@@ -49,6 +60,15 @@ LINK_TOOLS=()
 INSTALL_FLAGS=()
 PM_CMD=()
 PM_DISPLAY=""
+
+# Flag-driven selection (populated by parse_args). Component toggles are gathered
+# here and appended to LINK_TOOLS / INSTALL_FLAGS *after* build_selection, so a
+# profile base (which assigns those arrays with =) is not clobbered.
+DIR_FLAG=""            # --dir value; applied to CLONE_DEST after parsing
+PROFILE_FROM_FLAG=""   # holds "customize" so choose_profile honors it (tty run)
+HAVE_COMPONENT_FLAGS=0 # 1 when any link/install toggle was seen (manual mode)
+FLAG_LINK_TOOLS=()     # link.sh toggles collected from flags
+FLAG_INSTALL_FLAGS=()  # install.sh toggles collected from flags
 
 # --- self-contained helpers (lib/utils.sh is not available pre-clone) ---
 
@@ -222,6 +242,174 @@ ensure_tool() {
 
 ensure_zsh() { ensure_tool zsh zsh "install.sh runs under zsh"; }
 
+# --- argument parsing ---
+
+USAGE='
+setup.sh:
+    interactive bootstrap for the th2ch-g/dotfiles repository
+
+USAGE:
+    ./setup.sh [FLAGS]
+    curl -fsSL .../setup.sh | bash -s -- [FLAGS]
+
+EXAMPLE:
+    ./setup.sh                                   fully interactive
+    ./setup.sh --profile guest                   non-interactive profile
+    ./setup.sh --profile full --fetch ssh --yes  no prompts at all
+    ./setup.sh --dir ~/dev/dotfiles              pre-seed dir, still interactive
+    ./setup.sh --zsh --git --pixi --uv --yes     pick components directly (manual)
+
+OPTIONS:
+    -h, --help          print help
+    -y, --yes           skip the final confirm (implies non-interactive)
+        --profile <p>   profile: full | standard | guest
+                        (customize is interactive-only; rejected without a tty)
+        --fetch <m>     fetch method: https | ssh | zip (default https)
+        --dir <path>    install directory (default ~/works/dotfiles)
+
+    Any link.sh / install.sh toggle is also accepted and routed to the matching
+    step, e.g. --zsh --git --tmux (link) or --pixi --uv --cargo (install). They
+    extend a --profile base, or without a profile drive a manual selection.
+    Note: --codex installs the codex tool (install.sh); to copy the codex config
+    (link.sh) use --profile customize.
+
+ENVIRONMENT (lower precedence than flags):
+    SETUP_PROFILE=full|standard|guest   SETUP_FETCH=https|ssh|zip   SETUP_DIR=/path
+'
+
+# Validate + apply a --profile value. full|standard|guest force non-interactive
+# (like SETUP_PROFILE); customize is deferred to choose_profile and needs a tty.
+set_profile_flag() {
+    if [[ -z "$1" ]]; then
+        print_error "--profile requires an argument"
+        exit 1
+    fi
+    case "$1" in
+        full | standard | guest)
+            if [[ -n "${SETUP_PROFILE:-}" && "$SETUP_PROFILE" != "$1" ]]; then
+                print_warn "--profile overrides SETUP_PROFILE=${SETUP_PROFILE}"
+            fi
+            SETUP_PROFILE="$1"
+            NONINTERACTIVE=1
+            ;;
+        customize)
+            if { exec 3< "$TTY"; } 2> /dev/null; then
+                exec 3<&-
+                PROFILE_FROM_FLAG="customize"
+            else
+                print_error "--profile customize requires an interactive terminal"
+                exit 1
+            fi
+            ;;
+        *)
+            print_error "--profile must be full|standard|guest|customize"
+            exit 1
+            ;;
+    esac
+}
+
+# Validate + apply a --fetch value (pre-seeds, does not force non-interactive).
+set_fetch_flag() {
+    case "$1" in
+        https | ssh | zip)
+            SETUP_FETCH="$1"
+            CLONE_PROTO="$1"
+            ;;
+        *)
+            print_error "--fetch must be https|ssh|zip"
+            exit 1
+            ;;
+    esac
+}
+
+# Apply a --dir value, expanding a leading ~ (word-splitting does not).
+set_dir_flag() {
+    local val="$1"
+    if [[ -z "$val" ]]; then
+        print_error "--dir requires an argument"
+        exit 1
+    fi
+    if [[ "$val" == \~ || "$val" == \~/* ]]; then
+        val="${HOME}${val#\~}"
+    fi
+    DIR_FLAG="$val"
+}
+
+# Parse CLI flags (mirrors link.sh / install.sh). Recognised link.sh/install.sh
+# toggles are collected into FLAG_LINK_TOOLS / FLAG_INSTALL_FLAGS; value flags set
+# the same SETUP_* vars the env-var paths read, so "flag > env" needs no rewiring.
+parse_args() {
+    while :; do
+        case $1 in
+            -h | --help)
+                echo "$USAGE" >&1
+                exit 0
+                ;;
+            -y | --yes)
+                NONINTERACTIVE=1
+                ;;
+            --profile)
+                if [[ -z "${2:-}" || "$2" == -* ]]; then
+                    print_error "--profile requires an argument"
+                    exit 1
+                fi
+                set_profile_flag "$2"
+                shift
+                ;;
+            --profile=*)
+                set_profile_flag "${1#*=}"
+                ;;
+            --fetch)
+                if [[ -z "${2:-}" || "$2" == -* ]]; then
+                    print_error "--fetch requires an argument"
+                    exit 1
+                fi
+                set_fetch_flag "$2"
+                shift
+                ;;
+            --fetch=*)
+                set_fetch_flag "${1#*=}"
+                ;;
+            --dir)
+                if [[ -z "${2:-}" || "$2" == -* ]]; then
+                    print_error "--dir requires an argument"
+                    exit 1
+                fi
+                set_dir_flag "$2"
+                shift
+                ;;
+            --dir=*)
+                set_dir_flag "${1#*=}"
+                ;;
+            # link.sh passthrough toggles (--codex is in the install group below)
+            --vim | --zsh | --tmux | --git | --alacritty | --neovim | --ssh | --bash | \
+                --yabai | --skhd | --aerospace | --gemini | --claude)
+                FLAG_LINK_TOOLS+=("$1")
+                HAVE_COMPONENT_FLAGS=1
+                ;;
+            # install.sh passthrough toggles (--codex resolves here, not to link)
+            --pixi | --pixi-pkgs | --uv | --brew | --brew-pkgs | --cargo | --cargo-pkgs | \
+                --warpd | --claude-code | --codex | --python3 | --gh-ext | --macos | \
+                --iterm2 | --conda | --gemini-cli | --mold | --password-store | --supertuxkart)
+                FLAG_INSTALL_FLAGS+=("$1")
+                HAVE_COMPONENT_FLAGS=1
+                ;;
+            --)
+                shift
+                break
+                ;;
+            -?*)
+                print_error "Unknown option: $1"
+                exit 1
+                ;;
+            *)
+                break
+                ;;
+        esac
+        shift
+    done
+}
+
 # --- phases ---
 
 validate_env() {
@@ -234,8 +422,9 @@ validate_env() {
                 ;;
         esac
         NONINTERACTIVE=1
-        return
     fi
+    # Flags (-y / --profile) or the env var above may have forced non-interactive.
+    [[ "$NONINTERACTIVE" -eq 1 ]] && return
     # Interactive run: make sure we can actually reach the terminal.
     if ! { exec 3< "$TTY"; } 2> /dev/null; then
         print_error "No interactive terminal (/dev/tty) available."
@@ -255,6 +444,15 @@ choose_fetch_method() {
                 ;;
         esac
         return
+    fi
+    # A --fetch flag (or SETUP_FETCH) pre-seeds the choice; skip the prompt.
+    if [[ -n "${SETUP_FETCH:-}" ]]; then
+        case "$SETUP_FETCH" in
+            https | ssh | zip)
+                CLONE_PROTO="$SETUP_FETCH"
+                return
+                ;;
+        esac
     fi
     local choice=""
     prompt_read choice "How to fetch dotfiles?  [1] HTTPS clone (default)  [2] SSH clone  [3] ZIP (no git) : "
@@ -330,12 +528,16 @@ resolve_repo() {
     if [[ -f "$PWD/link.sh" && -f "$PWD/install.sh" && -f "$PWD/setup.sh" ]]; then
         REPO_DIR="$PWD"
         print_info "using current checkout: $REPO_DIR"
+        if [[ -n "$DIR_FLAG" || -n "${SETUP_FETCH:-}" ]]; then
+            print_warn "reusing current checkout; --fetch/--dir ignored"
+        fi
         return
     fi
 
     # Clone destination: default ~/works/dotfiles, overridable via the SETUP_DIR
-    # env var or, in interactive runs, by typing a path at the prompt.
-    if [[ "$NONINTERACTIVE" -eq 0 ]]; then
+    # env var, the --dir flag (already applied to CLONE_DEST), or, in interactive
+    # runs without such a pre-seed, by typing a path at the prompt.
+    if [[ "$NONINTERACTIVE" -eq 0 && -z "$DIR_FLAG" && -z "${SETUP_DIR:-}" ]]; then
         local dest_in=""
         prompt_read dest_in "Install directory? [${CLONE_DEST}] : "
         if [[ -n "$dest_in" ]]; then
@@ -359,9 +561,25 @@ resolve_repo() {
 }
 
 choose_profile() {
-    if [[ "$NONINTERACTIVE" -eq 1 ]]; then
+    # Precedence: --profile customize > profile (flag/env) > manual toggles > menu.
+    if [[ -n "$PROFILE_FROM_FLAG" ]]; then
+        PROFILE="$PROFILE_FROM_FLAG"
+        print_info "profile from flag: $PROFILE"
+        return
+    fi
+    if [[ -n "${SETUP_PROFILE:-}" ]]; then
         PROFILE="$SETUP_PROFILE"
         print_info "non-interactive profile: $PROFILE"
+        return
+    fi
+    if [[ "$HAVE_COMPONENT_FLAGS" -eq 1 ]]; then
+        PROFILE="manual"
+        print_info "manual selection from flags"
+        return
+    fi
+    # -y/--yes alone with nothing selected: skip the menu (confirm_and_run exits).
+    if [[ "$NONINTERACTIVE" -eq 1 ]]; then
+        PROFILE=""
         return
     fi
     local ans=""
@@ -472,6 +690,7 @@ build_selection() {
         standard) build_standard ;;
         guest) build_guest ;;
         customize) customize ;;
+        manual) ;; # components come from flag toggles, merged in main()
     esac
 }
 
@@ -575,12 +794,18 @@ confirm_and_run() {
 }
 
 main() {
+    parse_args "$@"
+    [[ -n "$DIR_FLAG" ]] && CLONE_DEST="$DIR_FLAG"
     detect_os
     print_info "detected ${OS} ($(uname -m))"
     validate_env
     resolve_repo
     choose_profile
     build_selection
+    # Append flag toggles after build_selection: build_* assign LINK_TOOLS /
+    # INSTALL_FLAGS with =, so merging any earlier would be clobbered.
+    [[ "${#FLAG_LINK_TOOLS[@]}" -gt 0 ]] && LINK_TOOLS+=("${FLAG_LINK_TOOLS[@]}")
+    [[ "${#FLAG_INSTALL_FLAGS[@]}" -gt 0 ]] && INSTALL_FLAGS+=("${FLAG_INSTALL_FLAGS[@]}")
     if [[ "${#INSTALL_FLAGS[@]}" -gt 0 ]]; then
         ensure_zsh
     fi

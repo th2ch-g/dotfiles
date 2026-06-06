@@ -1,0 +1,8 @@
+# zizmor static-analysis config: https://docs.zizmor.sh/configuration/
+rules:
+  unpinned-uses:
+    config:
+      policies:
+        # Allow tag/branch pinning (e.g. @v4); only fully-unpinned uses are flagged.
+        # Overrides the 2026 default that requires hash-pinning for all actions.
+        "*": ref-pin

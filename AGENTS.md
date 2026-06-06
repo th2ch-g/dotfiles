@@ -18,12 +18,16 @@ after a confirmation prompt (apt/dnf/pacman/zypper/apk via sudo, or
 `link.sh` / `install.sh` based on a chosen profile (`full` / `standard` /
 `guest` / `customize`). For git checkouts it can also switch `origin` to SSH and
 run `make setup`. Non-interactive env: `SETUP_PROFILE=full|standard|guest`,
-`SETUP_FETCH=https|ssh|zip`, `SETUP_DIR=/path`. Does not source `lib/utils.sh`
+`SETUP_FETCH=https|ssh|zip`, `SETUP_DIR=/path`. Equivalent flags (highest
+precedence) also work: `--profile`, `--fetch`, `--dir`, `-y`/`--yes`, plus any
+`link.sh`/`install.sh` toggle (e.g. `--zsh --pixi`) to pick components directly;
+over `curl | bash` pass them after `bash -s --`. Does not source `lib/utils.sh`
 (the repo may not exist yet during a piped run).
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | bash
 ./setup.sh                                # from an existing checkout
+./setup.sh --profile guest                # non-interactive via flags
 ```
 
 ### `link.sh` — Dotfiles linker
@@ -203,7 +207,8 @@ check-yaml/toml/json, check-added-large-files, check-case-conflict,
 check-merge-conflict, check-symlinks, destroyed-symlinks, detect-private-key,
 check-executables-have-shebangs, check-shebang-scripts-are-executable,
 hadolint (Dockerfile), check-jsonschema (GitHub workflows), gitleaks,
-detect-secrets, actionlint, shellcheck (excludes `zsh/`), stylua (for
+detect-secrets, actionlint, zizmor (GitHub Actions security), shellcheck
+(excludes `zsh/`), stylua (for
 `nvim/*.lua`), shfmt, typos, yamllint, markdownlint-cli2, prettier, taplo
 TOML formatter, checkmake, gitlint, bash syntax check, zsh syntax check
 (`zsh/` and `install.sh`), and custom sort checks for `brew/Brewfile`,

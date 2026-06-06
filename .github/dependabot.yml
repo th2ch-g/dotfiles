@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # GitHub Actions used in .github/workflows/*.yml (e.g. actions/checkout@v4)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      actions:
+        patterns: ["*"]
+    # Wait 7 days after a release before proposing it (supply-chain hardening)
+    cooldown:
+      default-days: 7
+
+  # pre-commit hook revisions in .pre-commit-config.yaml (native support since 2026-03)
+  - package-ecosystem: "pre-commit"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      pre-commit:
+        patterns: ["*"]
+    cooldown:
+      default-days: 7
