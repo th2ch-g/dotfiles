@@ -142,6 +142,9 @@ Flags for package runners (`*/run.sh`):
 
 ## Gotchas
 
+- `link.sh --unlink` removes symlinks via `unlink`; to remove plain-file
+  copies made with `--cp` (e.g. directory configs), use `--rm` instead
+  (`unlink` cannot remove directories).
 - `link.sh --codex` copies `codex/` into `~/.codex`; it does not create
   a symlink.
 - `link.sh --claude` links `claude/` into `~/.claude` and, when `claude`
