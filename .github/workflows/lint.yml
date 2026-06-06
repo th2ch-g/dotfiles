@@ -22,19 +22,19 @@ jobs:
 
       # git-auto-commit-action (below) pushes using the token that checkout
       # persists, so credentials must stay; suppress the artipacked finding.
-      - uses: actions/checkout@v4 # zizmor: ignore[artipacked]
+      - uses: actions/checkout@v6.0.2 # zizmor: ignore[artipacked]
         with:
           ref: ${{ steps.ref.outputs.value }}
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.x"
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: "stable"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
 
@@ -50,7 +50,7 @@ jobs:
         continue-on-error: true
 
       # Commit any auto-fixed files; [skip ci] prevents re-triggering this workflow
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "style: auto-fix by pre-commit [skip ci]"
 
