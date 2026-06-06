@@ -86,6 +86,22 @@ case "$mode" in
             sort_block "$file" "$commented" -k 2,2r -k 3,3r
         done
         ;;
+    yaml-seq)
+        # Verify that "- crate:/- url:/- repo:" record keys appear in sorted
+        # order. Commented-out records (disabled candidates) start with '#' and
+        # are ignored, matching the active-only sort the .txt format used.
+        # Records span multiple lines, so this is fail-only: unlike plain/
+        # brewfile it does not auto-reorder in place; sort manually if it fails.
+        for file in "$@"; do
+            actual=$(grep -E '^[[:space:]]*- (crate|url|repo): ' "$file" |
+                sed -E 's/^[[:space:]]*- (crate|url|repo): //; s/[[:space:]].*//') || true
+            sorted=$(LC_ALL=C sort <<< "$actual")
+            if [[ "$actual" != "$sorted" ]]; then
+                print_error "$file: entries not sorted (sort by crate/url/repo key)"
+                exit 1
+            fi
+        done
+        ;;
     *)
         print_error "unknown mode: $mode"
         exit 2

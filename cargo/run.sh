@@ -1,11 +1,18 @@
 #!/bin/bash
-# Update the Rust toolchain and install every cargo package listed in list.txt.
+# Update the Rust toolchain and install every cargo package listed in list.yaml.
 #
-# Each non-comment line in list.txt is one of:
-#   <crate>             -> installed with `cargo binstall`
-#   <git-url>           -> `cargo install --git <url>`
-#   <git-url> <crate>   -> `cargo install --git <url> <crate>`
-# Trailing `# ...` descriptions, blank lines and `#` comment lines are ignored.
+# list.yaml holds a `packages:` sequence keyed by `crate:` or `url:`; optional
+# `bin:` / `feature:` refine the install command:
+#   - crate: <name>                 -> cargo binstall <name>
+#   - crate: <name> + feature: <f>  -> cargo binstall <name> --features <f>
+#   - url: <git-url>                -> cargo install --git <url>
+#   - url: <git-url> + bin: <pkg>   -> cargo install --git <url> <pkg>
+#   - url: <git-url> + feature: <f> -> cargo install --git <url> --features <f>
+# `bin:` and `feature:` may be combined (feature takes a comma-separated list).
+# `desc:` fields, the `packages:` header and `#` comment lines (disabled
+# candidates) are ignored. This is a minimal yq-free YAML reader so the cargo
+# bootstrap stays self-contained; keep list.yaml to the flat two-space-indent
+# schema above or the parser will silently skip records.
 #
 # Failures are collected instead of aborting the loop: every package is
 # attempted, and the script exits non-zero with a summary if any failed.
@@ -22,29 +29,53 @@ cargo install --locked cargo-binstall
 
 failed=()
 
+# Install the record accumulated in url/crate/bin, then reset for the next one.
+# Called when a new "- crate:"/"- url:" line starts a record and once at EOF.
+flush_record() {
+    [[ -z "$url$crate" ]] && return
+    # feature -> --features; expanded with the set-but-empty-safe idiom so an
+    # absent feature adds no argument (and does not trip `set -u` on bash 3.2).
+    local opts=()
+    [[ -n "$feature" ]] && opts=(--features "$feature")
+    if [[ -n "$url" ]]; then
+        print_step "$url"
+        if [[ -n "$bin" ]]; then
+            cargo install --locked --force --git "$url" "$bin" ${opts[@]+"${opts[@]}"} ||
+                failed+=("$url $bin")
+        else
+            cargo install --locked --force --git "$url" ${opts[@]+"${opts[@]}"} ||
+                failed+=("$url")
+        fi
+    else
+        print_step "$crate"
+        cargo binstall -y --locked --force "$crate" ${opts[@]+"${opts[@]}"} ||
+            failed+=("$crate")
+    fi
+    url="" crate="" bin="" feature=""
+}
+
+url="" crate="" bin="" feature=""
 while IFS= read -r line; do
-    # Skip comment lines and blank/whitespace-only lines.
+    # Skip comment lines (disabled candidates) and blank/whitespace-only lines.
     [[ "$line" =~ ^[[:space:]]*# ]] && continue
     [[ -z "${line//[[:space:]]/}" ]] && continue
 
-    # Split into the first token (crate or git URL) and an optional spec;
-    # the trailing `# ...` description, if any, is discarded into `_`.
-    read -r target spec _ <<< "$line"
-    print_step "$target"
-
-    if [[ "$target" == https://* ]]; then
-        if [[ -z "$spec" || "$spec" == \#* ]]; then
-            cargo install --locked --force --git "$target" ||
-                failed+=("$target")
-        else
-            cargo install --locked --force --git "$target" "$spec" ||
-                failed+=("$target $spec")
-        fi
-    else
-        cargo binstall -y --locked --force "$target" ||
-            failed+=("$target")
+    # A new "- crate:"/"- url:" line flushes the previous record; "bin:" and
+    # "feature:" attach to the current one. The "packages:" header and "desc:"
+    # lines match none of these and fall through (ignored).
+    if [[ "$line" =~ ^[[:space:]]*-[[:space:]]+crate:[[:space:]]+([^[:space:]]+) ]]; then
+        flush_record
+        crate="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^[[:space:]]*-[[:space:]]+url:[[:space:]]+([^[:space:]]+) ]]; then
+        flush_record
+        url="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^[[:space:]]*bin:[[:space:]]+([^[:space:]]+) ]]; then
+        bin="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^[[:space:]]*feature:[[:space:]]+([^[:space:]]+) ]]; then
+        feature="${BASH_REMATCH[1]}"
     fi
-done < list.txt
+done < list.yaml
+flush_record
 
 if ((${#failed[@]} > 0)); then
     print_error "cargo-install-list: ${#failed[@]} package(s) failed:"

@@ -155,8 +155,15 @@ repos:
       - id: sort-cargo-list
         name: sort cargo list
         language: system
-        entry: lib/check_sorted.sh plain
-        files: ^cargo/list\.txt$
+        entry: lib/check_sorted.sh yaml-seq
+        files: ^cargo/list\.yaml$
+        types: [file]
+
+      - id: sort-gh-ext-list
+        name: sort gh-ext list
+        language: system
+        entry: lib/check_sorted.sh yaml-seq
+        files: ^gh-ext/list\.yaml$
         types: [file]
 
       - id: sort-python-requirements

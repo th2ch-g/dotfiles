@@ -135,8 +135,10 @@ Flags for package runners (`*/run.sh`):
   - `detect_nproc` — cross-platform CPU count
     (macOS: `sysctl -n hw.ncpu`, Linux: `nproc`)
 - `lib/check_sorted.sh` — used by the pre-commit sort hooks to verify
-  `brew/Brewfile`, `cargo/list.txt`, and `python3/requirements.txt` stay
-  sorted (modes: `brewfile`, `plain`; also validates commented-out entries)
+  `brew/Brewfile`, `cargo/list.yaml`, `gh-ext/list.yaml`, and
+  `python3/requirements.txt` stay sorted (modes: `brewfile`, `plain`,
+  `yaml-seq`; `plain`/`brewfile` auto-reorder in place, `yaml-seq` is
+  fail-only since YAML records span multiple lines)
 
 ## Gotchas
 
@@ -159,9 +161,11 @@ Flags for package runners (`*/run.sh`):
 - All scripts source `lib/utils.sh` via `$DOTFILES_DIR`; re-running is safe
   (idempotency checks built in)
 - `brew/run.sh` — Homebrew package list
-- `cargo/run.sh` — Cargo package list (use `--cargo-pkgs` flag)
+- `cargo/run.sh` — installs cargo packages from `cargo/list.yaml`
+  (minimal yq-free YAML reader; use `--cargo-pkgs` flag)
 - `python3/run.sh` — Python package installs
-- `gh-ext/run.sh` — gh extension list (use `--gh-ext` flag)
+- `gh-ext/run.sh` — installs gh extensions from `gh-ext/list.yaml`
+  (use `--gh-ext` flag)
 - `pixi/run.sh` — pixi global tool manifest (`pixi-global.toml`); symlinks it
   to `$PIXI_HOME/manifests/` and runs `pixi global sync` (use `--pixi-pkgs`).
   Tools formerly built from source (git, vim, nvim, tmux, zsh, less,
@@ -212,7 +216,8 @@ detect-secrets, actionlint, zizmor (GitHub Actions security), shellcheck
 `nvim/*.lua`), shfmt, typos, yamllint, markdownlint-cli2, prettier, taplo
 TOML formatter, checkmake, gitlint, bash syntax check, zsh syntax check
 (`zsh/` and `install.sh`), and custom sort checks for `brew/Brewfile`,
-`cargo/list.txt`, `python3/requirements.txt` (via `lib/check_sorted.sh`).
+`cargo/list.yaml`, `gh-ext/list.yaml`, `python3/requirements.txt`
+(via `lib/check_sorted.sh`).
 
 ## Makefile Shortcuts
 

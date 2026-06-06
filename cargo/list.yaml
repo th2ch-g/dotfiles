@@ -1,0 +1,218 @@
+# Cargo packages. Installed via: ./install.sh --cargo-pkgs
+#
+# Active entries are sorted by crate/url key (LC_ALL=C sort); disabled
+# candidates are kept commented-out at the bottom. Optional `bin:`/`feature:`
+# refine the command (desc is documentation only — run.sh does not read it):
+#   - crate: <name>                  -> cargo binstall <name>
+#   - crate: <name> + feature: <f>   -> cargo binstall <name> --features <f>
+#   - url: <git-url>                 -> cargo install --git <url>
+#   - url: <git-url> + bin: <pkg>    -> cargo install --git <url> <pkg>
+#   - url: <git-url> + feature: <f>  -> cargo install --git <url> --features <f>
+packages:
+  - crate: bacon
+    desc: background code checker
+  - crate: bat
+    desc: A cat(1) clone with wings.
+  - crate: bottom
+    desc: Yet another cross-platform graphical process/system monitor.
+  - crate: cargo-binstall
+    desc: Binary installation for rust projects
+  - crate: cargo-deny
+    desc: Cargo plugin for linting your dependencies
+  - crate: cargo-fuzz
+    desc: Command line helpers for fuzzing
+  - crate: cargo-license
+    desc: Cargo subcommand to see license of dependencies
+  - crate: cargo-nextest
+    desc: A next-generation test runner for Rust.
+  - crate: cargo-tarpaulin
+    desc: A code coverage tool for Rust projects
+  - crate: cargo-update
+    desc: A cargo subcommand for checking and applying updates to installed executables
+  - crate: cfonts
+    desc: Sexy fonts for the console
+  - crate: choose
+    desc: A human-friendly and fast alternative to cut and (sometimes) awk
+  - crate: code2prompt
+    desc: A CLI tool to convert your codebase into a single LLM prompt with source tree, prompt templating, and token counting.
+  - crate: csview
+    desc: Pretty and fast csv viewer for cli with cjk/emoji support.
+  - crate: du-dust
+    desc: A more intuitive version of du in rust
+  - crate: evcxr_jupyter
+    desc: A Jupyter Kernel
+  - crate: evcxr_repl
+    desc: An evaluation context for Rust.
+  - crate: eza
+    desc: A modern alternative to ls
+  - crate: fd-find
+    desc: A simple, fast and user-friendly alternative to 'find'
+  - crate: flamegraph
+    desc: Easy flamegraphs for Rust projects and everything else, without Perl or pipes <3
+  - crate: git-cliff
+    desc: A highly customizable Changelog Generator that follows Conventional Commit specifications
+  - crate: git-delta
+    desc: A syntax-highlighting pager for git, diff, grep, and blame output
+  - crate: gitui
+    desc: Blazing fast terminal-ui for git written in rust
+  - crate: grex
+    desc: A command-line tool and Rust library with Python bindings for generating regular expressions from user-provided test cases
+  - url: https://github.com/001TMF/ProteinView.git
+    bin: fetch
+    desc: Terminal protein structure viewer — interactive 3D visualization of PDB/mmCIF structures with cartoon ribbons, braille rendering, and Sixel/Kitty graphics
+  - url: https://github.com/devmatteini/dra.git
+    bin: dra
+    desc: A command line tool to download release assets from GitHub
+  - url: https://github.com/googleworkspace/cli
+    desc: Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.
+  - url: https://github.com/imsnif/bandwhich.git
+    desc: Terminal bandwidth utilization tool
+  - url: https://github.com/itsjunetime/tdf.git
+    desc: A tui-based PDF viewer
+  - url: https://github.com/junhoyeo/tokscale.git
+    desc: A CLI tool for tracking token usage from OpenCode, Claude Code, OpenClaw (Clawdbot/Moltbot), Pi, Codex, Gemini, Cursor, AmpCode, Factory Droid, Kimi, and more! • Global Leaderboard + 2D/3D Contributions Graph
+  - url: https://github.com/mogura-rs/mdtraj-rs
+    desc: Implementation of MDTraj in Rust
+  - url: https://github.com/mogura-rs/mmterm-rs
+    desc: Rust implementation of https://github.com/jgreener64/mmterm
+  - url: https://github.com/nooscraft/tokuin
+    desc: CLI tool – estimates LLM tokens/costs and runs provider-aware load tests for OpenAI, Anthropic, OpenRouter, or custom endpoints.
+  - url: https://github.com/pamburus/termframe.git
+    desc: Terminal output SVG screenshot tool
+  - url: https://github.com/sib-swiss/termal.git
+    desc: "Termal: a fast and interactive terminal-based viewer for multiple sequence alignments"
+  - url: https://github.com/th2ch-g/kanban.git
+    bin: kanban
+    desc: Super useless tool that displays your message on "top(1)/nvtop/nvitop" using parallel process
+  - url: https://github.com/tsaitoh/concal.git
+    bin: concal
+    desc: Contribution calendar for local repository
+  - url: https://github.com/uutils/coreutils
+    bin: coreutils
+    desc: Cross-platform Rust rewrite of the GNU coreutils
+  - url: https://github.com/zmactep/pymol-rs
+    desc: A Rust reimplementation of PyMOL molecular visualization
+  - crate: hyperfine
+    desc: A command-line benchmarking tool
+  - crate: jaq
+    desc: A jq clone focussed on correctness, speed, and simplicity
+  - crate: jj-cli
+    desc: A Git-compatible VCS that is both simple and powerful
+  - crate: just
+    desc: Just a command runner
+  - crate: mdbook
+    desc: Create book from markdown files. Like Gitbook but implemented in Rust
+  - crate: mprocs
+    desc: Run multiple commands in parallel
+  - crate: nono-cli
+    desc: Secure, kernel-enforced sandbox CLI and SDKs for AI agents. Capability-based isolation with secure key management, atomic rollback, cryptographic immutable audit chain of provenance. Run your agents in a zero-trust environment.
+  - crate: nviwatch
+    desc: "NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes"
+  - crate: ouch
+    desc: Painless compression and decompression in the terminal
+  - crate: pastel
+    desc: A command-line tool to generate, analyze, convert and manipulate colors
+  - crate: presenterm
+    desc: A markdown terminal slideshow tool
+  - crate: procs
+    desc: A modern replacement for ps written in Rust
+  - crate: pueue
+    desc: Manage your shell commands.
+  - crate: r-matrix
+    desc: rust port of cmatrix
+  - crate: ripgrep
+    desc: ripgrep recursively searches directories for a regex pattern while respecting your gitignore
+  - crate: ripgrep_all
+    desc: "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
+  - crate: rnr
+    desc: A command-line tool to batch rename files and directories
+  - crate: rust-script
+    desc: Run Rust files and expressions as scripts without any setup or compilation step
+  - crate: sccache
+    desc: Sccache is a ccache-like tool. It is used as a compiler wrapper and avoids compilation when possible. Sccache has the capability to utilize caching in remote storage environments, including various cloud storage options, or alternatively, in local storage.
+  - crate: sd
+    desc: Intuitive find & replace CLI (sed alternative)
+  - crate: silicon
+    desc: Create beautiful image of your source code.
+  - crate: skim
+    desc: Fuzzy Finder in rust!
+  - crate: stylua
+    desc: A Lua code formatter
+  - crate: taplo-cli
+    desc: A TOML toolkit written in Rust
+  - crate: tealdeer
+    desc: A very fast implementation of tldr in Rust.
+  - crate: tokei
+    desc: Count your code, quickly.
+  - crate: tre-command
+    desc: Tree command, improved.
+  - crate: trunk
+    desc: Build, bundle & ship your Rust WASM application to the web.
+  - crate: typos-cli
+    desc: Source code spell checker
+  - crate: viu
+    desc: Terminal image viewer with native support for iTerm and Kitty
+  - crate: watchexec-cli
+    desc: Executes commands in response to file modifications
+  - crate: wild-linker
+    desc: A very fast linker for Linux
+  - crate: xh
+    desc: Friendly and fast tool for sending HTTP requests
+  - crate: yazi-fm
+    desc: Blazing fast terminal file manager written in Rust, based on async I/O.
+  - crate: zoxide
+    desc: A smarter cd command. Supports all major shells.
+  # --- disabled candidates (skipped by run.sh; uncomment to enable) ---
+  # - crate: broot
+  #   desc: A new way to see and navigate directory trees
+  # - crate: cargo-chef
+  #   desc: A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.
+  # - crate: cargo-make
+  #   desc: Rust task runner and build tool.
+  # - crate: fcp
+  #   desc: A significantly faster alternative to the classic Unix cp(1) command, copying large files and directories in a fraction of the time.
+  # - url: https://github.com/astral-sh/uv
+  #   bin: uv
+  #   desc: An extremely fast Python package and project manager, written in Rust.
+  # - url: https://github.com/Fierthraix/2048-rs.git
+  #   bin: game_2048
+  #   desc: An implementation of 2048 using ncurses in Rust
+  # - url: https://github.com/giacomo-b/rust-stakeholder.git
+  #   bin: rust-stakeholder
+  #   desc: Generate impressive-looking terminal output to look busy when stakeholders walk by
+  # - url: https://github.com/openai/codex.git
+  #   bin: codex-cli
+  #   desc: Lightweight coding agent that runs in your terminal
+  # - url: https://github.com/prefix-dev/pixi.git
+  #   bin: pixi
+  #   desc: Package management made easy
+  # - url: https://github.com/rtk-ai/rtk
+  #   desc: CLI proxy that reduces LLM token consumption by 60-90% on common dev commands. Single Rust binary, zero dependencies
+  # - url: https://github.com/sioodmy/todo.git
+  #   bin: todo
+  #   desc: Simple todo cli program written in rust
+  # - url: https://github.com/th2ch-g/parrot-rs.git
+  #   bin: parrot
+  #   desc: Party Parrot implemented by Rust
+  # - crate: loop-rs
+  #   desc: UNIX's missing `loop` command
+  # - crate: monolith
+  #   desc: CLI tool and library for saving complete web pages as a single HTML file
+  # - crate: parsync
+  #   desc: Parallel rsync-like pull sync over SSH with resume
+  # - crate: rustpython
+  #   desc: A Python Interpreter written in Rust
+  # - crate: sheldon
+  #   desc: Fast, configurable, shell plugin manager
+  # - crate: ssubmit
+  #   desc: Submit slurm sbatch jobs without a script
+  # - crate: starship
+  #   desc: The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+  # - crate: tomlq
+  #   desc: A tool for getting data from TOML files on the command line
+  # - crate: wasmer-cli
+  #   desc: Fast, secure, lightweight containers based on WebAssembly
+  # - crate: xq
+  #   desc: Pure rust implementation of jq
+  # - crate: zellij
+  #   desc: A terminal workspace with batteries included

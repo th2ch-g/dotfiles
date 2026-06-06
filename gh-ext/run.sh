@@ -17,16 +17,17 @@ fi
 installed=$(gh extension list)
 
 while IFS= read -r line; do
-    ext=$(echo "$line" | awk '{print $1}')
-    [[ -z "$ext" ]] && continue
-    [[ "$ext" =~ ^# ]] && continue
+    # Skip comments (header + disabled entries); read OWNER/REPO from "- repo:".
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    [[ "$line" =~ ^[[:space:]]*-[[:space:]]+repo:[[:space:]]+([^[:space:]]+) ]] || continue
+    ext="${BASH_REMATCH[1]}"
     print_step "$ext"
     if grep -qF "$ext" <<< "$installed"; then
         print_info "$ext already installed, skipping"
     else
         gh extension install "$ext" < /dev/null
     fi
-done < list.txt
+done < list.yaml
 
 # Upgrade all installed extensions to their latest release.
 gh extension upgrade --all || true
