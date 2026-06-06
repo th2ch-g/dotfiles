@@ -3,6 +3,8 @@ set -e
 
 source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
 
+update_if_installed conda conda update -n base conda -y
+
 CONDA_BASE_PATH=${HOME}/works/tools/miniconda3
 arch=$(uname -m)
 

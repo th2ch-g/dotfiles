@@ -130,6 +130,8 @@ Flags for package runners (`*/run.sh`):
   - `print_info` / `print_warn` / `print_error` — logging helpers
   - `need_cmd <cmd>` — check if command exists on PATH
   - `skip_if_installed <cmd>` — exit 0 with message if already installed
+  - `update_if_installed <cmd> <update-cmd...>` — if already installed, run
+    the self-update command and exit 0 (best-effort; warns on failure)
   - `ensure_bin <path>` — `ln -sf` binary into `$BIN`
     (default: `$HOME/works/bin`)
   - `detect_nproc` — cross-platform CPU count
@@ -163,6 +165,10 @@ Flags for package runners (`*/run.sh`):
   extracted to `$TOOLS` (`$HOME/works/tools`)
 - All scripts source `lib/utils.sh` via `$DOTFILES_DIR`; re-running is safe
   (idempotency checks built in)
+- Tools with a first-party self-update (pixi, uv, cargo/rustup, claude-code,
+  codex, conda) and brew self-update when already installed instead of
+  skipping; source-build / pinned-binary tools (mold, warpd, password-store,
+  supertuxkart, gemini-cli) still skip.
 - `brew/run.sh` — Homebrew package list
 - `cargo/run.sh` — installs cargo packages from `cargo/list.yaml`
   (minimal yq-free YAML reader; use `--cargo-pkgs` flag)

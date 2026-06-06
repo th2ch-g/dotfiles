@@ -73,6 +73,19 @@ skip_if_installed() {
     fi
 }
 
+# If <cmd> is already installed, self-update it and exit 0; otherwise return so
+# the caller proceeds with a fresh install. Update failures warn but do not
+# abort (best-effort), so one tool's failure won't stop a multi-tool install.sh.
+# Usage: update_if_installed <cmd> <update-cmd> [args...]
+update_if_installed() {
+    local cmd="$1"
+    shift
+    need_cmd "$cmd" || return 0
+    print_info "$cmd is already installed, updating"
+    "$@" || print_warn "$cmd update failed"
+    exit 0
+}
+
 # Create a symlink in $BIN (force, so re-runs are safe).
 # Usage: ensure_bin /path/to/binary
 ensure_bin() {
