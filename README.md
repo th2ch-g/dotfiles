@@ -30,7 +30,7 @@ how to fetch the repo, an install profile, and optional developer setup, then
 delegates to `link.sh` / `install.sh`:
 
 ```shell
-curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | sh
+curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | bash
 ```
 
 - Fetch method: `HTTPS clone`, `SSH clone`, or `ZIP download` (no git history —
