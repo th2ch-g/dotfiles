@@ -135,5 +135,10 @@
   "skipWorkflowUsageWarning": true,
   "verbose": false,
   "showTurnDuration": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh",
+    "padding": 0
+  }
 }
