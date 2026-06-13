@@ -26,7 +26,8 @@ COPY ./lib/ ./lib
 COPY ./link.sh .
 COPY ./zsh ./zsh
 COPY ./sheldon/ ./sheldon
-RUN ./link.sh --zsh
+COPY ./claude/ ./claude
+RUN ./link.sh --zsh --claude
 RUN zsh -i -c exit
 RUN chsh -s /bin/zsh
 
