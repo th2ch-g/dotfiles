@@ -267,11 +267,47 @@ OPTIONS:
         --fetch <m>     fetch method: https | ssh | zip (default https)
         --dir <path>    install directory (default ~/works/dotfiles)
 
-    Any link.sh / install.sh toggle is also accepted and routed to the matching
-    step, e.g. --zsh --git --tmux (link) or --pixi --uv --cargo (install). They
-    extend a --profile base, or without a profile drive a manual selection.
-    Note: --codex installs the codex tool (install.sh); to copy the codex config
-    (link.sh) use --profile customize.
+    Component toggles below are also accepted and routed to the matching step.
+    They extend a --profile base, or without a profile drive a manual selection
+    (e.g. --zsh --git --pixi --uv). For per-flag detail see ./link.sh --help /
+    ./install.sh --help. Note: --codex installs the codex tool (install.sh); to
+    copy the codex config (link.sh) use --profile customize.
+
+    link passthrough (-> ./link.sh):
+        --vim           vim config
+        --zsh           zsh + sheldon config
+        --tmux          tmux config
+        --git           git config
+        --alacritty     alacritty config
+        --neovim        neovim config
+        --ssh           ssh config (copied, not linked)
+        --bash          bash profile (not recommended)
+        --yabai         yabai config (Mac only)
+        --skhd          skhd config (Mac only)
+        --aerospace     aerospace config
+        --gemini        gemini config
+        --claude        claude config
+
+    install passthrough (-> ./install.sh):
+        --pixi          install pixi
+        --pixi-pkgs     pixi global packages
+        --uv            install uv
+        --brew          Homebrew (Mac only)
+        --brew-pkgs     Homebrew packages (Mac only)
+        --cargo         Rust toolchain
+        --cargo-pkgs    cargo packages
+        --warpd         warpd (Mac only)
+        --claude-code   claude-code
+        --codex         codex
+        --python3       python packages
+        --gh-ext        gh extensions
+        --macos         macOS settings (Mac only)
+        --iterm2        iTerm2 (Mac only)
+        --conda         conda
+        --gemini-cli    gemini-cli
+        --mold          mold linker
+        --password-store  password-store
+        --supertuxkart  SuperTuxKart
 
 ENVIRONMENT (lower precedence than flags):
     SETUP_PROFILE=full|standard|guest   SETUP_FETCH=https|ssh|zip   SETUP_DIR=/path
