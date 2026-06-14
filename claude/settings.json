@@ -13,6 +13,11 @@
     "defaultMode": "auto"
   },
   "hooks": {},
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh",
+    "padding": 0
+  },
   "enabledPlugins": {
     "document-skills@anthropic-agent-skills": true,
     "example-skills@anthropic-agent-skills": false,
@@ -136,9 +141,5 @@
   "verbose": false,
   "showTurnDuration": true,
   "voiceEnabled": true,
-  "statusLine": {
-    "type": "command",
-    "command": "$HOME/.claude/statusline.sh",
-    "padding": 0
-  }
+  "remoteControlAtStartup": true
 }
