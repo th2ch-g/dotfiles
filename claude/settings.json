@@ -140,6 +140,6 @@
   "skipWorkflowUsageWarning": true,
   "verbose": false,
   "showTurnDuration": true,
-  "voiceEnabled": true,
-  "remoteControlAtStartup": true
+  "remoteControlAtStartup": true,
+  "voiceEnabled": true
 }
