@@ -94,7 +94,7 @@ repos:
         exclude: ^zsh/
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.47.0
+    rev: v1.47.2
     hooks:
       - id: typos
 
