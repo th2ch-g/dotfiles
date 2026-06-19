@@ -12,6 +12,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "model": "claude-opus-4-6",
   "hooks": {},
   "statusLine": {
     "type": "command",
