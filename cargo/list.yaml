@@ -63,6 +63,9 @@ packages:
   - url: https://github.com/devmatteini/dra.git
     bin: dra
     desc: A command line tool to download release assets from GitHub
+  - url: https://github.com/erweixin/RaTeX
+    bin: ratex-pdf
+    feature: cli
   - url: https://github.com/googleworkspace/cli
     desc: Google Workspace CLI — one command-line tool for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more. Dynamically built from Google Discovery Service. Includes AI agent skills.
   - url: https://github.com/imsnif/bandwhich.git
@@ -102,10 +105,10 @@ packages:
     desc: Just a command runner
   - crate: mdbook
     desc: Create book from markdown files. Like Gitbook but implemented in Rust
+  # - crate: nono-cli
+  #   desc: Secure, kernel-enforced sandbox CLI and SDKs for AI agents. Capability-based isolation with secure key management, atomic rollback, cryptographic immutable audit chain of provenance. Run your agents in a zero-trust environment.
   - crate: mprocs
     desc: Run multiple commands in parallel
-  - crate: nono-cli
-    desc: Secure, kernel-enforced sandbox CLI and SDKs for AI agents. Capability-based isolation with secure key management, atomic rollback, cryptographic immutable audit chain of provenance. Run your agents in a zero-trust environment.
   - crate: nviwatch
     desc: "NviWatch: A blazingly fast rust based TUI for managing and monitoring NVIDIA GPU processes"
   - crate: ouch
@@ -116,6 +119,8 @@ packages:
     desc: A markdown terminal slideshow tool
   - crate: procs
     desc: A modern replacement for ps written in Rust
+  - crate: prs-cli
+    desc: A secure, fast & convenient password manager CLI using GPG and git to sync.
   - crate: pueue
     desc: Manage your shell commands.
   - crate: r-matrix

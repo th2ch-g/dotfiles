@@ -139,8 +139,11 @@ Flags for package runners (`*/run.sh`):
 - `lib/check_sorted.sh` — used by the pre-commit sort hooks to verify
   `brew/Brewfile`, `cargo/list.yaml`, `gh-ext/list.yaml`, and
   `python3/requirements.txt` stay sorted (modes: `brewfile`, `plain`,
-  `yaml-seq`; `plain`/`brewfile` auto-reorder in place, `yaml-seq` is
-  fail-only since YAML records span multiple lines)
+  `yaml-seq`; all three auto-reorder in place. `yaml-seq` folds each
+  multi-line record onto one line, sorting position-preservingly: comment
+  lines (disabled candidates) hold their slot while active records flow
+  around them, so a mid-list commented-out entry may end up beside a
+  different neighbour — disable entries in the bottom block to avoid drift)
 
 ## Gotchas
 
