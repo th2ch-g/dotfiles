@@ -136,6 +136,10 @@
   "language": "ja",
   "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "verbose": false,
