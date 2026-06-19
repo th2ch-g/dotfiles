@@ -60,6 +60,8 @@ packages:
   - url: https://github.com/001TMF/ProteinView.git
     bin: fetch
     desc: Terminal protein structure viewer — interactive 3D visualization of PDB/mmCIF structures with cartoon ribbons, braille rendering, and Sixel/Kitty graphics
+  - url: https://github.com/RivoLink/leaf
+    desc: Terminal Markdown previewer — GUI-like experience.
   - url: https://github.com/devmatteini/dra.git
     bin: dra
     desc: A command line tool to download release assets from GitHub
@@ -103,10 +105,10 @@ packages:
     desc: A Git-compatible VCS that is both simple and powerful
   - crate: just
     desc: Just a command runner
-  - crate: mdbook
-    desc: Create book from markdown files. Like Gitbook but implemented in Rust
   # - crate: nono-cli
   #   desc: Secure, kernel-enforced sandbox CLI and SDKs for AI agents. Capability-based isolation with secure key management, atomic rollback, cryptographic immutable audit chain of provenance. Run your agents in a zero-trust environment.
+  - crate: mdbook
+    desc: Create book from markdown files. Like Gitbook but implemented in Rust
   - crate: mprocs
     desc: Run multiple commands in parallel
   - crate: nviwatch
