@@ -240,8 +240,10 @@ alias tls="tmux ls"
 alias gacp='git add -A && git commit -m add && git push'
 alias gcp='git commit -m add && git push'
 alias gc='git commit -m add'
+alias gac='git add -A && git commit -m add'
 alias claude_commit='git status --short | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
 alias gcs='git commits -m add'
+alias gacs='git add -A && git commits -m add'
 alias gacsp='git add -A && git commits -m add && git push'
 
 # others
