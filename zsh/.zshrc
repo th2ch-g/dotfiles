@@ -237,8 +237,12 @@ alias tkas="tmux kill-server"
 alias tls="tmux ls"
 
 # git alias
-alias gac='git add -A && git status --short | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
-alias gc='git add -A && git commits -m add && git push'
+alias gacp='git add -A && git commit -m add && git push'
+alias gcp='git commit -m add && git push'
+alias gc='git commit -m add'
+alias claude_commit='git status --short | claude -p --no-session-persistence --model haiku --effort low "/commit-commands:commit please commit in English"'
+alias gcs='git commits -m add'
+alias gacsp='git add -A && git commits -m add && git push'
 
 # others
 alias p="top"
