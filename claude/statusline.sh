@@ -122,10 +122,10 @@ disp_dir=${cwd/#"$HOME"/\~}
 # Git branch is NOT in the JSON; query it from the session's directory.
 branch=$(git -C "$cwd" branch --show-current 2> /dev/null)
 # Account identity is NOT in the stdin JSON either; read it from ~/.claude.json
-# (a small file, so a single keyed lookup is cheap). Prefer the human-readable
-# displayName, fall back to the email; empty if neither is present (e.g. API-key
-# auth without an oauthAccount), in which case the segment simply drops out.
-account=$(jq -r '.oauthAccount.displayName // .oauthAccount.emailAddress // empty' "$HOME/.claude.json" 2> /dev/null)
+# (a small file, so a single keyed lookup is cheap). Prefer the email address,
+# fall back to the displayName; empty if neither is present (e.g. API-key auth
+# without an oauthAccount), in which case the segment simply drops out.
+account=$(jq -r '.oauthAccount.emailAddress // .oauthAccount.displayName // empty' "$HOME/.claude.json" 2> /dev/null)
 
 # ---- Line 1: environment ---------------------------------------------------
 line1="${cyan}${model}${reset}"
