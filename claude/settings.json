@@ -143,6 +143,7 @@
   },
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
+  "theme": "dark",
   "verbose": false,
   "showTurnDuration": true,
   "remoteControlAtStartup": true,
