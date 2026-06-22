@@ -159,6 +159,10 @@ Flags for package runners (`*/run.sh`):
 - `claude/plugins/cache/` contains vendored plugin cache data; treat it as
   external snapshot data unless the task explicitly targets plugin cache
   updates.
+- `install.sh --macos` passes `--dockutil` to `macos/run.sh`, which
+  **destructively rebuilds the Dock** (removes all items, then re-adds a
+  fixed set: System Settings, Chrome, Slack, iTerm, Docker, XQuartz, Desktop,
+  Downloads) when `dockutil` is installed; otherwise it warns and skips.
 
 ### Install Scripts
 
@@ -222,6 +226,7 @@ Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending,
 check-yaml/toml/json, check-added-large-files, check-case-conflict,
 check-merge-conflict, check-symlinks, destroyed-symlinks, detect-private-key,
 check-executables-have-shebangs, check-shebang-scripts-are-executable,
+check-hooks-apply, check-useless-excludes (pre-commit meta hooks),
 hadolint (Dockerfile), check-jsonschema (GitHub workflows), gitleaks,
 detect-secrets, actionlint, zizmor (GitHub Actions security), shellcheck
 (excludes `zsh/`), stylua (for
