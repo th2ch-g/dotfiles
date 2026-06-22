@@ -6,7 +6,6 @@
     "DISABLE_BUG_COMMAND": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_EFFORT_LEVEL": "max",
     "ENABLE_TOOL_SEARCH": "true"
   },
   "permissions": {
@@ -147,5 +146,6 @@
   "verbose": false,
   "showTurnDuration": true,
   "remoteControlAtStartup": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "effortLevel": "xhigh"
 }
