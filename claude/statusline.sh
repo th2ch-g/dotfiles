@@ -2,8 +2,8 @@
 #
 # Claude Code custom statusLine. Reads the session JSON from stdin and prints a
 # two-line status:
-#   line 1 (environment): <model>  effort:<lvl>  style:<name>  think  <branch>
-#                         <repo>  <cwd>  «<session-name>»
+#   line 1 (environment): <account>  <model>  effort:<lvl>  style:<name>  think
+#                         <branch>  <repo>  <cwd>  «<session-name>»
 #   line 2 (metrics):     ctx <used>k used / <free>k free (<pct>%)  out <n>k
 #                         cache <create>k/<read>k  compact ~<n>%  PR#<n> <state>
 #                         +<add> -<rem>
@@ -23,7 +23,7 @@ blue=$'\033[34m'
 yellow=$'\033[33m'
 red=$'\033[31m'
 magenta=$'\033[35m'
-dim=$'\033[2m'
+bwhite=$'\033[97m'
 reset=$'\033[0m'
 
 # Compact "6d3h" / "1h23m" / "45m" / "30s" from a second count; clamps to 0.
@@ -121,16 +121,22 @@ cache_read=${fields[23]}
 disp_dir=${cwd/#"$HOME"/\~}
 # Git branch is NOT in the JSON; query it from the session's directory.
 branch=$(git -C "$cwd" branch --show-current 2> /dev/null)
+# Account identity is NOT in the stdin JSON either; read it from ~/.claude.json
+# (a small file, so a single keyed lookup is cheap). Prefer the human-readable
+# displayName, fall back to the email; empty if neither is present (e.g. API-key
+# auth without an oauthAccount), in which case the segment simply drops out.
+account=$(jq -r '.oauthAccount.displayName // .oauthAccount.emailAddress // empty' "$HOME/.claude.json" 2> /dev/null)
 
 # ---- Line 1: environment ---------------------------------------------------
 line1="${cyan}${model}${reset}"
+[ -n "$account" ] && line1="${bwhite}${account}${reset}  ${line1}"
 [ -n "$effort" ] && line1="${line1}  ${yellow}effort:${effort}${reset}"
 [ -n "$style" ] && line1="${line1}  ${magenta}style:${style}${reset}"
 [ "$thinking" = "true" ] && line1="${line1}  ${magenta}think${reset}"
 [ -n "$branch" ] && line1="${line1}  ${green}${branch}${reset}"
-[ -n "$repo_owner" ] && [ -n "$repo_name" ] && line1="${line1}  ${dim}${repo_owner}/${repo_name}${reset}"
+[ -n "$repo_owner" ] && [ -n "$repo_name" ] && line1="${line1}  ${blue}${repo_owner}/${repo_name}${reset}"
 line1="${line1}  ${blue}${disp_dir}${reset}"
-[ -n "$session_name" ] && line1="${line1}  ${dim}«${session_name}»${reset}"
+[ -n "$session_name" ] && line1="${line1}  ${magenta}«${session_name}»${reset}"
 
 # ---- Line 2: metrics -------------------------------------------------------
 line2=""
@@ -157,13 +163,13 @@ if [ -n "$used_pct" ]; then
     # Output tokens from the most recent response. Gate on >=1000 so sub-1k
     # counts don't render a misleading "out 0k".
     if [[ "$out_tok" =~ ^[0-9]+$ ]] && [ "$out_tok" -ge 1000 ]; then
-        line2="${line2}  ${dim}out $((out_tok / 1000))k${reset}"
+        line2="${line2}  ${cyan}out $((out_tok / 1000))k${reset}"
     fi
     # Cache breakdown (creation/read) from the last API call's current_usage;
     # absent before the first call and right after /compact (current_usage null).
     if [[ "$cache_create" =~ ^[0-9]+$ ]] && [[ "$cache_read" =~ ^[0-9]+$ ]] &&
         [ $((cache_create + cache_read)) -gt 0 ]; then
-        line2="${line2}  ${dim}cache $((cache_create / 1000))k/$((cache_read / 1000))k${reset}"
+        line2="${line2}  ${cyan}cache $((cache_create / 1000))k/$((cache_read / 1000))k${reset}"
     fi
 
     # Approx. headroom until auto-compact. The threshold is NOT in the JSON:
@@ -189,7 +195,7 @@ if [ -n "$pr_num" ]; then
         approved) pr_c=$green ;;
         changes_requested) pr_c=$red ;;
         pending) pr_c=$yellow ;;
-        draft) pr_c=$dim ;;
+        draft) pr_c=$reset ;;
         *) pr_c=$reset ;;
     esac
     pr_seg="PR#${pr_num}"
@@ -231,13 +237,13 @@ fi
 
 # Session wall-clock elapsed time.
 if [[ "$duration_ms" =~ ^[0-9]+$ ]] && [ "$duration_ms" -gt 0 ]; then
-    line2="${line2}  ${dim}$(fmt_dur $((duration_ms / 1000)))${reset}"
+    line2="${line2}  ${cyan}$(fmt_dur $((duration_ms / 1000)))${reset}"
 fi
 
 # Session cost: shown only once it rounds to at least $0.01 (cuts noise).
 if [ -n "$cost" ]; then
     cost_fmt=$(printf '%.2f' "$cost" 2> /dev/null)
-    [ -n "$cost_fmt" ] && [ "$cost_fmt" != "0.00" ] && line2="${line2}  ${dim}\$${cost_fmt}${reset}"
+    [ -n "$cost_fmt" ] && [ "$cost_fmt" != "0.00" ] && line2="${line2}  ${yellow}\$${cost_fmt}${reset}"
 fi
 
 # Strip the leading separator and emit. The second line is printed only when it
