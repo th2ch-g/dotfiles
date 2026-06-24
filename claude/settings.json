@@ -92,7 +92,8 @@
     "data@knowledge-work-plugins": false,
     "enterprise-search@knowledge-work-plugins": false,
     "bio-research@knowledge-work-plugins": false,
-    "cowork-plugin-management@knowledge-work-plugins": false
+    "cowork-plugin-management@knowledge-work-plugins": false,
+    "bionemo-agent-toolkit@bionemo-agent-toolkit": false
   },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
@@ -130,10 +131,17 @@
         "source": "github",
         "repo": "anthropics/knowledge-work-plugins"
       }
+    },
+    "bionemo-agent-toolkit": {
+      "source": {
+        "source": "github",
+        "repo": "NVIDIA-BioNeMo/bionemo-agent-toolkit"
+      }
     }
   },
   "outputStyle": "Explanatory",
   "language": "ja",
+  "effortLevel": "xhigh",
   "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "voice": {
@@ -146,6 +154,5 @@
   "verbose": false,
   "showTurnDuration": true,
   "remoteControlAtStartup": true,
-  "voiceEnabled": true,
-  "effortLevel": "xhigh"
+  "voiceEnabled": true
 }
