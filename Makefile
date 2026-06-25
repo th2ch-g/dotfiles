@@ -21,7 +21,7 @@ set-url: ## Switch remote URL to SSH for committing
 	git remote set-url origin git@github.com:th2ch-g/dotfiles.git
 
 update: ## Pull latest changes
-	git pull
+	git pull origin main
 
 release: ## Create and push a dated release tag
 	$(eval TAG := v$(shell date +'%Y.%m.%d'))

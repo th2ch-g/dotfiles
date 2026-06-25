@@ -371,7 +371,7 @@ calc() {
 }
 
 update_dotfiles() {
-    git -C $WORKS/dotfiles pull
+    git -C $WORKS/dotfiles pull origin main
     print_info "dotfiles is updated"
 }
 
