@@ -11,6 +11,7 @@ enabled = false
 
 [features]
 multi_agent = true
+prevent_idle_sleep = true
 
 [notice]
 hide_rate_limit_model_nudge = true
@@ -45,3 +46,8 @@ status_line = [
     "task-progress",
 ]
 status_line_use_colors = true
+notifications = true
+notification_condition = "unfocused"
+
+[sandbox_workspace_write]
+web_search = "live"
