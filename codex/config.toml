@@ -11,3 +11,34 @@ enabled = false
 
 [features]
 multi_agent = true
+
+[tui]
+status_line = [
+    "model-with-reasoning",
+    "current-dir",
+    "model",
+    "reasoning",
+    "project-name",
+    "git-branch",
+    "pull-request-number",
+    "run-state",
+    "branch-changes",
+    "permissions",
+    "approval-mode",
+    "context-remaining",
+    "context-used",
+    "five-hour-limit",
+    "weekly-limit",
+    "codex-version",
+    "context-window-size",
+    "used-tokens",
+    "total-input-tokens",
+    "total-output-tokens",
+    "thread-id",
+    "fast-mode",
+    "raw-output",
+    "thread-title",
+    "workspace-headline",
+    "task-progress",
+]
+status_line_use_colors = true
