@@ -5,3 +5,4 @@
 - python時はuvを使用
 - 積極的にPlugin/Skillsを使用
 - Claude-Sessionの記録は不要
+- クソ重findは絶対に使わないこと
