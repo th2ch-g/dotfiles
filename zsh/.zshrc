@@ -605,18 +605,22 @@ srvload() {
     print "  (no NFS mounts; per-second RPC rate is Linux-only)"
   fi
 
-  # 4) I/O-wait (D/U-state) occupancy by user/job — who issues the NFS/disk ops
-  print -P "\n%F{cyan}== I/O-wait (${dwait#^}-state) by user/job (${ds} samples) ==%f"
-  local dstat; dstat=$(for ((i=0;i<ds;i++)); do ps -A -o stat=,user=,comm= 2>/dev/null; sleep 0.15; done)
+  # 4) I/O-wait (D/U-state) occupancy by user/command — who/what issues the ops.
+  #    Sample full command line (not just comm) so any culprit shows with its args.
+  print -P "\n%F{cyan}== I/O-wait (${dwait#^}-state) by user/command (${ds} samples) ==%f"
+  local dstat; dstat=$(for ((i=0;i<ds;i++)); do ps -A -o stat=,user=,command= 2>/dev/null; sleep 0.15; done)
   print -P "  by user:"
   print -r -- "$dstat" | awk -v p="$dwait" '$1 ~ p {c[$2]++} END{for(u in c)printf "    %-12s %d\n",u,c[u]}' | sort -k2 -nr | head
-  print -P "  by job:"
-  print -r -- "$dstat" | awk -v p="$dwait" '$1 ~ p {c[$2" "$3]++} END{for(k in c)printf "    %4d  %s\n",c[k],k}' | sort -rn | head
+  print -P "  by command:"
+  print -r -- "$dstat" | awk -v p="$dwait" '$1 ~ p { cmd=$0; sub(/^[^ ]+ +[^ ]+ +/,"",cmd); c[cmd]++ } END{for(k in c)printf "    %4d  %s\n",c[k],k}' | sort -rn | head
 
-  # 5) NFS-heavy git maintenance (the usual culprit on NFS homes)
-  print -P "\n%F{cyan}== git gc/prune/repack (NFS-killer) ==%f"
+  # 5) heavy I/O / maintenance jobs running now — generic, not just git.
+  #    Catches name-known offenders even when momentarily off the D/U state above.
+  #    Override the watchlist with $SRVLOAD_IO_PAT (a grep -E pattern).
+  print -P "\n%F{cyan}== heavy I/O / maintenance jobs running now ==%f"
+  local iopat=${SRVLOAD_IO_PAT:-'git +(gc|prune|repack|pack-objects|fsck)|(^| |/)(rsync|rclone|restic|borg|duplicity|rdiff-backup|unison|tar|cpio|dd|cp|mv|scp|sftp|du|find|updatedb|mksquashfs|mkfs|zstd|pigz|gzip|xz|bzip2|7z)( |$)'}
   ps -A -o user=,pid=,stat=,etime=,command= 2>/dev/null \
-    | grep -E 'git +(gc|prune|repack|pack-objects|fsck)' | grep -v grep || print "  (none)"
+    | grep -Ei "$iopat" | grep -v grep || print "  (none)"
 
   # 6) verdict
   awk -v l="$l1" -v n="$ncpu" -v idle="${idle:-100}" 'BEGIN{
