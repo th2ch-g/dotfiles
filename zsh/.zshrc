@@ -538,6 +538,60 @@ OPTIONS:
   tmux attach
 }
 
+
+srvload() {
+  emulate -L zsh
+  local iv=${1:-3} ds=${2:-25} topn=12
+
+  # 1) load vs CPU idle — high load + high idle => I/O-bound, not CPU
+  local l1 l5 l15 rest; read -r l1 l5 l15 rest < /proc/loadavg
+  local ncpu=$(nproc)
+  local idle=$(mpstat 1 1 2>/dev/null | awk '/^Average:/{print $NF}')
+  print -P "%F{cyan}== load vs CPU ==%f"
+  printf '  load 1/5/15: %s / %s / %s  (cores=%s)   CPU idle: %s%%\n' "$l1" "$l5" "$l15" "$ncpu" "${idle:-?}"
+
+  # 2) CPU% by user over the interval (pidstat = true current CPU, not lifetime avg)
+  print -P "\n%F{cyan}== CPU%% by user (${iv}s) ==%f"
+  pidstat -U $iv 1 2>/dev/null | awk '
+    $1!="Average:" && $3 ~ /^[0-9]+$/ { cpu[$2]+=$8; n[$2]++ }
+    END { for (u in cpu) printf "  %-12s %6.1f%%  (%d procs)\n", u, cpu[u], n[u] }' \
+    | sort -k2 -nr | head -$topn
+
+  # 3) NFS client load — the real signal (not visible in bi/bo)
+  print -P "\n%F{cyan}== NFS client load ==%f"
+  local r1 r2
+  r1=$(awk '/^rpc /{print $2}' /proc/net/rpc/nfs 2>/dev/null); sleep $iv
+  r2=$(awk '/^rpc /{print $2}' /proc/net/rpc/nfs 2>/dev/null)
+  [[ -n $r1 && -n $r2 ]] && printf '  NFS RPC calls/s: %d\n' $(( (r2 - r1) / iv ))
+  if command -v nfsiostat >/dev/null; then
+    nfsiostat $iv 2 2>/dev/null | awk '
+      /mounted on/ { mnt=$NF; sub(/:$/,"",mnt) }
+      /rpc bklog/  { getline; seen[mnt]=$1 }
+      END { for (m in seen) printf "  %-20s %8.0f ops/s\n", m, seen[m] }'
+  fi
+
+  # 4) I/O-wait (D-state) occupancy by user/job — who issues the NFS ops
+  print -P "\n%F{cyan}== I/O-wait (D-state) by user/job (${ds} samples) ==%f"
+  local dstat; dstat=$(for ((i=0;i<ds;i++)); do ps -eo state=,user=,comm=; sleep 0.15; done)
+  print -P "  by user:"
+  print -r -- "$dstat" | awk '$1 ~ /^D/{c[$2]++} END{for(u in c)printf "    %-12s %d\n",u,c[u]}' | sort -k2 -nr | head
+  print -P "  by job:"
+  print -r -- "$dstat" | awk '$1 ~ /^D/{c[$2" "$3]++} END{for(k in c)printf "    %4d  %s\n",c[k],k}' | sort -rn | head
+
+  # 5) NFS-heavy git maintenance (the usual culprit on NFS homes)
+  print -P "\n%F{cyan}== git gc/prune/repack (NFS-killer) ==%f"
+  ps -eo user,pid,stat,etime,cmd --no-headers 2>/dev/null \
+    | grep -E 'git +(gc|prune|repack|pack-objects|fsck)' | grep -v grep || print "  (none)"
+
+  # 6) verdict
+  awk -v l="$l1" -v n="$ncpu" -v idle="${idle:-100}" 'BEGIN{
+    if (l>n*0.7 && idle>60) print "\n  => load HIGH but CPU idle: I/O-bound (NFS). See D-state user above.";
+    else if (l>n*0.7)       print "\n  => load HIGH and CPU busy: CPU-bound. See CPU% by user.";
+    else                    print "\n  => load nominal.";
+  }'
+}
+
+
 $DEFER unfunction source
 
 if [ $DEBUG -eq 1 ]; then
