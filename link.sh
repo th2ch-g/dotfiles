@@ -35,7 +35,6 @@ OPTIONS:
         --yabai             yabai dotfiles link
         --skhd              skhd dotfiles link
         --aerospace         aerospace dotfiles link
-        --gemini            gemini dotfiles link
         --codex             codex dotfiles copy
         --claude            claude dotfiles link
         --ssh               ssh config file copy
@@ -112,7 +111,6 @@ while :; do
         --yabai) tools+=(yabai) ;;
         --skhd) tools+=(skhd) ;;
         --aerospace) tools+=(aerospace) ;;
-        --gemini) tools+=(gemini) ;;
         --codex) tools+=(codex) ;;
         --claude) tools+=(claude) ;;
         --)
@@ -148,7 +146,7 @@ if $unlink_flag || $rm_flag; then
     print_warn "Ignore error"
 
     # $HOME/dotfiles
-    for dotfile in .bash_profile .gemini .codex .claude; do
+    for dotfile in .bash_profile .codex .claude; do
         remove_link $HOME/$dotfile
     done
 
@@ -255,11 +253,6 @@ fi
 # aerospace
 if has_tool aerospace && [[ $OS == "Mac" ]]; then
     do_link "aerospace" "${PWD}/aerospace" "${XDG_CONFIG_HOME}/aerospace"
-fi
-
-# gemini
-if has_tool gemini; then
-    do_link "gemini" "${PWD}/gemini" "${HOME}/.gemini"
 fi
 
 # codex (always copy, not symlink)

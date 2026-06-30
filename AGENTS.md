@@ -62,7 +62,6 @@ Flags for tool installers (`install_scripts/`):
 | `--claude-code`    | claude-code         |
 | `--codex`          | codex               |
 | `--conda`          | conda (miniconda)   |
-| `--gemini-cli`     | gemini-cli          |
 | `--mold`           | mold linker         |
 | `--password-store` | password-store      |
 | `--supertuxkart`   | SuperTuxKart        |
@@ -94,7 +93,6 @@ Flags for package runners (`*/run.sh`):
 | `--skhd`      | `skhd/`              | `~/.config/skhd/` (Mac only, auto-restarts service)  |
 | `--bash`      | `bash/.bash_profile` | `~/.bash_profile` (not recommended)                  |
 | `--claude`    | `claude/`            | `~/.claude/`                                         |
-| `--gemini`    | `gemini/`            | `~/.gemini/`                                         |
 | `--codex`     | `codex/`             | `~/.codex/`                                          |
 | `--ssh`       | `ssh/config`         | `~/.ssh/config` (copy, not link)                     |
 
@@ -175,7 +173,7 @@ Flags for package runners (`*/run.sh`):
 - Tools with a first-party self-update (pixi, uv, cargo/rustup, claude-code,
   codex, conda) and brew self-update when already installed instead of
   skipping; source-build / pinned-binary tools (mold, warpd, password-store,
-  supertuxkart, gemini-cli) still skip.
+  supertuxkart) still skip.
 - `brew/run.sh` — Homebrew package list
 - `cargo/run.sh` — installs cargo packages from `cargo/list.yaml`
   (minimal yq-free YAML reader; use `--cargo-pkgs` flag)

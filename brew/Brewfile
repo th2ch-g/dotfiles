@@ -41,6 +41,5 @@ brew "FelixKratz/formulae/borders"
 # brew "koekeishiya/formulae/yabai"
 # brew "koekeishiya/formulae/skhd"
 # brew "keepassxc"
-# brew "gemini-cli"
 # brew "colima"
 # | sort -k 1 -r

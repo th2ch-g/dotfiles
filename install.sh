@@ -37,7 +37,6 @@ OPTIONS:
         --claude-code   install claude-code
         --codex         install codex
         --conda         install conda
-        --gemini-cli    install gemini-cli
         --mold          install mold
         --password-store install password-store
         --supertuxkart  install supertuxkart
@@ -73,7 +72,6 @@ do_gh_ext=0
 do_macos=0
 do_iterm2=0
 do_conda=0
-do_gemini_cli=0
 do_mold=0
 do_password_store=0
 do_supertuxkart=0
@@ -129,9 +127,6 @@ while :; do
             ;;
         --conda)
             do_conda=1
-            ;;
-        --gemini-cli)
-            do_gemini_cli=1
             ;;
         --mold)
             do_mold=1
@@ -220,9 +215,6 @@ fi
 
 # conda
 [[ $do_conda -eq 1 ]] && install_script conda
-
-# gemini-cli
-[[ $do_gemini_cli -eq 1 ]] && install_script gemini-cli
 
 # mold
 [[ $do_mold -eq 1 ]] && install_script mold

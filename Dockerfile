@@ -51,7 +51,7 @@ RUN ./install.sh \
         --claude-code
         # Skipped in the container image:
         # --brew --brew-pkgs --macos --iterm2 --warpd  # macOS only
-        # --gemini-cli --supertuxkart --conda  # not needed here
+        # --supertuxkart --conda  # not needed here
         # --mold  # Linux linker, wild is the alternative
         # --password-store  # no conda-forge package
         # --cargo-pkgs  # takes too long

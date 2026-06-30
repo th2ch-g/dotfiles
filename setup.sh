@@ -285,7 +285,6 @@ OPTIONS:
         --yabai         yabai config (Mac only)
         --skhd          skhd config (Mac only)
         --aerospace     aerospace config
-        --gemini        gemini config
         --claude        claude config
 
     install passthrough (-> ./install.sh):
@@ -304,7 +303,6 @@ OPTIONS:
         --macos         macOS settings (Mac only)
         --iterm2        iTerm2 (Mac only)
         --conda         conda
-        --gemini-cli    gemini-cli
         --mold          mold linker
         --password-store  password-store
         --supertuxkart  SuperTuxKart
@@ -419,14 +417,14 @@ parse_args() {
                 ;;
             # link.sh passthrough toggles (--codex is in the install group below)
             --vim | --zsh | --tmux | --git | --alacritty | --neovim | --ssh | --bash | \
-                --yabai | --skhd | --aerospace | --gemini | --claude)
+                --yabai | --skhd | --aerospace | --claude)
                 FLAG_LINK_TOOLS+=("$1")
                 HAVE_COMPONENT_FLAGS=1
                 ;;
             # install.sh passthrough toggles (--codex resolves here, not to link)
             --pixi | --pixi-pkgs | --uv | --brew | --brew-pkgs | --cargo | --cargo-pkgs | \
                 --warpd | --claude-code | --codex | --python3 | --gh-ext | --macos | \
-                --iterm2 | --conda | --gemini-cli | --mold | --password-store | --supertuxkart)
+                --iterm2 | --conda | --mold | --password-store | --supertuxkart)
                 FLAG_INSTALL_FLAGS+=("$1")
                 HAVE_COMPONENT_FLAGS=1
                 ;;
@@ -691,7 +689,6 @@ customize() {
         if ask_yn "link yabai?" n; then LINK_TOOLS+=(--yabai); fi
         if ask_yn "link skhd?" n; then LINK_TOOLS+=(--skhd); fi
     fi
-    if ask_yn "link gemini?" n; then LINK_TOOLS+=(--gemini); fi
     if ask_yn "link codex?" n; then LINK_TOOLS+=(--codex); fi
     if ask_yn "link claude?" n; then LINK_TOOLS+=(--claude); fi
     if ask_yn "link bash profile? (not recommended)" n; then LINK_TOOLS+=(--bash); fi
@@ -714,7 +711,6 @@ customize() {
         if ask_yn "configure macOS defaults?" n; then INSTALL_FLAGS+=(--macos); fi
     fi
     if ask_yn "install conda?" n; then INSTALL_FLAGS+=(--conda); fi
-    if ask_yn "install gemini-cli?" n; then INSTALL_FLAGS+=(--gemini-cli); fi
     if ask_yn "install mold?" n; then INSTALL_FLAGS+=(--mold); fi
     if ask_yn "install password-store?" n; then INSTALL_FLAGS+=(--password-store); fi
     if ask_yn "install supertuxkart?" n; then INSTALL_FLAGS+=(--supertuxkart); fi
