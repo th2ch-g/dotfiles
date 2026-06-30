@@ -56,6 +56,14 @@ if use_plugins == 1 then
                 vim.cmd("colorscheme everforest")
             end,
         },
+        -- {
+        --     "EdenEast/nightfox.nvim",
+        --     lazy = false,
+        --     priority = 1000, -- load colorscheme before other plugins
+        --     config = function()
+        --         vim.cmd("colorscheme nightfox")
+        --     end,
+        -- },
         -- iceberg
         -- {
         --     "cocopon/iceberg.vim",
