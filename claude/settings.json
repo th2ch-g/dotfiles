@@ -153,6 +153,6 @@
   "theme": "dark",
   "verbose": false,
   "showTurnDuration": true,
-  "remoteControlAtStartup": true,
+  "remoteControlAtStartup": false,
   "voiceEnabled": true
 }
