@@ -93,7 +93,8 @@
     "enterprise-search@knowledge-work-plugins": false,
     "bio-research@knowledge-work-plugins": false,
     "cowork-plugin-management@knowledge-work-plugins": false,
-    "bionemo-agent-toolkit@bionemo-agent-toolkit": false
+    "bionemo-agent-toolkit@bionemo-agent-toolkit": false,
+    "nvidia-kaggle@nvidia-kaggle": true
   },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
@@ -136,6 +137,12 @@
       "source": {
         "source": "github",
         "repo": "NVIDIA-BioNeMo/bionemo-agent-toolkit"
+      }
+    },
+    "nvidia-kaggle": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/NVIDIA/nvidia-kaggle.git"
       }
     }
   },
