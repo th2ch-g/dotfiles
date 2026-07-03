@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #
 # Claude Code custom statusLine. Reads the session JSON from stdin and prints a
-# two-line status:
-#   line 1 (environment): <account>  <model>  effort:<lvl>  style:<name>  think
-#                         <branch>  <repo>  <cwd>  «<session-name>»
-#   line 2 (metrics):     ctx <used>k used / <free>k free (<pct>%)  out <n>k
+# three-line status:
+#   line 1 (identity):    <account>  <host> [ssh]  <model>  effort:<lvl>  style:<name>  think
+#   line 2 (location):    <branch>  <repo>  <cwd>  «<session-name>»
+#   line 3 (metrics):     ctx <used>k used / <free>k free (<pct>%)  out <n>k
 #                         cache <create>k/<read>k  compact ~<n>%  PR#<n> <state>
 #                         +<add> -<rem>
 #                         usage 5h <pct>% (<reset>) 7d <pct>% (<reset>)
@@ -12,8 +12,8 @@
 # Schema: https://code.claude.com/docs/en/statusline
 #
 # No `set -e` on purpose: Claude Code blanks the status line on any non-zero
-# exit, so we degrade gracefully (missing fields just drop out, and the whole
-# second line collapses when empty) instead of failing hard.
+# exit, so we degrade gracefully (missing fields just drop out, and trailing
+# lines collapse when empty) instead of failing hard.
 
 input=$(cat)
 
@@ -126,19 +126,33 @@ branch=$(git -C "$cwd" branch --show-current 2> /dev/null)
 # fall back to the displayName; empty if neither is present (e.g. API-key auth
 # without an oauthAccount), in which case the segment simply drops out.
 account=$(jq -r '.oauthAccount.emailAddress // .oauthAccount.displayName // empty' "$HOME/.claude.json" 2> /dev/null)
+# Hostname is NOT in the JSON either; read the short name locally (works on
+# both macOS and Linux). Empty on failure, in which case the segment drops out.
+host=$(hostname -s 2> /dev/null)
 
-# ---- Line 1: environment ---------------------------------------------------
+# ---- Line 1: identity (account / host / model / effort / style / think) -----
 line1="${cyan}${model}${reset}"
+# Host segment, tagged "ssh" when this session was launched over SSH. Detection
+# relies on SSH_CONNECTION/SSH_TTY, which Claude Code inherits from the shell
+# that started it; absent when claude runs locally.
+host_seg="${host:+${cyan}${host}${reset}}"
+if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_TTY" ]; then
+    host_seg="${host_seg:+${host_seg} }${yellow}ssh${reset}"
+fi
+[ -n "$host_seg" ] && line1="${host_seg}  ${line1}"
 [ -n "$account" ] && line1="${bwhite}${account}${reset}  ${line1}"
 [ -n "$effort" ] && line1="${line1}  ${yellow}effort:${effort}${reset}"
 [ -n "$style" ] && line1="${line1}  ${magenta}style:${style}${reset}"
 [ "$thinking" = "true" ] && line1="${line1}  ${magenta}think${reset}"
-[ -n "$branch" ] && line1="${line1}  ${green}${branch}${reset}"
-[ -n "$repo_owner" ] && [ -n "$repo_name" ] && line1="${line1}  ${blue}${repo_owner}/${repo_name}${reset}"
-line1="${line1}  ${blue}${disp_dir}${reset}"
-[ -n "$session_name" ] && line1="${line1}  ${magenta}«${session_name}»${reset}"
 
-# ---- Line 2: metrics -------------------------------------------------------
+# ---- Line 2: location (branch / repo / cwd / session) ----------------------
+# cwd is always present, so this line is built around it and the rest prepend.
+line_loc="${blue}${disp_dir}${reset}"
+[ -n "$repo_owner" ] && [ -n "$repo_name" ] && line_loc="${blue}${repo_owner}/${repo_name}${reset}  ${line_loc}"
+[ -n "$branch" ] && line_loc="${green}${branch}${reset}  ${line_loc}"
+[ -n "$session_name" ] && line_loc="${line_loc}  ${magenta}«${session_name}»${reset}"
+
+# ---- Line 3: metrics -------------------------------------------------------
 line2=""
 
 # Context window: used vs free tokens plus % used; color deepens as it fills.
@@ -246,11 +260,10 @@ if [ -n "$cost" ]; then
     [ -n "$cost_fmt" ] && [ "$cost_fmt" != "0.00" ] && line2="${line2}  ${yellow}\$${cost_fmt}${reset}"
 fi
 
-# Strip the leading separator and emit. The second line is printed only when it
-# has content, so an early session (no metrics yet) stays a clean single line.
+# Strip the leading separator and emit. Lines are joined with newlines, and the
+# metrics line is appended only when it has content, so an early session (no
+# metrics yet) stays a clean two-line status instead of a dangling blank row.
 line2=${line2#  }
-if [ -n "$line2" ]; then
-    printf '%s\n%s' "$line1" "$line2"
-else
-    printf '%s' "$line1"
-fi
+out="${line1}"$'\n'"${line_loc}"
+[ -n "$line2" ] && out="${out}"$'\n'"${line2}"
+printf '%s' "$out"
