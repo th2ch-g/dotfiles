@@ -157,8 +157,8 @@
     "enabled": true,
     "mode": "tap"
   },
-  "skipDangerousModePermissionPrompt": true,
-  "skipWorkflowUsageWarning": true,
+  "skipDangerousModePermissionPrompt": false,
+  "skipWorkflowUsageWarning": false,
   "theme": "dark",
   "verbose": false,
   "showTurnDuration": true,
