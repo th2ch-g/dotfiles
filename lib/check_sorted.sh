@@ -59,6 +59,74 @@ sort_block() {
     rm -f "$actual" "$sorted" "$rewritten"
 }
 
+# Move package lines that crossed the active/commented boundary back to their
+# block: a freshly re-enabled entry left in the commented block goes up to the
+# end of the active block, and a freshly disabled entry left in the active
+# block goes down to the top of the commented block. Whichever side has fewer
+# strays moves, so a single toggled entry travels instead of the whole other
+# block. Non-package lines (e.g. the "# run: brew bundle dump" header) keep
+# their positions; the subsequent sort_block calls put moved lines in order.
+fix_boundary() {
+    local file=$1 active=$2 commented=$3
+    local rewritten
+    rewritten=$(mktemp)
+
+    awk -v act="$active" -v com="$commented" '
+        { lines[NR] = $0 }
+        END {
+            fc = 0; la = 0
+            for (i = 1; i <= NR; i++) {
+                if (!fc && lines[i] ~ com) fc = i
+                if (lines[i] ~ act) la = i
+            }
+            if (!fc || la < fc) {
+                for (i = 1; i <= NR; i++) print lines[i]
+                exit
+            }
+            ma = 0; mc = 0
+            for (i = fc + 1; i <= NR; i++) if (lines[i] ~ act) ma++
+            for (i = 1; i < la; i++) if (lines[i] ~ com) mc++
+            ns = 0
+            if (ma <= mc) {
+                # strays: active lines below the first commented one; move up
+                # to just after the last active line above it
+                anchor = 0
+                for (i = 1; i < fc; i++) if (lines[i] ~ act) anchor = i
+                for (i = fc + 1; i <= NR; i++)
+                    if (lines[i] ~ act) { stray[++ns] = lines[i]; skip[i] = 1 }
+                for (i = 1; i <= NR; i++) {
+                    if (anchor == 0 && i == fc)
+                        for (j = 1; j <= ns; j++) print stray[j]
+                    if (!(i in skip)) print lines[i]
+                    if (i == anchor)
+                        for (j = 1; j <= ns; j++) print stray[j]
+                }
+            } else {
+                # strays: commented lines above the last active one; move down
+                # to just before the first commented line below it
+                anchor = 0
+                for (i = NR; i > la; i--) if (lines[i] ~ com) anchor = i
+                for (i = 1; i < la; i++)
+                    if (lines[i] ~ com) { stray[++ns] = lines[i]; skip[i] = 1 }
+                for (i = 1; i <= NR; i++) {
+                    if (i == anchor)
+                        for (j = 1; j <= ns; j++) print stray[j]
+                    if (!(i in skip)) print lines[i]
+                    if (anchor == 0 && i == la)
+                        for (j = 1; j <= ns; j++) print stray[j]
+                }
+            }
+        }
+    ' "$file" > "$rewritten"
+
+    if ! cmp -s "$file" "$rewritten"; then
+        cat "$rewritten" > "$file"
+        print_warn "Moved boundary-crossing entries in $file"
+    fi
+
+    rm -f "$rewritten"
+}
+
 # Sort a YAML "packages:"/"extensions:" sequence in place by record key
 # (crate/url/repo). Active records (- crate:/url:/repo: plus their indented
 # desc/bin/feature continuation lines) are reordered; comment lines (disabled
@@ -135,20 +203,14 @@ case "$mode" in
     brewfile)
         # Brewfile holds two independent descending blocks: active package
         # lines and commented-out (disabled) package lines. Commented-out
-        # packages must sit below every active one. An active line appearing
-        # after a commented package line is an interleave that cannot be
-        # auto-fixed (e.g. a freshly commented-out entry left in place), so we
-        # fail loudly instead of guessing where to move it.
+        # packages must sit below every active one. Entries that crossed the
+        # boundary (a freshly re-enabled or freshly disabled package left in
+        # place) are moved back to their block first, then each block is
+        # sorted.
         active='^(tap|brew|cask) '
         commented='^# (tap|brew|cask) '
         for file in "$@"; do
-            last_active=$(grep -nE "$active" "$file" | tail -n1 | cut -d: -f1) || true
-            first_commented=$(grep -nE "$commented" "$file" | head -n1 | cut -d: -f1) || true
-            if [[ -n "$last_active" && -n "$first_commented" && "$first_commented" -lt "$last_active" ]]; then
-                print_error "$file: commented-out package at line $first_commented is above active package at line $last_active"
-                print_error "Move commented-out packages below all active ones."
-                exit 1
-            fi
+            fix_boundary "$file" "$active" "$commented"
             sort_block "$file" "$active" -k 1,1r -k 2,2r
             sort_block "$file" "$commented" -k 2,2r -k 3,3r
         done
