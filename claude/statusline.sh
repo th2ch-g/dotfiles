@@ -8,6 +8,7 @@
 #                         cache <create>k/<read>k  compact ~<n>%  PR#<n> <state>
 #                         +<add> -<rem>
 #                         usage 5h <pct>% (<reset>) 7d <pct>% (<reset>)
+#                         msg <HH:MM> (<ago>)  rsp <HH:MM> (<ago>)
 #                         <elapsed>  $<cost>
 # Schema: https://code.claude.com/docs/en/statusline
 #
@@ -47,6 +48,23 @@ fmt_dur() {
     else
         printf '%ds' "$s"
     fi
+}
+
+# ISO 8601 UTC ("2026-07-10T05:12:34.567Z") -> "<epoch> <HH:MM local>".
+# GNU date (Linux) and BSD date (macOS) need different invocations. Prints
+# nothing when the timestamp cannot be parsed.
+iso_local() {
+    local ts=$1 ep hhmm
+    ts=${ts%%.*}
+    ts=${ts%Z}
+    if date --version > /dev/null 2>&1; then
+        ep=$(date -u -d "$ts" +%s 2> /dev/null)
+        hhmm=$(date -d "@${ep}" '+%H:%M' 2> /dev/null)
+    else
+        ep=$(date -j -u -f '%Y-%m-%dT%H:%M:%S' "$ts" +%s 2> /dev/null)
+        hhmm=$(date -r "$ep" '+%H:%M' 2> /dev/null)
+    fi
+    [ -n "$ep" ] && [ -n "$hhmm" ] && printf '%s %s' "$ep" "$hhmm"
 }
 
 # jq powers the rich line; without it (e.g. a minimal Linux host) fall back to
@@ -89,7 +107,8 @@ done < <(
 		 (.rate_limits.seven_day.used_percentage // ""),
 		 (.rate_limits.seven_day.resets_at // ""),
 		 (.context_window.current_usage.cache_creation_input_tokens // ""),
-		 (.context_window.current_usage.cache_read_input_tokens // "")'
+		 (.context_window.current_usage.cache_read_input_tokens // ""),
+		 (.transcript_path // "")'
 )
 model=${fields[0]}
 effort=${fields[1]}
@@ -115,6 +134,7 @@ rl7=${fields[20]}
 rl7_reset=${fields[21]}
 cache_create=${fields[22]}
 cache_read=${fields[23]}
+transcript=${fields[24]}
 
 [ -z "$cwd" ] && cwd=$PWD
 # Full path, with $HOME abbreviated to ~ to keep it short.
@@ -247,6 +267,37 @@ if [ -n "$rl5" ] || [ -n "$rl7" ]; then
         fi
     fi
     line2="${line2}  ${magenta}${usage_str}${reset}"
+fi
+
+# Times of the last user-typed message (msg) and the last assistant reply
+# (rsp). Not in the stdin JSON; scan the session transcript (JSONL, via
+# .transcript_path) in one jq pass. Tool results are also recorded as type
+# "user" but carry an array content, while typed messages carry a string, so
+# filter on the content type (and skip meta records and sidechain/subagent
+# traffic). Tail by bytes so huge transcripts stay cheap, and parse with
+# fromjson? so the possibly partial first line is skipped instead of aborting
+# the whole jq run.
+if [ -n "$transcript" ] && [ -r "$transcript" ]; then
+    ts_log=$(tail -c 4000000 "$transcript" 2> /dev/null | jq -Rr '
+        fromjson?
+        | select(.isMeta != true and .isSidechain != true)
+        | select(.type == "assistant"
+            or (.type == "user" and (.message.content | type) == "string"))
+        | "\(.type)\t\(.timestamp // "")"' 2> /dev/null)
+    msg_ts=$(printf '%s\n' "$ts_log" | awk -F'\t' '$1 == "user" && $2 != "" { t = $2 } END { print t }')
+    rsp_ts=$(printf '%s\n' "$ts_log" | awk -F'\t' '$1 == "assistant" && $2 != "" { t = $2 } END { print t }')
+    now=$(date +%s)
+    ts_seg=""
+    for pair in "msg:$msg_ts" "rsp:$rsp_ts"; do
+        label=${pair%%:*}
+        ts=${pair#*:}
+        [ -z "$ts" ] && continue
+        read -r ep hhmm <<< "$(iso_local "$ts")"
+        [ -z "$hhmm" ] && continue
+        seg="${label} ${hhmm} ($(fmt_dur $((now - ep))))"
+        ts_seg="${ts_seg:+${ts_seg}  }${seg}"
+    done
+    [ -n "$ts_seg" ] && line2="${line2}  ${bwhite}${ts_seg}${reset}"
 fi
 
 # Session wall-clock elapsed time.
