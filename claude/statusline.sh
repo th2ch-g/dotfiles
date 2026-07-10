@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 #
 # Claude Code custom statusLine. Reads the session JSON from stdin and prints a
-# three-line status:
+# four-line status:
 #   line 1 (identity):    <account>  <host> [ssh]  <model>  effort:<lvl>  style:<name>  think
 #   line 2 (location):    <branch>  <repo>  <cwd>  «<session-name>»
-#   line 3 (metrics):     ctx <used>k used / <free>k free (<pct>%)  out <n>k
+#   line 3 (context):     ctx <used>k used / <free>k free (<pct>%)  out <n>k
 #                         cache <create>k/<read>k  compact ~<n>%  PR#<n> <state>
 #                         +<add> -<rem>
-#                         usage 5h <pct>% (<reset>) 7d <pct>% (<reset>)
+#   line 4 (usage):       usage 5h <pct>% (<reset>) 7d <pct>% (<reset>)
 #                         msg <HH:MM> (<ago>)  rsp <HH:MM> (<ago>)
 #                         <elapsed>  $<cost>
 # Schema: https://code.claude.com/docs/en/statusline
@@ -172,8 +172,8 @@ line_loc="${blue}${disp_dir}${reset}"
 [ -n "$branch" ] && line_loc="${green}${branch}${reset}  ${line_loc}"
 [ -n "$session_name" ] && line_loc="${line_loc}  ${magenta}«${session_name}»${reset}"
 
-# ---- Line 3: metrics -------------------------------------------------------
-line2=""
+# ---- Line 3: context metrics (ctx / out / cache / compact / PR / diff) -----
+line3=""
 
 # Context window: used vs free tokens plus % used; color deepens as it fills.
 if [ -n "$used_pct" ]; then
@@ -190,20 +190,20 @@ if [ -n "$used_pct" ]; then
     if [[ "$in_tok" =~ ^[0-9]+$ ]] && [[ "$win_size" =~ ^[0-9]+$ ]] && [ "$win_size" -gt 0 ]; then
         used_k=$((in_tok / 1000))
         free_k=$(((win_size - in_tok) / 1000))
-        line2="${line2}  ${ctx_c}ctx ${used_k}k used / ${free_k}k free (${pct}%)${reset}"
+        line3="${line3}  ${ctx_c}ctx ${used_k}k used / ${free_k}k free (${pct}%)${reset}"
     else
-        line2="${line2}  ${ctx_c}ctx ${pct}% used${reset}"
+        line3="${line3}  ${ctx_c}ctx ${pct}% used${reset}"
     fi
     # Output tokens from the most recent response. Gate on >=1000 so sub-1k
     # counts don't render a misleading "out 0k".
     if [[ "$out_tok" =~ ^[0-9]+$ ]] && [ "$out_tok" -ge 1000 ]; then
-        line2="${line2}  ${cyan}out $((out_tok / 1000))k${reset}"
+        line3="${line3}  ${cyan}out $((out_tok / 1000))k${reset}"
     fi
     # Cache breakdown (creation/read) from the last API call's current_usage;
     # absent before the first call and right after /compact (current_usage null).
     if [[ "$cache_create" =~ ^[0-9]+$ ]] && [[ "$cache_read" =~ ^[0-9]+$ ]] &&
         [ $((cache_create + cache_read)) -gt 0 ]; then
-        line2="${line2}  ${cyan}cache $((cache_create / 1000))k/$((cache_read / 1000))k${reset}"
+        line3="${line3}  ${cyan}cache $((cache_create / 1000))k/$((cache_read / 1000))k${reset}"
     fi
 
     # Approx. headroom until auto-compact. The threshold is NOT in the JSON:
@@ -220,7 +220,7 @@ if [ -n "$used_pct" ]; then
     else
         cc=$green
     fi
-    line2="${line2}  ${cc}compact ~${until_c}%${reset}"
+    line3="${line3}  ${cc}compact ~${until_c}%${reset}"
 fi
 
 # Open PR for the current branch, colored by review state.
@@ -234,7 +234,7 @@ if [ -n "$pr_num" ]; then
     esac
     pr_seg="PR#${pr_num}"
     [ -n "$pr_state" ] && pr_seg="${pr_seg} ${pr_state}"
-    line2="${line2}  ${pr_c}${pr_seg}${reset}"
+    line3="${line3}  ${pr_c}${pr_seg}${reset}"
 fi
 
 # Lines changed this session (added green / removed red); shown only when nonzero.
@@ -246,8 +246,11 @@ if [ "$add_ok" = 1 ] || [ "$rem_ok" = 1 ]; then
     diff_seg=""
     [ "$add_ok" = 1 ] && diff_seg="${green}+${lines_add}${reset}"
     [ "$rem_ok" = 1 ] && diff_seg="${diff_seg:+${diff_seg} }${red}-${lines_rem}${reset}"
-    line2="${line2}  ${diff_seg}"
+    line3="${line3}  ${diff_seg}"
 fi
+
+# ---- Line 4: usage (limits / msg / rsp / elapsed / cost) --------------------
+line4=""
 
 # Subscription usage limits with time-until-reset (Claude.ai Pro/Max only;
 # absent on API-key auth). resets_at is Unix epoch seconds.
@@ -266,7 +269,7 @@ if [ -n "$rl5" ] || [ -n "$rl7" ]; then
             usage_str="${usage_str} ($(fmt_dur $((rl7_reset - now))))"
         fi
     fi
-    line2="${line2}  ${magenta}${usage_str}${reset}"
+    line4="${line4}  ${magenta}${usage_str}${reset}"
 fi
 
 # Times of the last user-typed message (msg) and the last assistant reply
@@ -297,24 +300,27 @@ if [ -n "$transcript" ] && [ -r "$transcript" ]; then
         seg="${label} ${hhmm} ($(fmt_dur $((now - ep))))"
         ts_seg="${ts_seg:+${ts_seg}  }${seg}"
     done
-    [ -n "$ts_seg" ] && line2="${line2}  ${bwhite}${ts_seg}${reset}"
+    [ -n "$ts_seg" ] && line4="${line4}  ${bwhite}${ts_seg}${reset}"
 fi
 
 # Session wall-clock elapsed time.
 if [[ "$duration_ms" =~ ^[0-9]+$ ]] && [ "$duration_ms" -gt 0 ]; then
-    line2="${line2}  ${cyan}$(fmt_dur $((duration_ms / 1000)))${reset}"
+    line4="${line4}  ${cyan}$(fmt_dur $((duration_ms / 1000)))${reset}"
 fi
 
 # Session cost: shown only once it rounds to at least $0.01 (cuts noise).
 if [ -n "$cost" ]; then
     cost_fmt=$(printf '%.2f' "$cost" 2> /dev/null)
-    [ -n "$cost_fmt" ] && [ "$cost_fmt" != "0.00" ] && line2="${line2}  ${yellow}\$${cost_fmt}${reset}"
+    [ -n "$cost_fmt" ] && [ "$cost_fmt" != "0.00" ] && line4="${line4}  ${yellow}\$${cost_fmt}${reset}"
 fi
 
-# Strip the leading separator and emit. Lines are joined with newlines, and the
-# metrics line is appended only when it has content, so an early session (no
-# metrics yet) stays a clean two-line status instead of a dangling blank row.
-line2=${line2#  }
+# Strip the leading separators and emit. Lines are joined with newlines; the
+# context and usage lines are each appended only when they have content, so an
+# early session (no metrics yet) stays a clean two-line status instead of
+# dangling blank rows.
+line3=${line3#  }
+line4=${line4#  }
 out="${line1}"$'\n'"${line_loc}"
-[ -n "$line2" ] && out="${out}"$'\n'"${line2}"
+[ -n "$line3" ] && out="${out}"$'\n'"${line3}"
+[ -n "$line4" ] && out="${out}"$'\n'"${line4}"
 printf '%s' "$out"
