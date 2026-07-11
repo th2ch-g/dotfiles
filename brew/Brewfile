@@ -3,7 +3,6 @@ cask "xquartz"
 cask "utm"
 cask "tor-browser"
 cask "thunderbird"
-cask "steipete/tap/codexbar", trusted: true
 cask "slack"
 cask "nikitabobko/tap/aerospace", trusted: true
 cask "licecap"
@@ -25,6 +24,7 @@ brew "dockutil"
 brew "FelixKratz/formulae/borders"
 # run: brew bundle dump
 # cask "visual-studio-code"
+# cask "steipete/tap/codexbar", trusted: true
 # cask "nikitabobko/tap/aerospace"
 # cask "keycastr"
 # cask "gimp"
