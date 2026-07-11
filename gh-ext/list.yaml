@@ -2,3 +2,4 @@
 extensions:
   - repo: babarot/gh-infra
   - repo: th2ch-g/gh-email-get
+  - repo: th2ch-g/gh-repo-history
