@@ -13,6 +13,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "useAutoModeDuringPlan": true,
   "model": "claude-fable-5[1m]",
   "hooks": {},
   "statusLine": {
