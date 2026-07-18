@@ -187,13 +187,23 @@ prepare_common_dirs
 [[ $do_uv -eq 1 ]] && install_script uv
 
 # brew (Mac only)
+# NOTE: not `[[ Mac ]] && install || warn`: that would also run the warn (and
+# swallow the failure) when the install itself fails on Mac.
 if [[ $do_brew -eq 1 ]]; then
-    [[ $OS == "Mac" ]] && install_script brew || print_warn "--brew is Mac only, skipping"
+    if [[ $OS == "Mac" ]]; then
+        install_script brew
+    else
+        print_warn "--brew is Mac only, skipping"
+    fi
 fi
 
 # brew packages (Mac only)
 if [[ $do_brew_pkgs -eq 1 ]]; then
-    [[ $OS == "Mac" ]] && run_local brew || print_warn "--brew-pkgs is Mac only, skipping"
+    if [[ $OS == "Mac" ]]; then
+        run_local brew
+    else
+        print_warn "--brew-pkgs is Mac only, skipping"
+    fi
 fi
 
 # cargo / Rust toolchain
@@ -204,7 +214,11 @@ fi
 
 # warpd (Mac only)
 if [[ $do_warpd -eq 1 ]]; then
-    [[ $OS == "Mac" ]] && install_script warpd || print_warn "--warpd is Mac only, skipping"
+    if [[ $OS == "Mac" ]]; then
+        install_script warpd
+    else
+        print_warn "--warpd is Mac only, skipping"
+    fi
 fi
 
 # claude-code
@@ -233,12 +247,20 @@ fi
 
 # macOS settings (Mac only)
 if [[ $do_macos -eq 1 ]]; then
-    [[ $OS == "Mac" ]] && run_local macos --dockutil || print_warn "--macos is Mac only, skipping"
+    if [[ $OS == "Mac" ]]; then
+        run_local macos --dockutil
+    else
+        print_warn "--macos is Mac only, skipping"
+    fi
 fi
 
 # iterm2 (Mac only)
 if [[ $do_iterm2 -eq 1 ]]; then
-    [[ $OS == "Mac" ]] && run_local iterm2 || print_warn "--iterm2 is Mac only, skipping"
+    if [[ $OS == "Mac" ]]; then
+        run_local iterm2
+    else
+        print_warn "--iterm2 is Mac only, skipping"
+    fi
 fi
 
 print_info "done"

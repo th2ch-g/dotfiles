@@ -3,9 +3,11 @@ set -e
 
 source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
 
-WORKS=$HOME/works
+# Point iTerm2 at this directory itself, so a checkout outside the default
+# ~/works/dotfiles location (SETUP_DIR=...) still resolves correctly.
+ITERM2_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$WORKS/dotfiles/iterm2"
+defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$ITERM2_DIR"
 
 defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
 

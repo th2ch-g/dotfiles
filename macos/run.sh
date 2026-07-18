@@ -89,7 +89,8 @@ defaults -currentHost write com.apple.screensaver idleTime -int 0
 # Menubar
 defaults write NSGlobalDomain _HIHideMenuBar -bool true
 defaults -currentHost write com.apple.controlcenter.BatteryShowPercentage -bool true
-killall ControlCenter
+# killall exits 1 when the process is not running; do not abort under set -e
+killall ControlCenter || true
 
 # DS Store
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
@@ -109,7 +110,7 @@ defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -bool false
 defaults write NSGlobalDomain com.apple.sound.beep.feedback -bool false
 defaults write -g com.apple.sound.uiaudio.enabled -int 0
 sudo nvram SystemAudioVolume=%01
-killall SystemUIServer
+killall SystemUIServer || true
 
 # office
 defaults write com.microsoft.autoupdate2 HowToCheck -string "Manual"

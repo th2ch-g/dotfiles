@@ -118,7 +118,8 @@ Flags for package runners (`*/run.sh`):
 
 - Config: `vim/vimrc`
 - Plugin manager: vim-jetpack
-  (stored as git submodule under `vim/pack/jetpack/`)
+  (auto-downloaded by `vimrc` via curl into `vim/pack/jetpack/opt/` on first
+  run; `vim/pack/` is untracked — the repository has no git submodules)
 
 ### Shared Utilities
 

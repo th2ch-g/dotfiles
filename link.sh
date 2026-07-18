@@ -65,9 +65,29 @@ create_link() {
     local src=$1
     local dest=$2
     if $cp_flag; then
-        cp -r "$src" "$dest" && print_info "Copied $(basename "$dest")"
+        if [ -d "$src" ]; then
+            # cp -r <dir> <existing-dir> would nest <dir> inside it on re-runs;
+            # copy the directory contents instead so re-runs merge in place.
+            mkdir -p "$dest"
+            cp -r "$src/." "$dest/"
+        else
+            cp "$src" "$dest"
+        fi
+        print_info "Copied $(basename "$dest")"
     else
-        ln -nsi "$src" "$dest" && print_info "Linked $(basename "$dest")"
+        if [ -L "$dest" ] && [ "$(readlink "$dest")" = "$src" ]; then
+            print_info "$(basename "$dest") is already linked, skipping"
+        elif [ -d "$dest" ] && [ ! -L "$dest" ]; then
+            # ln -n only guards symlink dests: with a real directory it would
+            # silently create the link *inside* it (e.g. ~/.config/zsh/zsh)
+            print_warn "$(basename "$dest") exists as a real directory, not replacing"
+        elif ln -nsi "$src" "$dest"; then
+            print_info "Linked $(basename "$dest")"
+        else
+            # ln -i answers "no" on a non-tty stdin and exits 1, which would
+            # abort the whole run under `set -e`; treat it as a skip instead.
+            print_warn "$(basename "$dest") exists and was not replaced, skipping"
+        fi
     fi
 }
 remove_link() {
@@ -96,7 +116,6 @@ while :; do
             ;;
         -u | --unlink)
             unlink_flag=true
-            break
             ;;
         --vim) tools+=(vim) ;;
         --zsh) tools+=(zsh) ;;
@@ -236,8 +255,9 @@ fi
 if has_tool yabai && [[ $OS == "Mac" ]]; then
     do_link "yabai" "${PWD}/yabai" "${XDG_CONFIG_HOME}/yabai"
     if command -v yabai > /dev/null 2>&1; then
-        yabai --start-service
-        yabai --restart-service
+        # --start-service fails when the service is already loaded (aborting
+        # under `set -e`), so restart first and fall back to a fresh start.
+        yabai --restart-service 2> /dev/null || yabai --start-service
     fi
 fi
 
@@ -245,8 +265,8 @@ fi
 if has_tool skhd && [[ $OS == "Mac" ]]; then
     do_link "skhd" "${PWD}/skhd" "${XDG_CONFIG_HOME}/skhd"
     if command -v skhd > /dev/null 2>&1; then
-        skhd --start-service
-        skhd --restart-service
+        # same as yabai: restart if loaded, otherwise start fresh
+        skhd --restart-service 2> /dev/null || skhd --start-service
     fi
 fi
 
@@ -258,7 +278,10 @@ fi
 # codex (always copy, not symlink)
 if has_tool codex; then
     print_info "codex copy start"
-    cp -r "${PWD}/codex" "${HOME}/.codex" && print_info "Copied .codex"
+    # copy contents (not the directory) so a re-run merges into an existing
+    # ~/.codex instead of nesting ~/.codex/codex inside it
+    mkdir -p "${HOME}/.codex"
+    cp -r "${PWD}/codex/." "${HOME}/.codex/" && print_info "Copied .codex"
     print_info "codex copy done"
 fi
 
