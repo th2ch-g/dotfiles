@@ -153,6 +153,9 @@ Flags for package runners (`*/run.sh`):
   (`unlink` cannot remove directories).
 - `link.sh --codex` copies `codex/` into `~/.codex`; it does not create
   a symlink.
+- `link.sh --neovim` runs `nvim --headless "+Lazy! update"` (with `VIM_AI=1`
+  so AI plugins are included) right after linking, so it may update plugins
+  and rewrite `nvim/lazy-lock.json` as a side effect.
 - `link.sh --claude` links `claude/` into `~/.claude` and, when `claude`
   is installed, also registers user-scoped MCP entries (`deepwiki`, `codex`)
   via `claude mcp add` and installs the `claude-for-legal` /
