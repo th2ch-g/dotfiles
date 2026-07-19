@@ -13,8 +13,6 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "useAutoModeDuringPlan": true,
-  "model": "claude-fable-5[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
@@ -164,5 +162,7 @@
   "verbose": false,
   "showTurnDuration": true,
   "remoteControlAtStartup": false,
-  "voiceEnabled": true
+  "useAutoModeDuringPlan": true,
+  "voiceEnabled": true,
+  "model": "claude-fable-5[1m]"
 }

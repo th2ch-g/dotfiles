@@ -6,3 +6,4 @@
 - 積極的にPlugin/Skills等を使用
 - Sessionの記録は不要
 - findは重いので絶対に使わないこと
+@CLAUDE.local.md
