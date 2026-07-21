@@ -275,12 +275,68 @@ chpwd() {
 }
 
 # my function
-tar-close() {
-    tar -cvzf ${1}.tar.gz $1
+pack() {
+    # Usage: pack <path> [gz|bz2|xz|zst|tar|zip]  (default: gz)
+    local src=${1%/} fmt=${2:-gz}
+    if [[ -z $src || ! -e $src ]]; then
+        print_error "Usage: pack <path> [gz|bz2|xz|zst|tar|zip]"
+        return 1
+    fi
+    case $fmt in
+        gz)  tar -cvzf ${src}.tar.gz $src ;;
+        bz2) tar -cvjf ${src}.tar.bz2 $src ;;
+        xz)  tar -cvJf ${src}.tar.xz $src ;;
+        zst) tar --zstd -cvf ${src}.tar.zst $src ;;
+        tar) tar -cvf ${src}.tar $src ;;
+        zip) zip -r ${src}.zip $src ;;
+        *)   print_error "unknown format: $fmt (gz|bz2|xz|zst|tar|zip)"; return 1 ;;
+    esac
 }
 
-tar-open() {
-    tar -xvzf $1
+unpack() {
+    # Extract by extension; tar itself auto-detects the compression
+    local src=$1
+    if [[ ! -f $src ]]; then
+        print_error "Usage: unpack <archive>"
+        return 1
+    fi
+    case $src in
+        *.tar.gz|*.tgz|*.tar.bz2|*.tbz2|*.tar.xz|*.txz|*.tar.zst|*.tar) tar -xvf $src ;;
+        *.zip) unzip $src ;;
+        *.7z)  7z x $src ;;
+        *.gz)  gunzip -kv $src ;;
+        *.bz2) bunzip2 -kv $src ;;
+        *.xz)  unxz -kv $src ;;
+        *.zst) unzstd $src ;;
+        *)     print_error "unsupported archive: $src"; return 1 ;;
+    esac
+}
+
+prepare_AGENTS_CLAUDE_md() {
+    # Keep AGENTS.md and CLAUDE.md in sync via "@file" import stubs:
+    # - if only one exists, create the other containing "@<existing>"
+    # - if one is a symlink, replace it with an "@<counterpart>" stub
+    local src dst changed=0
+    for src dst in AGENTS.md CLAUDE.md CLAUDE.md AGENTS.md; do
+        [[ -f $src && ! -L $src ]] || continue
+        if [[ -L $dst ]]; then
+            unlink $dst
+            echo "@${src}" > $dst
+            print_info "$dst: symlink replaced with \"@${src}\""
+            changed=1
+        elif [[ ! -e $dst ]]; then
+            echo "@${src}" > $dst
+            print_info "$dst: created with \"@${src}\""
+            changed=1
+        fi
+    done
+    if [[ $changed -eq 0 ]]; then
+        if [[ ! -e AGENTS.md && ! -e CLAUDE.md ]]; then
+            print_warn "neither AGENTS.md nor CLAUDE.md exists"
+        else
+            print_info "nothing to do"
+        fi
+    fi
 }
 
 benchmark() {
@@ -290,35 +346,6 @@ benchmark() {
 dont_sleep() {
     # macos
     caffeinate -i -d
-}
-
-sandbox() {
-    # Generic nono runner. On macOS, override the keychain deny for the
-    # single login keychain file so tools that depend on macOS keychain
-    # auth (gh, aws, etc.) can read tokens. On Linux, the equivalent
-    # keychain paths differ and are not blanket-denied here, so no
-    # override is needed.
-    local keychain_args=()
-    if [[ $(uname) == "Darwin" ]]; then
-        keychain_args=(
-            --override-deny "$HOME/Library/Keychains/login.keychain-db"
-            --read-file "$HOME/Library/Keychains/login.keychain-db"
-        )
-    fi
-    nono run \
-        --allow-cwd \
-        --read $BIN \
-        --read $HOME/.local/bin/ \
-        --read $TOOLS \
-        --allow $TOOLS/rust/ \
-        --read $TOOLS/pixi/ \
-        --read $CONFIG/git/ \
-        --read $CONFIG/gh \
-        --allow $HOME/.cache \
-        --allow $HOME/.local/share \
-        "${keychain_args[@]}" \
-        -v \
-        -- $@
 }
 
 function tenki(){
