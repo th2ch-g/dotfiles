@@ -353,28 +353,33 @@ function tenki(){
     curl "https://ja.wttr.in/${target}?2nF"
 }
 
-script_highlight() {
-    for ft in sh py bash;
-    do
-        ft_number=$(find . -name "*.${ft}" -type f -maxdepth 1 | wc -l)
-        if [ $ft_number -ne 0 ]; then
-            chmod a+x *.${ft}
-            print_info "highlighted : $(echo *.${ft})"
-        fi
-
+# Toggle the executable bit on scripts in the current directory.
+# Usage: script_exec_on [ext ...]  (default: sh py bash)
+# Glob qualifier (N.) = nullglob + regular files only, so no find/ls needed.
+_script_chmod() {
+    local mode=$1 verb=$2; shift 2
+    local ft changed=0
+    local -a fts files
+    fts=( $@ )
+    (( ${#fts} )) || fts=( sh py bash )
+    for ft in $fts; do
+        # ./ prefix keeps dash-leading names from being parsed as chmod options
+        files=( ./*.${ft}(N.) )
+        (( ${#files} )) || continue
+        chmod $mode $files
+        files=( ${files#./} )
+        print_info "${verb} : ${files[*]}"
+        changed=1
     done
+    (( changed )) || print_warn "no script files found (${fts[*]})"
 }
 
-script_unhighlight() {
-    for ft in sh py bash;
-    do
-        ft_number=$(find . -name "*.${ft}" -type f -maxdepth 1 | wc -l)
-        if [ $ft_number -ne 0 ]; then
-            chmod a-x *.${ft}
-            print_info "unhighlighted : $(echo *.${ft})"
-        fi
+script_exec_on() {
+    _script_chmod a+x "exec on" $@
+}
 
-    done
+script_exec_off() {
+    _script_chmod a-x "exec off" $@
 }
 
 rp() {
