@@ -229,7 +229,7 @@ make l        # runs: pre-commit run --all-files
 
 Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending,
 check-yaml/toml/json, check-added-large-files, check-case-conflict,
-check-merge-conflict, check-symlinks, destroyed-symlinks, detect-private-key,
+check-merge-conflict, destroyed-symlinks, detect-private-key,
 check-executables-have-shebangs, check-shebang-scripts-are-executable,
 check-hooks-apply, check-useless-excludes (pre-commit meta hooks),
 hadolint (Dockerfile), check-jsonschema (GitHub workflows), gitleaks,

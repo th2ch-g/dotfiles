@@ -16,7 +16,8 @@ repos:
       - id: check-added-large-files
       - id: check-case-conflict
       - id: check-merge-conflict
-      - id: check-symlinks
+      # check-symlinks removed: the repo no longer tracks any symlinks
+      # (CLAUDE.md became a plain file), so check-hooks-apply would fail
       - id: destroyed-symlinks
       - id: detect-private-key
       - id: check-executables-have-shebangs
@@ -107,7 +108,8 @@ repos:
     rev: v0.23.0
     hooks:
       - id: markdownlint-cli2
-        exclude: ^claude/CLAUDE.md$
+        # CLAUDE.md files start with an @import line, not a heading (MD041)
+        exclude: ^(claude/)?CLAUDE\.md$
 
   - repo: https://github.com/checkmake/checkmake.git
     rev: v0.3.2
