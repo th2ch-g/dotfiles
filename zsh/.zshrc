@@ -316,6 +316,7 @@ prepare_AGENTS_CLAUDE_md() {
     # Keep AGENTS.md and CLAUDE.md in sync via "@file" import stubs:
     # - if only one exists, create the other containing "@<existing>"
     # - if one is a symlink, replace it with an "@<counterpart>" stub
+    # - if neither exists, create an empty AGENTS.md and a CLAUDE.md stub
     local src dst changed=0
     for src dst in AGENTS.md CLAUDE.md CLAUDE.md AGENTS.md; do
         [[ -f $src && ! -L $src ]] || continue
@@ -332,7 +333,10 @@ prepare_AGENTS_CLAUDE_md() {
     done
     if [[ $changed -eq 0 ]]; then
         if [[ ! -e AGENTS.md && ! -e CLAUDE.md ]]; then
-            print_warn "neither AGENTS.md nor CLAUDE.md exists"
+            touch AGENTS.md
+            echo "@AGENTS.md" > CLAUDE.md
+            print_info "AGENTS.md: created empty"
+            print_info "CLAUDE.md: created with \"@AGENTS.md\""
         else
             print_info "nothing to do"
         fi
