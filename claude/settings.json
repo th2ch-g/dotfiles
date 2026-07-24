@@ -13,6 +13,7 @@
   "permissions": {
     "defaultMode": "auto"
   },
+  "model": "opus[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
@@ -163,6 +164,5 @@
   "showTurnDuration": true,
   "remoteControlAtStartup": false,
   "useAutoModeDuringPlan": true,
-  "voiceEnabled": true,
-  "model": "claude-fable-5[1m]"
+  "voiceEnabled": true
 }
