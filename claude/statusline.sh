@@ -8,8 +8,8 @@
 #                         cache <create>k/<read>k  compact ~<n>%  PR#<n> <state>
 #                         +<add> -<rem>
 #   line 4 (usage):       usage 5h <pct>% (<reset>) 7d <pct>% (<reset>)
-#                         msg <HH:MM> (<ago>)  rsp <HH:MM> (<ago>)
-#                         <elapsed>  $<cost>
+#                         <model> <pct>% (<reset>)  msg <HH:MM> (<ago>)
+#                         rsp <HH:MM> (<ago>)  <elapsed>  $<cost>
 # Schema: https://code.claude.com/docs/en/statusline
 #
 # No `set -e` on purpose: Claude Code blanks the status line on any non-zero
@@ -251,11 +251,11 @@ fi
 
 # ---- Line 4: usage (limits / msg / rsp / elapsed / cost) --------------------
 line4=""
+now=$(date +%s)
 
 # Subscription usage limits with time-until-reset (Claude.ai Pro/Max only;
 # absent on API-key auth). resets_at is Unix epoch seconds.
 if [ -n "$rl5" ] || [ -n "$rl7" ]; then
-    now=$(date +%s)
     usage_str="usage"
     if [ -n "$rl5" ]; then
         usage_str="${usage_str} 5h ${rl5%.*}%"
@@ -270,6 +270,39 @@ if [ -n "$rl5" ] || [ -n "$rl7" ]; then
         fi
     fi
     line4="${line4}  ${magenta}${usage_str}${reset}"
+fi
+
+# Model-scoped weekly limits (e.g. the separate Fable/Opus weekly cap) are NOT
+# in the stdin JSON; the CLI caches the full /usage payload in ~/.claude.json
+# under cachedUsageUtilization. Show every weekly_scoped entry that names a
+# model, colored by the payload's own severity. A cache older than 6h is
+# skipped as stale (the CLI refreshes it while running). resets_at here is ISO
+# 8601 with a +00:00 offset (not epoch like the stdin limits); jq normalizes
+# the offset to Z and converts, emitting "" on failure so the segment just
+# loses its countdown instead of breaking.
+scoped=$(jq -r --argjson now "$now" '
+    .cachedUsageUtilization
+    | select(. != null and ($now - (.fetchedAtMs / 1000)) < 21600)
+    | .utilization.limits[]?
+    | select(.kind == "weekly_scoped" and .scope.model.display_name != null)
+    | [(.scope.model.display_name | ascii_downcase),
+       (.percent // "" | tostring),
+       (.severity // ""),
+       ((.resets_at // "" | sub("\\.[0-9]+"; "") | sub("\\+00:00$"; "Z")
+         | fromdateiso8601?) // "" | tostring)]
+    | @tsv' "$HOME/.claude.json" 2> /dev/null)
+if [ -n "$scoped" ]; then
+    while IFS=$'\t' read -r sc_name sc_pct sc_sev sc_reset; do
+        { [ -z "$sc_name" ] || [ -z "$sc_pct" ]; } && continue
+        case "$sc_sev" in
+            normal | "") sc_c=$magenta ;;
+            warning) sc_c=$yellow ;;
+            *) sc_c=$red ;;
+        esac
+        sc_seg="${sc_name} ${sc_pct%.*}%"
+        [[ "$sc_reset" =~ ^[0-9]+$ ]] && sc_seg="${sc_seg} ($(fmt_dur $((sc_reset - now))))"
+        line4="${line4}  ${sc_c}${sc_seg}${reset}"
+    done <<< "$scoped"
 fi
 
 # Times of the last user-typed message (msg) and the last assistant reply
@@ -289,7 +322,6 @@ if [ -n "$transcript" ] && [ -r "$transcript" ]; then
         | "\(.type)\t\(.timestamp // "")"' 2> /dev/null)
     msg_ts=$(printf '%s\n' "$ts_log" | awk -F'\t' '$1 == "user" && $2 != "" { t = $2 } END { print t }')
     rsp_ts=$(printf '%s\n' "$ts_log" | awk -F'\t' '$1 == "assistant" && $2 != "" { t = $2 } END { print t }')
-    now=$(date +%s)
     ts_seg=""
     for pair in "msg:$msg_ts" "rsp:$rsp_ts"; do
         label=${pair%%:*}
