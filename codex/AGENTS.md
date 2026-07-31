@@ -7,5 +7,6 @@
 - python時はuvを使用
 - 積極的にPlugin/Skills等を使用
 - findは重いので絶対に使わないこと
+- 再生成可能なデータはignore
 
 @AGENTS.local.md
