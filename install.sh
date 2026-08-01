@@ -36,8 +36,7 @@ OPTIONS:
         --warpd         install warpd (Mac only)
         --claude-code   install claude-code
         --codex         install codex
-        --conda         install conda
-        --mold          install mold
+        --opencode      install opencode
         --password-store install password-store
         --supertuxkart  install supertuxkart
         --python3       install python packages
@@ -67,12 +66,11 @@ do_cargo_pkgs=0
 do_warpd=0
 do_claude_code=0
 do_codex=0
+do_opencode=0
 do_python3=0
 do_gh_ext=0
 do_macos=0
 do_iterm2=0
-do_conda=0
-do_mold=0
 do_password_store=0
 do_supertuxkart=0
 
@@ -113,6 +111,9 @@ while :; do
         --codex)
             do_codex=1
             ;;
+        --opencode)
+            do_opencode=1
+            ;;
         --python3)
             do_python3=1
             ;;
@@ -124,12 +125,6 @@ while :; do
             ;;
         --iterm2)
             do_iterm2=1
-            ;;
-        --conda)
-            do_conda=1
-            ;;
-        --mold)
-            do_mold=1
             ;;
         --password-store)
             do_password_store=1
@@ -227,11 +222,8 @@ fi
 # codex
 [[ $do_codex -eq 1 ]] && install_script codex
 
-# conda
-[[ $do_conda -eq 1 ]] && install_script conda
-
-# mold
-[[ $do_mold -eq 1 ]] && install_script mold
+# opencode
+[[ $do_opencode -eq 1 ]] && install_script opencode
 
 # password-store
 [[ $do_password_store -eq 1 ]] && install_script password-store

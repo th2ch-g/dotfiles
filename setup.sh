@@ -298,12 +298,11 @@ OPTIONS:
         --warpd         warpd (Mac only)
         --claude-code   claude-code
         --codex         codex
+        --opencode      opencode
         --python3       python packages
         --gh-ext        gh extensions
         --macos         macOS settings (Mac only)
         --iterm2        iTerm2 (Mac only)
-        --conda         conda
-        --mold          mold linker
         --password-store  password-store
         --supertuxkart  SuperTuxKart
 
@@ -423,8 +422,8 @@ parse_args() {
                 ;;
             # install.sh passthrough toggles (--codex resolves here, not to link)
             --pixi | --pixi-pkgs | --uv | --brew | --brew-pkgs | --cargo | --cargo-pkgs | \
-                --warpd | --claude-code | --codex | --python3 | --gh-ext | --macos | \
-                --iterm2 | --conda | --mold | --password-store | --supertuxkart)
+                --warpd | --claude-code | --codex | --opencode | --python3 | --gh-ext | --macos | \
+                --iterm2 | --password-store | --supertuxkart)
                 FLAG_INSTALL_FLAGS+=("$1")
                 HAVE_COMPONENT_FLAGS=1
                 ;;
@@ -710,8 +709,6 @@ customize() {
         if ask_yn "configure iTerm2?" n; then INSTALL_FLAGS+=(--iterm2); fi
         if ask_yn "configure macOS defaults?" n; then INSTALL_FLAGS+=(--macos); fi
     fi
-    if ask_yn "install conda?" n; then INSTALL_FLAGS+=(--conda); fi
-    if ask_yn "install mold?" n; then INSTALL_FLAGS+=(--mold); fi
     if ask_yn "install password-store?" n; then INSTALL_FLAGS+=(--password-store); fi
     if ask_yn "install supertuxkart?" n; then INSTALL_FLAGS+=(--supertuxkart); fi
 }
