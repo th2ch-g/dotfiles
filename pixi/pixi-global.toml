@@ -65,6 +65,11 @@ channels = ["conda-forge"]
 dependencies = { htop = "*" }
 exposed = { htop = "htop" }
 
+[envs.ollama]
+channels = ["conda-forge"]
+dependencies = { ollama = "*" }
+exposed = { ollama = "ollama" }
+
 # [envs.rclone]
 # channels = ["conda-forge"]
 # dependencies = { rclone = "*" }
