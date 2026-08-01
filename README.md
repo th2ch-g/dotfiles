@@ -74,7 +74,7 @@ cd ${HOME}/works && \
 git clone https://github.com/th2ch-g/dotfiles.git && \
 cd ./dotfiles && \
 ./link.sh --zsh && \
-./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --brew --brew-pkgs --warpd --claude-code --codex --python3 --gh-ext --iterm2 --macos && \
+./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --brew --brew-pkgs --warpd --claude-code --codex --llama-cpp --python3 --gh-ext --iterm2 --macos && \
 ./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
 git remote set-url origin git@github.com:th2ch-g/dotfiles.git && \
 make setup

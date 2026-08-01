@@ -63,6 +63,7 @@ Flags for tool installers (`install_scripts/`):
 | `--codex`          | codex               |
 | `--opencode`       | opencode            |
 | `--password-store` | password-store      |
+| `--llama-cpp`      | llama.cpp (`llama`) |
 
 Flags for package runners (`*/run.sh`):
 
@@ -197,12 +198,26 @@ Flags for package runners (`*/run.sh`):
   Tools formerly built from source (git, vim, nvim, tmux, zsh, less,
   imagemagick, autoconf, cmake, node) and fzf now come from conda-forge via
   pixi, along with several CLIs moved off Homebrew (wget, gh, tor, typst,
-  htop, vhs). Local LLM inference is `llama.cpp` (env `llama-cpp`, exposing
-  `llama`, `llama-cli`, `llama-server`, `llama-bench`, `llama-quantize`);
-  it replaced ollama, so there is no model registry and no background
-  service — pass a GGUF explicitly (`llama-server -m model.gguf` or
-  `-hf <user>/<model>`, default port 8080). The osx-arm64 build bundles
-  `libggml-metal.dylib`, so the Metal backend is available.
+  htop, vhs). Local LLM inference is **not** here — `llama.cpp` moved to
+  `install_scripts/llama-cpp.sh` (see below) because a shared manifest cannot
+  express a per-machine accelerator build pin.
+- `install_scripts/llama-cpp.sh` — pipes the upstream installer
+  (`curl -fsSL https://llama.app/install.sh | sh`,
+  source: `ggml-org/llama-install.sh`) which probes the machine
+  (Metal / CUDA / ROCm / Vulkan / CPU) and installs a single unified binary at
+  `~/.llama-app/llama`, copied to `~/.local/bin/llama` (on PATH via
+  `zsh/.zshenv`). This is the one tool that ignores the `$TOOLS/<name>`
+  convention — the installer hardcodes those paths with no override env var.
+  The old per-tool binaries are subcommands now: `llama serve` (was
+  `llama-server`, default port 8080), `llama cli`, `llama bench`,
+  `llama quantize`, plus `llama download` / `llama update`. It replaced
+  ollama, so there is no model registry and no background service — pass a
+  GGUF explicitly (`llama serve -m model.gguf` or `-hf <user>/<model>`).
+  Re-running the script is the update path (the installer wipes
+  `~/.llama-app` and refetches), so it deliberately skips
+  `update_if_installed`. macOS has **no CPU fallback** — only Apple silicon
+  (M1–M5 / A18) Metal builds exist — so the script warns and exits 0 instead
+  of aborting the rest of `install.sh`.
 
 ## Local Customization Pattern
 

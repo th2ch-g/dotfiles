@@ -38,6 +38,7 @@ OPTIONS:
         --codex         install codex
         --opencode      install opencode
         --password-store install password-store
+        --llama-cpp     install llama.cpp (llama)
         --python3       install python packages
         --gh-ext        install gh extensions
         --macos         configure macOS settings (Mac only)
@@ -71,6 +72,7 @@ do_gh_ext=0
 do_macos=0
 do_iterm2=0
 do_password_store=0
+do_llama_cpp=0
 
 # option parser
 while :; do
@@ -126,6 +128,9 @@ while :; do
             ;;
         --password-store)
             do_password_store=1
+            ;;
+        --llama-cpp)
+            do_llama_cpp=1
             ;;
         --)
             shift
@@ -222,6 +227,9 @@ fi
 
 # password-store
 [[ $do_password_store -eq 1 ]] && install_script password-store
+
+# llama.cpp
+[[ $do_llama_cpp -eq 1 ]] && install_script llama-cpp
 
 # python packages
 [[ $do_python3 -eq 1 ]] && run_local python3
