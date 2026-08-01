@@ -304,7 +304,6 @@ OPTIONS:
         --macos         macOS settings (Mac only)
         --iterm2        iTerm2 (Mac only)
         --password-store  password-store
-        --supertuxkart  SuperTuxKart
 
 ENVIRONMENT (lower precedence than flags):
     SETUP_PROFILE=full|standard|guest   SETUP_FETCH=https|ssh|zip   SETUP_DIR=/path
@@ -423,7 +422,7 @@ parse_args() {
             # install.sh passthrough toggles (--codex resolves here, not to link)
             --pixi | --pixi-pkgs | --uv | --brew | --brew-pkgs | --cargo | --cargo-pkgs | \
                 --warpd | --claude-code | --codex | --opencode | --python3 | --gh-ext | --macos | \
-                --iterm2 | --password-store | --supertuxkart)
+                --iterm2 | --password-store)
                 FLAG_INSTALL_FLAGS+=("$1")
                 HAVE_COMPONENT_FLAGS=1
                 ;;
@@ -710,7 +709,6 @@ customize() {
         if ask_yn "configure macOS defaults?" n; then INSTALL_FLAGS+=(--macos); fi
     fi
     if ask_yn "install password-store?" n; then INSTALL_FLAGS+=(--password-store); fi
-    if ask_yn "install supertuxkart?" n; then INSTALL_FLAGS+=(--supertuxkart); fi
 }
 
 build_selection() {

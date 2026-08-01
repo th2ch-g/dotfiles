@@ -51,7 +51,6 @@ RUN ./install.sh \
         --claude-code
         # Skipped in the container image:
         # --brew --brew-pkgs --macos --iterm2 --warpd  # macOS only
-        # --supertuxkart  # not needed here
         # --password-store  # no conda-forge package
         # --cargo-pkgs  # takes too long
 

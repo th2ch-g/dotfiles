@@ -38,7 +38,6 @@ OPTIONS:
         --codex         install codex
         --opencode      install opencode
         --password-store install password-store
-        --supertuxkart  install supertuxkart
         --python3       install python packages
         --gh-ext        install gh extensions
         --macos         configure macOS settings (Mac only)
@@ -72,7 +71,6 @@ do_gh_ext=0
 do_macos=0
 do_iterm2=0
 do_password_store=0
-do_supertuxkart=0
 
 # option parser
 while :; do
@@ -128,9 +126,6 @@ while :; do
             ;;
         --password-store)
             do_password_store=1
-            ;;
-        --supertuxkart)
-            do_supertuxkart=1
             ;;
         --)
             shift
@@ -227,9 +222,6 @@ fi
 
 # password-store
 [[ $do_password_store -eq 1 ]] && install_script password-store
-
-# supertuxkart
-[[ $do_supertuxkart -eq 1 ]] && install_script supertuxkart
 
 # python packages
 [[ $do_python3 -eq 1 ]] && run_local python3

@@ -63,7 +63,6 @@ Flags for tool installers (`install_scripts/`):
 | `--codex`          | codex               |
 | `--opencode`       | opencode            |
 | `--password-store` | password-store      |
-| `--supertuxkart`   | SuperTuxKart        |
 
 Flags for package runners (`*/run.sh`):
 
@@ -178,8 +177,8 @@ Flags for package runners (`*/run.sh`):
   (idempotency checks built in)
 - Tools with a first-party self-update (pixi, uv, cargo/rustup, claude-code,
   codex, opencode) and brew self-update when already installed instead of
-  skipping; source-build / pinned-binary tools (warpd, password-store,
-  supertuxkart) still skip.
+  skipping; source-build / pinned-binary tools (warpd, password-store)
+  still skip.
 - `brew/run.sh` — Homebrew package list
 - `cargo/run.sh` — installs cargo packages from `cargo/list.yaml`
   (minimal yq-free YAML reader; use `--cargo-pkgs` flag)
