@@ -190,10 +190,12 @@ Flags for package runners (`*/run.sh`):
   Tools formerly built from source (git, vim, nvim, tmux, zsh, less,
   imagemagick, autoconf, cmake, node) and fzf now come from conda-forge via
   pixi, along with several CLIs moved off Homebrew (wget, gh, tor, typst,
-  htop, vhs, ollama). Note the conda-forge `ollama` ships only the CLI
-  binary — Homebrew's launchd service (`brew services start ollama`, which
-  set `OLLAMA_FLASH_ATTENTION=1` / `OLLAMA_KV_CACHE_TYPE=q8_0`) has no pixi
-  equivalent, so run `ollama serve` yourself.
+  htop, vhs). Local LLM inference is `llama.cpp` (env `llama-cpp`, exposing
+  `llama`, `llama-cli`, `llama-server`, `llama-bench`, `llama-quantize`);
+  it replaced ollama, so there is no model registry and no background
+  service — pass a GGUF explicitly (`llama-server -m model.gguf` or
+  `-hf <user>/<model>`, default port 8080). The osx-arm64 build bundles
+  `libggml-metal.dylib`, so the Metal backend is available.
 
 ## Local Customization Pattern
 

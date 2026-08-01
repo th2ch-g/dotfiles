@@ -65,10 +65,10 @@ channels = ["conda-forge"]
 dependencies = { htop = "*" }
 exposed = { htop = "htop" }
 
-[envs.ollama]
+[envs.llama-cpp]
 channels = ["conda-forge"]
-dependencies = { ollama = "*" }
-exposed = { ollama = "ollama" }
+dependencies = { "llama.cpp" = "*" }
+exposed = { llama = "llama", llama-cli = "llama-cli", llama-server = "llama-server", llama-bench = "llama-bench", llama-quantize = "llama-quantize" }
 
 # [envs.rclone]
 # channels = ["conda-forge"]
