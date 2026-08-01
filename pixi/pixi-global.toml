@@ -67,7 +67,7 @@ exposed = { htop = "htop" }
 
 [envs.llama-cpp]
 channels = ["conda-forge"]
-dependencies = { "llama.cpp" = "*" }
+dependencies = { "llama.cpp" = { version = "*", build = "cuda130*" } }
 exposed = { llama = "llama", llama-cli = "llama-cli", llama-server = "llama-server", llama-bench = "llama-bench", llama-quantize = "llama-quantize" }
 
 # [envs.rclone]

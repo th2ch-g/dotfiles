@@ -147,6 +147,13 @@ Flags for package runners (`*/run.sh`):
 
 ## Gotchas
 
+- `pixi global sync` (what `pixi/run.sh` runs) **deletes any environment
+  under `$PIXI_HOME/envs/` that `pixi-global.toml` does not declare**. A tool
+  installed by hand into that directory looks like an orphan and is pruned
+  without warning -- this is how a hand-placed `ollama` env was lost. Either
+  declare the tool in the manifest, or keep it outside `$PIXI_HOME` entirely;
+  `$TOOLS/ollama` is the latter, because ollama ships from its own release
+  tarball rather than from conda-forge.
 - `link.sh --unlink` removes symlinks via `unlink`; to remove plain-file
   copies made with `--cp` (e.g. directory configs), use `--rm` instead
   (`unlink` cannot remove directories).
