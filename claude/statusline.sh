@@ -2,7 +2,8 @@
 #
 # Claude Code custom statusLine. Reads the session JSON from stdin and prints a
 # four-line status:
-#   line 1 (identity):    <account>  <host> [ssh]  <model>  effort:<lvl>  style:<name>  think
+#   line 1 (identity):    <account>  <host> [ssh]  <model> v<cli-version>
+#                         effort:<lvl>  style:<name>  think
 #   line 2 (location):    <branch>  <repo>  <cwd>  «<session-name>»
 #   line 3 (context):     ctx <used>k used / <free>k free (<pct>%)  out <n>k
 #                         cache <create>k/<read>k  compact ~<n>%  PR#<n> <state>
@@ -108,7 +109,8 @@ done < <(
 		 (.rate_limits.seven_day.resets_at // ""),
 		 (.context_window.current_usage.cache_creation_input_tokens // ""),
 		 (.context_window.current_usage.cache_read_input_tokens // ""),
-		 (.transcript_path // "")'
+		 (.transcript_path // ""),
+		 (.version // "")'
 )
 model=${fields[0]}
 effort=${fields[1]}
@@ -135,6 +137,7 @@ rl7_reset=${fields[21]}
 cache_create=${fields[22]}
 cache_read=${fields[23]}
 transcript=${fields[24]}
+cli_version=${fields[25]}
 
 [ -z "$cwd" ] && cwd=$PWD
 # Full path, with $HOME abbreviated to ~ to keep it short.
@@ -150,8 +153,11 @@ account=$(jq -r '.oauthAccount.emailAddress // .oauthAccount.displayName // empt
 # both macOS and Linux). Empty on failure, in which case the segment drops out.
 host=$(hostname -s 2> /dev/null)
 
-# ---- Line 1: identity (account / host / model / effort / style / think) -----
+# ---- Line 1: identity (account / host / model+version / effort / style / think)
+# The CLI version rides next to the model as one segment ("Opus 5 v2.1.90") so
+# it reads as an attribute of the running client rather than a separate column.
 line1="${cyan}${model}${reset}"
+[ -n "$cli_version" ] && line1="${line1} ${green}v${cli_version}${reset}"
 # Host segment, tagged "ssh" when this session was launched over SSH. Detection
 # relies on SSH_CONNECTION/SSH_TTY, which Claude Code inherits from the shell
 # that started it; absent when claude runs locally.
