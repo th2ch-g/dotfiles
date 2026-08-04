@@ -58,7 +58,7 @@ repos:
   # Security static analysis for GitHub Actions; complements actionlint (syntax).
   # Config: .github/zizmor.yml
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.27.0
+    rev: v1.28.0
     hooks:
       - id: zizmor
 
@@ -105,7 +105,7 @@ repos:
       - id: yamllint
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.23.1
+    rev: v0.23.2
     hooks:
       - id: markdownlint-cli2
         # CLAUDE.md files start with an @import line, not a heading (MD041)
