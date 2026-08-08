@@ -4,189 +4,93 @@
 ![license](https://img.shields.io/github/license/th2ch-g/dotfiles)
 ![repo-size](https://img.shields.io/github/repo-size/th2ch-g/dotfiles)
 
-<!-- TOC GFM -->
-
-- [Install](#install)
-  - [Quick start (interactive)](#quick-start-interactive)
-  - [For me](#for-me)
-  - [For Guest](#for-guest)
-  - [From Dockerfile](#from-dockerfile)
-    - [Case1: Pull from ghcr](#case1-pull-from-ghcr)
-    - [Case2: Build locally](#case2-build-locally)
-- [set-url for commit](#set-url-for-commit)
-- [Update](#update)
-- [Add release](#add-release)
-- [Delete release (not recommended)](#delete-release-not-recommended)
-- [Development setup](#development-setup)
-
-<!-- /TOC -->
+macOS and Linux dotfiles bootstrapped by [mise](https://mise.jdx.dev/).
 
 ## Install
-
-### Quick start (interactive)
-
-Bootstrap with a single `curl ... | bash` command (rustup-style). It prompts for
-how to fetch the repo, an install profile, and optional developer setup, then
-delegates to `link.sh` / `install.sh`:
 
 ```shell
 curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | bash
 ```
 
-- Fetch method: `HTTPS clone`, `SSH clone`, or `ZIP download` (no git history —
-  the "without git" path).
-- Profiles: `full` (everything for this machine), `standard` (core tools),
-  `guest` (link-only), or `customize` (toggle each component).
-- Prerequisites: missing `git` / `zsh` / `unzip` can be installed on the spot
-  after a confirmation prompt (Linux: apt/dnf/pacman/zypper/apk via sudo;
-  macOS: `xcode-select --install`).
-- Developer setup (git checkouts only): optionally switch `origin` to SSH and
-  run `make setup` (pre-commit hooks).
-- Install location: defaults to `~/works/dotfiles`; override with
-  `SETUP_DIR=/path/to/dir` or by typing a path at the interactive prompt.
-- Non-interactive (CI / containers): set `SETUP_PROFILE=full|standard|guest`
-  (and optionally `SETUP_FETCH=https|ssh|zip`), e.g.
-  `curl -fsSL .../setup.sh | SETUP_PROFILE=standard bash`.
-- Flags (highest precedence): the same selections work as flags, e.g.
-  `./setup.sh --profile full --fetch ssh --yes`, or pick components directly with
-  `link.sh` / `install.sh` toggles like `./setup.sh --zsh --git --pixi --uv`.
-  Over `curl ... | bash`, pass them after `-s --`:
-  `curl -fsSL .../setup.sh | bash -s -- --profile standard`.
-  Run `./setup.sh --help` for the full list.
-- The manual one-liners below remain available and produce the same result.
-
-### For me
-
-<details>
-<summary>Manual one-liners (same result as Quick start)</summary>
-
-- Bootstrap Installation on local
-  - Prerequisite: git, zsh (check by `git --version && zsh --version`)
-    - macos: `xcode-select --install`
-      - **DO NOT** launch zsh in other terminal until the installation is done
-        (up to brew) because of OpenSSL issue
-    - linux: `sudo apt install zsh git` or manually install by
-      `install_scripts/`
+`standard` is the default profile. The wrapper installs mise v2026.8.3 or
+newer, fetches this repository when needed, writes the local profile selection,
+and runs `mise bootstrap`.
 
 ```shell
-mkdir -p ${HOME}/works && \
-cd ${HOME}/works && \
-git clone https://github.com/th2ch-g/dotfiles.git && \
-cd ./dotfiles && \
-./link.sh --zsh && \
-./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --brew --brew-pkgs --warpd --claude-code --codex --llama-cpp --python3 --gh-ext --iterm2 --macos && \
-./link.sh --git --tmux --vim --neovim --ssh --aerospace && \
-git remote set-url origin git@github.com:th2ch-g/dotfiles.git && \
-make setup
+./setup.sh --profile standard
+./setup.sh --profile full --fetch ssh --yes
+./setup.sh --profile guest
+./setup.sh --profile hpc --dir ~/works/dotfiles
 ```
 
-- Install on local via SSH
+| Profile    | Behavior                                                                                                                  |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `standard` | User tools, Cargo/Python CLIs, workstation dotfiles, and required system packages                                         |
+| `full`     | Standard plus GUI applications, all tracked dotfiles, opencode, Claude/GitHub extras, iTerm2, warpd, llama.cpp, and hooks |
+| `guest`    | Copies zsh, Vim, Neovim, tmux, Sheldon, and mise config; installs no tools or packages                                    |
+| `hpc`      | Standard user-space tools and symlinked dotfiles; skips packages, login shell changes, and privileged settings            |
+
+Supported platforms are macOS arm64 and Linux x64/arm64. Intel macOS,
+Windows, and Cygwin are not supported.
+
+mise itself does not require root privileges. `standard` and `full` may request
+`sudo` for OS packages; `full` also uses it for warpd and Docker Desktop.
+`guest` and `hpc` do not request root access.
+
+The bootstrap refuses existing dotfile conflicts. Inspect the plan before
+choosing whether to move the existing file or explicitly run mise with
+`--force-dotfiles`.
+
+## Profiles and configuration
+
+The active profile is stored in the ignored `mise/miserc.toml`. The checkout
+path is stored in the ignored `mise/config.local.toml`. Declarative resources
+live in:
+
+- `mise/config.toml`: common environment, dotfiles, and tasks
+- `mise/config.standard.toml`: standard packages, tools, and dotfiles
+- `mise/config.full.toml`: full additions and safe per-user macOS defaults
+- `mise/config.guest.toml`: copy-only guest dotfiles
+- `mise/config.hpc.toml`: sudo-less HPC overrides
+- `mise/config.macos.toml` and `mise/config.linux.toml`: package-manager routing
+
+Common operations:
 
 ```shell
-mkdir -p ${HOME}/works && \
-cd ${HOME}/works && \
-git clone git@github.com:th2ch-g/dotfiles.git && \
-cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
-./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --codex --python3
+mise bootstrap plan
+mise bootstrap
+mise bootstrap status
+mise run setup
+mise run lint
+mise run tools:update
+mise run update
 ```
 
-- Install on local via HTTPS
+`mise run macos:dock` destructively rebuilds the Dock and requires an explicit
+confirmation. `mise run macos:privileged` applies root-owned and host-scoped
+macOS settings and also requires an explicit confirmation. Neither task runs
+automatically.
+
+During migration, existing macOS app bundles keep their current owner. Missing
+casks are installed through mise; Docker Desktop and AeroSpace use dedicated
+install paths because their casks require lifecycle steps mise cannot express.
+
+## Releases and Docker
 
 ```shell
-mkdir -p ${HOME}/works && \
-cd ${HOME}/works && \
-git clone https://github.com/th2ch-g/dotfiles.git && \
-cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
-./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --codex --python3
+mise run release
+mise run release:delete -- vYYYY.MM.DD
+mise run docker
+mise run docker:pull
 ```
 
-- Install without git
+The container uses the internal `container` profile, which intentionally omits
+the large Cargo/Python CLI set.
 
-```shell
-mkdir -p ${HOME}/works && \
-wget https://github.com/th2ch-g/dotfiles/archive/refs/heads/main.zip && \
-unzip main.zip && \
-rm main.zip && \
-mv dotfiles-main dotfiles && \
-cd ./dotfiles && \
-./link.sh --git --zsh --tmux --vim --neovim --ssh --aerospace && \
-./install.sh --pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --codex --python3
-```
+## Legacy cleanup
 
-</details>
-
-### For Guest
-
-<details>
-<summary>Guest install (link-only)</summary>
-
-```shell
-git clone https://github.com/th2ch-g/dotfiles.git && \
-cd ./dotfiles && \
-./link.sh --zsh --vim --tmux --neovim
-```
-
-</details>
-
-### From Dockerfile
-
-<details>
-<summary>Docker usage</summary>
-
-#### Case1: Pull from ghcr
-
-```shell
-docker pull --platform linux/amd64 ghcr.io/th2ch-g/dotfiles:latest
-docker run --platform linux/amd64 --rm -it ghcr.io/th2ch-g/dotfiles
-```
-
-#### Case2: Build locally
-
-```shell
-git clone https://github.com/th2ch-g/dotfiles.git && \
-cd ./dotfiles && \
-docker image build -t myenv . && \
-docker run --rm -it myenv
-```
-
-</details>
-
-## set-url for commit
-
-```shell
-make s
-```
-
-## Update
-
-```shell
-make u
-```
-
-## Add release
-
-```bash
-make r
-```
-
-## Delete release (not recommended)
-
-```bash
-make delete-release TAG=vYYYY.MM.DD
-```
-
-## Development setup
-
-Activate pre-commit hooks after cloning:
-
-```bash
-make setup
-```
-
-Run all linters/formatters manually:
-
-```bash
-make l
-```
+Bootstrap does not delete previous pixi environments, Rust toolchains,
+Homebrew installations, or manually installed binaries. The shell no longer
+adds the old `PIXI_HOME`, `CARGO_HOME`, or `RUSTUP_HOME` paths. After verifying
+the mise setup, inspect and remove those legacy directories manually if they
+are no longer needed. Homebrew packages are never pruned automatically.

@@ -1,0 +1,86 @@
+min_version = "2026.8.3"
+
+[settings]
+auto_install = false
+disable_backends = ["asdf", "vfox"]
+lockfile = true
+not_found_auto_install = false
+
+[env]
+DOTFILES_DIR = { default = "{{ env.HOME }}/works/dotfiles" }
+_.path = [
+    "{{ env.HOME }}/works/bin",
+    "{{ env.HOME }}/.local/bin",
+    "/opt/homebrew/bin",
+]
+
+[dotfiles]
+"~/.config/mise" = { source = ".", mode = "symlink" }
+
+[tasks.bootstrap]
+description = "Complete the selected bootstrap profile"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "bash mise/tasks/bootstrap.sh"
+
+[tasks."bootstrap:plan"]
+description = "Preview declarative bootstrap changes"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "mise bootstrap plan"
+
+[tasks.setup]
+description = "Install pre-commit hooks"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "pre-commit install --install-hooks"
+
+[tasks.lint]
+description = "Run all repository checks"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "pre-commit run --all-files"
+
+[tasks."tools:update"]
+description = "Update mise-managed tools and system packages"
+dir = "{{ env.DOTFILES_DIR }}"
+run = [
+    "mise upgrade --bump",
+    "mise bootstrap packages upgrade",
+    "bash mise/tasks/macos-casks.sh",
+]
+
+[tasks.update]
+description = "Pull the latest main branch"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "git pull origin main"
+
+[tasks.release]
+description = "Create and push today's release tag"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "bash mise/tasks/release.sh"
+
+[tasks."release:delete"]
+description = "Delete a local and remote release tag"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "bash mise/tasks/release-delete.sh"
+
+[tasks.docker]
+description = "Build and run the local dotfiles image"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "docker build -t dotfiles . && docker run --rm -it dotfiles"
+
+[tasks."docker:pull"]
+description = "Pull and run the latest published image"
+run = "docker pull ghcr.io/th2ch-g/dotfiles:latest && docker run --rm -it ghcr.io/th2ch-g/dotfiles:latest"
+
+[tasks."macos:dock"]
+description = "Destructively rebuild the macOS Dock"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "bash mise/tasks/macos-dock.sh"
+
+[tasks."macos:privileged"]
+description = "Apply privileged and host-scoped macOS settings"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "bash mise/tasks/macos-privileged.sh"
+
+[tasks."llama:update"]
+description = "Reinstall the latest accelerator-specific llama.cpp build"
+dir = "{{ env.DOTFILES_DIR }}"
+run = "bash mise/tasks/llama.sh --update"

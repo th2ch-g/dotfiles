@@ -1,845 +1,269 @@
-#!/bin/bash
-#
-# setup.sh - interactive bootstrap for the th2ch-g/dotfiles repository.
-#
-# Remote (rustup-style one-liner):
-#   curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | bash
-# Local (from a checkout):
-#   ./setup.sh
-#
-# It prompts for how to fetch the repo (HTTPS clone / SSH clone / ZIP download),
-# an install profile (full / standard / guest / customize), and optional
-# developer setup (origin -> SSH, make setup), then delegates to link.sh and
-# install.sh. Missing prerequisites (git / zsh / unzip) can be installed on the
-# spot after a confirmation prompt.
-#
-# When run as `curl ... | bash`, the script text itself occupies stdin, so every
-# interactive prompt is read from /dev/tty (the same trick rustup uses).
-#
-# Non-interactive use (CI / containers):
-#   SETUP_PROFILE=full|standard|guest   choose the profile
-#   SETUP_FETCH=https|ssh|zip           choose the fetch method (default https)
-#   SETUP_DIR=/path                     install directory (default ~/works/dotfiles)
-#
-# Flags (highest precedence; override the env vars above). Run --help for the
-# full list. The essentials:
-#   --profile full|standard|guest   choose the profile (customize: tty only)
-#   --fetch https|ssh|zip           choose the fetch method
-#   --dir /path                     install directory
-#   -y, --yes                       skip the final confirm (implies non-interactive)
-#   -h, --help                      print help and exit
-# Any link.sh / install.sh toggle is also accepted to pick components directly
-# (e.g. --zsh --git --pixi --uv). Over `curl ... | bash`, pass flags after -s --:
-#   curl -fsSL .../setup.sh | bash -s -- --profile standard
-#
-# This script is self-contained on purpose: during a `curl | bash` run the
-# repository (and lib/utils.sh) does not exist yet, so it ships its own tiny
-# logging / OS-detect helpers and only delegates to link.sh / install.sh once
-# the repository is available.
-#
-set -e
+#!/usr/bin/env bash
+# Bootstrap this dotfiles repository with mise.
+set -euo pipefail
 
-REPO_SLUG="th2ch-g/dotfiles"
-REPO_NAME="${REPO_SLUG##*/}"
-BRANCH="main"
-REPO_HTTPS="https://github.com/${REPO_SLUG}.git"
-REPO_SSH="git@github.com:${REPO_SLUG}.git"
-REPO_ZIP="https://github.com/${REPO_SLUG}/archive/refs/heads/${BRANCH}.zip"
-CLONE_DEST="${SETUP_DIR:-${HOME}/works/dotfiles}"
-TTY="/dev/tty"
+readonly REPO_SLUG="th2ch-g/dotfiles"
+readonly REPO_HTTPS="https://github.com/${REPO_SLUG}.git"
+readonly REPO_SSH="git@github.com:${REPO_SLUG}.git"
+readonly REPO_ZIP="https://github.com/${REPO_SLUG}/archive/refs/heads/main.zip"
+readonly MISE_MIN_VERSION="2026.8.3"
 
-# Selection state (populated as we go).
-OS=""
-NONINTERACTIVE=0
-PROFILE=""
-CLONE_PROTO="" # https | ssh | zip ; empty when an existing checkout is reused
+PROFILE="${SETUP_PROFILE:-standard}"
+FETCH="${SETUP_FETCH:-https}"
+DEST="${SETUP_DIR:-${HOME}/works/dotfiles}"
+ASSUME_YES=0
 REPO_DIR=""
-DO_SETURL_SSH=0
-DO_MAKE_SETUP=0
-LINK_TOOLS=()
-INSTALL_FLAGS=()
-PM_CMD=()
-PM_DISPLAY=""
+MISE_BIN=""
 
-# Flag-driven selection (populated by parse_args). Component toggles are gathered
-# here and appended to LINK_TOOLS / INSTALL_FLAGS *after* build_selection, so a
-# profile base (which assigns those arrays with =) is not clobbered.
-DIR_FLAG=""            # --dir value; applied to CLONE_DEST after parsing
-PROFILE_FROM_FLAG=""   # holds "customize" so choose_profile honors it (tty run)
-HAVE_COMPONENT_FLAGS=0 # 1 when any link/install toggle was seen (manual mode)
-FLAG_LINK_TOOLS=()     # link.sh toggles collected from flags
-FLAG_INSTALL_FLAGS=()  # install.sh toggles collected from flags
+usage() {
+    cat << 'EOF'
+Usage: ./setup.sh [options]
 
-# --- self-contained helpers (lib/utils.sh is not available pre-clone) ---
+Options:
+  --profile standard|full|guest|hpc  Bootstrap profile (default: standard)
+  --fetch https|ssh|zip              Fetch method (default: https)
+  --dir PATH                         Checkout path (default: ~/works/dotfiles)
+  -y, --yes                          Accept mise confirmation prompts
+  -h, --help                         Show this help
 
-# ANSI colors for the log helpers below (gated per-call on TTY + NO_COLOR).
-_LOG_GREEN=$'\033[32m'
-_LOG_YELLOW=$'\033[33m'
-_LOG_RED=$'\033[31m'
-_LOG_RESET=$'\033[0m'
-_LOG_BOLD=$'\033[1m'
-
-# Print "<icon> <msg>" to the current stream, wrapping it in <color>...reset
-# only when the target fd ($4) is a TTY and NO_COLOR is unset. This keeps
-# piped/redirected output and NO_COLOR users on plain, un-escaped text.
-_log() {
-    local color="$1" icon="$2" msg="$3" fd="$4"
-    if [ -z "${NO_COLOR:-}" ] && [ -t "$fd" ]; then
-        printf '%s%s %s%s\n' "$color" "$icon" "$msg" "$_LOG_RESET"
-    else
-        printf '%s %s\n' "$icon" "$msg"
-    fi
+Environment variables: SETUP_PROFILE, SETUP_FETCH, SETUP_DIR
+EOF
 }
 
-print_info() { _log "$_LOG_GREEN" '✔' "$1" 1; }
-print_warn() { _log "$_LOG_YELLOW" '⚠' "$1" 2 >&2; }
-print_error() { _log "$_LOG_RED" '✖' "$1" 2 >&2; }
-
-# Section header. Mirrors print_section in lib/utils.sh; setup.sh ships its own
-# copy because lib/utils.sh does not exist during a pre-clone curl|bash run.
-print_section() {
-    local title="$1"
-    if [ -z "${NO_COLOR:-}" ] && [ -t 1 ]; then
-        local cols width line
-        cols=$(tput cols 2> /dev/null || echo 80)
-        [ "$cols" -gt 80 ] && cols=80
-        width=$((cols - ${#title} - 4))
-        [ "$width" -lt 0 ] && width=0
-        line=$(printf '%*s' "$width" '')
-        printf '%s── %s %s%s\n' "$_LOG_BOLD" "$title" "${line// /─}" "$_LOG_RESET"
-    else
-        printf -- '-- %s --\n' "$title"
-    fi
+die() {
+    printf 'error: %s\n' "$*" >&2
+    exit 1
 }
 
-need_cmd() { command -v "$1" > /dev/null 2>&1; }
-
-detect_os() {
-    case "$(uname -s)" in
-        Darwin) OS="Mac" ;;
-        Linux*) OS="Linux" ;;
-        *)
-            print_error "Unsupported platform: $(uname -s)"
-            exit 1
-            ;;
-    esac
+has_cmd() {
+    command -v "$1" > /dev/null 2>&1
 }
 
-# Read a single line from the terminal into the named variable.
-# Usage: prompt_read <var-name> <prompt-text>
-prompt_read() {
-    local __var="$1" __prompt="$2" __ans=""
-    printf '%s' "$__prompt" > "$TTY"
-    IFS= read -r __ans < "$TTY" || __ans=""
-    printf -v "$__var" '%s' "$__ans"
-}
-
-# Yes/no prompt. Usage: ask_yn <prompt> <recommended:y|n> ; returns 0 for yes.
-# An explicit y/n is required: empty input (Enter) re-asks instead of taking the
-# recommended value, so the choice is always made on purpose.
-ask_yn() {
-    local prompt="$1" rec="$2" ans="" hint
-    if [[ "$rec" == "y" ]]; then
-        hint="[y/n] (recommended: y)"
-    else
-        hint="[y/n] (recommended: n)"
-    fi
-    while :; do
-        prompt_read ans "  ${prompt} ${hint} "
-        case "$ans" in
-            [yY] | [yY][eE][sS]) return 0 ;;
-            [nN] | [nN][oO]) return 1 ;;
-            *) printf '  please answer y or n\n' > "$TTY" ;;
-        esac
-    done
-}
-
-# --- prerequisite installation ---
-
-# Run a command as root: directly if already root, else via sudo.
-run_root() {
-    if [[ "$(id -u)" -eq 0 ]]; then
-        "$@"
-    elif need_cmd sudo; then
-        sudo "$@"
-    else
-        print_error "root privileges required to run: $*"
-        return 1
-    fi
-}
-
-# Detect the platform package manager. Sets PM_CMD (install command, array) and
-# PM_DISPLAY (human-readable). Returns non-zero when none is available.
-detect_pm() {
-    PM_CMD=()
-    PM_DISPLAY=""
-    if [[ "$OS" == "Mac" ]]; then
-        PM_DISPLAY="xcode-select --install"
-        return 0
-    fi
-    if need_cmd apt-get; then
-        PM_CMD=(apt-get install -y)
-    elif need_cmd dnf; then
-        PM_CMD=(dnf install -y)
-    elif need_cmd pacman; then
-        PM_CMD=(pacman -S --noconfirm)
-    elif need_cmd zypper; then
-        PM_CMD=(zypper install -y)
-    elif need_cmd apk; then
-        PM_CMD=(apk add)
-    else
-        return 1
-    fi
-    PM_DISPLAY="${PM_CMD[*]}"
-    return 0
-}
-
-# Install one package via the detected package manager. On macOS this triggers
-# the Command Line Tools installer (which is an async GUI flow).
-pm_install() {
-    if [[ "$OS" == "Mac" ]]; then
-        print_info "triggering Command Line Tools install: xcode-select --install"
-        xcode-select --install 2> /dev/null || true
-        if [[ "$NONINTERACTIVE" -eq 0 ]]; then
-            local _ignore=""
-            prompt_read _ignore "Press Enter once the Command Line Tools install finishes... "
-        fi
-        return 0
-    fi
-    if [[ "${PM_CMD[0]}" == "apt-get" ]]; then
-        print_info "running: apt-get update"
-        run_root apt-get update || true
-    fi
-    print_info "running: ${PM_DISPLAY} $*"
-    run_root "${PM_CMD[@]}" "$@"
-}
-
-# Ensure <cmd> exists; offer to install <pkg> if missing. Exits on failure.
-# Usage: ensure_tool <cmd> <pkg> <why>
-ensure_tool() {
-    local cmd="$1" pkg="$2" why="$3"
-    need_cmd "$cmd" && return 0
-
-    print_warn "${cmd} not found (${why})"
-    if ! detect_pm; then
-        print_error "no supported package manager found."
-        print_error "install '${pkg}' manually, then re-run setup.sh"
-        exit 1
-    fi
-    if [[ "$NONINTERACTIVE" -eq 0 ]]; then
-        if ! ask_yn "install ${pkg} via '${PM_DISPLAY}'?" y; then
-            print_error "install '${pkg}' manually, then re-run setup.sh"
-            exit 1
-        fi
-    fi
-    pm_install "$pkg"
-
-    if ! need_cmd "$cmd"; then
-        print_error "${cmd} is still missing; install '${pkg}' and re-run setup.sh"
-        exit 1
-    fi
-}
-
-ensure_zsh() { ensure_tool zsh zsh "install.sh runs under zsh"; }
-
-# --- argument parsing ---
-
-USAGE='
-setup.sh:
-    interactive bootstrap for the th2ch-g/dotfiles repository
-
-USAGE:
-    ./setup.sh [FLAGS]
-    curl -fsSL .../setup.sh | bash -s -- [FLAGS]
-
-EXAMPLE:
-    ./setup.sh                                   fully interactive
-    ./setup.sh --profile guest                   non-interactive profile
-    ./setup.sh --profile full --fetch ssh --yes  no prompts at all
-    ./setup.sh --dir ~/dev/dotfiles              pre-seed dir, still interactive
-    ./setup.sh --zsh --git --pixi --uv --yes     pick components directly (manual)
-
-OPTIONS:
-    -h, --help          print help
-    -y, --yes           skip the final confirm (implies non-interactive)
-        --profile <p>   profile: full | standard | guest
-                        (customize is interactive-only; rejected without a tty)
-        --fetch <m>     fetch method: https | ssh | zip (default https)
-        --dir <path>    install directory (default ~/works/dotfiles)
-
-    Component toggles below are also accepted and routed to the matching step.
-    They extend a --profile base, or without a profile drive a manual selection
-    (e.g. --zsh --git --pixi --uv). For per-flag detail see ./link.sh --help /
-    ./install.sh --help. Note: --codex installs the codex tool (install.sh); to
-    copy the codex config (link.sh) use --profile customize.
-
-    link passthrough (-> ./link.sh):
-        --vim           vim config
-        --zsh           zsh + sheldon config
-        --tmux          tmux config
-        --git           git config
-        --alacritty     alacritty config
-        --neovim        neovim config
-        --ssh           ssh config (copied, not linked)
-        --bash          bash profile (not recommended)
-        --yabai         yabai config (Mac only)
-        --skhd          skhd config (Mac only)
-        --aerospace     aerospace config
-        --claude        claude config
-
-    install passthrough (-> ./install.sh):
-        --pixi          install pixi
-        --pixi-pkgs     pixi global packages
-        --uv            install uv
-        --brew          Homebrew (Mac only)
-        --brew-pkgs     Homebrew packages (Mac only)
-        --cargo         Rust toolchain
-        --cargo-pkgs    cargo packages
-        --warpd         warpd (Mac only)
-        --claude-code   claude-code
-        --codex         codex
-        --opencode      opencode
-        --python3       python packages
-        --gh-ext        gh extensions
-        --macos         macOS settings (Mac only)
-        --iterm2        iTerm2 (Mac only)
-        --password-store  password-store
-        --llama-cpp     llama.cpp (llama)
-
-ENVIRONMENT (lower precedence than flags):
-    SETUP_PROFILE=full|standard|guest   SETUP_FETCH=https|ssh|zip   SETUP_DIR=/path
-'
-
-# Validate + apply a --profile value. full|standard|guest force non-interactive
-# (like SETUP_PROFILE); customize is deferred to choose_profile and needs a tty.
-set_profile_flag() {
-    if [[ -z "$1" ]]; then
-        print_error "--profile requires an argument"
-        exit 1
-    fi
+expand_home() {
+    local tilde="~"
     case "$1" in
-        full | standard | guest)
-            if [[ -n "${SETUP_PROFILE:-}" && "$SETUP_PROFILE" != "$1" ]]; then
-                print_warn "--profile overrides SETUP_PROFILE=${SETUP_PROFILE}"
-            fi
-            SETUP_PROFILE="$1"
-            NONINTERACTIVE=1
-            ;;
-        customize)
-            if { exec 3< "$TTY"; } 2> /dev/null; then
-                exec 3<&-
-                PROFILE_FROM_FLAG="customize"
-            else
-                print_error "--profile customize requires an interactive terminal"
-                exit 1
-            fi
-            ;;
-        *)
-            print_error "--profile must be full|standard|guest|customize"
-            exit 1
-            ;;
+        "$tilde") printf '%s\n' "$HOME" ;;
+        "$tilde/"*) printf '%s/%s\n' "$HOME" "${1#~/}" ;;
+        *) printf '%s\n' "$1" ;;
     esac
 }
 
-# Validate + apply a --fetch value (pre-seeds, does not force non-interactive).
-set_fetch_flag() {
-    case "$1" in
-        https | ssh | zip)
-            SETUP_FETCH="$1"
-            CLONE_PROTO="$1"
-            ;;
-        *)
-            print_error "--fetch must be https|ssh|zip"
-            exit 1
-            ;;
-    esac
-}
-
-# Apply a --dir value, expanding a leading ~ (word-splitting does not).
-set_dir_flag() {
-    local val="$1"
-    if [[ -z "$val" ]]; then
-        print_error "--dir requires an argument"
-        exit 1
-    fi
-    if [[ "$val" == \~ || "$val" == \~/* ]]; then
-        val="${HOME}${val#\~}"
-    fi
-    DIR_FLAG="$val"
-}
-
-# Parse CLI flags (mirrors link.sh / install.sh). Recognised link.sh/install.sh
-# toggles are collected into FLAG_LINK_TOOLS / FLAG_INSTALL_FLAGS; value flags set
-# the same SETUP_* vars the env-var paths read, so "flag > env" needs no rewiring.
 parse_args() {
-    while :; do
-        case $1 in
-            -h | --help)
-                echo "$USAGE" >&1
-                exit 0
-                ;;
-            -y | --yes)
-                NONINTERACTIVE=1
-                ;;
+    while (($#)); do
+        case "$1" in
             --profile)
-                if [[ -z "${2:-}" || "$2" == -* ]]; then
-                    print_error "--profile requires an argument"
-                    exit 1
-                fi
-                set_profile_flag "$2"
-                shift
+                (($# >= 2)) || die "--profile requires a value"
+                PROFILE="$2"
+                shift 2
                 ;;
             --profile=*)
-                set_profile_flag "${1#*=}"
+                PROFILE="${1#*=}"
+                shift
                 ;;
             --fetch)
-                if [[ -z "${2:-}" || "$2" == -* ]]; then
-                    print_error "--fetch requires an argument"
-                    exit 1
-                fi
-                set_fetch_flag "$2"
-                shift
+                (($# >= 2)) || die "--fetch requires a value"
+                FETCH="$2"
+                shift 2
                 ;;
             --fetch=*)
-                set_fetch_flag "${1#*=}"
-                ;;
-            --dir)
-                if [[ -z "${2:-}" || "$2" == -* ]]; then
-                    print_error "--dir requires an argument"
-                    exit 1
-                fi
-                set_dir_flag "$2"
+                FETCH="${1#*=}"
                 shift
                 ;;
+            --dir)
+                (($# >= 2)) || die "--dir requires a value"
+                DEST="$(expand_home "$2")"
+                shift 2
+                ;;
             --dir=*)
-                set_dir_flag "${1#*=}"
+                DEST="$(expand_home "${1#*=}")"
+                shift
                 ;;
-            # link.sh passthrough toggles (--codex is in the install group below)
-            --vim | --zsh | --tmux | --git | --alacritty | --neovim | --ssh | --bash | \
-                --yabai | --skhd | --aerospace | --claude)
-                FLAG_LINK_TOOLS+=("$1")
-                HAVE_COMPONENT_FLAGS=1
+            -y | --yes)
+                ASSUME_YES=1
+                shift
                 ;;
-            # install.sh passthrough toggles (--codex resolves here, not to link)
-            --pixi | --pixi-pkgs | --uv | --brew | --brew-pkgs | --cargo | --cargo-pkgs | \
-                --warpd | --claude-code | --codex | --opencode | --python3 | --gh-ext | --macos | \
-                --iterm2 | --password-store | --llama-cpp)
-                FLAG_INSTALL_FLAGS+=("$1")
-                HAVE_COMPONENT_FLAGS=1
+            -h | --help)
+                usage
+                exit 0
                 ;;
             --)
                 shift
                 break
                 ;;
-            -?*)
-                print_error "Unknown option: $1"
-                exit 1
-                ;;
-            *)
-                break
-                ;;
+            *) die "unknown option: $1" ;;
         esac
-        shift
     done
 }
 
-# --- phases ---
-
-validate_env() {
-    if [[ -n "${SETUP_PROFILE:-}" ]]; then
-        case "$SETUP_PROFILE" in
-            full | standard | guest) ;;
-            *)
-                print_error "SETUP_PROFILE must be full|standard|guest (got: ${SETUP_PROFILE})"
-                exit 1
-                ;;
-        esac
-        NONINTERACTIVE=1
-    fi
-    # Flags (-y / --profile) or the env var above may have forced non-interactive.
-    [[ "$NONINTERACTIVE" -eq 1 ]] && return
-    # Interactive run: make sure we can actually reach the terminal.
-    if ! { exec 3< "$TTY"; } 2> /dev/null; then
-        print_error "No interactive terminal (/dev/tty) available."
-        print_error "Run ./setup.sh from a terminal, or set SETUP_PROFILE=full|standard|guest."
-        exit 1
-    fi
-    exec 3<&-
-}
-
-choose_fetch_method() {
-    if [[ "$NONINTERACTIVE" -eq 1 ]]; then
-        case "${SETUP_FETCH:-https}" in
-            https | ssh | zip) CLONE_PROTO="${SETUP_FETCH:-https}" ;;
-            *)
-                print_error "SETUP_FETCH must be https|ssh|zip (got: ${SETUP_FETCH})"
-                exit 1
-                ;;
-        esac
-        return
-    fi
-    # A --fetch flag (or SETUP_FETCH) pre-seeds the choice; skip the prompt.
-    if [[ -n "${SETUP_FETCH:-}" ]]; then
-        case "$SETUP_FETCH" in
-            https | ssh | zip)
-                CLONE_PROTO="$SETUP_FETCH"
-                return
-                ;;
-        esac
-    fi
-    local choice=""
-    prompt_read choice "How to fetch dotfiles?  [1] HTTPS clone (default)  [2] SSH clone  [3] ZIP (no git) : "
-    case "$choice" in
-        2 | ssh | SSH) CLONE_PROTO="ssh" ;;
-        3 | zip | ZIP) CLONE_PROTO="zip" ;;
-        *) CLONE_PROTO="https" ;;
+validate_platform() {
+    case "$PROFILE" in
+        standard | full | guest | hpc) ;;
+        *) die "profile must be standard, full, guest, or hpc" ;;
     esac
+    case "$FETCH" in
+        https | ssh | zip) ;;
+        *) die "fetch must be https, ssh, or zip" ;;
+    esac
+
+    local os arch
+    os="$(uname -s)"
+    arch="$(uname -m)"
+    case "$os:$arch" in
+        Darwin:arm64 | Linux:x86_64 | Linux:aarch64 | Linux:arm64) ;;
+        Darwin:*) die "Intel macOS is not supported" ;;
+        *) die "unsupported platform: ${os} ${arch}" ;;
+    esac
+    [[ "$PROFILE" != "hpc" || "$os" == "Linux" ]] || die "hpc is Linux only"
 }
 
-# Abort if the destination already holds non-checkout content.
-guard_dest() {
-    [[ -e "$CLONE_DEST" ]] || return 0
-    [[ -d "$CLONE_DEST/.git" ]] && return 0
-    if [[ -n "$(find "$CLONE_DEST" -mindepth 1 -maxdepth 1 -print -quit 2> /dev/null)" ]]; then
-        print_error "destination exists and is not a dotfiles checkout: $CLONE_DEST"
-        print_error "remove it or choose another directory (SETUP_DIR=...)"
-        exit 1
+install_prerequisite() {
+    local package="$1"
+    [[ "$PROFILE" != "hpc" ]] || die "install '${package}' without root, then retry"
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        xcode-select --install 2> /dev/null || true
+        die "finish the Command Line Tools installation, then retry"
+    fi
+
+    local root=()
+    if [[ "$(id -u)" -ne 0 ]]; then
+        has_cmd sudo || die "sudo is required to install '${package}'"
+        root=(sudo)
+    fi
+    if has_cmd apt-get; then
+        "${root[@]}" apt-get update
+        "${root[@]}" apt-get install -y "$package"
+    elif has_cmd dnf; then
+        "${root[@]}" dnf install -y "$package"
+    elif has_cmd pacman; then
+        "${root[@]}" pacman -S --noconfirm "$package"
+    elif has_cmd apk; then
+        "${root[@]}" apk add "$package"
+    else
+        die "install '${package}' manually, then retry"
     fi
 }
 
-# Download + extract the branch ZIP (the "without git" path from the README).
-fetch_zip() {
-    ensure_tool unzip unzip "to extract the ZIP archive"
-    local dl=""
-    if need_cmd curl; then
-        dl="curl"
-    elif need_cmd wget; then
-        dl="wget"
-    else
-        ensure_tool curl curl "to download the ZIP archive"
-        dl="curl"
-    fi
-
-    local tmpd=""
-    tmpd="$(mktemp -d)"
-    print_info "downloading ${REPO_ZIP}"
-    if [[ "$dl" == "curl" ]]; then
-        curl -fsSL -o "$tmpd/dotfiles.zip" "$REPO_ZIP"
-    else
-        wget -qO "$tmpd/dotfiles.zip" "$REPO_ZIP"
-    fi
-    unzip -q "$tmpd/dotfiles.zip" -d "$tmpd"
-    # an empty pre-existing dir would make `mv` nest the source inside it
-    [[ -d "$CLONE_DEST" ]] && rmdir "$CLONE_DEST"
-    mv "$tmpd/${REPO_NAME}-${BRANCH}" "$CLONE_DEST"
-    rm -rf "$tmpd"
-    print_info "extracted to ${CLONE_DEST}"
+ensure_command() {
+    local command="$1" package="$2"
+    has_cmd "$command" || install_prerequisite "$package"
+    has_cmd "$command" || die "${command} is still unavailable"
 }
 
 fetch_repo() {
-    guard_dest
-    mkdir -p "$(dirname "$CLONE_DEST")"
-    case "$CLONE_PROTO" in
+    if [[ -f "$PWD/setup.sh" && -f "$PWD/mise/config.toml" ]]; then
+        REPO_DIR="$PWD"
+        return
+    fi
+    if [[ -f "$DEST/setup.sh" && -f "$DEST/mise/config.toml" ]]; then
+        REPO_DIR="$DEST"
+        return
+    fi
+    [[ ! -e "$DEST" ]] || die "destination exists but is not a mise dotfiles checkout: ${DEST}"
+    mkdir -p "$(dirname "$DEST")"
+
+    case "$FETCH" in
+        https)
+            ensure_command git git
+            git clone "$REPO_HTTPS" "$DEST"
+            ;;
         ssh)
-            ensure_tool git git "to clone the repository"
-            print_info "cloning ${REPO_SSH} -> ${CLONE_DEST}"
-            git clone "$REPO_SSH" "$CLONE_DEST"
+            ensure_command git git
+            git clone "$REPO_SSH" "$DEST"
             ;;
         zip)
-            fetch_zip
-            ;;
-        *)
-            ensure_tool git git "to clone the repository"
-            print_info "cloning ${REPO_HTTPS} -> ${CLONE_DEST}"
-            git clone "$REPO_HTTPS" "$CLONE_DEST"
-            ;;
-    esac
-}
-
-# Decide which directory holds the repo: reuse a local checkout or fetch.
-resolve_repo() {
-    if [[ -f "$PWD/link.sh" && -f "$PWD/install.sh" && -f "$PWD/setup.sh" ]]; then
-        REPO_DIR="$PWD"
-        print_info "using current checkout: $REPO_DIR"
-        if [[ -n "$DIR_FLAG" || -n "${SETUP_FETCH:-}" ]]; then
-            print_warn "reusing current checkout; --fetch/--dir ignored"
-        fi
-        return
-    fi
-
-    # Clone destination: default ~/works/dotfiles, overridable via the SETUP_DIR
-    # env var, the --dir flag (already applied to CLONE_DEST), or, in interactive
-    # runs without such a pre-seed, by typing a path at the prompt.
-    if [[ "$NONINTERACTIVE" -eq 0 && -z "$DIR_FLAG" && -z "${SETUP_DIR:-}" ]]; then
-        local dest_in=""
-        prompt_read dest_in "Install directory? [${CLONE_DEST}] : "
-        if [[ -n "$dest_in" ]]; then
-            # expand a leading ~ (read does not perform tilde expansion)
-            if [[ "$dest_in" == \~ || "$dest_in" == \~/* ]]; then
-                dest_in="${HOME}${dest_in#\~}"
-            fi
-            CLONE_DEST="$dest_in"
-        fi
-    fi
-
-    if [[ -d "$CLONE_DEST/.git" ]]; then
-        REPO_DIR="$CLONE_DEST"
-        print_info "reusing existing clone: $REPO_DIR"
-        return
-    fi
-
-    choose_fetch_method
-    fetch_repo
-    REPO_DIR="$CLONE_DEST"
-}
-
-choose_profile() {
-    # Precedence: --profile customize > profile (flag/env) > manual toggles > menu.
-    if [[ -n "$PROFILE_FROM_FLAG" ]]; then
-        PROFILE="$PROFILE_FROM_FLAG"
-        print_info "profile from flag: $PROFILE"
-        return
-    fi
-    if [[ -n "${SETUP_PROFILE:-}" ]]; then
-        PROFILE="$SETUP_PROFILE"
-        print_info "non-interactive profile: $PROFILE"
-        return
-    fi
-    if [[ "$HAVE_COMPONENT_FLAGS" -eq 1 ]]; then
-        PROFILE="manual"
-        print_info "manual selection from flags"
-        return
-    fi
-    # -y/--yes alone with nothing selected: skip the menu (confirm_and_run exits).
-    if [[ "$NONINTERACTIVE" -eq 1 ]]; then
-        PROFILE=""
-        return
-    fi
-    local ans=""
-    {
-        printf '\n'
-        print_section "install profile"
-        printf '  1) full       everything for this machine\n'
-        printf '  2) standard   core tools (pixi, uv, cargo, claude-code, ...)\n'
-        printf '  3) guest      link-only (zsh, vim, tmux, nvim)\n'
-        printf '  4) customize  toggle each component\n'
-    } > "$TTY"
-    prompt_read ans "> "
-    case "$ans" in
-        1 | full) PROFILE="full" ;;
-        2 | standard) PROFILE="standard" ;;
-        3 | guest) PROFILE="guest" ;;
-        4 | customize) PROFILE="customize" ;;
-        *)
-            print_warn "invalid choice, defaulting to standard"
-            PROFILE="standard"
+            ensure_command curl curl
+            ensure_command unzip unzip
+            local temp_dir
+            temp_dir="$(mktemp -d)"
+            trap 'rm -rf "$temp_dir"' RETURN
+            curl -fsSL "$REPO_ZIP" -o "$temp_dir/dotfiles.zip"
+            unzip -q "$temp_dir/dotfiles.zip" -d "$temp_dir"
+            mv "$temp_dir/dotfiles-main" "$DEST"
+            trap - RETURN
+            rm -rf "$temp_dir"
             ;;
     esac
+    REPO_DIR="$DEST"
 }
 
-build_full() {
-    LINK_TOOLS=(--zsh --git --tmux --vim --neovim --ssh --aerospace)
-    if [[ "$OS" == "Mac" ]]; then
-        INSTALL_FLAGS=(
-            --pixi --pixi-pkgs --uv --cargo --cargo-pkgs
-            --brew --brew-pkgs --warpd --claude-code --codex
-            --llama-cpp --python3 --gh-ext --iterm2 --macos
-        )
-    else
-        INSTALL_FLAGS=(
-            --pixi --pixi-pkgs --uv --cargo --cargo-pkgs
-            --claude-code --codex --llama-cpp --python3 --gh-ext
-        )
+version_at_least() {
+    local current="$1" required="$2" i
+    local current_parts required_parts
+    IFS=. read -r -a current_parts <<< "$current"
+    IFS=. read -r -a required_parts <<< "$required"
+    for i in 0 1 2; do
+        if ((10#${current_parts[$i]:-0} > 10#${required_parts[$i]:-0})); then
+            return 0
+        elif ((10#${current_parts[$i]:-0} < 10#${required_parts[$i]:-0})); then
+            return 1
+        fi
+    done
+    return 0
+}
+
+ensure_mise() {
+    local current=""
+    if has_cmd mise; then
+        current="$(mise --version | awk '{print $1}')"
+        if version_at_least "$current" "$MISE_MIN_VERSION"; then
+            MISE_BIN="$(command -v mise)"
+            return
+        fi
     fi
-    DO_SETURL_SSH=1
-    DO_MAKE_SETUP=1
+
+    ensure_command curl curl
+    mkdir -p "$HOME/.local/bin"
+    curl -fsSL https://mise.run |
+        MISE_INSTALL_PATH="$HOME/.local/bin/mise" MISE_VERSION="v${MISE_MIN_VERSION}" sh
+    MISE_BIN="$HOME/.local/bin/mise"
+    [[ -x "$MISE_BIN" ]] || die "mise installation failed"
 }
 
-build_standard() {
-    LINK_TOOLS=(--git --zsh --tmux --vim --neovim --ssh --aerospace)
-    INSTALL_FLAGS=(--pixi --pixi-pkgs --uv --cargo --cargo-pkgs --claude-code --codex --python3)
-    DO_SETURL_SSH=0
-    DO_MAKE_SETUP=0
-}
-
-build_guest() {
-    LINK_TOOLS=(--zsh --vim --tmux --neovim)
-    INSTALL_FLAGS=()
-    DO_SETURL_SSH=0
-    DO_MAKE_SETUP=0
-}
-
-# Interactive per-component toggles. Defaults mirror the standard profile;
-# Mac-only items are offered only on macOS.
-customize() {
-    {
-        printf '\n'
-        print_section "link components"
-    } > "$TTY"
-    if ask_yn "link zsh?" y; then LINK_TOOLS+=(--zsh); fi
-    if ask_yn "link git?" y; then LINK_TOOLS+=(--git); fi
-    if ask_yn "link tmux?" y; then LINK_TOOLS+=(--tmux); fi
-    if ask_yn "link vim?" y; then LINK_TOOLS+=(--vim); fi
-    if ask_yn "link neovim?" y; then LINK_TOOLS+=(--neovim); fi
-    if ask_yn "link ssh config?" y; then LINK_TOOLS+=(--ssh); fi
-    if ask_yn "link aerospace?" y; then LINK_TOOLS+=(--aerospace); fi
-    if ask_yn "link alacritty?" n; then LINK_TOOLS+=(--alacritty); fi
-    if [[ "$OS" == "Mac" ]]; then
-        if ask_yn "link yabai?" n; then LINK_TOOLS+=(--yabai); fi
-        if ask_yn "link skhd?" n; then LINK_TOOLS+=(--skhd); fi
-    fi
-    if ask_yn "link codex?" n; then LINK_TOOLS+=(--codex); fi
-    if ask_yn "link claude?" n; then LINK_TOOLS+=(--claude); fi
-    if ask_yn "link bash profile? (not recommended)" n; then LINK_TOOLS+=(--bash); fi
-
-    {
-        printf '\n'
-        print_section "install components"
-    } > "$TTY"
-    if ask_yn "install pixi + global pkgs?" y; then INSTALL_FLAGS+=(--pixi --pixi-pkgs); fi
-    if ask_yn "install uv?" y; then INSTALL_FLAGS+=(--uv); fi
-    if ask_yn "install cargo + pkgs?" y; then INSTALL_FLAGS+=(--cargo --cargo-pkgs); fi
-    if ask_yn "install claude-code?" y; then INSTALL_FLAGS+=(--claude-code); fi
-    if ask_yn "install codex?" y; then INSTALL_FLAGS+=(--codex); fi
-    if ask_yn "install python pkgs?" y; then INSTALL_FLAGS+=(--python3); fi
-    if ask_yn "install gh extensions?" y; then INSTALL_FLAGS+=(--gh-ext); fi
-    if [[ "$OS" == "Mac" ]]; then
-        if ask_yn "install Homebrew + pkgs?" y; then INSTALL_FLAGS+=(--brew --brew-pkgs); fi
-        if ask_yn "install warpd?" n; then INSTALL_FLAGS+=(--warpd); fi
-        if ask_yn "configure iTerm2?" n; then INSTALL_FLAGS+=(--iterm2); fi
-        if ask_yn "configure macOS defaults?" n; then INSTALL_FLAGS+=(--macos); fi
-    fi
-    if ask_yn "install password-store?" n; then INSTALL_FLAGS+=(--password-store); fi
-    if ask_yn "install llama.cpp?" n; then INSTALL_FLAGS+=(--llama-cpp); fi
-}
-
-build_selection() {
+write_local_config() {
+    local environments escaped_dir
     case "$PROFILE" in
-        full) build_full ;;
-        standard) build_standard ;;
-        guest) build_guest ;;
-        customize) customize ;;
-        manual) ;; # components come from flag toggles, merged in main()
+        standard) environments='["standard"]' ;;
+        full) environments='["standard", "full"]' ;;
+        guest) environments='["guest"]' ;;
+        hpc) environments='["standard", "hpc"]' ;;
     esac
+    escaped_dir="${REPO_DIR//\\/\\\\}"
+    escaped_dir="${escaped_dir//\"/\\\"}"
+    printf 'auto_env = true\nenv = %s\n' "$environments" > "$REPO_DIR/mise/miserc.toml"
+    printf '[env]\nDOTFILES_DIR = "%s"\n' "$escaped_dir" > "$REPO_DIR/mise/config.local.toml"
 }
 
-# Optional developer setup. Only meaningful for git checkouts (ZIP has no .git).
-choose_dev_steps() {
-    if [[ ! -d "$REPO_DIR/.git" ]]; then
-        DO_SETURL_SSH=0
-        DO_MAKE_SETUP=0
-        return
-    fi
-    if [[ "$NONINTERACTIVE" -eq 1 ]]; then
-        return
-    fi
-    local d1 d2
-    if [[ "$DO_SETURL_SSH" -eq 1 ]]; then d1="y"; else d1="n"; fi
-    if [[ "$DO_MAKE_SETUP" -eq 1 ]]; then d2="y"; else d2="n"; fi
-    {
-        printf '\n'
-        print_section "developer setup"
-    } > "$TTY"
-    if ask_yn "set git origin to SSH (for committing)?" "$d1"; then
-        DO_SETURL_SSH=1
-    else
-        DO_SETURL_SSH=0
-    fi
-    if ask_yn "run 'make setup' (pre-commit hooks)?" "$d2"; then
-        DO_MAKE_SETUP=1
-    else
-        DO_MAKE_SETUP=0
-    fi
-}
+run_bootstrap() {
+    local environment skip_args=() yes_args=()
+    case "$PROFILE" in
+        standard) environment="standard" ;;
+        full) environment="standard,full" ;;
+        guest)
+            environment="guest"
+            skip_args=(--skip "packages,macos-defaults,user,tools")
+            ;;
+        hpc)
+            environment="standard,hpc"
+            skip_args=(--skip "packages,macos-defaults,user")
+            ;;
+    esac
+    ((ASSUME_YES == 0)) || yes_args=(--yes)
 
-# Execute link.sh / install.sh. When tools are installed, vim/neovim links are
-# deferred until after install.sh, because link.sh runs their plugin sync
-# (vim JetpackSync, nvim Lazy update) at link time and needs the binaries.
-run_steps() {
-    cd "$REPO_DIR"
-
-    local pre=() post=() t
-    if [[ "${#INSTALL_FLAGS[@]}" -gt 0 ]]; then
-        for t in "${LINK_TOOLS[@]}"; do
-            case "$t" in
-                --vim | --neovim) post+=("$t") ;;
-                *) pre+=("$t") ;;
-            esac
-        done
-    elif [[ "${#LINK_TOOLS[@]}" -gt 0 ]]; then
-        pre=("${LINK_TOOLS[@]}")
-    fi
-
-    if [[ "${#pre[@]}" -gt 0 ]]; then
-        print_info "link: ${pre[*]}"
-        ./link.sh "${pre[@]}"
-    fi
-    if [[ "${#INSTALL_FLAGS[@]}" -gt 0 ]]; then
-        print_info "install: ${INSTALL_FLAGS[*]}"
-        ./install.sh "${INSTALL_FLAGS[@]}"
-    fi
-    if [[ "${#post[@]}" -gt 0 ]]; then
-        print_info "link: ${post[*]}"
-        ./link.sh "${post[@]}"
-    fi
-
-    # Switch origin to SSH for committing (git checkouts only).
-    if [[ "$DO_SETURL_SSH" -eq 1 && -d ".git" ]]; then
-        print_info "git remote set-url origin ${REPO_SSH}"
-        git remote set-url origin "$REPO_SSH"
-    fi
-    if [[ "$DO_MAKE_SETUP" -eq 1 && -d ".git" ]]; then
-        if need_cmd make; then
-            print_info "make setup"
-            make setup
-        else
-            print_warn "make not found, skipping 'make setup'"
-        fi
-    fi
-}
-
-confirm_and_run() {
-    if [[ "${#LINK_TOOLS[@]}" -eq 0 && "${#INSTALL_FLAGS[@]}" -eq 0 ]]; then
-        print_warn "nothing selected, exiting"
-        exit 0
-    fi
-
-    printf '\n'
-    print_section "planned actions (repo: $REPO_DIR, profile: $PROFILE)"
-    [[ "${#LINK_TOOLS[@]}" -gt 0 ]] && printf '  link    : ./link.sh %s\n' "${LINK_TOOLS[*]}"
-    [[ "${#INSTALL_FLAGS[@]}" -gt 0 ]] && printf '  install : ./install.sh %s\n' "${INSTALL_FLAGS[*]}"
-    [[ "$DO_SETURL_SSH" -eq 1 ]] && printf '  remote  : git remote set-url origin (ssh)\n'
-    [[ "$DO_MAKE_SETUP" -eq 1 ]] && printf '  hooks   : make setup\n'
-    printf '\n'
-
-    if [[ "$NONINTERACTIVE" -eq 0 ]]; then
-        if ! ask_yn "proceed?" y; then
-            print_info "aborted"
-            exit 0
-        fi
-    fi
-    run_steps
-    print_info "done"
+    MISE_ENV="$environment" MISE_AUTO_ENV=true DOTFILES_DIR="$REPO_DIR" \
+        "$MISE_BIN" trust --all --yes --cd "$REPO_DIR"
+    MISE_ENV="$environment" MISE_AUTO_ENV=true DOTFILES_DIR="$REPO_DIR" \
+        "$MISE_BIN" bootstrap --cd "$REPO_DIR" "${yes_args[@]}" "${skip_args[@]}"
 }
 
 main() {
     parse_args "$@"
-    [[ -n "$DIR_FLAG" ]] && CLONE_DEST="$DIR_FLAG"
-    detect_os
-    print_info "detected ${OS} ($(uname -m))"
-    validate_env
-    resolve_repo
-    choose_profile
-    build_selection
-    # Append flag toggles after build_selection: build_* assign LINK_TOOLS /
-    # INSTALL_FLAGS with =, so merging any earlier would be clobbered.
-    [[ "${#FLAG_LINK_TOOLS[@]}" -gt 0 ]] && LINK_TOOLS+=("${FLAG_LINK_TOOLS[@]}")
-    [[ "${#FLAG_INSTALL_FLAGS[@]}" -gt 0 ]] && INSTALL_FLAGS+=("${FLAG_INSTALL_FLAGS[@]}")
-    if [[ "${#INSTALL_FLAGS[@]}" -gt 0 ]]; then
-        ensure_zsh
-    fi
-    choose_dev_steps
-    confirm_and_run
+    DEST="$(expand_home "$DEST")"
+    validate_platform
+    fetch_repo
+    ensure_mise
+    write_local_config
+    run_bootstrap
+    printf 'bootstrap complete: profile=%s repo=%s\n' "$PROFILE" "$REPO_DIR"
 }
 
 main "$@"

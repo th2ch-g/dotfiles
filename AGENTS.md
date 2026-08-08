@@ -2,280 +2,95 @@
 
 ## Overview
 
-Personal dotfiles repository for macOS and Linux. The core mechanism is
-`link.sh`, which creates symlinks from this repository into `~/.config/`
-(XDG_CONFIG_HOME) and `$HOME`.
+Personal dotfiles for macOS arm64 and Linux x64/arm64. mise v2026.8.3 or newer
+owns tool versions, OS packages, dotfile application, macOS user defaults, and
+repository tasks. `setup.sh` is the only pre-mise bootstrap wrapper.
 
-## Key Scripts
-
-### `setup.sh` — Interactive bootstrap
-
-Self-contained `curl ... | bash` entry point (rustup-style). Reads prompts from
-`/dev/tty` (so it works when piped), can install missing `git`/`zsh`/`unzip`
-after a confirmation prompt (apt/dnf/pacman/zypper/apk via sudo, or
-`xcode-select` on macOS), fetches the repo into `~/works/dotfiles` (override with
-`SETUP_DIR`) via HTTPS clone / SSH clone / ZIP download, then delegates to
-`link.sh` / `install.sh` based on a chosen profile (`full` / `standard` /
-`guest` / `customize`). For git checkouts it can also switch `origin` to SSH and
-run `make setup`. Non-interactive env: `SETUP_PROFILE=full|standard|guest`,
-`SETUP_FETCH=https|ssh|zip`, `SETUP_DIR=/path`. Equivalent flags (highest
-precedence) also work: `--profile`, `--fetch`, `--dir`, `-y`/`--yes`, plus any
-`link.sh`/`install.sh` toggle (e.g. `--zsh --pixi`) to pick components directly;
-over `curl | bash` pass them after `bash -s --`. Does not source `lib/utils.sh`
-(the repo may not exist yet during a piped run).
+## Bootstrap
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/th2ch-g/dotfiles/main/setup.sh | bash
-./setup.sh                                # from an existing checkout
-./setup.sh --profile guest                # non-interactive via flags
+./setup.sh --profile standard
+./setup.sh --profile full --fetch ssh --yes
+./setup.sh --profile guest
+./setup.sh --profile hpc
 ```
 
-### `link.sh` — Dotfiles linker
+Profiles are selected through the ignored `mise/miserc.toml`; the checkout path
+is stored in the ignored `mise/config.local.toml`.
 
-Must be run from the repository root. Links individual tool configs via flags:
+| Profile    | Scope                                                                                          |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| `standard` | Full user-space CLI set, workstation dotfiles, system build/runtime packages                   |
+| `full`     | Standard plus GUI apps, all dotfiles, opencode, warpd, llama.cpp, external integrations, hooks |
+| `guest`    | Copy-only zsh/Vim/Neovim/tmux/Sheldon config; no tools or packages                             |
+| `hpc`      | Standard tools/dotfiles; skips packages, login shell, macOS defaults, and sudo                 |
+
+## mise configuration
+
+- `mise/config.toml`: shared environment, common dotfiles, and tasks
+- `mise/config.standard.toml`: standard packages, tools, and dotfiles
+- `mise/config.full.toml`: full-only resources and safe macOS defaults
+- `mise/config.guest.toml`: copy-mode guest resources
+- `mise/config.hpc.toml`: no-sudo HPC settings
+- `mise/config.macos.toml`, `mise/config.linux.toml`: platform package managers
+- `mise/config.ci.toml`, `mise/config.container.toml`: reduced internal profiles
+- `mise/tasks/*.sh`: idempotent imperative setup not expressible declaratively
+
+Cargo registry CLIs use the `cargo:` backend. Git Cargo tools are pinned to an
+exact `rev:`. Python CLIs use `pipx:` through uv. GUI applications and native
+dependencies use `[bootstrap.packages]`. Missing macOS casks are installed by
+`mise/tasks/macos-casks.sh` through mise's built-in cask manager while existing
+app bundles are left unchanged. Docker Desktop and AeroSpace use dedicated
+install paths. There is no Brewfile.
+
+## Tasks
 
 ```bash
-./link.sh --zsh --git --tmux --vim --neovim --ssh --aerospace
-./link.sh --unlink   # remove all symlinks
-./link.sh --cp       # copy instead of symlink (for remote/guest use)
+mise bootstrap plan
+mise bootstrap
+mise run setup
+mise run lint
+mise run tools:update
+mise run update
+mise run release
+mise run release:delete -- vYYYY.MM.DD
+mise run docker
+mise run docker:pull
+mise run macos:dock
+mise run macos:privileged
+mise run llama:update
 ```
 
-### `install.sh` — Bootstrap installer
+`macos:dock` is destructive and interactive. `macos:privileged` is explicit
+and may invoke sudo. Neither is part of automatic bootstrap.
 
-Installs tools and packages. Must be run from the repository root.
+## Dotfile behavior
+
+Standard/full/HPC use symlinks. Guest copies files. SSH and Codex config are
+always copied. mise refuses unmanaged conflicts unless the user explicitly
+passes `--force-dotfiles`.
+
+Neovim setup uses `Lazy restore` against `nvim/lazy-lock.json`; it must not
+update the lock during bootstrap. Generated zsh caches and machine-local files
+remain ignored.
+
+## Validation
 
 ```bash
-./install.sh                              # full install for current OS (Mac/Linux defaults)
-./install.sh --pixi --uv --python3        # selective: install only specified tools
-./install.sh --pixi --pixi-pkgs --cargo --cargo-pkgs
+bash -n setup.sh mise/tasks/*.sh
+zsh -n zsh/.zshenv zsh/.zprofile zsh/.zshrc
+mise tasks validate
+mise run lint
 ```
 
-Flags for tool installers (`install_scripts/`):
-
-| Flag               | Tool                |
-| ------------------ | ------------------- |
-| `--pixi`           | pixi                |
-| `--uv`             | uv                  |
-| `--brew`           | Homebrew (Mac only) |
-| `--cargo`          | Rust toolchain      |
-| `--warpd`          | warpd (Mac only)    |
-| `--claude-code`    | claude-code         |
-| `--codex`          | codex               |
-| `--opencode`       | opencode            |
-| `--password-store` | password-store      |
-| `--llama-cpp`      | llama.cpp (`llama`) |
-
-Flags for package runners (`*/run.sh`):
-
-| Flag           | Action                               |
-| -------------- | ------------------------------------ |
-| `--pixi-pkgs`  | install pixi global packages         |
-| `--brew-pkgs`  | install Homebrew packages (Mac only) |
-| `--cargo-pkgs` | install cargo packages               |
-| `--python3`    | install Python packages              |
-| `--gh-ext`     | install gh extensions                |
-| `--macos`      | configure macOS settings (Mac only)  |
-| `--iterm2`     | configure iTerm2 (Mac only)          |
-
-## Symlink Targets
-
-| Flag          | Source               | Destination                                          |
-| ------------- | -------------------- | ---------------------------------------------------- |
-| `--zsh`       | `zsh/`, `sheldon/`   | `~/.config/zsh/`, `~/.zshenv`, `~/.config/sheldon/`  |
-| `--vim`       | `vim/`               | `~/.config/vim/`                                     |
-| `--neovim`    | `nvim/`              | `~/.config/nvim/`                                    |
-| `--git`       | `git/`               | `~/.config/git/`                                     |
-| `--tmux`      | `tmux/`              | `~/.config/tmux/`                                    |
-| `--aerospace` | `aerospace/`         | `~/.config/aerospace/`                               |
-| `--alacritty` | `alacritty/`         | `~/.config/alacritty/`                               |
-| `--yabai`     | `yabai/`             | `~/.config/yabai/` (Mac only, auto-restarts service) |
-| `--skhd`      | `skhd/`              | `~/.config/skhd/` (Mac only, auto-restarts service)  |
-| `--bash`      | `bash/.bash_profile` | `~/.bash_profile` (not recommended)                  |
-| `--claude`    | `claude/`            | `~/.claude/`                                         |
-| `--codex`     | `codex/`             | `~/.codex/`                                          |
-| `--ssh`       | `ssh/config`         | `~/.ssh/config` (copy, not link)                     |
-
-## Architecture
-
-### zsh
-
-- Entry: `zsh/.zshenv` → sets `ZDOTDIR`, loads `zsh/.zshrc`
-- Plugin manager: [sheldon](https://sheldon.cli.rs/) with cache at
-  `zsh/sheldon_cache.zsh`
-- Local overrides: `zsh/.zshrc_local`, `zsh/.zshenv_local`
-  (machine-specific, not committed)
-- `.zshrc` files are compiled to `.zwc` on change for faster startup
-
-### Neovim
-
-- Single file config: `nvim/init.lua`
-- Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim)
-  (auto-installed on first run)
-- Lock file: `nvim/lazy-lock.json`
-
-### Vim
-
-- Config: `vim/vimrc`
-- Plugin manager: vim-jetpack
-  (auto-downloaded by `vimrc` via curl into `vim/pack/jetpack/opt/` on first
-  run; `vim/pack/` is untracked — the repository has no git submodules)
-
-### Shared Utilities
-
-- `lib/utils.sh` — sourced by `install.sh`, `link.sh`, and all
-  `install_scripts/*.sh`; provides:
-  - `detect_os` → `$OS`: `Mac`/`Linux`/`Cygwin`
-  - `print_info` / `print_warn` / `print_error` — logging helpers
-  - `need_cmd <cmd>` — check if command exists on PATH
-  - `skip_if_installed <cmd>` — exit 0 with message if already installed
-  - `update_if_installed <cmd> <update-cmd...>` — if already installed, run
-    the self-update command and exit 0 (best-effort; warns on failure)
-  - `ensure_bin <path>` — `ln -sf` binary into `$BIN`
-    (default: `$HOME/works/bin`)
-  - `detect_nproc` — cross-platform CPU count
-    (macOS: `sysctl -n hw.ncpu`, Linux: `nproc`)
-- `lib/check_sorted.sh` — used by the pre-commit sort hooks to verify
-  `brew/Brewfile`, `cargo/list.yaml`, `gh-ext/list.yaml`, and
-  `python3/requirements.txt` stay sorted (modes: `brewfile`, `plain`,
-  `yaml-seq`; all three auto-reorder in place. `brewfile` also moves
-  freshly (un)commented entries across the active/commented boundary
-  before sorting, so toggling a package anywhere in the file self-heals.
-  `yaml-seq` folds each multi-line record onto one line, sorting
-  position-preservingly: comment lines (disabled candidates) hold their
-  slot while active records flow around them, so a mid-list commented-out
-  entry may end up beside a different neighbour — disable entries in the
-  bottom block to avoid drift)
+CI uses `jdx/mise-action` with the `ci` profile and executes `mise run lint`.
 
 ## Gotchas
 
-- `pixi global sync` (what `pixi/run.sh` runs) **deletes any environment
-  under `$PIXI_HOME/envs/` that `pixi-global.toml` does not declare**. A tool
-  installed by hand into that directory looks like an orphan and is pruned
-  without warning -- this is how a hand-placed `ollama` env was lost. Either
-  declare the tool in the manifest, or keep it outside `$PIXI_HOME` entirely;
-  `$TOOLS/ollama` is the latter, because ollama ships from its own release
-  tarball rather than from conda-forge.
-- `link.sh --unlink` removes symlinks via `unlink`; to remove plain-file
-  copies made with `--cp` (e.g. directory configs), use `--rm` instead
-  (`unlink` cannot remove directories).
-- `link.sh --codex` copies `codex/` into `~/.codex`; it does not create
-  a symlink.
-- `link.sh --neovim` runs `nvim --headless "+Lazy! update"` (with `VIM_AI=1`
-  so AI plugins are included) right after linking, so it may update plugins
-  and rewrite `nvim/lazy-lock.json` as a side effect.
-- `link.sh --claude` links `claude/` into `~/.claude` and, when `claude`
-  is installed, also registers user-scoped MCP entries (`deepwiki`, `codex`)
-  via `claude mcp add` and installs the `claude-for-legal` /
-  `knowledge-work-plugins` marketplace plugins.
-- `claude/plugins/cache/` contains vendored plugin cache data; treat it as
-  external snapshot data unless the task explicitly targets plugin cache
-  updates.
-- `install.sh --macos` passes `--dockutil` to `macos/run.sh`, which
-  **destructively rebuilds the Dock** (removes all items, then re-adds a
-  fixed set: System Settings, Chrome, Slack, iTerm, Docker, XQuartz, Desktop,
-  Downloads) when `dockutil` is installed; otherwise it warns and skips.
-
-### Install Scripts
-
-- `install_scripts/*.sh` — individual tool installers
-  (invoked by `install.sh`)
-- Built tools are symlinked into `$BIN` (`$HOME/works/bin`); sources are
-  extracted to `$TOOLS` (`$HOME/works/tools`)
-- All scripts source `lib/utils.sh` via `$DOTFILES_DIR`; re-running is safe
-  (idempotency checks built in)
-- Tools with a first-party self-update (pixi, uv, cargo/rustup, claude-code,
-  codex, opencode) and brew self-update when already installed instead of
-  skipping; source-build / pinned-binary tools (warpd, password-store)
-  still skip.
-- `brew/run.sh` — Homebrew package list
-- `cargo/run.sh` — installs cargo packages from `cargo/list.yaml`
-  (minimal yq-free YAML reader; use `--cargo-pkgs` flag)
-- `python3/run.sh` — Python package installs
-- `gh-ext/run.sh` — installs gh extensions from `gh-ext/list.yaml`
-  (use `--gh-ext` flag)
-- `pixi/run.sh` — pixi global tool manifest (`pixi-global.toml`); symlinks it
-  to `$PIXI_HOME/manifests/` and runs `pixi global sync` (use `--pixi-pkgs`).
-  Tools formerly built from source (git, vim, nvim, tmux, zsh, less,
-  imagemagick, autoconf, cmake, node) and fzf now come from conda-forge via
-  pixi, along with several CLIs moved off Homebrew (wget, gh, tor, typst,
-  htop, vhs). Local LLM inference is **not** here — `llama.cpp` moved to
-  `install_scripts/llama-cpp.sh` (see below) because a shared manifest cannot
-  express a per-machine accelerator build pin.
-- `install_scripts/llama-cpp.sh` — pipes the upstream installer
-  (`curl -fsSL https://llama.app/install.sh | sh`,
-  source: `ggml-org/llama-install.sh`) which probes the machine
-  (Metal / CUDA / ROCm / Vulkan / CPU) and installs a single unified binary at
-  `~/.llama-app/llama`, copied to `~/.local/bin/llama` (on PATH via
-  `zsh/.zshenv`). This is the one tool that ignores the `$TOOLS/<name>`
-  convention — the installer hardcodes those paths with no override env var.
-  The old per-tool binaries are subcommands now: `llama serve` (was
-  `llama-server`, default port 8080), `llama cli`, `llama bench`,
-  `llama quantize`, plus `llama download` / `llama update`. It replaced
-  ollama, so there is no model registry and no background service — pass a
-  GGUF explicitly (`llama serve -m model.gguf` or `-hf <user>/<model>`).
-  Re-running the script is the update path (the installer wipes
-  `~/.llama-app` and refetches), so it deliberately skips
-  `update_if_installed`. macOS has **no CPU fallback** — only Apple silicon
-  (M1–M5 / A18) Metal builds exist — so the script warns and exits 0 instead
-  of aborting the rest of `install.sh`.
-
-## Local Customization Pattern
-
-Machine-specific settings go in untracked local files:
-
-- `zsh/.zshrc_local` — extra zsh config
-- `zsh/.zshenv_local` — extra env vars (e.g., `PATH` additions)
-
-## Release Workflow
-
-```bash
-make r   # tags v$(date +'%Y.%m.%d') and pushes it (Makefile `release` target)
-```
-
-CI (`.github/workflows/release.yml`) handles Docker image builds on
-tag push.
-
-## Pre-commit Hooks
-
-This repository uses [pre-commit](https://pre-commit.com/) for automated
-linting and formatting. Configuration: `.pre-commit-config.yaml`.
-
-After cloning, activate hooks:
-
-```bash
-make setup    # runs: pre-commit install --install-hooks (pre-commit + commit-msg)
-```
-
-Run all hooks manually:
-
-```bash
-make l        # runs: pre-commit run --all-files
-```
-
-Configured hooks: trailing-whitespace, end-of-file-fixer, mixed-line-ending,
-check-yaml/toml/json, check-added-large-files, check-case-conflict,
-check-merge-conflict, destroyed-symlinks, detect-private-key,
-check-executables-have-shebangs, check-shebang-scripts-are-executable,
-check-hooks-apply, check-useless-excludes (pre-commit meta hooks),
-hadolint (Dockerfile), check-jsonschema (GitHub workflows), gitleaks,
-detect-secrets, actionlint, zizmor (GitHub Actions security), shellcheck
-(excludes `zsh/`), stylua (for
-`nvim/*.lua`), shfmt, typos, yamllint, markdownlint-cli2, prettier, taplo
-TOML formatter, checkmake, gitlint, bash syntax check, zsh syntax check
-(`zsh/` and `install.sh`), and custom sort checks for `brew/Brewfile`,
-`cargo/list.yaml`, `gh-ext/list.yaml`, `python3/requirements.txt`
-(via `lib/check_sorted.sh`).
-
-## Makefile Shortcuts
-
-```bash
-make setup         # pre-commit install --install-hooks
-make l             # pre-commit run --all-files (lint)
-make s             # git remote set-url origin (switch to SSH)
-make u             # git pull (update)
-make r             # create & push dated release tag
-make d             # build & run Docker image locally
-make docker-pull   # pull & run latest ghcr.io image
-make delete-release TAG=vYYYY.MM.DD
-make help          # list all targets
-```
+- mise itself is rootless; standard/full OS packages and full warpd/Docker
+  Desktop may request sudo.
+- Bootstrap never removes legacy pixi, Rust, Homebrew, or manually installed data.
+- Package/bootstrap resources merge additively; HPC skips the package phase
+  instead of attempting to subtract standard entries.
+- Do not run package prune automatically.
+- Do not edit generated lockfiles as a side effect of editor bootstrap.

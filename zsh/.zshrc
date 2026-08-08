@@ -45,14 +45,21 @@ function ensure_zcompiled {
 }
 ensure_zcompiled ${ZDOTDIR:-$HOME/.config/zsh}/.zshrc
 
+# Activate mise only in interactive shells; non-interactive shells use shims.
+if (( $+commands[mise] )); then
+    eval "$(mise activate zsh)"
+fi
+
 # additional settings
 # sheldon
 local USE_PLUGINS=1
 if [[ $USE_PLUGINS -eq 1 ]]; then
     if ! command -v sheldon &> /dev/null; then
-        curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
-            | bash -s -- --repo rossmacarthur/sheldon --to ${HOME}/.local/bin
+        USE_PLUGINS=0
+        print_warn "sheldon is unavailable; plugin loading is disabled"
     fi
+fi
+if [[ $USE_PLUGINS -eq 1 ]]; then
     # eval "$(sheldon source)"
     SHELDON_CACHE="${ZDOTDIR:-$HOME/.config/zsh}/sheldon_cache.zsh"
     SHELDON_TOML="${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"

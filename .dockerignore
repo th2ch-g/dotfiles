@@ -2,3 +2,5 @@ zsh/*
 !zsh/.zshenv
 !zsh/.zshrc
 !zsh/.zprofile
+mise/config.local.toml
+mise/miserc.toml

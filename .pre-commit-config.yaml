@@ -111,11 +111,6 @@ repos:
         # CLAUDE.md files start with an @import line, not a heading (MD041)
         exclude: ^(claude/)?CLAUDE\.md$
 
-  - repo: https://github.com/checkmake/checkmake.git
-    rev: v0.3.2
-    hooks:
-      - id: checkmake
-
   - repo: https://github.com/jorisroovers/gitlint
     rev: v0.19.1
     hooks:
@@ -138,7 +133,7 @@ repos:
         name: bash syntax check
         language: system
         entry: bash -n
-        files: ^(setup\.sh|link\.sh|lib/.*\.sh|install_scripts/.*\.sh|.*/run\.sh)$
+        files: ^(setup\.sh|mise/tasks/.*\.sh)$
         types: [file]
 
       - id: toml-format
@@ -147,37 +142,9 @@ repos:
         language: system
         types: [toml]
 
-      - id: sort-brewfile
-        name: sort brewfile
-        language: system
-        entry: lib/check_sorted.sh brewfile
-        files: ^brew/Brewfile$
-        types: [file]
-
-      - id: sort-cargo-list
-        name: sort cargo list
-        language: system
-        entry: lib/check_sorted.sh yaml-seq
-        files: ^cargo/list\.yaml$
-        types: [file]
-
-      - id: sort-gh-ext-list
-        name: sort gh-ext list
-        language: system
-        entry: lib/check_sorted.sh yaml-seq
-        files: ^gh-ext/list\.yaml$
-        types: [file]
-
-      - id: sort-python-requirements
-        name: sort python requirements
-        language: system
-        entry: lib/check_sorted.sh plain
-        files: ^python3/requirements\.txt$
-        types: [file]
-
       - id: zsh-syntax-check
         name: zsh syntax check
         language: system
         entry: zsh -n
-        files: ^(zsh/|install\.sh$)
+        files: ^zsh/
         types: [file]

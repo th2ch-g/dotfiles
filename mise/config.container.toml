@@ -1,0 +1,46 @@
+[env]
+DOTFILES_PROFILE = "container"
+VIM_AI = "0"
+
+[settings]
+system_packages.managers = ["apt"]
+
+[bootstrap.packages]
+"apt:autoconf" = "latest"
+"apt:build-essential" = "latest"
+"apt:git" = "latest"
+"apt:imagemagick" = "latest"
+"apt:less" = "latest"
+"apt:libssl-dev" = "latest"
+"apt:locales-all" = "latest"
+"apt:pkg-config" = "latest"
+"apt:vim" = "latest"
+"apt:wget" = "latest"
+"apt:zsh" = "latest"
+
+[bootstrap.user]
+login_shell = "/bin/zsh"
+
+[dotfiles]
+"~/.claude" = { source = "../claude", mode = "symlink" }
+"~/.config/alacritty" = { source = "../alacritty", mode = "symlink" }
+"~/.config/git" = { source = "../git", mode = "symlink" }
+"~/.config/nvim" = { source = "../nvim", mode = "symlink" }
+"~/.config/sheldon" = { source = "../sheldon", mode = "symlink" }
+"~/.config/tmux" = { source = "../tmux", mode = "symlink" }
+"~/.config/vim" = { source = "../vim", mode = "symlink" }
+"~/.config/zsh" = { source = "../zsh", mode = "symlink" }
+"~/.ssh/config" = { source = "../ssh/config", mode = "copy" }
+"~/.zshenv" = { source = "../zsh/.zshenv", mode = "symlink" }
+
+[tools]
+claude = "latest"
+cmake = "latest"
+fzf = "latest"
+gh = "latest"
+neovim = "latest"
+node = "lts"
+tmux = "latest"
+typst = "latest"
+uv = "latest"
+vhs = "latest"

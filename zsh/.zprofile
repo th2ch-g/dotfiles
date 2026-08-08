@@ -4,9 +4,7 @@
 path=(
     $BIN
     $HOME/.local/bin
-    $CARGO_HOME/bin
-    $RUSTUP_HOME/bin
-    $PIXI_HOME/bin
+    ${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims
     $path
 )
 #==================================================

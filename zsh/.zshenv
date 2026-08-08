@@ -24,22 +24,16 @@ export MISC="$WORKS/misc"
 export BIN="$WORKS/bin"
 export MNT="$WORKS/mnt"
 export OTHERS="$WORKS/others"
+export DOTFILES_DIR="${DOTFILES_DIR:-$WORKS/dotfiles}"
 export VIM_AI=1 # ON
-export CARGO_HOME="$TOOLS/rust/cargo"
-export RUSTUP_HOME="$TOOLS/rust/rustup"
 export UV_NO_MODIFY_PATH=1
-export PIXI_FROZEN=true
-export PIXI_HOME="$TOOLS/pixi"
-export PIXI_NO_PATH_UPDATE=1
 
 # path - for non-login shells (scripts); .zprofile re-orders this after path_helper for login shells
 typeset -gU cdpath fpath mailpath path
 path=(
     $BIN
     $HOME/.local/bin
-    $CARGO_HOME/bin
-    $RUSTUP_HOME/bin
-    $PIXI_HOME/bin
+    $XDG_DATA_HOME/mise/shims
     /opt/homebrew/{bin,sbin}(N)
     /opt/local/{bin,sbin}(N)
     /usr/local/{bin,sbin}(N)

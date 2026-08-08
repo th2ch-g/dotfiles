@@ -10,6 +10,8 @@ vim/*
 nvim/*
 !nvim/init.lua
 /.serena
+/mise/config.local.toml
+/mise/miserc.toml
 /codex/*
 !/codex/config.toml
 !/codex/AGENTS.md

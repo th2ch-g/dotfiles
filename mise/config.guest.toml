@@ -1,0 +1,11 @@
+[env]
+DOTFILES_PROFILE = "guest"
+
+[dotfiles]
+"~/.config/mise" = { source = ".", mode = "copy", exclude = ["*.lock"] }
+"~/.config/nvim" = { source = "../nvim", mode = "copy" }
+"~/.config/sheldon" = { source = "../sheldon", mode = "copy" }
+"~/.config/tmux" = { source = "../tmux", mode = "copy" }
+"~/.config/vim" = { source = "../vim", mode = "copy" }
+"~/.config/zsh" = { source = "../zsh", mode = "copy" }
+"~/.zshenv" = { source = "../zsh/.zshenv", mode = "copy" }

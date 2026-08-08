@@ -1,0 +1,5 @@
+[env]
+DOTFILES_PROFILE = "hpc"
+
+[settings]
+system_packages.sudo = false

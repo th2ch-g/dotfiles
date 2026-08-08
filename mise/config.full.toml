@@ -1,0 +1,85 @@
+[env]
+DOTFILES_PROFILE = "full"
+
+[bootstrap.packages]
+"brew:FelixKratz/formulae/borders" = "latest"
+"brew:dockutil" = "latest"
+"brew:gnupg" = "latest"
+"brew:gopass" = "latest"
+"brew:gopass-jsonapi" = "latest"
+"brew:mole" = "latest"
+"brew:pass" = "latest"
+"brew:pinentry-mac" = "latest"
+"brew:wallpaper" = "latest"
+[bootstrap.macos.dock]
+autohide = true
+orientation = "left"
+show_recents = false
+
+[bootstrap.macos.keyboard]
+initial_key_repeat = 15
+key_repeat = 2
+
+[bootstrap.macos.trackpad]
+tap_to_click = true
+
+[bootstrap.macos.defaults.NSGlobalDomain]
+NSAutomaticCapitalizationEnabled = false
+NSAutomaticPeriodSubstitutionEnabled = false
+NSAutomaticSpellingCorrectionEnabled = false
+_HIHideMenuBar = true
+"com.apple.sound.beep.feedback" = false
+
+[bootstrap.macos.defaults."com.apple.AppleMultitouchTrackpad"]
+FirstClickThreshold = 0
+SecondClickThreshold = 0
+TrackpadCornerSecondaryClick = 0
+TrackpadRightClick = true
+TrackpadSilentClicking = true
+
+[bootstrap.macos.defaults."com.apple.WindowManager"]
+EnableStandardClickToShowDesktop = false
+GloballyEnabled = false
+
+[bootstrap.macos.defaults."com.apple.desktopservices"]
+DSDontWriteNetworkStores = true
+DSDontWriteUSBStores = true
+
+[bootstrap.macos.defaults."com.apple.driver.AppleBluetoothMultitouch.trackpad"]
+FirstClickThreshold = 0
+SecondClickThreshold = 0
+TrackpadCornerSecondaryClick = 0
+TrackpadRightClick = true
+TrackpadSilentClicking = true
+
+[bootstrap.macos.defaults."com.apple.inputmethod.Kotoeri"]
+JIMPrefLiveConversionKey = false
+
+[bootstrap.macos.defaults."com.apple.screencapture"]
+disable-sound = true
+location = "~/Downloads/"
+name = "ss"
+type = "png"
+
+[bootstrap.macos.defaults."com.apple.systemsound"]
+"com.apple.sound.uiaudio.enabled" = false
+
+[bootstrap.macos.defaults."com.microsoft.autoupdate2"]
+HowToCheck = "Manual"
+
+[bootstrap.macos.defaults."org.macosforge.xquartz.X11"]
+enable_iglx = true
+
+[dotfiles]
+"~/.bash_profile" = { source = "../bash/.bash_profile", mode = "symlink" }
+"~/.claude" = { source = "../claude", mode = "symlink" }
+"~/.codex" = { source = "../codex", mode = "copy" }
+"~/.config/alacritty" = { source = "../alacritty", mode = "symlink" }
+"~/.config/skhd" = { source = "../skhd", mode = "symlink" }
+"~/.config/yabai" = { source = "../yabai", mode = "symlink" }
+
+[tools]
+opencode = "latest"
+"github:nikitabobko/AeroSpace" = { version = "latest", prerelease = true, asset_pattern = "AeroSpace-v*.zip", bin_path = "AeroSpace-v{{ version }}/bin", os = [
+    "macos",
+] }

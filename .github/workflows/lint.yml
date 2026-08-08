@@ -18,28 +18,26 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: actions/setup-python@v7.0.0
+      - uses: jdx/mise-action@v4.2.4
         with:
-          python-version: "3.x"
-
-      - uses: actions/setup-go@v7.0.0
-        with:
-          go-version: "stable"
-
-      - uses: actions/setup-node@v7.0.0
-        with:
-          node-version: "lts/*"
+          version: 2026.8.3
+        env:
+          MISE_AUTO_ENV: "true"
+          MISE_ENV: ci
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y zsh
-          curl -fsSL https://github.com/tamasfe/taplo/releases/latest/download/taplo-linux-x86_64.gz \
-            | gzip -d | install -m 755 /dev/stdin /usr/local/bin/taplo
 
       # Verify only -- do NOT auto-fix-and-commit. Pushing a bot commit onto a
       # Dependabot PR blocks its rebase, and a "[skip ci]" commit would become a
       # HEAD without the required pre-commit check, deadlocking auto-merge. Local
-      # hooks (make setup) format before commit; if CI still fails, run `make l`
+      # hooks (`mise run setup`) format before commit; if CI still fails, run
+      # `mise run lint`
       # and push the fixes.
-      - uses: pre-commit/action@v3.0.1
+      - name: Run lint
+        run: mise run lint
+        env:
+          MISE_AUTO_ENV: "true"
+          MISE_ENV: ci

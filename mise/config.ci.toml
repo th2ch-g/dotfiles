@@ -1,0 +1,7 @@
+[env]
+DOTFILES_DIR = "{{ config_root }}"
+DOTFILES_PROFILE = "ci"
+
+[tools]
+pre-commit = "latest"
+"aqua:tamasfe/taplo" = "latest"
