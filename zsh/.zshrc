@@ -520,6 +520,11 @@ OPTIONS:
     esac
   done
 
+  if tmux has-session -t "=$tmux_window_name" 2>/dev/null; then
+    print_warn "tmux named \"$tmux_window_name\" already exists"
+    return 0
+  fi
+
   # Send $cmd to panes 0..last_pane
   _tide_send_cmd() {
     local last_pane=$1
