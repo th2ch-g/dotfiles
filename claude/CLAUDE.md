@@ -4,7 +4,7 @@
 - code/document/commit内のコメントは英語
 - python時はuvを使用
 - 積極的にPlugin/Skills等を使用
-- Sessionの記録は不要
+- Claude-Sessionの記録は不要
 - 雑なrg,find,grepは重いので絶対に使わないこと
 - 再生成可能なデータはignore
 
