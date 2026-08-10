@@ -196,8 +196,11 @@ sort_yaml_seq() {
 
 case "$mode" in
     plain)
+        # Sort active entries and commented-out candidates together so disabled
+        # entries move into the leading comment block. Keep directive comments
+        # such as "# | sort -k 1" fixed in place.
         for file in "$@"; do
-            sort_block "$file" '^[[:space:]]*[^#[:space:]]' -k 1
+            sort_block "$file" '^[[:space:]]*([^#[:space:]]|#[[:space:]]+[^#|[:space:]])' -k 1
         done
         ;;
     brewfile)

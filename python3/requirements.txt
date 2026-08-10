@@ -1,8 +1,9 @@
 # | sort -k 1
-# openhands-ai
-# pr-agent
 # claude-swap
 # git+https://github.com/github/spec-kit.git
+# openhands-ai
+# openshell
+# pr-agent
 git+https://github.com/th2ch-g/tmplot.git
 gitingest
 kaggle
@@ -10,7 +11,6 @@ lizard
 markitdown[all]
 maturin
 nvitop
-# openshell
 pre-commit
 rendercv[full]
 terminaltexteffects
