@@ -29,7 +29,7 @@ repos:
       - id: check-useless-excludes
 
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.14.0
+    rev: v2.15.1
     hooks:
       - id: hadolint-docker
         args: ["--config", ".hadolint.yaml"]
@@ -58,7 +58,7 @@ repos:
   # Security static analysis for GitHub Actions; complements actionlint (syntax).
   # Config: .github/zizmor.yml
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.28.0
+    rev: v1.29.0
     hooks:
       - id: zizmor
 
@@ -95,7 +95,7 @@ repos:
         exclude: ^zsh/
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.48.0
+    rev: v1.49.0
     hooks:
       - id: typos
 
