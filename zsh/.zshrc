@@ -313,34 +313,66 @@ unpack() {
 }
 
 prepare_AGENTS_CLAUDE_md() {
-    # Keep AGENTS.md and CLAUDE.md in sync via "@file" import stubs:
-    # - if only one exists, create the other containing "@<existing>"
-    # - if one is a symlink, replace it with an "@<counterpart>" stub
-    # - if neither exists, create an empty AGENTS.md and a CLAUDE.md stub
-    local src dst changed=0
-    for src dst in AGENTS.md CLAUDE.md CLAUDE.md AGENTS.md; do
-        [[ -f $src && ! -L $src ]] || continue
-        if [[ -L $dst ]]; then
-            unlink $dst
-            echo "@${src}" > $dst
-            print_info "$dst: symlink replaced with \"@${src}\""
-            changed=1
-        elif [[ ! -e $dst ]]; then
-            echo "@${src}" > $dst
-            print_info "$dst: created with \"@${src}\""
-            changed=1
-        fi
-    done
-    if [[ $changed -eq 0 ]]; then
-        if [[ ! -e AGENTS.md && ! -e CLAUDE.md ]]; then
-            touch AGENTS.md
-            echo "@AGENTS.md" > CLAUDE.md
-            print_info "AGENTS.md: created empty"
-            print_info "CLAUDE.md: created with \"@AGENTS.md\""
-        else
-            print_info "nothing to do"
-        fi
+    # Keep the actual instructions in AGENTS.md and make CLAUDE.md import it.
+    # Migrate the old reverse-import layout and a standalone CLAUDE.md.
+    local agents_text claude_text source tmp tmp_dir
+    local agents_changed=0 claude_changed=0
+
+    if [[ (-e AGENTS.md || -L AGENTS.md) && ! -f AGENTS.md ]]; then
+        print_error "AGENTS.md is not a regular file"
+        return 1
     fi
+    if [[ (-e CLAUDE.md || -L CLAUDE.md) && ! -f CLAUDE.md ]]; then
+        print_error "CLAUDE.md is not a regular file"
+        return 1
+    fi
+
+    [[ -f AGENTS.md ]] && agents_text=$(<AGENTS.md)
+    [[ -f CLAUDE.md ]] && claude_text=$(<CLAUDE.md)
+
+    if [[ ! -e AGENTS.md && ! -L AGENTS.md ]]; then
+        if [[ -f CLAUDE.md && $claude_text != '@AGENTS.md' ]]; then
+            source=CLAUDE.md
+        else
+            : > AGENTS.md
+            print_info "AGENTS.md: created empty"
+            agents_changed=1
+        fi
+    elif [[ $agents_text == '@CLAUDE.md' && -f CLAUDE.md && $claude_text != '@AGENTS.md' ]]; then
+        source=CLAUDE.md
+    elif [[ -L AGENTS.md ]]; then
+        source=AGENTS.md
+    fi
+
+    if [[ -n $source ]]; then
+        tmp_dir=${TMPDIR:-/tmp}
+        tmp=$(mktemp "${tmp_dir%/}/prepare_AGENTS_CLAUDE.XXXXXX") || return 1
+        if ! cp -p -- $source $tmp; then
+            rm -f -- $tmp
+            return 1
+        fi
+        if ! mv -f -- $tmp AGENTS.md; then
+            rm -f -- $tmp
+            return 1
+        fi
+        print_info "AGENTS.md: materialized from $source"
+        agents_changed=1
+    fi
+
+    if [[ -L CLAUDE.md || ! -f CLAUDE.md || $claude_text != '@AGENTS.md' ]]; then
+        tmp_dir=${TMPDIR:-/tmp}
+        tmp=$(mktemp "${tmp_dir%/}/prepare_AGENTS_CLAUDE.XXXXXX") || return 1
+        print -r -- '@AGENTS.md' >| $tmp
+        chmod 644 $tmp
+        if ! mv -f -- $tmp CLAUDE.md; then
+            rm -f -- $tmp
+            return 1
+        fi
+        print_info 'CLAUDE.md: set to "@AGENTS.md"'
+        claude_changed=1
+    fi
+
+    (( agents_changed || claude_changed )) || print_info "nothing to do"
 }
 
 benchmark() {
