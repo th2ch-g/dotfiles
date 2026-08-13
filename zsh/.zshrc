@@ -315,7 +315,7 @@ unpack() {
 prepare_AGENTS_CLAUDE_md() {
     # Keep the actual instructions in AGENTS.md and make CLAUDE.md import it.
     # Migrate the old reverse-import layout and a standalone CLAUDE.md.
-    local agents_text claude_text source tmp tmp_dir
+    local agents_text claude_text materialize_from tmp tmp_dir
     local agents_changed=0 claude_changed=0
 
     if [[ (-e AGENTS.md || -L AGENTS.md) && ! -f AGENTS.md ]]; then
@@ -330,24 +330,32 @@ prepare_AGENTS_CLAUDE_md() {
     [[ -f AGENTS.md ]] && agents_text=$(<AGENTS.md)
     [[ -f CLAUDE.md ]] && claude_text=$(<CLAUDE.md)
 
-    if [[ ! -e AGENTS.md && ! -L AGENTS.md ]]; then
+    if [[ $agents_text == '@CLAUDE.md' ]]; then
+        if [[ ! -f CLAUDE.md ]]; then
+            print_error "AGENTS.md imports missing CLAUDE.md"
+            return 1
+        fi
+        if [[ $claude_text == '@AGENTS.md' ]]; then
+            print_error "AGENTS.md and CLAUDE.md import each other"
+            return 1
+        fi
+        materialize_from=CLAUDE.md
+    elif [[ ! -e AGENTS.md && ! -L AGENTS.md ]]; then
         if [[ -f CLAUDE.md && $claude_text != '@AGENTS.md' ]]; then
-            source=CLAUDE.md
+            materialize_from=CLAUDE.md
         else
             : > AGENTS.md
             print_info "AGENTS.md: created empty"
             agents_changed=1
         fi
-    elif [[ $agents_text == '@CLAUDE.md' && -f CLAUDE.md && $claude_text != '@AGENTS.md' ]]; then
-        source=CLAUDE.md
     elif [[ -L AGENTS.md ]]; then
-        source=AGENTS.md
+        materialize_from=AGENTS.md
     fi
 
-    if [[ -n $source ]]; then
+    if [[ -n $materialize_from ]]; then
         tmp_dir=${TMPDIR:-/tmp}
         tmp=$(mktemp "${tmp_dir%/}/prepare_AGENTS_CLAUDE.XXXXXX") || return 1
-        if ! cp -p -- $source $tmp; then
+        if ! cp -p -- $materialize_from $tmp; then
             rm -f -- $tmp
             return 1
         fi
@@ -355,7 +363,7 @@ prepare_AGENTS_CLAUDE_md() {
             rm -f -- $tmp
             return 1
         fi
-        print_info "AGENTS.md: materialized from $source"
+        print_info "AGENTS.md: materialized from $materialize_from"
         agents_changed=1
     fi
 
