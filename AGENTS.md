@@ -279,3 +279,5 @@ make docker-pull   # pull & run latest ghcr.io image
 make delete-release TAG=vYYYY.MM.DD
 make help          # list all targets
 ```
+
+- commit and push into main branch after editing the files
