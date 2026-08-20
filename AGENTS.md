@@ -105,6 +105,19 @@ Flags for package runners (`*/run.sh`):
 - Local overrides: `zsh/.zshrc_local`, `zsh/.zshenv_local`
   (machine-specific, not committed)
 - `.zshrc` files are compiled to `.zwc` on change for faster startup
+- Completion: `compinit` runs once from `.zshrc` (`.zshenv` sets
+  `skip_global_compinit=1` so Debian/Ubuntu's global zshrc doesn't run it
+  first). The dump is per-host/per-build
+  (`.zcompdump-$HOST-$OSTYPE-$VENDOR-$ZSH_VERSION`) so shared NFS homes
+  don't fight over one cache, and `compinit -i` ignores insecure
+  completion paths instead of blocking remote login with a prompt
+
+### tmux
+
+- Config: `tmux/tmux.conf`
+- Extended keys are enabled in CSI-u format (`extended-keys always`,
+  `extended-keys-format csi-u`) so modified keys such as Shift+Enter
+  survive inside tmux
 
 ### Neovim
 

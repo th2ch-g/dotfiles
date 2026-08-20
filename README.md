@@ -142,6 +142,8 @@ docker pull --platform linux/amd64 ghcr.io/th2ch-g/dotfiles:latest
 docker run --platform linux/amd64 --rm -it ghcr.io/th2ch-g/dotfiles
 ```
 
+Shortcut: `make docker-pull`
+
 #### Case2: Build locally
 
 ```shell
@@ -150,6 +152,8 @@ cd ./dotfiles && \
 docker image build -t myenv . && \
 docker run --rm -it myenv
 ```
+
+Shortcut: `make d`
 
 </details>
 
@@ -190,3 +194,12 @@ Run all linters/formatters manually:
 ```bash
 make l
 ```
+
+List all Makefile targets:
+
+```bash
+make help
+```
+
+See [AGENTS.md](AGENTS.md) for the full script/architecture reference
+(also imported by `CLAUDE.md` for coding agents).
