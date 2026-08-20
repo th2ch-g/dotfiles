@@ -279,6 +279,28 @@ TOML formatter, checkmake, gitlint, bash syntax check, zsh syntax check
 `cargo/list.yaml`, `gh-ext/list.yaml`, `python3/requirements.txt`
 (via `lib/check_sorted.sh`).
 
+## Claude Code Project Settings
+
+The repository contains two Claude-related directories — do not mix
+them up:
+
+- `claude/` — user-global config, symlinked to `~/.claude` by
+  `link.sh --claude`
+- `.claude/` — project-scoped settings that apply only inside this
+  repository
+
+Project-scoped pieces:
+
+- `.claude/settings.json` — PostToolUse hook: every Edit/Write to an
+  in-repo file immediately runs `pre-commit run --files <file>` and
+  feeds lint failures back to the agent (exit 2), so problems surface
+  at edit time instead of commit time. Requires `jq` and `pre-commit`
+  on PATH; silently skipped otherwise.
+- `.claude/skills/new-installer/` — user-invoked skill
+  (`/new-installer <tool>`) that scaffolds `install_scripts/<tool>.sh`
+  following `lib/utils.sh` conventions and wires the flag through
+  `install.sh`, `setup.sh`, `AGENTS.md`, and `README.md`.
+
 ## Makefile Shortcuts
 
 ```bash

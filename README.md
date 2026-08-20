@@ -201,5 +201,10 @@ List all Makefile targets:
 make help
 ```
 
+Claude Code integration (project-scoped `.claude/`): a PostToolUse hook
+in `.claude/settings.json` runs pre-commit on every file the agent
+edits so lint feedback is immediate, and the `/new-installer <tool>`
+skill scaffolds a new `install_scripts/` installer end-to-end.
+
 See [AGENTS.md](AGENTS.md) for the full script/architecture reference
 (also imported by `CLAUDE.md` for coding agents).
