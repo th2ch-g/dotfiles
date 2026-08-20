@@ -384,7 +384,7 @@ prepare_AGENTS_CLAUDE_md() {
 }
 
 benchmark() {
-    (for i in $(seq 1 10); do time zsh -i -c exit; done)
+    (for i in $(seq 1 10); do time "${SHELL:-zsh}" -i -c exit; done)
 }
 
 dont_sleep() {
