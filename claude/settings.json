@@ -13,7 +13,6 @@
   "permissions": {
     "defaultMode": "auto"
   },
-  "model": "claude-fable-5[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
@@ -148,7 +147,7 @@
       }
     }
   },
-  "outputStyle": "Explanatory",
+  "outputStyle": "Concise",
   "language": "ja",
   "effortLevel": "xhigh",
   "advisorModel": "opus",
@@ -161,6 +160,7 @@
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "verbose": false,
+  "autoContinueAtUsageLimit": true,
   "showTurnDuration": true,
   "remoteControlAtStartup": false,
   "useAutoModeDuringPlan": true,
