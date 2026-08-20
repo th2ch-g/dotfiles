@@ -164,5 +164,6 @@
   "showTurnDuration": true,
   "remoteControlAtStartup": false,
   "useAutoModeDuringPlan": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "model": "claude-fable-5[1m]"
 }
