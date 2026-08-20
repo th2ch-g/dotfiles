@@ -163,10 +163,13 @@ setopt share_history
 
 # compinit
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR:-$HOME/.config/zsh}/.zcompdump(#qN.mh+24) ]]; then
-    $DEFER compinit
+# Keep shared-home caches separate across hosts, platforms, and zsh builds.
+typeset -g ZSH_COMPDUMP="${ZDOTDIR:-$HOME/.config/zsh}/.zcompdump-${HOST:-unknown}-${OSTYPE:-unknown}-${VENDOR:-unknown}-${ZSH_VERSION}"
+# Ignore insecure completion paths instead of blocking a remote login prompt.
+if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
+    $DEFER compinit -i -d "$ZSH_COMPDUMP"
 else
-    $DEFER compinit -C
+    $DEFER compinit -i -C -d "$ZSH_COMPDUMP"
 fi
 # Register zoxide tab completion after compinit (compdef is unavailable before compinit)
 (( $+commands[zoxide] )) && $DEFER compdef __zoxide_z_complete z

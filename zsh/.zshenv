@@ -11,6 +11,9 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+# Debian and Ubuntu run compinit from the global zshrc unless this is set.
+# Completion is initialized once in the user zshrc on every platform.
+typeset -g skip_global_compinit=1
 if [[ -z "$BROWSER" && "$OSTYPE" == darwin* ]]; then
     export BROWSER='open'
 fi
