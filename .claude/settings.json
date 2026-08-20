@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v jq >/dev/null 2>&1 && command -v pre-commit >/dev/null 2>&1 || exit 0; f=$(jq -r '.tool_input.file_path // empty'); [ -n \"$f\" ] && [ -n \"$CLAUDE_PROJECT_DIR\" ] || exit 0; case \"$f\" in \"$CLAUDE_PROJECT_DIR\"/*) cd \"$CLAUDE_PROJECT_DIR\" || exit 0; out=$(pre-commit run --files \"$f\" 2>&1) || { printf '%s\\n' \"$out\" >&2; exit 2; } ;; esac",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}
