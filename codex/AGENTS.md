@@ -8,5 +8,6 @@
 - 積極的にPlugin/Skills等を使用
 - 雑なrg,find,grepは重いので絶対に使わないこと
 - 再生成可能なデータはignore
+- 絶対PATHや固有情報は書かないこと(他の環境でも動くように書くこと)
 
 @AGENTS.local.md
