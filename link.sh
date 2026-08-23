@@ -372,6 +372,9 @@ if has_tool claude; then
         for p in productivity sales customer-support product-management marketing legal finance data enterprise-search bio-research cowork-plugin-management; do
             claude plugin install "$p@knowledge-work-plugins"
         done
+
+        claude plugin marketplace add anthropics/claude-plugins-community
+        claude plugin install eli5@claude-community
         set -e
     fi
 fi
