@@ -116,5 +116,14 @@ backspace = ['close-all-windows-but-current', 'mode main']
 # if.app-id = 'com.tinyspeck.slackmacgap'
 # run = 'move-node-to-workspace S'
 #
+[[on-window-detected]]
+if.app-name-regex-substring = '^python$'
+if.window-title-regex-substring = '^PyMOL'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
 [workspace-to-monitor-force-assignment]
 Z = ['Display']
