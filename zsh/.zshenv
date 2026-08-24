@@ -14,6 +14,11 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 # Debian and Ubuntu run compinit from the global zshrc unless this is set.
 # Completion is initialized once in the user zshrc on every platform.
 typeset -g skip_global_compinit=1
+# The repository provides its own interactive setup. Skip macOS's duplicate
+# global zshrc, but retain Apple Terminal's session integration.
+if [[ $OSTYPE == darwin* && ${TERM_PROGRAM:-} != Apple_Terminal && -o interactive && ! -o login ]]; then
+    unsetopt GLOBAL_RCS
+fi
 if [[ -z "$BROWSER" && "$OSTYPE" == darwin* ]]; then
     export BROWSER='open'
 fi

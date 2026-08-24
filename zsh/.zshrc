@@ -12,8 +12,12 @@ alias gpg='PINENTRY_USER_DATA=USE_TTY=1 \gpg'
 alias gopass='PINENTRY_USER_DATA=USE_TTY=1 \gopass'
 export HISTFILE="${ZDOTDIR:-$HOME/.config/zsh}/history"
 export LESS='-g -i -M -Q -R -S -w -X -z-4 --no-vbell'
-if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
-  export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+if [[ -z "$LESSOPEN" ]]; then
+    if (( $+commands[lesspipe] )); then
+        export LESSOPEN="| /usr/bin/env $commands[lesspipe] %s 2>&-"
+    elif (( $+commands[lesspipe.sh] )); then
+        export LESSOPEN="| /usr/bin/env $commands[lesspipe.sh] %s 2>&-"
+    fi
 fi
 export SAVEHIST=100000000
 export HISTSIZE=100000
@@ -86,8 +90,8 @@ fi
 
 # prompt
 if [ $USE_PLUGINS -eq 1 ]; then
-    autoload -Uz promptinit && promptinit
-    prompt pure
+    autoload -Uz prompt_pure_setup
+    prompt_pure_setup
     zstyle :prompt:pure:user color green
     zstyle :prompt:pure:host color green
     $DEFER autoload -Uz colors
