@@ -183,7 +183,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # alias
 # mkdir alias
 alias mkdir="mkdir -p"
-alias mkdird="mkdir -p $(date +'%Y.%-m.%-d')"
+alias mkdird='mkdir -p $(date +%Y.%-m.%-d)'
 
 # cd alias
 alias .....="cd ../../../../"
