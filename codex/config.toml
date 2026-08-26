@@ -39,3 +39,4 @@ notification_condition = "unfocused"
 
 [sandbox_workspace_write]
 web_search = "live"
+network_access = true
