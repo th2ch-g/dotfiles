@@ -2,3 +2,7 @@
 !settings.json
 !CLAUDE.md
 !statusline.sh
+!skills/
+skills/*
+!skills/scp/
+!skills/scp/SKILL.md
