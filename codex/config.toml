@@ -20,6 +20,7 @@ enabled = false
 multi_agent = true
 prevent_idle_sleep = true
 codex_git_commit = true
+voice_transcription = true
 # default_mode_request_user_input = true
 
 [notice]
