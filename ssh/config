@@ -3,8 +3,8 @@ AddkeysToAgent yes
 UseKeychain yes
 ForwardAgent yes
 XAuthLocation /opt/X11/bin/xauth
-ForwardX11Trusted yes
-ForwardX11 yes
+# ForwardX11Trusted yes
+# ForwardX11 yes
 
 # My github account
 Host github github.com
