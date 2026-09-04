@@ -1,9 +1,9 @@
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
 sandbox_mode = "workspace-write"                                                                                                       # or danger-full-access
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "max"
 personality = "pragmatic"
-plan_mode_reasoning_effort = "xhigh"
+plan_mode_reasoning_effort = "max"
 service_tier = "default"
 commit_attribution = "Co-authored-by: Codex <noreply@openai.com>"
 developer_instructions = "When creating Git commits, always append `Co-authored-by: Codex <noreply@openai.com>` after one blank line."
