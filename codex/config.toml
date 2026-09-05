@@ -23,6 +23,9 @@ codex_git_commit = true
 voice_transcription = true
 # default_mode_request_user_input = true
 
+[features.context_management]
+experimental_mode = true
+
 [notice]
 hide_rate_limit_model_nudge = true
 
