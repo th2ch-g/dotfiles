@@ -35,6 +35,7 @@ experimental_mode = true
 hide_rate_limit_model_nudge = true
 
 [tui]
+resume_cwd = "session"
 status_line = [
     "model-with-reasoning",
     "context-remaining",
