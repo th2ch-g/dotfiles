@@ -7,6 +7,7 @@ plan_mode_reasoning_effort = "max"
 service_tier = "default"
 commit_attribution = "Co-authored-by: Codex <noreply@openai.com>"
 developer_instructions = "When creating Git commits, always append `Co-authored-by: Codex <noreply@openai.com>` after one blank line."
+model_verbosity = "low"
 # model_context_window = 1000000
 # model_auto_compact_token_limit = 900000
 
@@ -21,7 +22,11 @@ multi_agent = true
 prevent_idle_sleep = true
 codex_git_commit = true
 voice_transcription = true
+memories = true
 # default_mode_request_user_input = true
+
+[features.code_mode]
+enabled = true
 
 [features.context_management]
 experimental_mode = true
