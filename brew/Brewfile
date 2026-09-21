@@ -1,4 +1,5 @@
 tap "FelixKratz/formulae", trusted: true
+cask "zoom"
 cask "xquartz"
 cask "utm"
 cask "tor-browser"
