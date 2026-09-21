@@ -187,6 +187,11 @@ Flags for package runners (`*/run.sh`):
   **destructively rebuilds the Dock** (removes all items, then re-adds a
   fixed set: System Settings, Chrome, Slack, iTerm, Docker, XQuartz, Desktop,
   Downloads) when `dockutil` is installed; otherwise it warns and skips.
+- `macos/run.sh` also registers AeroSpace, iTerm2, Chrome, Slack, and XQuartz
+  with `loginitems` when installed. `./macos/run.sh --login-items-only`
+  applies only login startup settings and requires System Events automation
+  permission. App paths are resolved by bundle identifier; missing apps are
+  skipped and existing login items are reused.
 
 ### Install Scripts
 

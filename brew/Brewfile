@@ -1,3 +1,4 @@
+tap "ojford/formulae", trusted: true
 tap "FelixKratz/formulae", trusted: true
 cask "zoom"
 cask "xquartz"
@@ -17,6 +18,7 @@ cask "bricklink-studio"
 brew "wallpaper"
 brew "pinentry-mac"
 brew "pass"
+brew "ojford/formulae/loginitems"
 brew "mole"
 brew "gopass-jsonapi"
 brew "gopass"
