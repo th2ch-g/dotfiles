@@ -2,7 +2,6 @@ tap "ojford/formulae", trusted: true
 tap "FelixKratz/formulae", trusted: true
 cask "zoom"
 cask "xquartz"
-cask "utm"
 cask "tor-browser"
 cask "thunderbird"
 cask "slack"
@@ -27,6 +26,7 @@ brew "dockutil"
 brew "FelixKratz/formulae/borders"
 # run: brew bundle dump
 # cask "visual-studio-code"
+# cask "utm"
 # cask "steipete/tap/codexbar", trusted: true
 # cask "nikitabobko/tap/aerospace"
 # cask "keycastr"
