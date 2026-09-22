@@ -1,4 +1,3 @@
-tap "ojford/formulae", trusted: true
 tap "FelixKratz/formulae", trusted: true
 cask "zoom"
 cask "xquartz"
@@ -17,7 +16,6 @@ cask "bricklink-studio"
 brew "wallpaper"
 brew "pinentry-mac"
 brew "pass"
-brew "ojford/formulae/loginitems"
 brew "mole"
 brew "gopass-jsonapi"
 brew "gopass"
@@ -25,6 +23,7 @@ brew "gnupg"
 brew "dockutil"
 brew "FelixKratz/formulae/borders"
 # run: brew bundle dump
+# tap "ojford/formulae", trusted: true
 # cask "visual-studio-code"
 # cask "utm"
 # cask "steipete/tap/codexbar", trusted: true
@@ -39,6 +38,7 @@ brew "FelixKratz/formulae/borders"
 # brew "qmk-toolbox"
 # brew "podman"
 # brew "opentofu"
+# brew "ojford/formulae/loginitems"
 # brew "maccy"
 # brew "koekeishiya/formulae/yabai"
 # brew "koekeishiya/formulae/skhd"

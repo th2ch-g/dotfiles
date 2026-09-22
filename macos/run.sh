@@ -10,13 +10,11 @@ fi
 
 # default setting
 dockutil_flag=1
-login_items_only=0
 
 USAGE='
 Usage:
     -h, --help          Show this help message
     -d, --dockutil      Use dockutil
-    --login-items-only Configure only login items
 '
 
 # option parser
@@ -28,9 +26,6 @@ while :; do
             ;;
         -d | --dockutil)
             dockutil_flag=0
-            ;;
-        --login-items-only)
-            login_items_only=1
             ;;
         --)
             shift
@@ -46,42 +41,6 @@ while :; do
     esac
     shift
 done
-
-# Login items
-if need_cmd loginitems; then
-    while IFS='|' read -r app_name app_id; do
-        app_path=$(
-            osascript -l JavaScript - "$app_id" << 'JXA'
-ObjC.import('AppKit');
-function run(argv) {
-    const appURL = $.NSWorkspace.sharedWorkspace.URLForApplicationWithBundleIdentifier(argv[0]);
-    return appURL.isNil() ? '' : ObjC.unwrap(appURL.path);
-}
-JXA
-        )
-        if [ -z "$app_path" ]; then
-            print_warn "$app_name is not installed, skipping login setup"
-            continue
-        fi
-        loginitems -a "$app_name" -p "$app_path"
-        print_info "Enabled login startup for $app_name"
-    done << 'APPS'
-AeroSpace|bobko.aerospace
-iTerm|com.googlecode.iterm2
-Google Chrome|com.google.Chrome
-Slack|com.tinyspeck.slackmacgap
-XQuartz|org.xquartz.X11
-APPS
-elif [ "$login_items_only" -eq 1 ]; then
-    print_error "install ojford/formulae/loginitems using brew first"
-    exit 1
-else
-    print_warn "loginitems is not installed, skipping login setup"
-fi
-
-if [ "$login_items_only" -eq 1 ]; then
-    exit 0
-fi
 
 # Dock
 defaults write com.apple.dock orientation -string left
