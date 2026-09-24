@@ -1,5 +1,6 @@
 # gh extensions (OWNER/REPO). Installed via: ./install.sh --gh-ext
 extensions:
+  - repo: github/gh-stack
   - repo: babarot/gh-infra
   - repo: th2ch-g/gh-email-get
   - repo: th2ch-g/gh-repo-history
