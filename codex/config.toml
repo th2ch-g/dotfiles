@@ -52,6 +52,9 @@ status_line = [
 status_line_use_colors = true
 notifications = true
 notification_condition = "unfocused"
+screen_reader_detection_done = true
+fullscreen_transcript = false
+
 
 [sandbox_workspace_write]
 web_search = "live"
