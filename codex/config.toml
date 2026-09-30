@@ -54,6 +54,7 @@ notifications = true
 notification_condition = "unfocused"
 screen_reader_detection_done = true
 fullscreen_transcript = false
+# rendering.math = true
 
 
 [sandbox_workspace_write]
