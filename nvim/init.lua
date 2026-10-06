@@ -214,17 +214,17 @@ if use_plugins == 1 then
         -- },
 
         {
-          "mukaiyama729/gunso.nvim",
-          main = "gunso",
-          dependencies = {
-            { "3rd/image.nvim", build = false },
-          },
-          opts = {
-            -- Optional: these are the defaults. The frames ship with the plugin.
-            frames = { "walk_1.png", "walk_2.png", "walk_3.png" },
-            move_step = 1,
-            keys_per_step = 1,
-          },
+            "mukaiyama729/gunso.nvim",
+            main = "gunso",
+            dependencies = {
+                { "3rd/image.nvim", build = false },
+            },
+            opts = {
+                -- Optional: these are the defaults. The frames ship with the plugin.
+                frames = { "walk_1.png", "walk_2.png", "walk_3.png" },
+                move_step = 1,
+                keys_per_step = 1,
+            },
         },
     }
 
