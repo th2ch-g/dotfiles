@@ -41,7 +41,7 @@ repos:
       - id: gitleaks
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.38.0
+    rev: 0.38.2
     hooks:
       - id: check-github-workflows
 
@@ -95,7 +95,7 @@ repos:
         exclude: ^zsh/
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.50.2
+    rev: v1.50.3
     hooks:
       - id: typos
 
