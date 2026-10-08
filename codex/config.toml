@@ -29,6 +29,8 @@ prevent_idle_sleep = true
 codex_git_commit = true
 voice_transcription = true
 memories = true
+daemon_auto_start = true
+api_key_model_discovery = false
 # default_mode_request_user_input = true
 
 [features.code_mode]
