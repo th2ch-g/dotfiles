@@ -216,7 +216,6 @@ if use_plugins == 1 then
         {
             "mukaiyama729/gunso.nvim",
             main = "gunso",
-            cmd = { "GunsoToggle", "GunsoStep", "GunsoReset" },
             dependencies = {
                 { "3rd/image.nvim", build = false },
             },
@@ -226,11 +225,6 @@ if use_plugins == 1 then
                 move_step = 1,
                 keys_per_step = 1,
             },
-            config = function(_, opts)
-                local gunso = require("gunso")
-                gunso.setup(opts)
-                gunso.disable()
-            end,
         },
     }
 

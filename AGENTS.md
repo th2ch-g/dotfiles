@@ -125,8 +125,6 @@ Flags for package runners (`*/run.sh`):
 - Plugin manager: [lazy.nvim](https://github.com/folke/lazy.nvim)
   (auto-installed on first run)
 - Lock file: `nvim/lazy-lock.json`
-- Gunso animation loads on demand with `:GunsoToggle`, keeping image backend
-  checks out of normal startup.
 
 ### Vim
 
