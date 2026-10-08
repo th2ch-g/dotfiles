@@ -122,6 +122,18 @@ if.window-title-regex-substring = '^PyMOL'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-id = 'org.cuemol.cuemol3'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'org.keepassxc.keepassxc'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-id = 'com.apple.systempreferences'
 run = 'layout floating'
 
