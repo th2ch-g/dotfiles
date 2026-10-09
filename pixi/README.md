@@ -9,6 +9,15 @@ Global CLI tools managed declaratively via `pixi-global.toml`.
 ./run.sh
 ```
 
+Rust CLIs with conda-forge builds for macOS (Intel and Apple Silicon) and
+Linux x86-64 use this manifest. Their original Cargo entries remain commented out
+in `cargo/list.yaml` as fallbacks. Packages missing those builds, including
+`nviwatch` and `silicon`, remain active in Cargo. A matching package name
+alone is not enough: conda-forge's `pastel` and `r-matrix` are unrelated tools.
+
+The zsh configuration puts pixi before Cargo on `PATH`, so previously installed
+Cargo copies do not shadow migrated commands. Start a new shell after syncing.
+
 ## Gotchas
 
 `run.sh` ends in `pixi global sync`, which prunes every environment under

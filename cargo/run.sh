@@ -24,8 +24,10 @@ source "${DOTFILES_DIR:-$(cd "$(dirname "$0")/.." && pwd)}/lib/utils.sh"
 rustup self update
 rustup update
 
-# cargo-binstall is required for the plain-crate lines below.
-cargo install --locked cargo-binstall
+# Prefer the pixi-managed binary; bootstrap standalone Cargo installs.
+if ! need_cmd cargo-binstall; then
+    cargo install --locked cargo-binstall
+fi
 
 failed=()
 

@@ -89,3 +89,245 @@ exposed = { vhs = "vhs" }
 channels = ["conda-forge"]
 dependencies = { wget = "*" }
 exposed = { wget = "wget" }
+
+# Rust CLIs available on macOS and Linux.
+
+[envs.bacon]
+channels = ["conda-forge"]
+dependencies = { bacon = "*" }
+exposed = { bacon = "bacon" }
+
+[envs.bat]
+channels = ["conda-forge"]
+dependencies = { bat = "*" }
+exposed = { bat = "bat" }
+
+[envs.bottom]
+channels = ["conda-forge"]
+dependencies = { bottom = "*" }
+exposed = { btm = "btm" }
+
+[envs.cargo-binstall]
+channels = ["conda-forge"]
+dependencies = { cargo-binstall = "*" }
+exposed = { cargo-binstall = "cargo-binstall" }
+
+[envs.cargo-deny]
+channels = ["conda-forge"]
+dependencies = { cargo-deny = "*" }
+exposed = { cargo-deny = "cargo-deny" }
+
+[envs.cargo-nextest]
+channels = ["conda-forge"]
+dependencies = { cargo-nextest = "*" }
+exposed = { cargo-nextest = "cargo-nextest" }
+
+[envs.cargo-update]
+channels = ["conda-forge"]
+dependencies = { cargo-update = "*" }
+exposed = { cargo-install-update = "cargo-install-update", cargo-install-update-config = "cargo-install-update-config" }
+
+[envs.choose-rust]
+channels = ["conda-forge"]
+dependencies = { choose-rust = "*" }
+exposed = { choose = "choose" }
+
+[envs.csview]
+channels = ["conda-forge"]
+dependencies = { csview = "*" }
+exposed = { csview = "csview" }
+
+[envs.dra]
+channels = ["conda-forge"]
+dependencies = { dra = "*" }
+exposed = { dra = "dra" }
+
+[envs.dust]
+channels = ["conda-forge"]
+dependencies = { dust = "*" }
+exposed = { dust = "dust" }
+
+[envs.evcxr]
+channels = ["conda-forge"]
+dependencies = { evcxr = "*" }
+exposed = { evcxr = "evcxr", evcxr_jupyter = "evcxr_jupyter" }
+
+[envs.eza]
+channels = ["conda-forge"]
+dependencies = { eza = "*" }
+exposed = { eza = "eza" }
+
+[envs.fd-find]
+channels = ["conda-forge"]
+dependencies = { fd-find = "*" }
+exposed = { fd = "fd" }
+
+[envs.git-cliff]
+channels = ["conda-forge"]
+dependencies = { git-cliff = "*" }
+exposed = { git-cliff = "git-cliff" }
+
+[envs.git-delta]
+channels = ["conda-forge"]
+dependencies = { git-delta = "*" }
+exposed = { delta = "delta" }
+
+[envs.gitui]
+channels = ["conda-forge"]
+dependencies = { gitui = "*" }
+exposed = { gitui = "gitui" }
+
+[envs.grex]
+channels = ["conda-forge"]
+dependencies = { grex = "*" }
+exposed = { grex = "grex" }
+
+[envs.gws]
+channels = ["conda-forge"]
+dependencies = { gws = "*" }
+exposed = { gws = "gws" }
+
+[envs.hyperfine]
+channels = ["conda-forge"]
+dependencies = { hyperfine = "*" }
+exposed = { hyperfine = "hyperfine" }
+
+[envs.jaq]
+channels = ["conda-forge"]
+dependencies = { jaq = "*" }
+exposed = { jaq = "jaq" }
+
+[envs.jujutsu]
+channels = ["conda-forge"]
+dependencies = { jujutsu = "*" }
+exposed = { jj = "jj" }
+
+[envs.just]
+channels = ["conda-forge"]
+dependencies = { just = "*" }
+exposed = { just = "just" }
+
+[envs.mdbook]
+channels = ["conda-forge"]
+dependencies = { mdbook = "*" }
+exposed = { mdbook = "mdbook" }
+
+[envs.mprocs]
+channels = ["conda-forge"]
+dependencies = { mprocs = "*" }
+exposed = { mprocs = "mprocs" }
+
+[envs.ouch]
+channels = ["conda-forge"]
+dependencies = { ouch = "*" }
+exposed = { ouch = "ouch" }
+
+[envs.procs]
+channels = ["conda-forge"]
+dependencies = { procs = "*" }
+exposed = { procs = "procs" }
+
+[envs.pueue]
+channels = ["conda-forge"]
+dependencies = { pueue = "*" }
+exposed = { pueue = "pueue", pueued = "pueued" }
+
+[envs.ripgrep]
+channels = ["conda-forge"]
+dependencies = { ripgrep = "*" }
+exposed = { rg = "rg" }
+
+[envs.ripgrep-all]
+channels = ["conda-forge"]
+dependencies = { ripgrep-all = "*" }
+exposed = { rga = "rga", rga-fzf = "rga-fzf", rga-fzf-open = "rga-fzf-open", rga-preproc = "rga-preproc" }
+
+[envs.rnr]
+channels = ["conda-forge"]
+dependencies = { rnr = "*" }
+exposed = { rnr = "rnr" }
+
+[envs.rust-script]
+channels = ["conda-forge"]
+dependencies = { rust-script = "*" }
+exposed = { rust-script = "rust-script" }
+
+[envs.sccache]
+channels = ["conda-forge"]
+dependencies = { sccache = "*" }
+exposed = { sccache = "sccache" }
+
+[envs.sd]
+channels = ["conda-forge"]
+dependencies = { sd = "*" }
+exposed = { sd = "sd" }
+
+[envs.skim]
+channels = ["conda-forge"]
+dependencies = { skim = "*" }
+exposed = { sk = "sk" }
+
+[envs.stylua]
+channels = ["conda-forge"]
+dependencies = { stylua = "*" }
+exposed = { stylua = "stylua" }
+
+[envs.taplo]
+channels = ["conda-forge"]
+dependencies = { taplo = "*" }
+exposed = { taplo = "taplo" }
+
+[envs.tealdeer]
+channels = ["conda-forge"]
+dependencies = { tealdeer = "*" }
+exposed = { tldr = "tldr" }
+
+[envs.tokei]
+channels = ["conda-forge"]
+dependencies = { tokei = "*" }
+exposed = { tokei = "tokei" }
+
+[envs.tre-command]
+channels = ["conda-forge"]
+dependencies = { tre-command = "*" }
+exposed = { tre = "tre" }
+
+[envs.trunk]
+channels = ["conda-forge"]
+dependencies = { trunk = "*" }
+exposed = { trunk = "trunk" }
+
+[envs.typos]
+channels = ["conda-forge"]
+dependencies = { typos = "*" }
+exposed = { typos = "typos" }
+
+[envs.uutils-coreutils]
+channels = ["conda-forge"]
+dependencies = { uutils-coreutils = "*" }
+exposed = { coreutils = "coreutils" }
+
+[envs.viu]
+channels = ["conda-forge"]
+dependencies = { viu = "*" }
+exposed = { viu = "viu" }
+
+[envs.watchexec]
+channels = ["conda-forge"]
+dependencies = { watchexec = "*" }
+exposed = { watchexec = "watchexec" }
+
+[envs.xh]
+channels = ["conda-forge"]
+dependencies = { xh = "*" }
+exposed = { xh = "xh" }
+
+[envs.yazi]
+channels = ["conda-forge"]
+dependencies = { yazi = "*" }
+exposed = { yazi = "yazi", ya = "ya" }
+
+[envs.zoxide]
+channels = ["conda-forge"]
+dependencies = { zoxide = "*" }
+exposed = { zoxide = "zoxide" }

@@ -40,9 +40,9 @@ typeset -gU cdpath fpath mailpath path
 path=(
     $BIN
     $HOME/.local/bin
+    $PIXI_HOME/bin
     $CARGO_HOME/bin
     $RUSTUP_HOME/bin
-    $PIXI_HOME/bin
     /opt/homebrew/{bin,sbin}(N)
     /opt/local/{bin,sbin}(N)
     /usr/local/{bin,sbin}(N)

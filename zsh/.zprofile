@@ -4,9 +4,9 @@
 path=(
     $BIN
     $HOME/.local/bin
+    $PIXI_HOME/bin
     $CARGO_HOME/bin
     $RUSTUP_HOME/bin
-    $PIXI_HOME/bin
     $path
 )
 #==================================================
