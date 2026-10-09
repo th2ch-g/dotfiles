@@ -8,8 +8,6 @@ fi
 export LS_COLORS='di=38;2;171;144;121' # ls color -> light brown
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export GPG_TTY=$TTY
-alias gpg='PINENTRY_USER_DATA=USE_TTY=1 \gpg'
-alias gopass='PINENTRY_USER_DATA=USE_TTY=1 \gopass'
 export HISTFILE="${ZDOTDIR:-$HOME/.config/zsh}/history"
 export LESS='-g -i -M -Q -R -S -w -X -z-4 --no-vbell'
 if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
@@ -226,8 +224,6 @@ alias nv="nvim"
 alias v="vim"
 alias vi="vim"
 alias memo="vim ${HOME}/.memo.md"
-alias pass="vim_ai_off; pass"
-alias gp="gopass"
 
 # slurm alias
 alias scancela="scancel -u $USER"
