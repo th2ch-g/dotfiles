@@ -126,6 +126,10 @@ if.app-id = 'org.cuemol.cuemol3'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-id = 'com.cockos.LICEcap'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-id = 'org.keepassxc.keepassxc'
 run = 'layout floating'
 
