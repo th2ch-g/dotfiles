@@ -10,6 +10,7 @@ cask "keepassxc"
 cask "iterm2"
 cask "inkscape"
 cask "homerow"
+cask "google-japanese-ime"
 cask "google-chrome"
 cask "docker-desktop"
 cask "darrylmorley/whatcable/whatcable", trusted: true

@@ -187,6 +187,11 @@ Flags for package runners (`*/run.sh`):
   **destructively rebuilds the Dock** (removes all items, then re-adds a
   fixed set: System Settings, Chrome, Slack, iTerm, Docker, XQuartz, Desktop,
   Downloads) when `dockutil` is installed; otherwise it warns and skips.
+- `brew/Brewfile` installs Google Japanese Input. `macos/run.sh --google-ime`
+  uses `defaults` to add the input method and
+  Hiragana mode without duplicating or replacing existing input sources.
+  Log out and back in to apply the preferences; this does not change the
+  current selection.
 
 ### Install Scripts
 

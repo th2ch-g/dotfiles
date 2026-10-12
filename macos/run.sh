@@ -10,11 +10,13 @@ fi
 
 # default setting
 dockutil_flag=1
+google_ime_flag=1
 
 USAGE='
 Usage:
     -h, --help          Show this help message
     -d, --dockutil      Use dockutil
+        --google-ime   Enable Google Japanese Input
 '
 
 # option parser
@@ -26,6 +28,9 @@ while :; do
             ;;
         -d | --dockutil)
             dockutil_flag=0
+            ;;
+        --google-ime)
+            google_ime_flag=0
             ;;
         --)
             shift
@@ -62,6 +67,46 @@ defaults write com.apple.inputmethod.Kotoeri JIMPrefLiveConversionKey -bool fals
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+
+# Google Japanese Input
+if [[ $google_ime_flag -eq 0 ]]; then
+    google_ime_sources=$(defaults read com.apple.HIToolbox AppleEnabledInputSources 2> /dev/null || true)
+    google_ime_sources=${google_ime_sources//[[:space:]]/}
+    google_ime_changed=0
+
+    has_google_ime_source() {
+        local kind=$1 mode=${2:-} remaining=$google_ime_sources entry
+        while [[ $remaining == *'{'* ]]; do
+            remaining=${remaining#*\{}
+            entry=${remaining%%\}*}
+            remaining=${remaining#*\}}
+            if [[ $entry == *'"BundleID"="com.google.inputmethod.Japanese";'* &&
+                $entry == *"InputSourceKind=\"$kind\";"* ]]; then
+                if [[ -z $mode || $entry == *"\"InputMode\"=\"$mode\";"* ]]; then
+                    return 0
+                fi
+            fi
+        done
+        return 1
+    }
+
+    if ! has_google_ime_source KeyboardInputMethod; then
+        defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add \
+            '{ "Bundle ID" = "com.google.inputmethod.Japanese"; InputSourceKind = "Keyboard Input Method"; }'
+        google_ime_changed=1
+    fi
+
+    if ! has_google_ime_source InputMode com.apple.inputmethod.Japanese; then
+        defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add \
+            '{ "Bundle ID" = "com.google.inputmethod.Japanese"; "Input Mode" = "com.apple.inputmethod.Japanese"; InputSourceKind = "Input Mode"; }'
+        google_ime_changed=1
+    fi
+    if [[ $google_ime_changed -eq 1 ]]; then
+        print_info "Google Japanese Input (Hiragana) configured. Log out and back in to apply."
+    else
+        print_info "Google Japanese Input (Hiragana) is already in input source preferences."
+    fi
+fi
 
 # banner
 defaults write com.apple.notificationcenterui bannerTime -int 120
