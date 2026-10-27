@@ -4,5 +4,5 @@ extensions:
   - repo: github/gh-stack
   - repo: th2ch-g/gh-email-get
   - repo: th2ch-g/gh-repo-history
-  - repo: th2ch-g/gh-user-history
   - repo: th2ch-g/gh-user-activity
+  - repo: th2ch-g/gh-user-history
