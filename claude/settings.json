@@ -158,6 +158,11 @@
   "outputStyle": "Concise",
   "language": "ja",
   "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  },
   "advisorModel": "opus",
   "autoUpdatesChannel": "latest",
   "voice": {
