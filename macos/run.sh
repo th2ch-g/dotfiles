@@ -107,18 +107,31 @@ if [[ $google_ime_flag -eq 0 ]]; then
 
     # macOS does not enable a third-party input method from defaults alone; it
     # must be added once in System Settings. Select it when it is enabled.
-    if need_cmd swift && swift - << 'EOF'
+    # Exit 3 means the input source is not enabled; any other failure (e.g. a
+    # swift compile error) must not be reported as a missing input source.
+    google_ime_status=3
+    if need_cmd swift; then
+        google_ime_status=0
+        swift - << 'EOF' || google_ime_status=$?
 import Carbon
 let props = [kTISPropertyInputSourceID as String: "com.google.inputmethod.Japanese.base"] as CFDictionary
 guard let list = TISCreateInputSourceList(props, false)?.takeRetainedValue() as? [TISInputSource],
-    let source = list.first, TISSelectInputSource(source) == noErr else { exit(1) }
+    let source = list.first else { exit(3) }
+guard TISSelectInputSource(source) == noErr else { exit(4) }
 EOF
-    then
-        print_info "Google Japanese Input (Hiragana) selected as the current input source."
-    else
-        print_warn "Add Google Japanese Input (Hiragana) in System Settings > Keyboard > Input Sources > Edit..., then re-run with --google-ime to select it."
-        open "x-apple.systempreferences:com.apple.Keyboard-Settings.extension"
     fi
+    case $google_ime_status in
+        0)
+            print_info "Google Japanese Input (Hiragana) selected as the current input source."
+            ;;
+        3)
+            print_warn "Add Google Japanese Input (Hiragana) in System Settings > Keyboard > Input Sources > Edit..., then re-run with --google-ime to select it."
+            open "x-apple.systempreferences:com.apple.Keyboard-Settings.extension"
+            ;;
+        *)
+            print_warn "Could not select Google Japanese Input via swift (exit $google_ime_status); select it from the input menu instead."
+            ;;
+    esac
 fi
 
 # banner

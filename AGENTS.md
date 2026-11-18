@@ -194,7 +194,8 @@ Flags for package runners (`*/run.sh`):
   so it must be added once in System Settings > Keyboard > Input Sources;
   the script opens that pane when the IME is not enabled (or `swift` is
   missing), and once enabled selects Hiragana as the current input source
-  via `swift` (Text Input Sources API).
+  via `swift` (Text Input Sources API). Any other `swift` failure (e.g. a
+  broken Command Line Tools install) only warns and does not open the pane.
 
 ### Install Scripts
 
