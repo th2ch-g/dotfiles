@@ -190,8 +190,11 @@ Flags for package runners (`*/run.sh`):
 - `brew/Brewfile` installs Google Japanese Input. `macos/run.sh --google-ime`
   uses `defaults` to add the input method and
   Hiragana mode without duplicating or replacing existing input sources.
-  Log out and back in to apply the preferences; this does not change the
-  current selection.
+  macOS ignores those entries for a third-party IME (even after a reboot),
+  so it must be added once in System Settings > Keyboard > Input Sources;
+  the script opens that pane when the IME is not enabled, and once enabled
+  selects Hiragana as the current input source via `swift` (Text Input
+  Sources API), which persists across logins.
 
 ### Install Scripts
 

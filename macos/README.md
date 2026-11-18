@@ -25,6 +25,11 @@ using only `defaults` and shell builtins. Existing sources are preserved, and
 each missing entry is added separately so repeated runs do not create
 duplicates. Without this flag, the IME preferences are left unchanged.
 
-After adding entries, log out and back in for macOS to reload the preferences. This
-does not switch the current input source or remove Apple's Japanese input.
-Settings such as keymaps and user dictionaries are managed separately.
+macOS does not enable a third-party input method from these entries alone, even
+after logging out or rebooting. When Google Japanese Input is not enabled yet,
+the script opens System Settings > Keyboard; add "Hiragana (Google)" via
+Input Sources > Edit..., then re-run `./run.sh --google-ime`. Once it is
+enabled, the script selects it as the current input source via the Text Input
+Sources API (`swift` from the Command Line Tools), and macOS keeps that
+selection across logins. Apple's Japanese input is not removed. Settings such
+as keymaps and user dictionaries are managed separately.

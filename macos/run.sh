@@ -102,9 +102,22 @@ if [[ $google_ime_flag -eq 0 ]]; then
         google_ime_changed=1
     fi
     if [[ $google_ime_changed -eq 1 ]]; then
-        print_info "Google Japanese Input (Hiragana) configured. Log out and back in to apply."
+        print_info "Google Japanese Input (Hiragana) added to input source preferences."
+    fi
+
+    # macOS does not enable a third-party input method from defaults alone; it
+    # must be added once in System Settings. Select it when it is enabled.
+    if need_cmd swift && swift - << 'EOF'
+import Carbon
+let props = [kTISPropertyInputSourceID as String: "com.google.inputmethod.Japanese.base"] as CFDictionary
+guard let list = TISCreateInputSourceList(props, false)?.takeRetainedValue() as? [TISInputSource],
+    let source = list.first, TISSelectInputSource(source) == noErr else { exit(1) }
+EOF
+    then
+        print_info "Google Japanese Input (Hiragana) selected as the current input source."
     else
-        print_info "Google Japanese Input (Hiragana) is already in input source preferences."
+        print_warn "Add Google Japanese Input (Hiragana) in System Settings > Keyboard > Input Sources > Edit..., then re-run with --google-ime to select it."
+        open "x-apple.systempreferences:com.apple.Keyboard-Settings.extension"
     fi
 fi
 
