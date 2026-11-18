@@ -191,7 +191,9 @@ Flags for package runners (`*/run.sh`):
   uses `defaults` to add the input method and
   Hiragana mode without duplicating or replacing existing input sources.
   macOS ignores those entries for a third-party IME (even after a reboot),
-  so it must be added once in System Settings > Keyboard > Input Sources;
+  and `TISRegisterInputSource` / `TISEnableInputSource` return `noErr` but
+  leave the input method disabled too (verified on macOS 15.6), so it must
+  be added once in System Settings > Keyboard > Input Sources;
   the script opens that pane when the IME is not enabled (or `swift` is
   missing), and once enabled selects Hiragana as the current input source
   via `swift` (Text Input Sources API). Any other `swift` failure (e.g. a
