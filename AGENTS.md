@@ -192,9 +192,9 @@ Flags for package runners (`*/run.sh`):
   Hiragana mode without duplicating or replacing existing input sources.
   macOS ignores those entries for a third-party IME (even after a reboot),
   so it must be added once in System Settings > Keyboard > Input Sources;
-  the script opens that pane when the IME is not enabled, and once enabled
-  selects Hiragana as the current input source via `swift` (Text Input
-  Sources API), which persists across logins.
+  the script opens that pane when the IME is not enabled (or `swift` is
+  missing), and once enabled selects Hiragana as the current input source
+  via `swift` (Text Input Sources API).
 
 ### Install Scripts
 
