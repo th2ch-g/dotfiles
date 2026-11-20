@@ -711,6 +711,8 @@ srvload() {
 }
 
 
+# Stop rebinding autosuggestions after deferred plugins and compinit have installed their widgets.
+$DEFER typeset -g ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 $DEFER unfunction source
 
 if [ $DEBUG -eq 1 ]; then
