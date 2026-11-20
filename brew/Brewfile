@@ -1,7 +1,6 @@
 tap "FelixKratz/formulae", trusted: true
 cask "zoom"
 cask "xquartz"
-cask "tor-browser"
 cask "thunderbird"
 cask "slack"
 cask "nikitabobko/tap/aerospace", trusted: true
@@ -25,6 +24,7 @@ brew "FelixKratz/formulae/borders"
 # tap "ojford/formulae", trusted: true
 # cask "visual-studio-code"
 # cask "utm"
+# cask "tor-browser"
 # cask "steipete/tap/codexbar", trusted: true
 # cask "nikitabobko/tap/aerospace"
 # cask "keycastr"
