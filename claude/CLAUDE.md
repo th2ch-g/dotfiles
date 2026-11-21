@@ -10,5 +10,6 @@
 - 再生成可能なデータはignore
 - 絶対PATHや固有情報は書かないこと(他の環境でも動くように書くこと)
 - documentとcommentとcodeが食い違うときはcodeの書き方に従い、documentとcommentを修正すること
+- /tmp/とか一時的なdirectoryに吐き出したfileやdirectoryは使い終わったら削除すること(今後も使う可能性がある場合は適切な場所に配置すること)
 
 @CLAUDE.local.md
