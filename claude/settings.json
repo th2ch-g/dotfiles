@@ -177,5 +177,6 @@
   "showTurnDuration": true,
   "remoteControlAtStartup": false,
   "useAutoModeDuringPlan": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "switchModelsOnFlag": true
 }
